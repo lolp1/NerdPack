@@ -56,30 +56,27 @@ profileButton:SetText("Create New Profile")
 Crt_PrFl_Frame:Hide()
 
 local function new_prof(table, parent)
-	Crt_PrFl_Frame:Show()
-	profileButton:SetEventListener('OnClick', function()
-		local profileName = profileInput:GetText()
-		if profileName == ''
-		or profileName == new_prof_Name
-		or profileName == "settings" then
-			return profileButton:SetText('Profile cant have that name!')
+	local profileName = profileInput:GetText()
+	if profileName == ''
+	or profileName == new_prof_Name
+	or profileName == "settings" then
+		return profileButton:SetText('Profile cant have that name!')
+	end
+	for _,p in ipairs(table.av_profiles) do
+		if p.key == profileName then
+			return profileButton:SetText('Profile with that name exists!')
 		end
-		for _,p in ipairs(table.av_profiles) do
-			if p.key == profileName then
-				return profileButton:SetText('Profile with that name exists!')
-			end
-		end
-		_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
-		NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
-		NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
-		Crt_PrFl_Frame:Hide()
-		parent:Hide()
-		parent:Release()
-		NeP.Interface.usedGUIs[table.key] = nil
-		NeP.Interface:BuildGUI(table)
-		Crt_PrFl_Frame:Hide()
-		profileInput:SetText(new_prof_Name)
-	end)
+	end
+	_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
+	NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
+	NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
+	Crt_PrFl_Frame:Hide()
+	parent:Hide()
+	parent:Release()
+	NeP.Interface.usedGUIs[table.key] = nil
+	NeP.Interface:BuildGUI(table)
+	Crt_PrFl_Frame:Hide()
+	profileInput:SetText(new_prof_Name)
 end
 
 local function del_prof(table, parent)
