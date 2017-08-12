@@ -16,8 +16,8 @@ function NeP.CR.AddGUI(_, ev)
 		config = ev.gui,
 		profiles = true
 	}
-	local ok, gui = pcall(NeP.Interface.BuildGUI, _, temp)
-	if ok then ev.gui = true; gui.parent:Hide() end
+	ev.gui = true
+	NeP.Interface:BuildGUI(temp).parent:Hide()
 end
 
 local function legacy_PE(...)
