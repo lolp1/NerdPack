@@ -255,9 +255,22 @@ function NeP.Interface.BuildGUI(_, table)
 	return self.usedGUIs[table.key]
 end
 
+function NeP.Interface.Fetch(_, a, b, default)
+	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
+	local loaded = NeP.Config:Read(a, cprofile, {})
+	if loaded[b] == nil then loaded[b] = default end
+	return loaded[b]
+end
+
+function NeP.Interface.Write(_, a, b, key)
+	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
+	local loaded = NeP.Config:Read(a, cprofile, {})
+	loaded[b] = key
+end
+
 -- Gobals
 NeP.Globals.Interface = {
 	BuildGUI = NeP.Interface.BuildGUI,
-	Fetch = NeP.Config.Read,
+	Fetch = NeP.Interface.Fetch,
 	GetElement = NeP.Interface.GetElement
 }
