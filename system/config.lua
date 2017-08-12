@@ -5,13 +5,21 @@ local Data = {}
 
 NeP.Listener:Add("NeP_Config", "ADDON_LOADED", function(addon)
 	if addon:lower() == n_name:lower() then
-		NePDATA = NePDATA or {}
+		NePDATA = NePDATA or Data
 		Data = NePDATA
 	end
 end)
 
 function NeP.Config.Read(_, a, b, default)
-	return Data[a] and Data[a][b] or default
+	if Data[a] then
+		if Data[a][b] == nil then
+			Data[a][b] = default
+		end
+	else
+		Data[a] = {}
+		Data[a][b] = default
+	end
+	return Data[a][b]
 end
 
 function NeP.Config.Write(_, a, b, value)
@@ -19,10 +27,10 @@ function NeP.Config.Write(_, a, b, value)
 	Data[a][b] = value
 end
 
-function NeP.Config.Rest(_, a)
+function NeP.Config.Reset(_, a)
 	Data[a] = nil
 end
 
 function NeP.Config.Rest_all()
-	wipe(NePDATA)
+	wipe(Data)
 end
