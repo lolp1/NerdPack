@@ -66,8 +66,8 @@ local function new_prof(table, parent)
 			end
 		end
 		_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
-		NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
-		NeP.Config:Write(table.key, 'selected_profile', profileName)
+		NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
+		NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
 		Crt_PrFl_Frame:Hide()
 		parent:Hide()
 		parent:Release()
@@ -84,8 +84,8 @@ local function del_prof(table, parent)
 	for i,p in ipairs(table.av_profiles) do
 		if p.key == table.selected_profile then
 			table.av_profiles[i] = nil
-			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
-			NeP.Config:Write(table.key, 'selected_profile', 'default')
+			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
+			NeP.Config:Write(table.key, 'selected_profile', 'default', 'settings')
 			parent:Hide()
 			parent:Release()
 			NeP.Interface.usedGUIs[table.key] = nil
@@ -139,7 +139,7 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 		end)
 		tmp:SetEventListener('OnValueChanged', function(_,_, value)
 			if table.selected_profile == value then return end
-			NeP.Config:Write(table.key, 'selected_profile', value)
+			NeP.Config:Write(table.key, 'selected_profile', value, 'settings')
 			parent:Hide()
 			parent:Release()
 			self.usedGUIs[table.key] = nil
@@ -212,7 +212,7 @@ function NeP.Interface.BuildGUI(_, table)
 
 	--Save Location after dragging
 	parent:SetEventListener('OnDragStop', function(_,_, l, t)
-		NeP.Config:Write(table.key, 'Location', {l, t})
+		NeP.Config:Write(table.key, 'Location', {l, t}, 'settings')
 	end)
 
 	-- Only build the body after we'r done loading configs
@@ -221,7 +221,7 @@ function NeP.Interface.BuildGUI(_, table)
 		if not table.color then table.color = NeP.Color end
 		if type(table.color) == 'function' then table.color = table.color() end
 		-- load Location
-		local left, top = unpack(NeP.Config:Read(table.key, 'Location', {500, 500}))
+		local left, top = unpack(NeP.Config:Read(table.key, 'Location', {500, 500}, 'settings'))
 		parent.settings.left = left
 		parent.settings.top = top
 		parent:UpdatePosition()
@@ -233,8 +233,8 @@ function NeP.Interface.BuildGUI(_, table)
 		if table.profiles then
 			parent.settings.footer = true
 		end
-		table.selected_profile = NeP.Config:Read(table.key, 'selected_profile', 'default')
-		table.av_profiles = NeP.Config:Read(table.key, 'av_profiles', default_profiles)
+		table.selected_profile = NeP.Config:Read(table.key, 'selected_profile', 'default', 'settings')
+		table.av_profiles = NeP.Config:Read(table.key, 'av_profiles', default_profiles, 'settings')
 		parent:ApplySettings()
 	end, 9)
 
@@ -256,12 +256,12 @@ function NeP.Interface.BuildGUI(_, table)
 end
 
 function NeP.Interface.Fetch(_, a, b, default)
-	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
+	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default', 'settings')
 	return NeP.Config:Read(a, b, default, cprofile)
 end
 
 function NeP.Interface.Write(_, a, b, key)
-	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
+	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default', 'settings')
 	NeP.Config:Write(a, b, key, cprofile)
 end
 
