@@ -37,8 +37,16 @@ function NeP.Config.Write(_, a, b, value, profile)
 	Data[a][profile][b] = value
 end
 
-function NeP.Config.Reset(_, a)
-	Data[a] = nil
+function NeP.Config.Reset(_, a, b, profile)
+	if profile then
+		Data[a][profile] = nil
+	elseif b then
+		if Data[a][profile] then
+			Data[a][profile][b] = nil
+		end
+	elseif a then
+		Data[a] = nil
+	end
 end
 
 function NeP.Config.Rest_all()

@@ -55,6 +55,51 @@ profileButton:SetText("Create New Profile")
 
 Crt_PrFl_Frame:Hide()
 
+local function new_prof(table, parent)
+	Crt_PrFl_Frame:Show()
+	profileButton:SetEventListener('OnClick', function()
+		local profileName = profileInput:GetText()
+		if profileName == ''
+		or profileName == new_prof_Name
+		or profileName == "settings" then
+			return profileButton:SetText('Profile cant have that name!')
+		end
+		for _,p in ipairs(table.av_profiles) do
+			if p.key == profileName then
+				return profileButton:SetText('Profile with that name exists!')
+			end
+		end
+		_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
+		NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
+		NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
+		Crt_PrFl_Frame:Hide()
+		parent:Hide()
+		parent:Release()
+		NeP.Interface.usedGUIs[table.key] = nil
+		NeP.Interface:BuildGUI(table)
+		Crt_PrFl_Frame:Hide()
+		profileInput:SetText(new_prof_Name)
+	end)
+end
+
+local function del_prof(table, parent)
+	for i,p in ipairs(table.av_profiles) do
+		if p.key == table.selected_profile then
+			if table.selected_profile ~= 'default' then
+				table.av_profiles[i] = nil
+			end
+			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
+			NeP.Config:Write(table.key, 'selected_profile', 'default', 'settings')
+			parent:Hide()
+			parent:Release()
+			NeP.Interface.usedGUIs[table.key] = nil
+			NeP.Config:Reset(table.key, nil, table.selected_profile)
+			NeP.Interface:BuildGUI(table)
+			break
+		end
+	end
+end
+
 function NeP.Interface:BuildGUI_New(table, parent)
 	local tmp = DiesalGUI:Create('Button')
 	parent:AddChild(tmp)
@@ -65,29 +110,7 @@ function NeP.Interface:BuildGUI_New(table, parent)
 	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', function()
 		Crt_PrFl_Frame:Show()
-		profileButton:SetEventListener('OnClick', function()
-			local profileName = profileInput:GetText()
-			if profileName == ''
-			or profileName == new_prof_Name
-			or profileName == "settings" then
-				return profileButton:SetText('Profile cant have that name!')
-			end
-			for _,p in ipairs(table.av_profiles) do
-				if p.key == profileName then
-					return profileButton:SetText('Profile with that name exists!')
-				end
-			end
-			_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
-			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
-			NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
-			Crt_PrFl_Frame:Hide()
-			parent:Hide()
-			parent:Release()
-			NeP.Interface.usedGUIs[table.key] = nil
-			NeP.Interface:BuildGUI(table)
-			Crt_PrFl_Frame:Hide()
-			profileInput:SetText(new_prof_Name)
-		end)
+		profileButton:SetEventListener('OnClick', function() new_prof(table, parent) end)
 	end)
 	self.usedGUIs[table.key].elements["prof_new_bt"] = {parent = tmp, type = "Button", style = self.buttonStyleSheet}
 end
@@ -100,22 +123,7 @@ function NeP.Interface:BuildGUI_Del(table, parent)
 	tmp:SetSettings({width = 20, height = 20}, true)
 	tmp:SetText('D')
 	tmp:SetStylesheet(self.buttonStyleSheet)
-	tmp:SetEventListener('OnClick', function()
-		-- we cant delete the default, it hangs wow for some reason...
-		if table.selected_profile == 'default' then return end
-		for i,p in ipairs(table.av_profiles) do
-			if p.key == table.selected_profile then
-				table.av_profiles[i] = nil
-				NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
-				NeP.Config:Write(table.key, 'selected_profile', 'default', 'settings')
-				parent:Hide()
-				parent:Release()
-				NeP.Interface.usedGUIs[table.key] = nil
-				NeP.Interface:BuildGUI(table)
-				break
-			end
-		end
-	end)
+	tmp:SetEventListener('OnClick', function() del_prof(table, parent) end)
 	self.usedGUIs[table.key].elements["prof_del_bt"] = {parent = tmp, type = "Button", style = self.buttonStyleSheet}
 end
 
@@ -126,10 +134,10 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 		tmp:SetPoint("TOPRIGHT", parent.footer, "TOPRIGHT", 0, 0)
 		tmp:SetPoint("BOTTOMLEFT", parent.footer, "BOTTOMLEFT", 40, 0)
 		tmp:SetStylesheet(self.comboBoxStyleSheet)
+		local orderdKeys = {}
+		local list = {}
 		-- Only when loaded
 		NeP.Core:WhenInGame(function()
-			local orderdKeys = {}
-			local list = {}
 			for i, value in pairs(table.av_profiles) do
 				orderdKeys[i] = value.key
 				list[value.key] = value.text
