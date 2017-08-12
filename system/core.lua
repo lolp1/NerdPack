@@ -152,8 +152,8 @@ function NeP.Core.string_split(_, string, delimiter)
 end
 
 NeP.Listener:Add("NeP_CR2", "PLAYER_LOGIN", function()
-	NeP.Color = NeP.Core:ClassColor('player', 'hex')
 	C_Timer.After(5, function()
+		NeP.Color = NeP.Core:ClassColor('player', 'hex')
 		for i=1, #Run_Cache do
 			Run_Cache[i].func()
 		end
