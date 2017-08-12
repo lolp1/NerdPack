@@ -55,6 +55,46 @@ profileButton:SetText("Create New Profile")
 
 Crt_PrFl_Frame:Hide()
 
+local function new_prof(table, parent)
+	Crt_PrFl_Frame:Show()
+	profileButton:SetEventListener('OnClick', function()
+		local profileName = profileInput:GetText()
+		if profileName == '' or profileName == new_prof_Name then return end
+		for _,p in ipairs(table.av_profiles) do
+			if p.key == profileName then
+				return profileButton:SetText('Profile with that name exists!')
+			end
+		end
+		_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
+		NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
+		NeP.Config:Write(table.key, 'selected_profile', profileName)
+		Crt_PrFl_Frame:Hide()
+		parent:Hide()
+		parent:Release()
+		NeP.Interface.usedGUIs[table.key] = nil
+		NeP.Interface:BuildGUI(table)
+		Crt_PrFl_Frame:Hide()
+		profileInput:SetText(new_prof_Name)
+	end)
+end
+
+local function del_prof(table, parent)
+	-- we cant delete the default, it hangs wow for some reason...
+	if table.selected_profile == 'default' then return end
+	for i,p in ipairs(table.av_profiles) do
+		if p.key == table.selected_profile then
+			table.av_profiles[i] = nil
+			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
+			NeP.Config:Write(table.key, 'selected_profile', 'default')
+			parent:Hide()
+			parent:Release()
+			NeP.Interface.usedGUIs[table.key] = nil
+			NeP.Interface:BuildGUI(table)
+			break
+		end
+	end
+end
+
 function NeP.Interface:BuildGUI_New(table, parent)
 	local tmp = DiesalGUI:Create('Button')
 	parent:AddChild(tmp)
@@ -63,28 +103,7 @@ function NeP.Interface:BuildGUI_New(table, parent)
 	tmp:SetSettings({width = 20, height = 20}, true)
 	tmp:SetText('N')
 	tmp:SetStylesheet(self.buttonStyleSheet)
-	tmp:SetEventListener('OnClick', function()
-		Crt_PrFl_Frame:Show()
-		profileButton:SetEventListener('OnClick', function()
-			local profileName = profileInput:GetText()
-			if profileName == '' or profileName == new_prof_Name then return end
-			for _,p in ipairs(table.av_profiles) do
-				if p.key == profileName then
-					return profileButton:SetText('Profile with that name exists!')
-				end
-			end
-			_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
-			NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
-			NeP.Config:Write(table.key, 'selected_profile', profileName)
-			Crt_PrFl_Frame:Hide()
-			parent:Hide()
-			parent:Release()
-			NeP.Interface.usedGUIs[table.key] = nil
-			NeP.Interface:BuildGUI(table)
-			Crt_PrFl_Frame:Hide()
-			profileInput:SetText(new_prof_Name)
-		end)
-	end)
+	tmp:SetEventListener('OnClick', function() new_prof(table, parent) end)
 	self.usedGUIs[table.key].elements["prof_new_bt"] = {parent = tmp, type = "Button", style = self.buttonStyleSheet}
 end
 
@@ -96,22 +115,7 @@ function NeP.Interface:BuildGUI_Del(table, parent)
 	tmp:SetSettings({width = 20, height = 20}, true)
 	tmp:SetText('D')
 	tmp:SetStylesheet(self.buttonStyleSheet)
-	tmp:SetEventListener('OnClick', function()
-		-- we cant delete the default, it hangs wow for some reason...
-		if table.selected_profile == 'default' then return end
-		for i,p in ipairs(table.av_profiles) do
-			if p.key == table.selected_profile then
-				table.av_profiles[i] = nil
-				NeP.Config:Write(table.key, 'av_profiles', table.av_profiles)
-				NeP.Config:Write(table.key, 'selected_profile', 'default')
-				parent:Hide()
-				parent:Release()
-				NeP.Interface.usedGUIs[table.key] = nil
-				NeP.Interface:BuildGUI(table)
-				break
-			end
-		end
-	end)
+	tmp:SetEventListener('OnClick', function() del_prof(table, parent) end)
 	self.usedGUIs[table.key].elements["prof_del_bt"] = {parent = tmp, type = "Button", style = self.buttonStyleSheet}
 end
 
@@ -122,13 +126,17 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 		tmp:SetPoint("TOPRIGHT", parent.footer, "TOPRIGHT", 0, 0)
 		tmp:SetPoint("BOTTOMLEFT", parent.footer, "BOTTOMLEFT", 40, 0)
 		tmp:SetStylesheet(self.comboBoxStyleSheet)
-		local orderdKeys = {}
-		local list = {}
-		for i, value in pairs(table.av_profiles) do
-			orderdKeys[i] = value.key
-			list[value.key] = value.text
-		end
-		tmp:SetList(list, orderdKeys)
+		-- Only when loaded
+		NeP.Core:WhenInGame(function()
+			local orderdKeys = {}
+			local list = {}
+			for i, value in pairs(table.av_profiles) do
+				orderdKeys[i] = value.key
+				list[value.key] = value.text
+			end
+			tmp:SetList(list, orderdKeys)
+			tmp:SetValue(table.selected_profile)
+		end)
 		tmp:SetEventListener('OnValueChanged', function(_,_, value)
 			if table.selected_profile == value then return end
 			NeP.Config:Write(table.key, 'selected_profile', value)
@@ -137,7 +145,6 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 			self.usedGUIs[table.key] = nil
 			self:BuildGUI(table)
 		end)
-		tmp:SetValue(table.selected_profile)
 		self.usedGUIs[table.key].elements["prof_combo_bt"] = {parent = tmp, type = "Combo", style = self.comboBoxStyleSheet}
 end
 
@@ -145,16 +152,6 @@ function NeP.Interface:BuildElements(table, parent)
 	local offset = -5
 	for i=1, #table.config do
 		local element, push, pull = table.config[i], 0, 0
-
-		-- Create defaults
-		if element.key and not NeP.Config:Read(table.key, element.key) then
-			if element.default then
-				NeP.Config:Write(table.key, element.key, element.default)
-			elseif element.default_check then
-				NeP.Config:Write(table.key, element.key, element.default_check)
-				NeP.Config:Write(table.key, element.key, element.default_Spin)
-			end
-		end
 
 		--build element
 		if _Elements[element.type] then
@@ -232,25 +229,28 @@ function NeP.Interface.BuildGUI(_, table)
 		if table.title then
 			parent:SetTitle("|cff"..table.color..table.title.."|r", table.subtitle)
 		end
-		-- Build elements
-		if table.config then
-			local window = DiesalGUI:Create('ScrollFrame')
-			parent:AddChild(window)
-			window:SetParent(parent.content)
-			window:SetAllPoints(parent.content)
-			self:BuildElements(table, window)
-		end
 		-- Build Profiles
 		if table.profiles then
 			parent.settings.footer = true
-			table.selected_profile = NeP.Config:Read(table.key, 'selected_profile', 'default')
-			table.av_profiles = NeP.Config:Read(table.key, 'av_profiles', default_profiles)
-			self:BuildGUI_Combo(table, parent)
-			self:BuildGUI_Del(table, parent)
-			self:BuildGUI_New(table, parent)
 		end
+		table.selected_profile = NeP.Config:Read(table.key, 'selected_profile', 'default')
+		table.av_profiles = NeP.Config:Read(table.key, 'av_profiles', default_profiles)
 		parent:ApplySettings()
-	end)
+	end, 9)
+
+	-- Build Profiles
+	self:BuildGUI_Combo(table, parent)
+	self:BuildGUI_Del(table, parent)
+	self:BuildGUI_New(table, parent)
+
+	-- Build elements
+	if table.config then
+		local window = DiesalGUI:Create('ScrollFrame')
+		parent:AddChild(window)
+		window:SetParent(parent.content)
+		window:SetAllPoints(parent.content)
+		self:BuildElements(table, window)
+	end
 
 	return self.usedGUIs[table.key]
 end

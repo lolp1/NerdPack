@@ -67,7 +67,10 @@ function NeP.Interface:Checkbox(element, parent, offset, table)
 	tmp:SetEventListener('OnValueChanged', function(_, _, checked)
 		NeP.Config:Write(table.key, key, checked)
 	end)
-	tmp:SetChecked(NeP.Config:Read(table.key, key, default or false))
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		tmp:SetChecked(NeP.Config:Read(table.key, key, default or false))
+	end)
 	element.text_offset1 = 20
 	tmp.text = self:Text(element, parent, offset-3)
 	if element.desc then
@@ -85,7 +88,10 @@ function NeP.Interface:Spinner(element, parent, offset, table)
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
-	tmp:SetNumber(NeP.Config:Read(table.key, key, default))
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		tmp:SetNumber(NeP.Config:Read(table.key, key, default))
+	end)
 
 	--Settings
 	tmp.settings.width = element.width or tmp.settings.width
@@ -137,7 +143,10 @@ function NeP.Interface:Combo(element, parent, offset, table)
 	tmp:SetEventListener('OnValueChanged', function(_, _, value)
 		NeP.Config:Write(table.key, element.key, value)
 	end)
-	tmp:SetValue(NeP.Config:Read(table.key, element.key, element.default))
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		tmp:SetValue(NeP.Config:Read(table.key, element.key, element.default))
+	end)
 	tmp.text2 = self:Text(element, parent, offset-3)
 	if element.desc then
 		element.text=element.desc
@@ -176,7 +185,10 @@ function NeP.Interface:Input(element, parent, offset, table)
 	tmp:SetParent(parent.content)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
 	if element.width then tmp:SetWidth(element.width) end
-	tmp:SetText(NeP.Config:Read(table.key, element.key, element.default or ''))
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		tmp:SetText(NeP.Config:Read(table.key, element.key, element.default or ''))
+	end, 9)
 	tmp:SetEventListener('OnEditFocusLost', function(this)
 		NeP.Config:Write(table.key, element.key, this:GetText())
 	end)

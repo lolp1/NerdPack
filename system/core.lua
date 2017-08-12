@@ -128,8 +128,8 @@ local Run_Cache = {}
 function NeP.Core.WhenInGame(_, func, prio)
 	if Run_Cache then
 		local size = #Run_Cache+1
-		Run_Cache[size] = {func = func, prio = (prio or 0) + size}
-		table.sort(Run_Cache, function(a,b) return a.prio < b.prio end)
+		Run_Cache[size] = {func = func, prio = prio or -(size)}
+		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
 	else
 		func()
 	end
