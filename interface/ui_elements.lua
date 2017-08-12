@@ -13,7 +13,10 @@ function NeP.Interface.Text(_, element, parent, offset)
 	tmp = tmp.fontString
 	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', element.text_offset1 or 5, offset)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
-	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
+	end)
 	tmp:SetJustifyH('LEFT')
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or 10)
 	tmp:SetWidth(parent.content:GetWidth()-10)
@@ -24,7 +27,10 @@ function NeP.Interface.Text(_, element, parent, offset)
 end
 
 function NeP.Interface:Header(element, parent, offset)
-	element.color = element.table_color
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		element.color = element.master.color
+	end, 1)
 	local tmp = self:Text(element, parent, offset)
 	tmp:SetJustifyH(element.justify or 'CENTER')
 	element.size = element.size or 13
