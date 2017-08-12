@@ -19,18 +19,20 @@ local function spell_string(eval)
 	ref.args = ref.spell:match('%((.+)%)')
 	ref.spell = ref.spell:gsub('%((.+)%)','')
 
-	-- RegisterToken
-	local token = ref.spell:sub(1,1)
-	while tokens[token] do
-		ref.spell = ref.spell:sub(2)
-		tokens[token](eval, ref)
-		token = ref.spell:sub(1,1)
-	end
+	NeP.Core:WhenInGame(function()
+		-- RegisterToken
+		local token = ref.spell:sub(1,1)
+		while tokens[token] do
+			ref.spell = ref.spell:sub(2)
+			tokens[token](eval, ref)
+			token = ref.spell:sub(1,1)
+		end
 
-	-- spell
-	if not eval.exe then
-		tokens["spell_cast"](eval, ref)
-	end
+		-- spell
+		if not eval.exe then
+			tokens["spell_cast"](eval, ref)
+		end
+	end)
 
 	--replace with compiled
 	eval[1] = ref
@@ -189,7 +191,5 @@ end
 
 function NeP.Compiler.Iterate(_, eval)
 	if not eval then return end
-	NeP.Core:WhenInGame(function()
-		NeP.Compiler.Compile(eval)
-	end)
+	NeP.Compiler.Compile(eval)
 end
