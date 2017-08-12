@@ -2,7 +2,7 @@ local name, NeP = ...
 local SetCVar = SetCVar
 
 NeP.Version = 1.8
-NeP.Branch  = 'Beta8'
+NeP.Branch  = 'Beta9'
 NeP.Media   = 'Interface\\AddOns\\' .. name .. '\\Media\\'
 NeP.Color   = 'FFFFFF'
 
