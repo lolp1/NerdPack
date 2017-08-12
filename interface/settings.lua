@@ -55,14 +55,14 @@ function NeP.Interface:UpdateStyles()
   n1, n2, n3 = "comboBoxStyleSheet", 'dropdown-background', "color"
   self[n1][n2][n3] = outline_color
 
-  if outline_color == "000000" then
-    self["buttonStyleSheet"]["text-color"]["color"] = "FFFFFF"
-    self["comboBoxStyleSheet"]["editBox-font"]["color"] = "FFFFFF"
-    self["spinnerStyleSheet"]["editBox-font"]["color"] = "FFFFFF"
-  else
+  if outline_color == "FFFFFF" then
     self["buttonStyleSheet"]["text-color"]["color"] = "000000"
     self["comboBoxStyleSheet"]["editBox-font"]["color"] = "000000"
     self["spinnerStyleSheet"]["editBox-font"]["color"] = "000000"
+  else
+    self["buttonStyleSheet"]["text-color"]["color"] = "FFFFFF"
+    self["comboBoxStyleSheet"]["editBox-font"]["color"] = "FFFFFF"
+    self["spinnerStyleSheet"]["editBox-font"]["color"] = "FFFFFF"
   end
 
   for _,gui in pairs(NeP.Interface.usedGUIs) do
