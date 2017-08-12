@@ -82,7 +82,7 @@ end
 -- Update Styles
 NeP.Core:WhenInGame(function()
 	NeP.Interface:UpdateStyles()
-end,999)
+end, -9999)
 
 local config = {
 key = n_name..'_Settings',

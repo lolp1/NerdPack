@@ -257,15 +257,12 @@ end
 
 function NeP.Interface.Fetch(_, a, b, default)
 	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
-	local loaded = NeP.Config:Read(a, cprofile, {})
-	if loaded[b] == nil then loaded[b] = default end
-	return loaded[b]
+	return NeP.Config:Read(a, b, default, cprofile)
 end
 
 function NeP.Interface.Write(_, a, b, key)
 	local cprofile = NeP.Config:Read(a, 'selected_profile', 'default')
-	local loaded = NeP.Config:Read(a, cprofile, {})
-	loaded[b] = key
+	NeP.Config:Write(a, b, key, cprofile)
 end
 
 -- Gobals
