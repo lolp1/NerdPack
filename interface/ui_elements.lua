@@ -11,53 +11,51 @@ function NeP.Interface.Text(_, element, parent, offset)
 	tmp:SetParent(parent.content)
 	parent:AddChild(tmp)
 	tmp = tmp.fontString
-	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', element.text_offset1 or 5, offset)
+	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
 	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
-	tmp:SetJustifyH('LEFT')
+	tmp:SetJustifyH(element.align or 'LEFT')
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or 10)
 	tmp:SetWidth(parent.content:GetWidth()-10)
-	element.offset = element.offset or tmp:GetStringHeight()
+	element.offset = (element.offset or 0) + tmp:GetStringHeight() + 3
 	if element.align then tmp:SetJustifyH(strupper(element.align)) end
-	element.text_offset1 = nil
 	return tmp
 end
 
 function NeP.Interface:Header(element, parent, offset)
+	element.size = element.size or 13
 	local tmp = self:Text(element, parent, offset)
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
 		element.color = element.color or element.master.color
 		tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	end, 1)
-	tmp:SetJustifyH(element.justify or 'CENTER')
-	element.size = element.size or 13
+	tmp:SetJustifyH(element.align or 'CENTER')
 	return tmp
 end
 
-function NeP.Interface.Rule(_,_, parent, offset)
+function NeP.Interface.Rule(_, element, parent, offset)
 	local tmp = DiesalGUI:Create('Rule')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp.frame:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset-3)
-	tmp.frame:SetPoint('BOTTOMRIGHT', parent.content, 'BOTTOMRIGHT', -5, offset-3)
+	tmp.frame:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset)
+	tmp.frame:SetPoint('BOTTOMRIGHT', parent.content, 'BOTTOMRIGHT', -5, offset)
+	element.offset = element.offset or tmp.frame:GetHeight() + 1
 	return tmp
 end
 
 function NeP.Interface.Texture(_, element, parent, offset)
 	local tmp = CreateFrame('Frame')
 	tmp:SetParent(parent.content)
-	if element.center then
-		tmp:SetPoint('CENTER', parent.content, 'CENTER', (element.x or 0), offset-(element.y or 0))
-	else
-		tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5+(element.x or 0), offset-3+(element.y or 0))
-	end
+	tmp:SetPoint(element.align or 'TOPLEFT', parent.content,
+		element.align or 'TOPLEFT', 5+(element.x or 0), offset-3+(element.y or 0))
 	tmp:SetWidth(parent:GetWidth()-10)
 	tmp:SetHeight(element.height)
 	tmp:SetWidth(element.width)
 	tmp.texture = tmp:CreateTexture()
 	tmp.texture:SetTexture(element.texture)
 	tmp.texture:SetAllPoints(tmp)
+	element.offset = element.offset or tmp:GetHeight() + 1
 	return tmp
 end
 
@@ -75,12 +73,13 @@ function NeP.Interface:Checkbox(element, parent, offset, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetChecked(NeP.Interface:Fetch(table.key, key, default or false))
 	end)
-	element.text_offset1 = 20
 	tmp.text = self:Text(element, parent, offset-3)
+	tmp.text:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 20, offset)
+	tmp.text:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
 	if element.desc then
 		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-18)
-		element.push = tmp.desc:GetStringHeight() + 10
+		tmp.desc = self:Text(element, parent, offset-element.offset)
+		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
 	return tmp
 end
@@ -110,11 +109,12 @@ function NeP.Interface:Spinner(element, parent, offset, table)
 		if not userInput then return end
 		NeP.Interface:Write(table.key, key, number)
 	end)
-	tmp.text = self:Text(element, parent, offset-3)
+	tmp.text = self:Text(element, parent, offset)
+	element.offset = tmp:GetHeight() + 1
 	if element.desc then
 		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-18)
-		element.push = tmp.desc:GetStringHeight() + 10
+		tmp.desc = self:Text(element, parent, offset-element.offset)
+		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
 	return tmp, self.spinnerStyleSheet
 end
@@ -128,6 +128,7 @@ function NeP.Interface:Checkspin(element, parent, offset, table)
 	element.text = ''
 	element.desc = nil
 	tmp.spin = self:Spinner(element, parent, offset, table)
+	element.offset = tmp.spin:GetHeight()+1
 	return tmp, self.spinnerStyleSheet
 end
 
@@ -151,11 +152,12 @@ function NeP.Interface:Combo(element, parent, offset, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetValue(NeP.Interface:Fetch(table.key, element.key, element.default))
 	end)
-	tmp.text2 = self:Text(element, parent, offset-3)
+	tmp.text2 = self:Text(element, parent, offset)
+	element.offset = tmp:GetHeight()
 	if element.desc then
 		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-18)
-		element.push = tmp.desc:GetStringHeight() + 10
+		tmp.desc = self:Text(element, parent, offset-element.offset)
+		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
 	return tmp, self.comboBoxStyleSheet
 end
@@ -169,17 +171,13 @@ function NeP.Interface:Button(element, parent, offset)
 	tmp:SetHeight(element.height or 20)
 	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', element.callback)
+	element.offset = tmp:GetHeight() + 1
 	if element.desc then
 		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-18)
-		element.push = tmp.desc:GetStringHeight() + 10
+		tmp.desc = self:Text(element, parent, offset-element.offset)
+		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
-	if element.align then
-		local loc = element.align
-		tmp:SetPoint(loc, parent.content, 0, offset)
-	else
-		tmp:SetPoint('TOP', parent.content, 0, offset)
-	end
+	tmp:SetPoint(element.align or "TOP", parent.content, 0, offset)
 	return tmp, self.buttonStyleSheet
 end
 
@@ -199,8 +197,8 @@ function NeP.Interface:Input(element, parent, offset, table)
 	tmp.text = self:Text(element, parent, offset-3)
 	if element.desc then
 		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-18)
-		element.push = tmp.desc:GetStringHeight() + 10
+		tmp.desc = self:Text(element, parent, offset-element.offset)
+		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
 	return tmp
 end

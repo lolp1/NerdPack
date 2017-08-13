@@ -9,20 +9,20 @@ local DiesalGUI = LibStub("DiesalGUI-1.0")
 
 function NeP.Interface.Noop() end
 
-local _Elements = {
-	header    = { func = 'Header', offset = -16 },
-	text      = { func = 'Text', offset = 0 },
-	rule      = { func = 'Rule', offset = -10 },
-	ruler     = { func = 'Rule', offset = -10 },
-	texture   = { func = 'Texture', offset = 0 },
-	checkbox  = { func = 'Checkbox', offset = -16 },
-	spinner   = { func = 'Spinner', offset = -19 },
-	checkspin = { func = 'Checkspin', offset = -19 },
-	combo     = { func = 'Combo', offset = -20 },
-	dropdown  = { func = 'Combo', offset = -20 },
-	button    = { func = 'Button', offset = -20 },
-	input     = { func = 'Input', offset = -16 },
-	spacer    = { func = 'Noop', offset = -10 },
+local Elements = {
+	header = 'Header',
+	text = 'Text',
+	rule = 'Rule',
+	ruler = 'Rule',
+	texture = 'Texture',
+	checkbox = 'Checkbox',
+	spinner = 'Spinner',
+	checkspin = 'Checkspin',
+	combo = 'Combo',
+	dropdown = 'Combo',
+	button = 'Button',
+	input = 'Input',
+	spacer = 'Noop'
 }
 
 local default_profiles = {{key='default',text='Default'}}
@@ -156,32 +156,16 @@ end
 function NeP.Interface:BuildElements(table, parent)
 	local offset = -5
 	for i=1, #table.config do
-		local element, push, pull = table.config[i], 0, 0
-
+		local element = table.config[i]
+		local element_type = Elements[element.type:lower()]
+		--If it dosent exist then its a spacer
+		if not element_type then element_type = "spacer" end
 		--build element
-		if _Elements[element.type] then
-			element.key = element.key or "fake"
-			element.master = table
-			local tmp, style = self[_Elements[element.type].func](self, element, parent, offset, table)
-			offset = offset + _Elements[element.type].offset
-			self.usedGUIs[table.key].elements[element.key] = {parent = tmp, type = element.type, style = style}
-		end
-
-		--offsetS
-		if element.type == 'texture' then
-			offset = offset + -(element.offset or 0)
-		elseif element.type == "text" then
-			offset = offset + -(element.offset) - (element.size or 10)
-		end
-    if element.push then
-      push = push + element.push
-      offset = offset + -(push)
-    end
-    if element.pull then
-      pull = pull + element.pull
-      offset = offset + pull
-    end
-
+		element.key = element.key or "fake"
+		element.master = table
+		local tmp, style = self[element_type](self, element, parent, offset, table)
+		offset = offset + -(element.offset or 0)
+		self.usedGUIs[table.key].elements[element.key] = {parent = tmp, type = element.type, style = style}
 	end
 end
 
