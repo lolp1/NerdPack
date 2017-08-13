@@ -32,7 +32,7 @@ local function spell_string(eval)
 		if not eval.exe then
 			tokens["spell_cast"](eval, ref)
 		end
-	end)
+	end, 99999)
 
 	--replace with compiled
 	eval[1] = ref
@@ -74,12 +74,14 @@ end
 local function unit_ground(ref, eval)
 	if ref.target:find('.ground') then
 		ref.target = ref.target:sub(0,-8)
-		eval.exe = function(eva)
-			NeP.Parser.LastCast = eva.spell
-			NeP.Parser.LastGCD = (not eva.nogcd and eva.spell) or NeP.Parser.LastGCD
-			NeP.Parser.LastTarget = eva.target
-			return NeP.Protected["CastGround"](eva.spell, eva.target)
-		end
+		NeP.Core:WhenInGame(function()
+			eval.exe = function(eva)
+				NeP.Parser.LastCast = eva.spell
+				NeP.Parser.LastGCD = (not eva.nogcd and eva.spell) or NeP.Parser.LastGCD
+				NeP.Parser.LastTarget = eva.target
+				return NeP.Protected["CastGround"](eva.spell, eva.target)
+			end
+		end)
 		-- This is to alow casting at the cursor location where no unit exists
 		if ref.target:lower() == 'cursor' then ref.cursor = true end
 	end
