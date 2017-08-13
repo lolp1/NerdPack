@@ -45,7 +45,6 @@ end
 
 -- This Add's more index to the Obj in the OM table
 local function Add(Obj)
-	local Role = UnitGroupRolesAssigned(Obj.key)
 	local healthRaw = UnitHealth(Obj.key)
 	local maxHealth = UnitHealthMax(Obj.key)
 	Obj.predicted = GetPredictedHealth_Percent(Obj.key)
@@ -53,7 +52,7 @@ local function Add(Obj)
 	Obj.health = healthPercent(Obj.key)
 	Obj.healthRaw = healthRaw
 	Obj.healthMax = maxHealth
-	Obj.role = Role
+	Obj.role = UnitGroupRolesAssigned(Obj.key)
 	Roster[Obj.guid] = Obj
 end
 
@@ -63,6 +62,7 @@ local function Refresh(GUID, Obj)
 	temp.healthRaw = UnitHealth(temp.key)
 	temp.predicted = GetPredictedHealth_Percent(Obj.key)
 	temp.predicted_Raw = GetPredictedHealth(Obj.key)
+	temp.role = UnitGroupRolesAssigned(Obj.key)
 end
 
 function NeP.Healing.GetRoster()
