@@ -32,20 +32,20 @@ NeP.Locale.enUS = {
     Time = 'Time'
   },
   Dummies = {
-    Name = 'dummy', -- Moust commun name
+    Name = 'dummy', -- Moust common name
     Pattern = {'dummy', 'training bag'} -- These are the usual things to look for in the description in case name fails
   },
   Settings = {
     option = 'Settings',
     bsize = 'Button size',
     bpad = 'Button padding',
-    brow = 'Maximum bottoms peer row',
+    brow = 'Maximum buttons per row',
     apply_bt = 'Apply',
     outline_color = 'Outline color',
     tittle_color = 'Title Color',
     tittle_alpha = 'Title Alpha',
     content_color = 'Content Color',
-    content_alpha = 'Contente Alpha'
+    content_alpha = 'Content Alpha'
   },
   States = {
     charm        = {'^charmed'},
