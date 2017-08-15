@@ -17,7 +17,7 @@ function NeP.Interface.Text(_, element, parent, offset)
 	tmp:SetJustifyH(element.align or 'LEFT')
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or 10)
 	tmp:SetWidth(parent.content:GetWidth())
-	element.offset = (element.offset or 0) + tmp:GetStringHeight() + 3
+	element.offset = (element.offset or 0) + tmp:GetStringHeight()
 	if element.align then tmp:SetJustifyH(strupper(element.align)) end
 	return tmp
 end

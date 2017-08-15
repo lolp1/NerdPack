@@ -135,7 +135,7 @@ function NeP.Interface:BuildElements(table, parent)
 		element.key = element.key or "fake"
 		element.master = table
 		self[element_type](self, element, parent, offset, table)
-		offset = offset + -(element.offset or 0)
+		offset = offset + -(element.offset or 0) - 1
 	end
 end
 
