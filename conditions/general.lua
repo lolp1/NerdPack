@@ -53,6 +53,16 @@ NeP.DSL:Register('casting.percent', function(target)
   return 0
 end)
 
+NeP.DSL:Register('channeling.percent', function(target)
+  local name, startTime, endTime, notInterruptible = checkChanneling(target)
+  if name and not notInterruptible then
+    local castLength = (endTime - startTime) / 1000
+    local secondsDone = GetTime() - (startTime / 1000)
+    return ((secondsDone/castLength)*100)
+  end
+  return 0
+end)
+
 NeP.DSL:Register('casting.delta', function(target)
   local name, startTime, endTime, notInterruptible = checkCasting(target)
   if name and not notInterruptible then
