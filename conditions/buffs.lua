@@ -91,7 +91,7 @@ end)
 NeP.DSL:Register("debuff.many", function(target, spell)
   local count = 0
   for i=1,40 do
-    if UnitDebuffL(target, spell, 'PLAYER') then count = count + 1 end
+    if UnitDebuffL(target, i, 'PLAYER') == spell then count = count + 1 end
   end
   return count
 end)
