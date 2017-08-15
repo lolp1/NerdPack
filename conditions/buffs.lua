@@ -49,7 +49,7 @@ end)
 NeP.DSL:Register("buff.many", function(target, spell)
   local count = 0
   for i=1,40 do
-    if UnitBuffL(target, spell, 'PLAYER') then count = count + 1 end
+    if UnitBuffL(target, i, 'PLAYER') == spell then count = count + 1 end
   end
   return count
 end)
@@ -57,7 +57,7 @@ end)
 NeP.DSL:Register("buff.many.any", function(target, spell)
   local count = 0
   for i=1,40 do
-    if UnitBuffL(target, spell) then count = count + 1 end
+    if UnitBuffL(target, i) == spell then count = count + 1 end
   end
   return count
 end)
@@ -99,7 +99,7 @@ end)
 NeP.DSL:Register("debuff.many.any", function(target, spell)
   local count = 0
   for i=1,40 do
-    if UnitDebuffL(target, spell) then count = count + 1 end
+    if UnitDebuffL(target, i) == spell then count = count + 1 end
   end
   return count
 end)
