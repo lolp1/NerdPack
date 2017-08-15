@@ -3,10 +3,11 @@
 
 	<!-- external libs -->
 	<Include file="Libs\files.xml" />
-	
+
 	<!-- Core -->
 	<Script file="NerdPack.lua" />
 	<include file="locale\files.xml" />
+	<Script file="styles.lua" />
 	<include file="tables\files.xml" />
 	<include file="system\files.xml" />
 	<Include file="interface\files.xml" />

@@ -12,48 +12,32 @@ local L = NeP.Locale
 
 local statusBars = {}
 local statusBarsUsed = {}
-
-local OM_GUI = NeP.Interface:BuildGUI({
-	key = 'NePOMgui',
-	width = 500,
-	height = 250,
-	title = 'ObjectManager GUI'
-})
-local parent = OM_GUI.parent
-parent:Hide()
-NeP.Interface:Add(L:TA('OM', 'Option'), function() parent:Show() end)
-
 local dOM = 'Enemy'
-local bt = {
-	{a = 'TOPLEFT', 	b = 'Enemy'},
-	{a = 'TOP', 			b = 'Friendly'},
-	{a = 'TOPRIGHT', 	b = 'Dead'}
-}
-for i=1, #bt do
-	local tmp = DiesalGUI:Create("Button")
-	parent:AddChild(tmp)
-	tmp:SetParent(parent.content)
-	tmp:SetPoint(bt[i].a, parent.content, bt[i].a, 0, 0)
-	--bt[k]:SetStylesheet(NeP.Interface.buttonStyleSheet)
-	tmp:SetEventListener("OnClick", function() dOM = bt[i].b end)
-	tmp:SetText(L:TA('OM', bt[i].b))
-	OM_GUI.elements[bt[i].b] = {parent = tmp, type = "button", style = NeP.Interface.buttonStyleSheet}
-	tmp.frame:SetSize(parent.content:GetWidth()/3, 30)
-end
 
-local ListWindow = DiesalGUI:Create('ScrollFrame')
-parent:AddChild(ListWindow)
-ListWindow:SetParent(parent.content)
-ListWindow:SetPoint("TOP", parent.content, "TOP", 0, -30)
-ListWindow.frame:SetSize(parent.content:GetWidth(), parent.content:GetHeight()-30)
-ListWindow.parent = parent
+local bt = {
+	{key = 'Enemy', text = 'Enemies'},
+	{key = 'Friendly', text = 'Friendlies'},
+	{key = 'Dead', text = 'Dead Units'},
+	{key = 'Objects', text = 'Objects'},
+}
+local combo_eval = {key = "list", list = bt, default = "Enemy"}
+local gui_eval = {key = 'NePOMgui', width = 500, height = 250, header = true, title = 'ObjectManager GUI'}
+
+local OM_GUI = NeP.Interface:BuildGUI(gui_eval)
+NeP.Interface:Add(L:TA('OM', 'Option'), function() OM_GUI.parent:Show() end)
+local dropdown = NeP.Interface:Combo(combo_eval, OM_GUI.parent, 0, {key="OM_GUI"})
+dropdown:SetPoint("TOPRIGHT", OM_GUI.parent.header, "TOPRIGHT", 0, 0)
+dropdown:SetPoint("BOTTOMLEFT", OM_GUI.parent.header, "BOTTOMLEFT", (gui_eval.width-100), 0)
+dropdown:SetEventListener('OnValueChanged', function(_,_, value) dOM = value end)
+OM_GUI.parent:Hide()
 
 local function getStatusBar()
 	local statusBar = tremove(statusBars)
 	if not statusBar then
 		statusBar = DiesalGUI:Create('StatusBar')
-		statusBar:SetParent(ListWindow.content)
-		parent:AddChild(statusBar)
+		OM_GUI.window:AddChild(statusBar)
+		statusBar:SetParent(OM_GUI.window.content)
+		OM_GUI.parent:AddChild(statusBar)
 		statusBar.frame:SetStatusBarColor(1,1,1,0.35)
 	end
 	statusBar:Show()
@@ -84,7 +68,7 @@ local function RefreshGUI()
 		local Health = math.floor(((UnitHealth(Obj.key) or 1) / (UnitHealthMax(Obj.key) or 1)) * 100)
 		local SB = getStatusBar()
 		local distance = NeP.Core:Round(Obj.distance or 0)
-		SB.frame:SetPoint('TOP', ListWindow.content, 'TOP', 2, offset )
+		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
 		SB.frame.Left:SetText('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')..Obj.name)
 		SB.frame.Right:SetText('( |cffff0000ID|r: '..Obj.id..' / |cffff0000Health|r: '..Health..' / |cffff0000Dist|r: '..distance..' )')
 		SB.frame:SetScript('OnMouseDown', function() TargetUnit(Obj.key) end)
@@ -94,7 +78,7 @@ local function RefreshGUI()
 end
 
 C_Timer.NewTicker(0.1, (function()
-	if parent:IsShown() then
+	if OM_GUI.parent:IsShown() then
 		RefreshGUI()
 	end
 end), nil)

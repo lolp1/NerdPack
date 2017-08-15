@@ -16,7 +16,7 @@ function NeP.Interface.Text(_, element, parent, offset)
 	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	tmp:SetJustifyH(element.align or 'LEFT')
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or 10)
-	tmp:SetWidth(parent.content:GetWidth()-10)
+	tmp:SetWidth(parent.content:GetWidth())
 	element.offset = (element.offset or 0) + tmp:GetStringHeight() + 3
 	if element.align then tmp:SetJustifyH(strupper(element.align)) end
 	return tmp
@@ -95,16 +95,14 @@ function NeP.Interface:Spinner(element, parent, offset, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetNumber(NeP.Interface:Fetch(table.key, key, default))
 	end)
-
 	--Settings
 	tmp.settings.width = element.width or tmp.settings.width
 	tmp.settings.min = tmp.settings.min or element.min
 	tmp.settings.max = element.max or tmp.settings.max
 	tmp.settings.step = element.step or tmp.settings.step
 	tmp.settings.shiftStep = element.shiftStep or tmp.settings.shiftStep
-
 	tmp:ApplySettings()
-	tmp:SetStylesheet(self.spinnerStyleSheet)
+	--tmp:SetStylesheet(self.spinnerStyleSheet)
 	tmp:SetEventListener('OnValueChanged', function(_, _, userInput, number)
 		if not userInput then return end
 		NeP.Interface:Write(table.key, key, number)
@@ -116,7 +114,7 @@ function NeP.Interface:Spinner(element, parent, offset, table)
 		tmp.desc = self:Text(element, parent, offset-element.offset)
 		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
-	return tmp, self.spinnerStyleSheet
+	return tmp
 end
 
 function NeP.Interface:Checkspin(element, parent, offset, table)
@@ -129,7 +127,7 @@ function NeP.Interface:Checkspin(element, parent, offset, table)
 	element.desc = nil
 	tmp.spin = self:Spinner(element, parent, offset, table)
 	element.offset = tmp.spin:GetHeight()+1
-	return tmp, self.spinnerStyleSheet
+	return tmp
 end
 
 function NeP.Interface:Combo(element, parent, offset, table)
@@ -137,7 +135,8 @@ function NeP.Interface:Combo(element, parent, offset, table)
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
-	tmp:SetStylesheet(self.comboBoxStyleSheet)
+	--tmp:SetStylesheet(self.comboBoxStyleSheet)
+	tmp:SetHeight(element.size or 10)
 	local orderdKeys = { }
 	local list = { }
 	for i, value in pairs(element.list) do
@@ -152,14 +151,16 @@ function NeP.Interface:Combo(element, parent, offset, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetValue(NeP.Interface:Fetch(table.key, element.key, element.default))
 	end)
-	tmp.text2 = self:Text(element, parent, offset)
+	if element.text then
+		tmp.text2 = self:Text(element, parent, offset)
+	end
 	element.offset = tmp:GetHeight()
 	if element.desc then
 		element.text=element.desc
 		tmp.desc = self:Text(element, parent, offset-element.offset)
 		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
-	return tmp, self.comboBoxStyleSheet
+	return tmp
 end
 
 function NeP.Interface:Button(element, parent, offset)
@@ -169,7 +170,7 @@ function NeP.Interface:Button(element, parent, offset)
 	tmp:SetText(element.text)
 	tmp:SetWidth(element.width or parent.content:GetWidth()-10)
 	tmp:SetHeight(element.height or 20)
-	tmp:SetStylesheet(self.buttonStyleSheet)
+	--tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', element.callback)
 	element.offset = tmp:GetHeight() + 1
 	if element.desc then
@@ -178,7 +179,7 @@ function NeP.Interface:Button(element, parent, offset)
 		element.offset = element.offset + tmp.desc:GetStringHeight()
 	end
 	tmp:SetPoint(element.align or "TOP", parent.content, 0, offset)
-	return tmp, self.buttonStyleSheet
+	return tmp
 end
 
 function NeP.Interface:Input(element, parent, offset, table)
