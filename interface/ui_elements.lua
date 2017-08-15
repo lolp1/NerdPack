@@ -170,7 +170,7 @@ function NeP.Interface:Button(element, parent, offset)
 	tmp:SetText(element.text)
 	tmp:SetWidth(element.width or parent.content:GetWidth()-10)
 	tmp:SetHeight(element.height or 20)
-	--tmp:SetStylesheet(self.buttonStyleSheet)
+	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', element.callback)
 	element.offset = tmp:GetHeight() + 1
 	if element.desc then

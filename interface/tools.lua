@@ -27,9 +27,9 @@ local Elements = {
 
 local default_profiles = {{key='default',text='Default'}}
 local new_prof_Name = "New Profile Name"
-local pFrame = NeP.Interface.pFrame
 
 local function new_prof(table, parent)
+	local pFrame = NeP.Interface.pFrame
 	local profileName = pFrame.Input:GetText()
 	if profileName == ''
 	or profileName == new_prof_Name
@@ -71,28 +71,29 @@ local function del_prof(table, parent)
 	end
 end
 
-function NeP.Interface.BuildGUI_New(_, table, parent)
+function NeP.Interface:BuildGUI_New(table, parent)
 	local tmp = DiesalGUI:Create('Button')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.footer)
-	tmp:SetPoint('TOPLEFT',20,0)
-	tmp:SetSettings({width = 20, height = 20}, true)
+	tmp:SetPoint('TOPLEFT',21,0)
+	tmp:SetSettings({width = 21, height = 21}, true)
 	tmp:SetText('N')
-	--tmp:SetStylesheet(self.buttonStyleSheet)
+	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', function()
+		local pFrame = NeP.Interface.pFrame
 		pFrame:Show()
 		pFrame.Button:SetEventListener('OnClick', function() new_prof(table, parent) end)
 	end)
 end
 
-function NeP.Interface.BuildGUI_Del(_, table, parent)
+function NeP.Interface:BuildGUI_Del(table, parent)
 	local tmp = DiesalGUI:Create('Button')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.footer)
 	tmp:SetPoint('TOPLEFT')
-	tmp:SetSettings({width = 20, height = 20}, true)
+	tmp:SetSettings({width = 21, height = 21}, true)
 	tmp:SetText('D')
-	--tmp:SetStylesheet(self.buttonStyleSheet)
+	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', function() del_prof(table, parent) end)
 end
 
@@ -101,7 +102,7 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 		parent:AddChild(tmp)
 		tmp:SetParent(parent.footer)
 		tmp:SetPoint("TOPRIGHT", parent.footer, "TOPRIGHT", 0, 0)
-		tmp:SetPoint("BOTTOMLEFT", parent.footer, "BOTTOMLEFT", 40, 0)
+		tmp:SetPoint("BOTTOMLEFT", parent.footer, "BOTTOMLEFT", 42, 0)
 		--tmp:SetStylesheet(self.comboBoxStyleSheet)
 		local orderdKeys = {}
 		local list = {}
@@ -191,9 +192,6 @@ function NeP.Interface.BuildGUI(_, table)
 		NeP.Config:Write(table.key, 'Location', {l, t}, 'settings')
 	end)
 
-	-- Only build the body after we'r done loading configs
-	NeP.Core:WhenInGame(function() UI_WhenInGame(table, parent) end, 9)
-
 	-- Build Profiles
 	if table.profiles then
 		parent.settings.footer = true
@@ -216,6 +214,9 @@ function NeP.Interface.BuildGUI(_, table)
 		self:BuildElements(table, window)
 	end
 	self.usedGUIs[table.key].window = window
+
+	-- Only build the body after we'r done loading configs
+	NeP.Core:WhenInGame(function() UI_WhenInGame(table, parent) end, 9)
 
 	return self.usedGUIs[table.key]
 end
