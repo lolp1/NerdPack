@@ -127,7 +127,7 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 end
 
 function NeP.Interface:BuildElements(table, parent)
-	table.offset = -5
+	table.offset = 0
 	for i=1, #table.config do
 		local element = table.config[i]
 		local element_type = Elements[element.type:lower()]
