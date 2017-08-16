@@ -6,25 +6,28 @@ local DiesalGUI   = LibStub('DiesalGUI-1.0')
 local DiesalTools = LibStub('DiesalTools-1.0')
 local SharedMedia = LibStub('LibSharedMedia-3.0')
 
-function NeP.Interface.Text(_, element, parent, offset)
+local def_text_size = 10
+local spacer_size = 10
+
+function NeP.Interface.Text(_, element, parent, table)
 	local tmp = DiesalGUI:Create('FontString')
 	tmp:SetParent(parent.content)
 	parent:AddChild(tmp)
 	tmp = tmp.fontString
-	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
+	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', element.h or 5, table.offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
 	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	tmp:SetJustifyH(element.align or 'LEFT')
-	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or 10)
+	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or def_text_size)
 	tmp:SetWidth(parent.content:GetWidth())
-	element.offset = (element.offset or 0) + tmp:GetStringHeight()
-	if element.align then tmp:SetJustifyH(strupper(element.align)) end
+	table.offset = table.offset - (element.offset or tmp:GetStringHeight())
+	if element.align then tmp:SetJustifyH(element.align:upper()) end
 	return tmp
 end
 
-function NeP.Interface:Header(element, parent, offset)
+function NeP.Interface:Header(element, parent, table)
 	element.size = element.size or 13
-	local tmp = self:Text(element, parent, offset)
+	local tmp = self:Text(element, parent, table)
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
 		element.color = element.color or element.master.color
@@ -34,38 +37,38 @@ function NeP.Interface:Header(element, parent, offset)
 	return tmp
 end
 
-function NeP.Interface.Rule(_, element, parent, offset)
+function NeP.Interface.Rule(_,_, parent, table)
 	local tmp = DiesalGUI:Create('Rule')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp.frame:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset)
-	tmp.frame:SetPoint('BOTTOMRIGHT', parent.content, 'BOTTOMRIGHT', -5, offset)
-	element.offset = element.offset or tmp.frame:GetHeight() + 1
+	tmp.frame:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, table.offset)
+	tmp.frame:SetPoint('BOTTOMRIGHT', parent.content, 'BOTTOMRIGHT', -5, table.offset)
+	table.offset = table.offset - 1
 	return tmp
 end
 
-function NeP.Interface.Texture(_, element, parent, offset)
+function NeP.Interface.Texture(_, element, parent, table)
 	local tmp = CreateFrame('Frame')
 	tmp:SetParent(parent.content)
 	tmp:SetPoint(element.align or 'TOPLEFT', parent.content,
-		element.align or 'TOPLEFT', 5+(element.x or 0), offset-3+(element.y or 0))
+		element.align or 'TOPLEFT', 5+(element.x or 0), table.offset-3+(element.y or 0))
 	tmp:SetWidth(parent:GetWidth()-10)
 	tmp:SetHeight(element.height)
 	tmp:SetWidth(element.width)
 	tmp.texture = tmp:CreateTexture()
 	tmp.texture:SetTexture(element.texture)
 	tmp.texture:SetAllPoints(tmp)
-	element.offset = element.offset or tmp:GetHeight() + 1
+	table.offset = table.offset - (element.offset or tmp:GetHeight())
 	return tmp
 end
 
-function NeP.Interface:Checkbox(element, parent, offset, table)
+function NeP.Interface:Checkbox(element, parent, table)
 	local key = element.key_check or element.key
 	local default = element.default_check or element.default
 	local tmp = DiesalGUI:Create('CheckBox')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, offset)
+	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 5, table.offset)
 	tmp:SetEventListener('OnValueChanged', function(_, _, checked)
 		NeP.Interface:Write(table.key, key, checked)
 	end)
@@ -73,30 +76,30 @@ function NeP.Interface:Checkbox(element, parent, offset, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetChecked(NeP.Interface:Fetch(table.key, key, default or false))
 	end)
-	tmp.text = self:Text(element, parent, offset-3)
-	tmp.text:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', 20, offset)
-	tmp.text:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
+	element.h = 20
+	tmp.text = self:Text(element, parent, table)
 	if element.desc then
-		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-element.offset)
-		element.offset = element.offset + tmp.desc:GetStringHeight()
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
 	end
 	return tmp
 end
 
-function NeP.Interface:Spinner(element, parent, offset, table)
+function NeP.Interface:Spinner(element, parent, table)
 	local key = element.key_spin or element.key
 	local default = element.default_spin or element.default
 	local tmp = DiesalGUI:Create('Spinner')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
 		tmp:SetNumber(NeP.Interface:Fetch(table.key, key, default))
 	end)
 	--Settings
 	tmp.settings.width = element.width or tmp.settings.width
+	tmp.settings.height = element.height or tmp.settings.height
 	tmp.settings.min = tmp.settings.min or element.min
 	tmp.settings.max = element.max or tmp.settings.max
 	tmp.settings.step = element.step or tmp.settings.step
@@ -107,36 +110,41 @@ function NeP.Interface:Spinner(element, parent, offset, table)
 		if not userInput then return end
 		NeP.Interface:Write(table.key, key, number)
 	end)
-	tmp.text = self:Text(element, parent, offset)
-	element.offset = tmp:GetHeight() + 1
+	if element.text then
+		tmp.text = self:Text(element, parent, table)
+		tmp:SetHeight(element.height or tmp.text:GetStringHeight())
+	end
 	if element.desc then
-		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-element.offset)
-		element.offset = element.offset + tmp.desc:GetStringHeight()
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
 	end
 	return tmp
 end
 
-function NeP.Interface:Checkspin(element, parent, offset, table)
+function NeP.Interface:Checkspin(element, parent, table)
+	local original_offset, final_offset = table.offset
 	element.key_check = element.key..'_check'
 	element.default_check = element.check or element.default_check
 	element.key_spin = element.key..'_spin'
 	element.default_spin = element.spin or element.default_spin
-	local tmp = self:Checkbox(element, parent, offset, table)
-	element.text = ''
+	local tmp = self:Checkbox(element, parent, table)
+	final_offset = table.offset
+	table.offset = original_offset
+	element.text = nil
 	element.desc = nil
-	tmp.spin = self:Spinner(element, parent, offset, table)
-	element.offset = tmp.spin:GetHeight()+1
+	tmp.spin = self:Spinner(element, parent, table)
+	tmp.spin:SetHeight(element.height or tmp.text:GetStringHeight())
+	table.offset = final_offset
 	return tmp
 end
 
-function NeP.Interface:Combo(element, parent, offset, table)
+function NeP.Interface:Combo(element, parent, table)
 	local tmp = DiesalGUI:Create('Dropdown')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
 	--tmp:SetStylesheet(self.comboBoxStyleSheet)
-	tmp:SetHeight(element.size or 10)
 	local orderdKeys = { }
 	local list = { }
 	for i, value in pairs(element.list) do
@@ -152,18 +160,18 @@ function NeP.Interface:Combo(element, parent, offset, table)
 		tmp:SetValue(NeP.Interface:Fetch(table.key, element.key, element.default))
 	end)
 	if element.text then
-		tmp.text2 = self:Text(element, parent, offset)
+		tmp.text2 = self:Text(element, parent, table)
 	end
-	element.offset = tmp:GetHeight()
 	if element.desc then
-		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-element.offset)
-		element.offset = element.offset + tmp.desc:GetStringHeight()
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table-element.offset)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
+		tmp.spin:SetHeight(element.height or tmp.text:GetStringHeight())
 	end
 	return tmp
 end
 
-function NeP.Interface:Button(element, parent, offset)
+function NeP.Interface:Button(element, parent, table)
 	local tmp = DiesalGUI:Create('Button')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
@@ -172,21 +180,21 @@ function NeP.Interface:Button(element, parent, offset)
 	tmp:SetHeight(element.height or 20)
 	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', element.callback)
-	element.offset = tmp:GetHeight() + 1
+	table.offset = table.offset - tmp:GetHeight()
 	if element.desc then
-		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-element.offset)
-		element.offset = element.offset + tmp.desc:GetStringHeight()
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table-element.offset)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
 	end
-	tmp:SetPoint(element.align or "TOP", parent.content, 0, offset)
+	tmp:SetPoint(element.align or "TOP", parent.content, 0, table.offset)
 	return tmp
 end
 
-function NeP.Interface:Input(element, parent, offset, table)
+function NeP.Interface:Input(element, parent, table)
 	local tmp = DiesalGUI:Create('Input')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
 	if element.width then tmp:SetWidth(element.width) end
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
@@ -195,11 +203,11 @@ function NeP.Interface:Input(element, parent, offset, table)
 	tmp:SetEventListener('OnEditFocusLost', function(this)
 		NeP.Interface:Write(table.key, element.key, this:GetText())
 	end)
-	tmp.text = self:Text(element, parent, offset-3)
+	tmp.text = self:Text(element, parent, table)
 	if element.desc then
-		element.text=element.desc
-		tmp.desc = self:Text(element, parent, offset-element.offset)
-		element.offset = element.offset + tmp.desc:GetStringHeight()
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
 	end
 	return tmp
 end
@@ -213,4 +221,20 @@ function NeP.Interface.Statusbar(_, element, parent)
 	if element.textLeft then tmp.frame.Left:SetText(element.textLeft) end
 	if element.textRight then tmp.frame.Right:SetText(element.textRight) end
 	return tmp
+end
+
+function NeP.Interface:Header(element, parent, table)
+	element.size = element.size or 13
+	local tmp = self:Text(element, parent, table)
+	-- Only when loaded
+	NeP.Core:WhenInGame(function()
+		element.color = element.color or element.master.color
+		tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
+	end, 1)
+	tmp:SetJustifyH(element.align or 'CENTER')
+	return tmp
+end
+
+function NeP.Interface.Spacer(_,element,_, table)
+	table.offset = table.offset - (element.size or spacer_size)
 end

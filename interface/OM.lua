@@ -25,7 +25,7 @@ local gui_eval = {key = 'NePOMgui', width = 500, height = 250, header = true, ti
 
 local OM_GUI = NeP.Interface:BuildGUI(gui_eval)
 NeP.Interface:Add(L:TA('OM', 'Option'), function() OM_GUI.parent:Show() end)
-local dropdown = NeP.Interface:Combo(combo_eval, OM_GUI.parent, 0, {key="OM_GUI"})
+local dropdown = NeP.Interface:Combo(combo_eval, OM_GUI.parent, {key="OM_GUI", offset = 0})
 dropdown:SetPoint("TOPRIGHT", OM_GUI.parent.header, "TOPRIGHT", 0, 0)
 dropdown:SetPoint("BOTTOMLEFT", OM_GUI.parent.header, "BOTTOMLEFT", (gui_eval.width-100), 0)
 dropdown:SetEventListener('OnValueChanged', function(_,_, value) dOM = value end)

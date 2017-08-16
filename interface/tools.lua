@@ -22,7 +22,7 @@ local Elements = {
 	dropdown = 'Combo',
 	button = 'Button',
 	input = 'Input',
-	spacer = 'Noop'
+	spacer = 'Spacer'
 }
 
 local default_profiles = {{key='default',text='Default'}}
@@ -126,7 +126,7 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 end
 
 function NeP.Interface:BuildElements(table, parent)
-	local offset = -5
+	table.offset = -5
 	for i=1, #table.config do
 		local element = table.config[i]
 		local element_type = Elements[element.type:lower()]
@@ -135,8 +135,7 @@ function NeP.Interface:BuildElements(table, parent)
 		--build element
 		element.key = element.key or "fake"
 		element.master = table
-		self[element_type](self, element, parent, offset, table)
-		offset = offset + -(element.offset or 0) - 1
+		self[element_type](self, element, parent, table)
 	end
 end
 
