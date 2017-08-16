@@ -190,6 +190,9 @@ function NeP.Interface.BuildGUI(_, table)
 		NeP.Config:Write(table.key, 'Location', {l, t}, 'settings')
 	end)
 
+	-- Only build the body after we'r done loading configs
+	NeP.Core:WhenInGame(function() UI_WhenInGame(table, parent) end, 9)
+
 	-- Build Profiles
 	if table.profiles then
 		parent.settings.footer = true
@@ -213,9 +216,7 @@ function NeP.Interface.BuildGUI(_, table)
 	end
 	self.usedGUIs[table.key].window = window
 
-	-- Only build the body after we'r done loading configs
-	NeP.Core:WhenInGame(function() UI_WhenInGame(table, parent) end, 9)
-
+	parent:ApplySettings()
 	return self.usedGUIs[table.key]
 end
 
