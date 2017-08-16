@@ -30,7 +30,7 @@ function NeP.Interface:Header(element, parent, table)
 	local tmp = self:Text(element, parent, table)
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
-		element.color = element.color or element.master.color
+		element.color = element.color or table.color
 		tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	end, 1)
 	tmp:SetJustifyH(element.align or 'CENTER')
@@ -229,7 +229,7 @@ function NeP.Interface:Header(element, parent, table)
 	local tmp = self:Text(element, parent, table)
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
-		element.color = element.color or element.master.color
+		element.color = element.color or table.color
 		tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	end, 1)
 	tmp:SetJustifyH(element.align or 'CENTER')

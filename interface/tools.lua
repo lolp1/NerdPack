@@ -6,6 +6,7 @@ NeP.Globals.Interface = {}
 local LibStub = LibStub
 local unpack = unpack
 local DiesalGUI = LibStub("DiesalGUI-1.0")
+local element_space = 2
 
 function NeP.Interface.Noop() end
 
@@ -130,12 +131,10 @@ function NeP.Interface:BuildElements(table, parent)
 	for i=1, #table.config do
 		local element = table.config[i]
 		local element_type = Elements[element.type:lower()]
-		--If it dosent exist then its a spacer
-		if not element_type then element_type = "spacer" end
 		--build element
 		element.key = element.key or "fake"
-		element.master = table
 		self[element_type](self, element, parent, table)
+		table.offset = table.offset - element_space
 	end
 end
 
