@@ -17,11 +17,10 @@ function NeP.Interface.Text(_, element, parent, table)
 	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', element.h or 5, table.offset)
 	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -(element.y or 5), table.offset)
 	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
-	tmp:SetJustifyH(element.align or 'LEFT')
+	tmp:SetJustifyH((element.align or 'LEFT'):upper())
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or def_text_size)
 	tmp:SetWidth(parent.content:GetWidth())
 	table.offset = table.offset - (element.offset or tmp:GetStringHeight())
-	if element.align then tmp:SetJustifyH(element.align:upper()) end
 	return tmp
 end
 
