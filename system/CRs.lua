@@ -71,7 +71,10 @@ end
 function NeP.CR.Add(_, SpecID, ...)
 	local classIndex = select(3, UnitClass('player'))
 	-- This only allows crs we can use to be registered
-	if classIndex ~= SpecID and not NeP.ClassTable[classIndex][SpecID] then return end
+	if not NeP.ClassTable:SpecIsFromClass(classIndex, SpecID )
+	and classIndex ~= SpecID then
+		return
+	end
 	-- Legacy stuff
 	local ev = legacy_PE(...)
 	--refs

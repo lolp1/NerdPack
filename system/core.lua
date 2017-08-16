@@ -33,7 +33,7 @@ function NeP.Core.ClassColor(_, unit, type)
 	if UnitExists(unit) then
 		local classid  = select(3, UnitClass(unit))
 		if classid then
-			return NeP.ClassTable[classid][type]
+			return NeP.ClassTable:GetClassColor(classid, type)
 		end
 	end
 	return d_color[type]
