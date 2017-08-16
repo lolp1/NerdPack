@@ -77,7 +77,9 @@ function NeP.Interface:Checkbox(element, parent, table)
 		tmp:SetChecked(NeP.Interface:Fetch(table.key, key, default or false))
 	end)
 	element.h = 20
-	tmp.text = self:Text(element, parent, table)
+	if element.text then
+		tmp.text = self:Text(element, parent, table)
+	end
 	if element.desc then
 		element.text = element.desc
 		tmp.desc = self:Text(element, parent, table)
@@ -125,6 +127,7 @@ end
 
 function NeP.Interface:Checkspin(element, parent, table)
 	local original_offset, final_offset = table.offset
+	local original_text, original_desc = element.text, element.desc
 	element.key_check = element.key..'_check'
 	element.default_check = element.check or element.default_check
 	element.key_spin = element.key..'_spin'
@@ -137,6 +140,8 @@ function NeP.Interface:Checkspin(element, parent, table)
 	tmp.spin = self:Spinner(element, parent, table)
 	tmp.spin:SetHeight(element.height or tmp.text:GetStringHeight())
 	table.offset = final_offset
+	element.text = original_text
+	element.desc = original_desc
 	return tmp
 end
 
