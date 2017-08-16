@@ -185,13 +185,13 @@ function NeP.Interface:Button(element, parent, table)
 	tmp:SetHeight(element.height or 20)
 	tmp:SetStylesheet(self.buttonStyleSheet)
 	tmp:SetEventListener('OnClick', element.callback)
-	table.offset = table.offset - tmp:GetHeight()
+	tmp:SetPoint(element.align or "TOP", parent.content, 0, table.offset)
+	table.offset = table.offset - (element.offset or tmp:GetHeight())
 	if element.desc then
 		element.text = element.desc
 		tmp.desc = self:Text(element, parent, table-element.offset)
 		table.offset = table.offset - tmp.desc:GetStringHeight()
 	end
-	tmp:SetPoint(element.align or "TOP", parent.content, 0, table.offset)
 	return tmp
 end
 
