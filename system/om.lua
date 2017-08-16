@@ -37,7 +37,7 @@ local function MergeTable(table, Obj, GUID)
 	and UnitInPhase(Obj.key)
 	and GUID == UnitGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.distance = NeP.Protected.Distance('player', Obj.key)
+		Obj.distance = NeP.Protected.Distance('player', Obj.key) or 0
 	end
 end
 
@@ -79,14 +79,14 @@ function NeP.OM.Insert(_, Tbl, Obj, GUID)
 	-- Dont add existing Objs (Update)
 	local Test = Tbl[GUID]
 	if Test and UnitExists(Test.key) then
-		Test.distance = NeP.Protected.Distance('player', Obj)
+		Test.distance = NeP.Protected.Distance('player', Obj) or 0
 	-- Add
 	else
 		local ObjID = select(6, strsplit('-', GUID))
 		Tbl[GUID] = {
 			key = Obj,
 			name = UnitName(Obj),
-			distance = NeP.Protected.Distance('player', Obj),
+			distance = NeP.Protected.Distance('player', Obj) or 0,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj)
