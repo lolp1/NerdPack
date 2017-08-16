@@ -15,7 +15,7 @@ function NeP.Interface.Text(_, element, parent, table)
 	parent:AddChild(tmp)
 	tmp = tmp.fontString
 	tmp:SetPoint('TOPLEFT', parent.content, 'TOPLEFT', element.h or 5, table.offset)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -(element.y or 5), table.offset)
 	tmp:SetText((element.color and '|cff'..element.color or '')..element.text)
 	tmp:SetJustifyH(element.align or 'LEFT')
 	tmp:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), element.size or def_text_size)
@@ -111,6 +111,7 @@ function NeP.Interface:Spinner(element, parent, table)
 		NeP.Interface:Write(table.key, key, number)
 	end)
 	if element.text then
+		element.y = tmp.settings.width
 		tmp.text = self:Text(element, parent, table)
 		tmp:SetHeight(element.height or tmp.text:GetStringHeight())
 	end
