@@ -1,6 +1,6 @@
 local _, NeP 			= ...
 NeP.Healing 			= {}
-local Roster 			= {}
+local Roster 			= NeP.OM.Roster
 local maxDistance = 40
 
 -- Local stuff for speed

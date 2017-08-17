@@ -18,75 +18,86 @@ local UnitInPhase = UnitInPhase
 local ObjectIsType = ObjectIsType
 local ObjectTypes  = ObjectTypes
 
-NeP.OM = {}
+local max_distance = 70
 
-local OM_c = {
+NeP.OM = {
 	Enemy    = {},
 	Friendly = {},
 	Dead     = {},
-	Objects  = {}
+	Objects  = {},
+	Roster   = {}
 }
+
+local OM_c = NeP.OM
+local clean = {}
 
 -- This cleans/updates the tables and then returns it
 -- Due to Generic OM, a unit can still exist (target) but no longer be the same unit,
 -- To counter this we compare GUID's.
 
-local function MergeTable(table, Obj, GUID)
+local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and UnitExists(Obj.key)
 	and UnitInPhase(Obj.key)
 	and GUID == UnitGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.distance = NeP.Protected.Distance('player', Obj.key) or 0
+		Obj.distance = NeP.Protected.Distance('player', Obj.key)
+	end
+end
+
+local function MergeTable(ref)
+	local temp = {}
+	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
+		MergeTable(temp, Obj, GUID)
+	end
+	for GUID, Obj in pairs(OM_c[ref]) do
+		MergeTable(temp, Obj, GUID)
+	end
+	return temp
+end
+
+function clean.Objects(ref)
+	for GUID, Obj in pairs(OM_c[ref]) do
+		if Obj.distance > max_distance
+		or not UnitExists(Obj.key)
+		or GUID ~= UnitGUID(Obj.key) then
+			OM_c[ref][GUID] = nil
+		end
+	end
+end
+
+function clean.Others(ref)
+	for GUID, Obj in pairs(OM_c[ref]) do
+		-- remove invalid units
+		if Obj.distance > max_distance
+		or not UnitExists(Obj.key)
+		or not UnitInPhase(Obj.key)
+		or GUID ~= UnitGUID(Obj.key)
+		or ref ~= 'Dead' and UnitIsDeadOrGhost(Obj.key) then
+			OM_c[ref][GUID] = nil
+		end
 	end
 end
 
 function NeP.OM.Get(_, ref, want_plates)
-	local tb = OM_c[ref]
 	if ref == 'Objects' then
-		for GUID, Obj in pairs(tb) do
-			if not UnitExists(Obj.key)
-			or GUID ~= UnitGUID(Obj.key) then
-				tb[GUID] = nil
-			end
-		end
-	-- Hack for nameplates
+		clean.Objects(ref)
 	elseif want_plates and NeP.Protected.nPlates then
-		local temp = {}
-		for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
-			MergeTable(temp, Obj, GUID)
-		end
-		for GUID, Obj in pairs(tb) do
-			MergeTable(temp, Obj, GUID)
-		end
-		return temp
-	-- Normal
+		return MergeTable(ref)
 	else
-		for GUID, Obj in pairs(tb) do
-			-- remove invalid units
-			if not UnitExists(Obj.key)
-			or not UnitInPhase(Obj.key)
-			or GUID ~= UnitGUID(Obj.key)
-			or ref ~= 'Dead' and UnitIsDeadOrGhost(Obj.key) then
-				tb[GUID] = nil
-			end
-		end
+		clean.Others(ref)
 	end
-	return tb
+	return OM_c[ref]
 end
 
 function NeP.OM.Insert(_, Tbl, Obj, GUID)
-	-- Dont add existing Objs (Update)
-	local Test = Tbl[GUID]
-	if Test and UnitExists(Test.key) then
-		Test.distance = NeP.Protected.Distance('player', Obj) or 0
-	-- Add
-	else
+	local distance = NeP.Protected.Distance('player', Obj) or 999
+	if distance < max_distance then
 		local ObjID = select(6, strsplit('-', GUID))
 		Tbl[GUID] = {
 			key = Obj,
 			name = UnitName(Obj),
-			distance = NeP.Protected.Distance('player', Obj) or 0,
+			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj)
@@ -117,7 +128,9 @@ end
 
 -- Regular
 C_Timer.NewTicker(1, function()
-	NeP.Protected:OM_Maker()
+	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		NeP.Protected:OM_Maker()
+	end
 end, nil)
 
 -- Gobals
