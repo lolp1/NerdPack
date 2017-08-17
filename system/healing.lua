@@ -82,33 +82,26 @@ C_Timer.NewTicker(0.1, (function()
 			end
 		end
 	end
-	-- Clean
-	Clean()
 end), nil)
 
 NeP.DSL:Register("health", function(target)
-	local Obj = Roster[UnitGUID(target)]
-	return Obj and Obj.health or healthPercent(target)
+	return healthPercent(target)
 end)
 
 NeP.DSL:Register("health.actual", function(target)
-	local Obj = Roster[UnitGUID(target)]
-	return Obj and Obj.healthRaw or UnitHealth(target)
+	return UnitHealth(target)
 end)
 
 NeP.DSL:Register("health.max", function(target)
-	local Obj = Roster[UnitGUID(target)]
-	return Obj and Obj.maxHealth or UnitHealthMax(target)
+	return UnitHealthMax(target)
 end)
 
 NeP.DSL:Register("health.predicted", function(target)
-	local Obj = Roster[UnitGUID(target)]
-	return Obj and Obj.predicted or healthPercent(target)
+	return GetPredictedHealth_Percent(target)
 end)
 
 NeP.DSL:Register("health.predicted.actual", function(target)
-	local Obj = Roster[UnitGUID(target)]
-	return Obj and Obj.predicted_Raw or UnitHealth(target)
+	return GetPredictedHealth(target)
 end)
 
 -- USAGE: UNIT.area(DISTANCE, HEALTH).heal >= #
