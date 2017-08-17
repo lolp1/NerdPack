@@ -18,14 +18,13 @@ local UnitInPhase = UnitInPhase
 local ObjectIsType = ObjectIsType
 local ObjectTypes  = ObjectTypes
 
-local max_distance = 70
-
 NeP.OM = {
 	Enemy    = {},
 	Friendly = {},
 	Dead     = {},
 	Objects  = {},
-	Roster   = {}
+	Roster   = {},
+	max_distance = 100
 }
 
 local OM_c = NeP.OM
@@ -48,17 +47,17 @@ end
 local function MergeTable(ref)
 	local temp = {}
 	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
-		MergeTable(temp, Obj, GUID)
+		MergeTable_Insert(temp, Obj, GUID)
 	end
 	for GUID, Obj in pairs(OM_c[ref]) do
-		MergeTable(temp, Obj, GUID)
+		MergeTable_Insert(temp, Obj, GUID)
 	end
 	return temp
 end
 
 function clean.Objects(ref)
 	for GUID, Obj in pairs(OM_c[ref]) do
-		if Obj.distance > max_distance
+		if Obj.distance > NeP.OM.max_distance
 		or not UnitExists(Obj.key)
 		or GUID ~= UnitGUID(Obj.key) then
 			OM_c[ref][GUID] = nil
@@ -69,7 +68,7 @@ end
 function clean.Others(ref)
 	for GUID, Obj in pairs(OM_c[ref]) do
 		-- remove invalid units
-		if Obj.distance > max_distance
+		if Obj.distance > NeP.OM.max_distance
 		or not UnitExists(Obj.key)
 		or not UnitInPhase(Obj.key)
 		or GUID ~= UnitGUID(Obj.key)
@@ -92,7 +91,7 @@ end
 
 function NeP.OM.Insert(_, Tbl, Obj, GUID)
 	local distance = NeP.Protected.Distance('player', Obj) or 999
-	if distance < max_distance then
+	if distance <= NeP.OM.max_distance then
 		local ObjID = select(6, strsplit('-', GUID))
 		Tbl[GUID] = {
 			key = Obj,

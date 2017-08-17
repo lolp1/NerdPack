@@ -45,7 +45,11 @@ NeP.Locale.enUS = {
     tittle_color = 'Title Color',
     tittle_alpha = 'Title Alpha',
     content_color = 'Content Color',
-    content_alpha = 'Content Alpha'
+    content_alpha = 'Content Alpha',
+    OM_Dis = "Max Distance",
+    OM_Dis_desc = "This limits the maximum distance of the units/objects that can be added to the OM\n|cfffd1c15Affects performance!|r",
+    UI_Settings = "User Interface Settings",
+    OM_Settings = "Object Manager Settings",
   },
   States = {
     charm        = {'^charmed'},
