@@ -37,3 +37,7 @@ title = n_name,
 NeP.STs = NeP.Interface:BuildGUI(config)
 NeP.Interface:Add(n_name..' '..L('option'), function() NeP.STs.parent:Show() end)
 NeP.STs.parent:Hide()
+
+NeP.Core:WhenInGame(function()
+  NeP.Interface:Update()
+end)
