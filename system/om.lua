@@ -55,12 +55,25 @@ local function MergeTable(ref)
 	return temp
 end
 
-function clean.Objects(ref)
-	for GUID, Obj in pairs(OM_c[ref]) do
+function clean.Objects()
+	for GUID, Obj in pairs(OM_c["Objects"]) do
 		if Obj.distance > NeP.OM.max_distance
 		or not UnitExists(Obj.key)
 		or GUID ~= UnitGUID(Obj.key) then
-			OM_c[ref][GUID] = nil
+			OM_c["Objects"][GUID] = nil
+		end
+	end
+end
+
+function clean.Dead()
+	for GUID, Obj in pairs(OM_c["Dead"]) do
+		-- remove invalid units
+		if Obj.distance > NeP.OM.max_distance
+		or not UnitExists(Obj.key)
+		or not UnitInPhase(Obj.key)
+		or GUID ~= UnitGUID(Obj.key)
+		or not UnitIsDeadOrGhost(Obj.key) then
+			OM_c["Dead"][GUID] = nil
 		end
 	end
 end
@@ -72,19 +85,15 @@ function clean.Others(ref)
 		or not UnitExists(Obj.key)
 		or not UnitInPhase(Obj.key)
 		or GUID ~= UnitGUID(Obj.key)
-		or ref ~= 'Dead' and UnitIsDeadOrGhost(Obj.key) then
+		or UnitIsDeadOrGhost(Obj.key) then
 			OM_c[ref][GUID] = nil
 		end
 	end
 end
 
 function NeP.OM.Get(_, ref, want_plates)
-	if ref == 'Objects' then
-		clean.Objects(ref)
-	elseif want_plates and NeP.Protected.nPlates then
+	if want_plates and NeP.Protected.nPlates then
 		return MergeTable(ref)
-	else
-		clean.Others(ref)
 	end
 	return OM_c[ref]
 end
@@ -125,7 +134,16 @@ function NeP.OM.Add(_, Obj)
 	end
 end
 
--- Regular
+C_Timer.NewTicker(1, function()
+	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		clean.Objects()
+		clean.Dead()
+		clean.Others("Friendly")
+		clean.Others("Enemy")
+		clean.Others("Roster")
+	end
+end, nil)
+
 C_Timer.NewTicker(1, function()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		NeP.Protected:OM_Maker()

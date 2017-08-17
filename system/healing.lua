@@ -18,19 +18,6 @@ local strsplit                = strsplit
 local UnitInPhase             = UnitInPhase
 local C_Timer                 = C_Timer
 
-local function Clean()
-	for GUID, Obj in pairs(Roster) do
-		if not Obj
-		or not UnitExists(Obj.key)
-		or not UnitInPhase(Obj.key)
-		or Obj.distance > maxDistance
-		or UnitIsDeadOrGhost(Obj.key)
-		or GUID ~= UnitGUID(Obj.key) then
-			Roster[GUID] = nil
-		end
-	end
-end
-
 local function GetPredictedHealth(unit)
 	return UnitHealth(unit)+(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
 end
@@ -66,7 +53,6 @@ local function Refresh(GUID, Obj)
 end
 
 function NeP.Healing.GetRoster()
-	Clean()
 	return Roster
 end
 
