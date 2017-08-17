@@ -13,6 +13,7 @@ local tonumber = tonumber
 local pairs = pairs
 local C_Timer = C_Timer
 local UnitInPhase = UnitInPhase
+local wipe = wipe
 
 --Advanced
 local ObjectIsType = ObjectIsType
@@ -27,7 +28,13 @@ NeP.OM = {
 	max_distance = 100
 }
 
-local OM_c = NeP.OM
+local OM_c = {
+	Enemy    = NeP.OM.Enemy,
+	Friendly = NeP.OM.Friendly,
+	Dead     = NeP.OM.Dead,
+	Objects  = NeP.OM.Objects,
+	Roster   = NeP.OM.Roster
+}
 local clean = {}
 
 -- This cleans/updates the tables and then returns it
@@ -141,6 +148,10 @@ C_Timer.NewTicker(1, function()
 		clean.Others("Friendly")
 		clean.Others("Enemy")
 		clean.Others("Roster")
+	else
+		for _, v in pairs(OM_c) do
+			wipe(v)
+		end
 	end
 end, nil)
 
