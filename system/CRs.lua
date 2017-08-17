@@ -89,9 +89,9 @@ function NeP.CR.Add(_, SpecID, ...)
 	NeP.Compiler:Iterate(ev.ooc)
 	--Create user GUI
 	if ev.gui then NeP.CR:AddGUI(ev) end
-	-- Class Cr (gets added to all specs whitin that clas)
+	-- Class Cr (gets added to all specs whitin that class)
 	if classIndex == SpecID then
-		SpecID = NeP.ClassTable[classIndex].specs
+		SpecID = NeP.ClassTable:GetClassSpecs(classIndex)
 		for i=1, #SpecID do
 			ev.id = SpecID[i]
 			add(ev)
