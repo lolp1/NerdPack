@@ -219,7 +219,7 @@ NeP.Compiler:RegisterToken("spell_cast", function(eval, ref)
 	ref.token = 'spell_cast'
 end)
 
-local C = NeP.DSL.Cache
+local C = NeP.Cache.Spells
 
 NeP.Actions:Add('spell_cast', function(eval)
 	-- cached

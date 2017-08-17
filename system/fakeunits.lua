@@ -45,25 +45,35 @@ local function add_tbl(unit, tbl)
 	--table
 	if unit_type =='table' then
 		for _, v in pairs(unit) do
-			NeP.FakeUnits:Filter(v.key or v, tbl)
+			NeP.FakeUnits:Process(v.key or v, tbl)
 		end
 	--function
 	elseif unit_type == 'function' then
-		NeP.FakeUnits:Filter(unit(), tbl)
+		NeP.FakeUnits:Process(unit(), tbl)
 	--add
 	elseif unit_type == 'string' then
 		unit = process(unit)
 		if not unit then return end
 		if type(unit) ~= 'string' then
-			NeP.FakeUnits:Filter(unit, tbl)
+			NeP.FakeUnits:Process(unit, tbl)
 		elseif not_in_tbl(unit, tbl) then
 			tbl[#tbl+1] = unit
 		end
 	end
 end
 
-function NeP.FakeUnits.Filter(_,unit, tbl)
+function NeP.FakeUnits.Process(_,unit, tbl)
 	tbl = tbl or {}
 	add_tbl(unit, tbl)
 	return tbl
+end
+
+local C = NeP.Cache.Targets
+
+function NeP.FakeUnits.Filter(_,unit, tbl)
+	-- cached
+	if not C[unit] then
+		C[unit] = NeP.FakeUnits:Process(unit, tbl)
+	end
+	return C[unit]
 end
