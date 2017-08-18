@@ -106,10 +106,11 @@ local function ProcessCondition(Strg, Spell, Target)
 	C[Strg] = C[Strg] or {}
 	C[Strg][Target] = C[Strg][Target] or {}
 
-	if not C[Strg][Target][Args] then
-		local Condition = DSL:Get(Strg)
-		C[Strg][Target][Args] = Condition(Target, Args)
+	--cacched
+	if C[Strg][Target][Args] == nil then
+		C[Strg][Target][Args] = DSL:Get(Strg)(Target, Args) or false
 	end
+
 	return C[Strg][Target][Args]
 end
 
