@@ -5,6 +5,7 @@ local IsInGroup = IsInGroup
 local UnitIsFriend = UnitIsFriend
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
+local noop = function() end
 
 NeP.Protected = {}
 NeP.Globals.Protected = NeP.Protected
@@ -15,25 +16,17 @@ NeP.Protected.nPlates = {
 
 NeP.Protected.Cast = function(spell, target)
   NeP.Faceroll:Set(spell, target)
-  return true
 end
 
 NeP.Protected.CastGround = function(spell, target)
   NeP.Faceroll:Set(spell, target)
-  return true
 end
 
-NeP.Protected.Macro = function()
-  return true
-end
-
-NeP.Protected.UseItem = function()
-  return true
-end
-
-NeP.Protected.UseInvItem = function()
-  return true
-end
+NeP.Protected.Macro = noop
+NeP.Protected.UseItem = noop
+NeP.Protected.UseInvItem = noop
+NeP.Protected.TargetUnit = noop
+NeP.Protected.SpellStopCasting = noop
 
 local rangeCheck = LibStub("LibRangeCheck-2.0")
 NeP.Protected.Distance = function(_, b)

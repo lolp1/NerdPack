@@ -46,7 +46,7 @@ local function _interrupt(eval)
 		if eval.master.cname == eval.spell then
 			return false
 		else
-			SpellStopCasting()
+			NeP.Protected.SpellStopCasting()
 		end
 	end
 	return true
