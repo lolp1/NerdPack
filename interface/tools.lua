@@ -133,7 +133,8 @@ function NeP.Interface:BuildElements(table, parent)
 		local element_type = Elements[element.type:lower()]
 		--build element
 		element.key = element.key or "fake"
-		self[element_type](self, element, parent, table)
+		local res = self[element_type](self, element, parent, table)
+		self.usedGUIs[table.key].elements[element.key] = res
 		table.offset = table.offset - element_space
 	end
 end
