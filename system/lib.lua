@@ -1,10 +1,11 @@
 local _, NeP = ...
+local loadstring = loadstring
 local strsplit = strsplit
-local unpack = unpack
 
 NeP.Library = {}
 NeP.Globals.Library = NeP.Library
 
+-- This needs to be global for loadstring :C
 local libs = {}
 
 function NeP.Library.Add(_, name, lib)
@@ -13,17 +14,12 @@ function NeP.Library.Add(_, name, lib)
 	end
 end
 
-function NeP.Library.Fetch(_, name)
-	return libs[name]
+function NeP.Library.Fetch(_, strg)
+	local a, b = strsplit(".", strg, 2)
+	return libs[a][b]
 end
 
-function NeP.Library.Parse(_, strg, args)
-	if args then
-		args = NeP.Core:string_split(args, ',')
-	end
-	local a, b = strsplit(".", strg, 2)
-	if type(args) == 'table' then
-		return libs[a] and libs[a][b](unpack(args))
-	end
-	return libs[a] and libs[a][b](args)
+function NeP.Library:Parse(strg, ...)
+	local lib = self:Fetch(strg)
+	return lib(...)
 end

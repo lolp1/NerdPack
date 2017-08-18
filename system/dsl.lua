@@ -3,13 +3,6 @@ local DSL        = NeP.DSL
 local UnitExists = ObjectExists or UnitExists
 local strsplit   = strsplit
 
-local function libArgs(Strg)
-	Strg = Strg or ""
-	local Args = Strg:match('%((.+)%)')
-	Strg = Strg:gsub('%((.+)%)', '')
-	return Strg, Args
-end
-
 local function FilterNum(str)
 	local type_X = type(str)
 	if type_X == 'string' then
@@ -43,8 +36,8 @@ local math_OP = {
 }
 
 local DSL_OP = {
-	['!']  = function(arg1, arg2, Target) return not DSL.Parse(arg1, arg2, Target) end,
-	['@']  = function(arg1) return NeP.Library:Parse(libArgs(arg1)) end,
+	['!']  = function(arg1, arg2, target) return not DSL.Parse(arg1, arg2, target) end,
+	['@']  = function(arg,_,target) return NeP.Library:Parse(arg:gsub('%((.+)%)', ''), target, arg:match('%((.+)%)')) end,
 }
 
 local function _AND(Strg, Spell, Target)

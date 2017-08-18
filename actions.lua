@@ -30,7 +30,7 @@ local funcs = {
 	end,
 	UseItem = function(eva) NeP.Protected["UseItem"](eva.spell, eva.target); return true end,
 	Macro = function(eva) NeP.Protected["Macro"]("/"..eva.spell, eva.target); return true end,
-	Lib = function(eva) return NeP.Library:Parse(eva.spell, eva[1].args) end,
+	Lib = function(eva) return NeP.Library:Parse(eva.spell, eva.target, eva[1].args) end,
 	C_Buff = function(eva) CancelUnitBuff('player', GetSpellInfo(eva[1].args)) end
 }
 
