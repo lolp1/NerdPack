@@ -34,6 +34,14 @@ local funcs = {
 	C_Buff = function(eva) CancelUnitBuff('player', GetSpellInfo(eva[1].args)) end
 }
 
+local function IsSpellReady(spell)
+	local skillType = GetSpellBookItemInfo(spell)
+	local isUsable, notEnoughMana = IsUsableSpell(spell)
+	if skillType ~= 'FUTURESPELL' and isUsable and not notEnoughMana then
+		return GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')()
+	end
+end
+
 -- Clip
 NeP.Compiler:RegisterToken("!", function(_, ref)
 		ref.interrupts = true
@@ -54,10 +62,10 @@ end)
 
 -- DispelSelf
 NeP.Actions:Add('dispelself', function(eval)
-  for _,spellID, _,_,_,_, dispelType in LibDisp:IterateDispellableAuras('player') do
-    -- wait a random time before dispelling, makes it look less boot like...
-    if dispelType --[[and (duration - expires) > math.random(.5, 1.5)]] then
-      eval.spell = GetSpellInfo(spellID)
+  for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras('player') do
+    local spell = GetSpellInfo(spellID)
+    if spell and IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+      eval.spell = spell
       eval[3].target = 'player'
       eval.exe = funcs["Cast"]
       return true
@@ -68,10 +76,10 @@ end)
 -- Dispell all
 NeP.Actions:Add('dispelall', function(eval)
   for _, Obj in pairs(NeP.Healing:GetRoster()) do
-    for _,spellID, _,_,_,_, dispelType in LibDisp:IterateDispellableAuras(Obj.key) do
-      -- wait a random time before dispelling, makes it look less boot like...
-      if dispelType --[[and (duration - expires) > math.random(.5, 1.5)]] then
-        eval.spell = GetSpellInfo(spellID)
+    for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(Obj.key) do
+			local spell = GetSpellInfo(spellID)
+	    if spell and IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+	      eval.spell = spell
         eval[3].target = Obj.key
         eval.exe = funcs["Cast"]
         return true
@@ -223,13 +231,8 @@ local C = NeP.Cache.Spells
 
 NeP.Actions:Add('spell_cast', function(eval)
 	-- cached
-	if C[eval[1].spell] then return C[eval[1].spell] end
-  local skillType = GetSpellBookItemInfo(eval[1].spell)
-	local isUsable, notEnoughMana = IsUsableSpell(eval[1].spell)
-	if skillType ~= 'FUTURESPELL' and isUsable and not notEnoughMana then
-		C[eval[1].spell] = GetSpellCooldown(eval[1].spell) <= NeP.DSL:Get('gcd')()
-	else
-		C[eval[1].spell] = false
+	if C[eval[1].spell] == nil then
+		C[eval[1].spell] = IsSpellReady(eval[1].spell) or false
 	end
 	return C[eval[1].spell]
 end)
