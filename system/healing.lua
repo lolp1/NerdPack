@@ -18,6 +18,10 @@ local strsplit                = strsplit
 local UnitInPhase             = UnitInPhase
 local C_Timer                 = C_Timer
 
+local forced_role = {
+	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
+}
+
 local function GetPredictedHealth(unit)
 	return UnitHealth(unit)+(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
 end
@@ -39,7 +43,7 @@ local function Add(Obj)
 	Obj.health = healthPercent(Obj.key)
 	Obj.healthRaw = healthRaw
 	Obj.healthMax = maxHealth
-	Obj.role = UnitGroupRolesAssigned(Obj.key)
+	Obj.role = forced_role[Obj.id] or UnitGroupRolesAssigned(Obj.key)
 	Roster[Obj.guid] = Obj
 end
 
@@ -49,7 +53,7 @@ local function Refresh(GUID, Obj)
 	temp.healthRaw = UnitHealth(temp.key)
 	temp.predicted = GetPredictedHealth_Percent(Obj.key)
 	temp.predicted_Raw = GetPredictedHealth(Obj.key)
-	temp.role = UnitGroupRolesAssigned(Obj.key)
+	temp.role = forced_role[Obj.id] or UnitGroupRolesAssigned(Obj.key)
 end
 
 function NeP.Healing.GetRoster()
