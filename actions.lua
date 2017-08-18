@@ -64,7 +64,7 @@ end)
 NeP.Actions:Add('dispelself', function(eval)
   for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras('player') do
     local spell = GetSpellInfo(spellID)
-    if spell and IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+    if IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
       eval.spell = spell
       eval[3].target = 'player'
       eval.exe = funcs["Cast"]
@@ -78,7 +78,7 @@ NeP.Actions:Add('dispelall', function(eval)
   for _, Obj in pairs(NeP.Healing:GetRoster()) do
     for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(Obj.key) do
 			local spell = GetSpellInfo(spellID)
-	    if spell and IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+	    if IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
 	      eval.spell = spell
         eval[3].target = Obj.key
         eval.exe = funcs["Cast"]
@@ -129,9 +129,11 @@ end)
 
 -- Automated tauting
 NeP.Actions:Add('taunt', function(eval)
+	if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
     local Threat = UnitThreatSituation("player", Obj.key)
-    if Threat and Threat >= 0 and Threat < 3 and Obj.distance <= 30 then
+		if Threat and Threat >= 0
+		and Threat < 3 and Obj.distance <= 30 then
       eval.spell = eval[1].args
       eval[3].target = Obj.key
       eval.exe = funcs["Cast"]
@@ -142,8 +144,9 @@ end)
 
 -- Ress all dead
 NeP.Actions:Add('ressdead', function(eval)
+	if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Friendly')) do
-    if Obj.distance < 40 and UnitIsPlayer(Obj.Key)
+		if Obj.distance < 40 and UnitIsPlayer(Obj.Key)
     and UnitIsDeadOrGhost(Obj.key)
 		and UnitPlayerOrPetInParty(Obj.key) then
       eval.spell = eval[1].args
