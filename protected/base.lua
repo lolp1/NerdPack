@@ -10,8 +10,7 @@ NeP.Protected = {}
 NeP.Globals.Protected = NeP.Protected
 NeP.Protected.nPlates = {
 	Friendly = {},
-	Enemy = {},
-	Dead = {}
+	Enemy = {}
 }
 
 NeP.Protected.Cast = function(spell, target)

@@ -99,7 +99,9 @@ function clean.Others(ref)
 end
 
 function NeP.OM.Get(_, ref, want_plates)
-	if want_plates and NeP.Protected.nPlates then
+	if want_plates
+	and NeP.Protected.nPlates
+	and NeP.Protected.nPlates[ref] then
 		return MergeTable(ref)
 	end
 	return OM_c[ref]
