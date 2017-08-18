@@ -18,6 +18,7 @@ local IsUsableSpell = IsUsableSpell
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = GetItemInfo
+local UnitExists = UnitExists
 
 local funcs = {
 	noop = function() end,
@@ -61,6 +62,7 @@ NeP.Compiler:RegisterToken("%", function(eval, ref)
 end)
 
 local function FindDispell(eval, unit)
+	if not UnitExists(unit) then return end
 	for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
     local spell = GetSpellInfo(spellID)
     if IsSpellReady(spell) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
@@ -127,14 +129,16 @@ end)
 NeP.Actions:Add('taunt', function(eval)
 	if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    local Threat = UnitThreatSituation("player", Obj.key)
-		if Threat and Threat >= 0
-		and Threat < 3 and Obj.distance <= 30 then
-      eval.spell = eval[1].args
-      eval[3].target = Obj.key
-      eval.exe = funcs["Cast"]
-      return true
-    end
+		if UnitExists(Obj.key) then
+	    local Threat = UnitThreatSituation("player", Obj.key)
+			if Threat and Threat >= 0
+			and Threat < 3 and Obj.distance <= 30 then
+	      eval.spell = eval[1].args
+	      eval[3].target = Obj.key
+	      eval.exe = funcs["Cast"]
+	      return true
+	    end
+		end
   end
 end)
 
@@ -142,7 +146,9 @@ end)
 NeP.Actions:Add('ressdead', function(eval)
 	if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if Obj.distance < 40 and UnitIsPlayer(Obj.Key)
+		if Obj.distance < 40
+		and UnitExists(Obj.Key)
+		and UnitIsPlayer(Obj.Key)
     and UnitIsDeadOrGhost(Obj.key)
 		and UnitPlayerOrPetInParty(Obj.key) then
       eval.spell = eval[1].args
