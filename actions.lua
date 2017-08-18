@@ -62,9 +62,9 @@ end)
 
 -- DispelSelf
 NeP.Actions:Add('dispelself', function(eval)
-  for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras('player') do
+  for _, spellID, _,_,_,_,_,_, expires in LibDisp:IterateDispellableAuras('player') do
     local spell = GetSpellInfo(spellID)
-    if IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+    if IsSpellReady(spell) and (expires - eval.master.time) > math.random(1, 3) then
       eval.spell = spell
       eval[3].target = 'player'
       eval.exe = funcs["Cast"]
@@ -76,9 +76,9 @@ end)
 -- Dispell all
 NeP.Actions:Add('dispelall', function(eval)
   for _, Obj in pairs(NeP.Healing:GetRoster()) do
-    for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(Obj.key) do
+    for i, spellID, _,_,_,_,_,_, expires in LibDisp:IterateDispellableAuras(Obj.key) do
 			local spell = GetSpellInfo(spellID)
-	    if IsSpellReady(spell) and (duration - expires) > math.random(1, 3) then
+	    if IsSpellReady(spell) and (expires - eval.master.time) > math.random(1, 3) then
 	      eval.spell = spell
         eval[3].target = Obj.key
         eval.exe = funcs["Cast"]

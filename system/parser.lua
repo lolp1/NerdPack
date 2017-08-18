@@ -9,12 +9,10 @@ local UnitCastingInfo      = UnitCastingInfo
 local UnitChannelInfo      = UnitChannelInfo
 local UnitExists           = ObjectExists or UnitExists
 local UnitIsVisible        = UnitIsVisible
-local SpellStopCasting     = SpellStopCasting
 local UnitIsDeadOrGhost    = UnitIsDeadOrGhost
 local SecureCmdOptionParse = SecureCmdOptionParse
 local InCombatLockdown     = InCombatLockdown
 local C_Timer              = C_Timer
-local wipe 								 = wipe
 
 --This is used by the ticker
 --Its used to determin if we should iterate or not
@@ -147,6 +145,7 @@ C_Timer.NewTicker(0.1, (function()
 		local table = c.CR and c.CR[InCombatLockdown()]
 		if not table then return end
 		table.master.endtime, table.master.cname = castingTime()
+		table.master.time = GetTime()
 		for i=1, #table do
 			if NeP.Parser:Parse(table[i]) then break end
 		end
