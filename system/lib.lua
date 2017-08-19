@@ -3,10 +3,11 @@ local loadstring = loadstring
 local strsplit = strsplit
 
 NeP.Library = {}
+NeP.Library.Libs = {}
 NeP.Globals.Library = NeP.Library
 
 -- This needs to be global for loadstring :C
-local libs = {}
+local libs = NeP.Library.Libs
 
 function NeP.Library.Add(_, name, lib)
 	if not libs[name] then
