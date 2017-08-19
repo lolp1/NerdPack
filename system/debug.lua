@@ -12,21 +12,8 @@ local texplore = texplore
 
 SetCVar("scriptProfile", "1")
 
-local config = {
-  key = "NeP_Debugger",
-  title = "NeP_Debugger",
-  subtitle = 'Debugger',
-  width = 250,
-  height = 300,
-  config = {
-    { type = 'button', text = 'Open Table Explorer', callback = function() texplore(NeP) end},
-	}
-}
-
 NeP.Core:WhenInGame(function()
-	NeP.Debug.GUI = NeP.Interface:BuildGUI(config)
-	NeP.Interface:Add(n_name..' Debugger', function() NeP.Debug.GUI.parent:Show() end)
-	NeP.Debug.GUI.parent:Hide()
+	NeP.Interface:Add(n_name..' Debugger', function() texplore(NeP) end)
 end)
 
 function NeP.Debug:Add(name, func, subroutines)
