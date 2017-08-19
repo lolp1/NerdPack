@@ -107,11 +107,11 @@ function NeP.OM.Get(_, ref, want_plates)
 	return OM_c[ref]
 end
 
-function NeP.OM.Insert(_, Tbl, Obj, GUID)
+function NeP.OM.Insert(_, ref, Obj, GUID)
 	local distance = NeP.Protected.Distance('player', Obj) or 999
 	if distance <= NeP.OM.max_distance then
 		local ObjID = select(6, strsplit('-', GUID))
-		Tbl[GUID] = {
+		OM_c[ref][GUID] = {
 			key = Obj,
 			name = UnitName(Obj),
 			distance = distance,
@@ -129,17 +129,17 @@ function NeP.OM.Add(_, Obj)
 	if UnitInPhase(Obj) then
 		-- Dead Units
 		if UnitIsDeadOrGhost(Obj) then
-			NeP.OM:Insert(OM_c['Dead'], Obj, GUID)
+			NeP.OM:Insert('Dead', Obj, GUID)
 		-- Friendly
 		elseif UnitIsFriend('player', Obj) then
-			NeP.OM:Insert(OM_c['Friendly'], Obj, GUID)
+			NeP.OM:Insert('Friendly', Obj, GUID)
 		-- Enemie
 		elseif UnitCanAttack('player', Obj) then
-			NeP.OM:Insert(OM_c['Enemy'], Obj, GUID)
+			NeP.OM:Insert('Enemy', Obj, GUID)
 		end
 	-- Objects
 	elseif ObjectIsType and ObjectIsType(Obj, ObjectTypes.GameObject) then
-		NeP.OM:Insert(OM_c['Objects'], Obj, GUID)
+		NeP.OM:Insert('Objects', Obj, GUID)
 	end
 end
 

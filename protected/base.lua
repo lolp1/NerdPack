@@ -14,6 +14,21 @@ NeP.Protected.nPlates = {
 	Enemy = {}
 }
 
+function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
+	local distance = NeP.Protected.Distance('player', Obj) or 999
+	if distance <= NeP.OM.max_distance then
+		local ObjID = select(6, strsplit('-', GUID))
+		self[ref][GUID] = {
+			key = Obj,
+			name = UnitName(Obj),
+			distance = distance,
+			id = tonumber(ObjID or 0),
+			guid = GUID,
+			isdummy = NeP.DSL:Get('isdummy')(Obj)
+		}
+	end
+end
+
 NeP.Protected.Cast = function(spell, target)
   NeP.Faceroll:Set(spell, target)
 end
@@ -83,9 +98,9 @@ NeP.Protected.OM_Maker = function()
 		if UnitExists(Obj) then
 			local GUID = UnitGUID(Obj) or '0'
 			if UnitIsFriend('player',Obj) then
-				NeP.OM:Insert(NeP.Protected.nPlates['Friendly'], Obj, GUID)
+				NeP.Protected.nPlates:Insert('Friendly', Obj, GUID)
 			else
-				NeP.OM:Insert(NeP.Protected.nPlates['Enemy'], Obj, GUID)
+				NeP.Protected.nPlates:Insert('Enemy', Obj, GUID)
 			end
 		end
 	end
