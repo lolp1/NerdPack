@@ -143,7 +143,7 @@ function NeP.OM.Add(_, Obj)
 	end
 end
 
-C_Timer.NewTicker(1, function()
+local function CleanStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		clean.Objects()
 		clean.Dead()
@@ -155,13 +155,19 @@ C_Timer.NewTicker(1, function()
 			wipe(v)
 		end
 	end
-end, nil)
+end
 
-C_Timer.NewTicker(1, function()
+local function MakerStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		NeP.Protected:OM_Maker()
 	end
-end, nil)
+end
+
+NeP.Debug:Add("OM_Clean", CleanStart, true)
+NeP.Debug:Add("OM_Maker", MakerStart, true)
+
+C_Timer.NewTicker(1, CleanStart)
+C_Timer.NewTicker(1, MakerStart)
 
 -- Gobals
 NeP.Globals.OM = {

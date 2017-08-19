@@ -133,10 +133,7 @@ function NeP.Parser:Parse(eval, nest_unit)
 	end
 end
 
--- Delay until everything is ready
-NeP.Core:WhenInGame(function()
-
-C_Timer.NewTicker(0.1, (function()
+local function ParseStart()
 	NeP.Faceroll:Hide()
 	NeP:Wipe_Cache()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
@@ -150,6 +147,11 @@ C_Timer.NewTicker(0.1, (function()
 			if NeP.Parser:Parse(table[i]) then break end
 		end
 	end
-end), nil)
+end
 
+NeP.Debug:Add("Parser", ParseStart, true)
+
+-- Delay until everything is ready
+NeP.Core:WhenInGame(function()
+C_Timer.NewTicker(0.1, ParseStart)
 end, -99999)
