@@ -303,7 +303,7 @@ end
 
 function NeP.ClassTable.GetSpec(_, specid)
 	for i=1, #ShortByIndex do
-		if ShortByIndex[i][specid] then
+		if ShortByIndex[i].specs[specid] then
 			return ShortByIndex[i].specs[specid]
 		end
 	end
