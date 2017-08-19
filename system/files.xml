@@ -3,6 +3,7 @@
 
 	<Script file="listener.lua" />
 	<Script file="core.lua" />
+	<Script file="debug.lua" />
 	<Script file="commands.lua" />
 	<Script file="tooltip.lua" />
 	<Script file="conditions.lua" />

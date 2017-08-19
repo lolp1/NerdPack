@@ -127,9 +127,7 @@ end
 local Run_Cache = {}
 function NeP.Core.WhenInGame(_, func, prio)
 	if Run_Cache then
-		local size = #Run_Cache+1
-		Run_Cache[size] = {func = func, prio = prio or -(size)}
-		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
+		table.insert(Run_Cache, {func = func, prio = prio or -(#Run_Cache)})
 	else
 		func()
 	end
@@ -151,8 +149,9 @@ function NeP.Core.string_split(_, string, delimiter)
 	return result
 end
 
-NeP.Listener:Add("NeP_CR2", "PLAYER_LOGIN", function()
+NeP.Listener:Add("NeP_Core_load", "PLAYER_LOGIN", function()
 	C_Timer.After(5, function()
+		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
 		NeP.Color = NeP.Core:ClassColor('player', 'hex')
 		for i=1, #Run_Cache do
 			Run_Cache[i].func()

@@ -1,15 +1,33 @@
-local _, NeP = ...
+local n_name, NeP = ...
 
 NeP.Debug = {}
 NeP.Debug.Profiles = {}
 NeP.Debug.Profiles.total_usage = 0
 NeP.Debug.Profiles.total_average = 0
 
-SetCVar("scriptProfile", "1")
-
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local ResetCPUUsage = ResetCPUUsage
 local C_Timer = C_Timer
+local texplore = texplore
+
+SetCVar("scriptProfile", "1")
+
+local config = {
+  key = "NeP_Debugger",
+  title = "NeP_Debugger",
+  subtitle = 'Debugger',
+  width = 250,
+  height = 300,
+  config = {
+    { type = 'button', text = 'Open Table Explorer', callback = function() texplore(NeP) end},
+	}
+}
+
+NeP.Core:WhenInGame(function()
+	NeP.Debug.GUI = NeP.Interface:BuildGUI(config)
+	NeP.Interface:Add(n_name..' Debugger', function() NeP.Debug.GUI.parent:Show() end)
+	NeP.Debug.GUI.parent:Hide()
+end)
 
 function NeP.Debug:Add(name, func, subroutines)
 	table.insert(self.Profiles, {

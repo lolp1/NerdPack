@@ -149,9 +149,9 @@ local function ParseStart()
 	end
 end
 
-NeP.Debug:Add("Parser", ParseStart, true)
-
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
 C_Timer.NewTicker(0.1, ParseStart)
-end, -99999)
+end, -99)
+
+NeP.Debug:Add("Parser", ParseStart, true)
