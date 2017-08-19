@@ -60,8 +60,7 @@ function NeP.Healing.GetRoster()
 	return Roster
 end
 
-C_Timer.NewTicker(0.1, (function()
-	-- Add refresh
+local function Iterate()
 	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
 		if UnitInParty(Obj.key)
 		or UnitIsUnit('player', Obj.key) then
@@ -72,7 +71,10 @@ C_Timer.NewTicker(0.1, (function()
 			end
 		end
 	end
-end), nil)
+end
+
+NeP.Debug:Add("Healing", Iterate, true)
+C_Timer.NewTicker(0.1, Iterate)
 
 NeP.DSL:Register("health", function(target)
 	return healthPercent(target)
