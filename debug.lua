@@ -2,7 +2,6 @@ local _, NeP = ...
 
 NeP.Debug = {}
 NeP.Debug.Profiles = {}
-NeP.Debug.Profiles_dump = {}
 
 SetCVar("scriptProfile", "1")
 
@@ -14,7 +13,9 @@ function NeP.Debug:Add(name, func, subroutines)
 	table.insert(self.Profiles, {
 		name = name,
 		func = func,
-		sr = subroutines
+		sr = subroutines,
+    max = 0,
+    min = 0
 	})
 end
 
@@ -22,10 +23,10 @@ local tbl = NeP.Debug.Profiles
 C_Timer.NewTicker(1, function()
 	for i=1, #tbl do
 		local usage, calls = GetFunctionCPUUsage(tbl[i].func, tbl[i].sr)
-		NeP.Debug.Profiles_dump[tbl[i].name] = {
-			cpu = usage,
-			calls = calls
-		}
+		tbl[i].cpu_time = usage
+		tbl[i].calls = calls
+    tbl[i].max = tbl[i].max > usage and tbl[i].max or usage
+    tbl[i].min = tbl[i].min < usage and tbl[i].min or usage
 	end
 	ResetCPUUsage()
 end, nil)
