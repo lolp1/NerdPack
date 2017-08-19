@@ -38,6 +38,7 @@ C_Timer.NewTicker(1, function()
 		local usage, calls = GetFunctionCPUUsage(tbl[i].func, tbl[i].subroutines)
 		tbl[i].cpu_time = usage
 		tbl[i].calls = calls
+    tbl[i].time_call = calls > 0 and usage/calls or 0
     tbl[i].average = GetAvg(tbl[i].average, usage)
     tbl[i].max = tbl[i].max > usage and tbl[i].max or usage
     tbl[i].min = tbl[i].min < usage and tbl[i].min or usage
