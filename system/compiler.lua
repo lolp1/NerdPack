@@ -42,7 +42,7 @@ local _spell_types = {
 	['table'] = function(eval)
 		eval[1].is_table = true
 		eval[1].master = eval.master
-		eval[1].spell = tostring(eval[1])
+		eval[1].spell = "TABLEZZ"
 		NeP.Compiler.Compile(eval[1])
 	end,
 	['function'] = function(eval)
