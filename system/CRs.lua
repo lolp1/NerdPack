@@ -8,7 +8,7 @@ local GetSpecializationInfo = GetSpecializationInfo
 local noop                  = function() end
 
 function NeP.CR.AddGUI(_, ev)
-	local temp = {
+	local temp = ev.gui_st  or {
 		title = ev.name,
 		key = ev.name,
 		width = 200,
