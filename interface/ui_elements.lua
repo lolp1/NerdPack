@@ -99,6 +99,7 @@ function NeP.Interface:Spinner(element, parent, table)
 	tmp.settings.shiftStep = element.shiftStep or tmp.settings.shiftStep
 	tmp:ApplySettings()
 	--tmp:SetStylesheet(self.spinnerStyleSheet)
+	element.y = tmp.settings.width
 	tmp:SetEventListener('OnValueChanged', function(_, _, userInput, number)
 		if not userInput then return end
 		NeP.Interface:Write(table.key, key, number)
