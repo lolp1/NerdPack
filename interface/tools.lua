@@ -133,9 +133,25 @@ function NeP.Interface:BuildElements(table, parent)
 		local element_type = Elements[element.type:lower()]
 		--build element
 		element.key = element.key or "fake"
-		local res = self[element_type](self, element, parent, table)
-		self.usedGUIs[table.key].elements[element.key] = res
+		local tmp = self[element_type](self, element, parent, table)
+		-- TEXT
+		if element.text and element_type ~= "Text" then
+			tmp.text2 = self:Text(element, parent, table)
+			if element_type == 'Spinner' then
+				tmp:SetHeight(element.height or tmp.text2:GetStringHeight())
+			end
+			if element_type == 'Checkspin' then
+				tmp.spin:SetHeight(element.height or tmp.text2:GetStringHeight())
+			end
+		end
+		-- DESCRIPTION
+		if element.desc then
+			element.text = element.desc
+			tmp.desc = self:Text(element, parent, table)
+			table.offset = table.offset - tmp.desc:GetStringHeight()
+		end
 		table.offset = table.offset - element_space
+		self.usedGUIs[table.key].elements[element.key] = tmp
 	end
 end
 

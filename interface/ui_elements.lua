@@ -76,14 +76,6 @@ function NeP.Interface:Checkbox(element, parent, table)
 		tmp:SetChecked(NeP.Interface:Fetch(table.key, key, default or false))
 	end)
 	element.h = 20
-	if element.text then
-		tmp.text = self:Text(element, parent, table)
-	end
-	if element.desc then
-		element.text = element.desc
-		tmp.desc = self:Text(element, parent, table)
-		table.offset = table.offset - tmp.desc:GetStringHeight()
-	end
 	return tmp
 end
 
@@ -111,16 +103,6 @@ function NeP.Interface:Spinner(element, parent, table)
 		if not userInput then return end
 		NeP.Interface:Write(table.key, key, number)
 	end)
-	if element.text then
-		element.y = tmp.settings.width
-		tmp.text = self:Text(element, parent, table)
-		tmp:SetHeight(element.height or tmp.text:GetStringHeight())
-	end
-	if element.desc then
-		element.text = element.desc
-		tmp.desc = self:Text(element, parent, table)
-		table.offset = table.offset - tmp.desc:GetStringHeight()
-	end
 	return tmp
 end
 
@@ -137,7 +119,6 @@ function NeP.Interface:Checkspin(element, parent, table)
 	element.text = nil
 	element.desc = nil
 	tmp.spin = self:Spinner(element, parent, table)
-	tmp.spin:SetHeight(element.height or tmp.text:GetStringHeight())
 	table.offset = final_offset
 	element.text = original_text
 	element.desc = original_desc
@@ -164,15 +145,6 @@ function NeP.Interface:Combo(element, parent, table)
 	NeP.Core:WhenInGame(function()
 		tmp:SetValue(NeP.Interface:Fetch(table.key, element.key, element.default))
 	end)
-	if element.text then
-		tmp.text2 = self:Text(element, parent, table)
-	end
-	if element.desc then
-		element.text = element.desc
-		tmp.desc = self:Text(element, parent, table-element.offset)
-		table.offset = table.offset - tmp.desc:GetStringHeight()
-		tmp.spin:SetHeight(element.height or tmp.text:GetStringHeight())
-	end
 	return tmp
 end
 
@@ -187,11 +159,6 @@ function NeP.Interface:Button(element, parent, table)
 	tmp:SetEventListener('OnClick', element.callback)
 	tmp:SetPoint(element.align or "TOP", parent.content, 0, table.offset)
 	table.offset = table.offset - (element.offset or tmp:GetHeight())
-	if element.desc then
-		element.text = element.desc
-		tmp.desc = self:Text(element, parent, table-element.offset)
-		table.offset = table.offset - tmp.desc:GetStringHeight()
-	end
 	return tmp
 end
 
@@ -208,12 +175,6 @@ function NeP.Interface:Input(element, parent, table)
 	tmp:SetEventListener('OnEditFocusLost', function(this)
 		NeP.Interface:Write(table.key, element.key, this:GetText())
 	end)
-	tmp.text = self:Text(element, parent, table)
-	if element.desc then
-		element.text = element.desc
-		tmp.desc = self:Text(element, parent, table)
-		table.offset = table.offset - tmp.desc:GetStringHeight()
-	end
 	return tmp
 end
 
