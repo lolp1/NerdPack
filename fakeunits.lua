@@ -226,7 +226,8 @@ end)
 -- enemy Boss
 NeP.FakeUnits:Add('boss', function()
     for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-        if NeP.BossID:Eval(Obj.key) then
+        if UnitExists(Obj.key)
+	and NeP.BossID:Eval(Obj.key) then
             return Obj.key
         end
     end
