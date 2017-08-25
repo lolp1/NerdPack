@@ -135,7 +135,9 @@ function NeP.Interface:BuildElements(table, parent)
 		element.key = element.key or "fake"
 		local tmp = self[element_type](self, element, parent, table)
 		-- TEXT
-		if element.text and element_type ~= "Text" then
+		if element.text
+		and element_type ~= "Text"
+		and element_type ~= "Header" then
 			tmp.text2 = self:Text(element, parent, table)
 			if element_type == 'Spinner' then
 				tmp:SetHeight(element.height or tmp.text2:GetStringHeight())
