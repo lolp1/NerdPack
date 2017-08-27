@@ -126,6 +126,29 @@ function NeP.Interface:BuildGUI_Combo(table, parent)
 		end)
 end
 
+function NeP.Interface:AddText(element, parent, table, element_type, tmp)
+	if element.text
+	and element_type ~= "Text"
+	and element_type ~= "Header"
+	and element_type ~= "Button" then
+		tmp.text2 = self:Text(element, parent, table)
+		if element_type == 'Spinner' then
+			tmp:SetHeight(element.height or tmp.text2:GetStringHeight())
+		end
+		if element_type == 'Checkspin' then
+			tmp.spin:SetHeight(element.height or tmp.text2:GetStringHeight())
+		end
+	end
+end
+
+function NeP.Interface:AddDesc(element, parent, table, tmp)
+	if element.desc then
+		element.text = element.desc
+		tmp.desc = self:Text(element, parent, table)
+		table.offset = table.offset - tmp.desc:GetStringHeight()
+	end
+end
+
 function NeP.Interface:BuildElements(table, parent)
 	table.offset = -5
 	for i=1, #table.config do
@@ -134,24 +157,8 @@ function NeP.Interface:BuildElements(table, parent)
 		--build element
 		element.key = element.key or "fake"
 		local tmp = self[element_type](self, element, parent, table)
-		-- TEXT
-		if element.text
-		and element_type ~= "Text"
-		and element_type ~= "Header" then
-			tmp.text2 = self:Text(element, parent, table)
-			if element_type == 'Spinner' then
-				tmp:SetHeight(element.height or tmp.text2:GetStringHeight())
-			end
-			if element_type == 'Checkspin' then
-				tmp.spin:SetHeight(element.height or tmp.text2:GetStringHeight())
-			end
-		end
-		-- DESCRIPTION
-		if element.desc then
-			element.text = element.desc
-			tmp.desc = self:Text(element, parent, table)
-			table.offset = table.offset - tmp.desc:GetStringHeight()
-		end
+		self:AddText(element, parent, table, element_type, tmp)
+		self:AddDesc(element, parent, table, tmp)
 		table.offset = table.offset - element_space
 		self.usedGUIs[table.key].elements[element.key] = tmp
 	end
