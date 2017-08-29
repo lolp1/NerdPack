@@ -1,31 +1,22 @@
 local _, NeP = ...
+
+NeP.Protected = {}
+NeP.Protected.callbacks = {}
+
+local rangeCheck = LibStub("LibRangeCheck-2.0")
 local IsInRaid = IsInRaid
 local GetNumGroupMembers = GetNumGroupMembers
 local IsInGroup = IsInGroup
 local UnitIsFriend = UnitIsFriend
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
+local strsplit = strsplit
+local UnitName = UnitName
 local noop = function() end
 
-NeP.Protected = {}
-NeP.Globals.Protected = NeP.Protected
-NeP.Protected.nPlates = {
-	Friendly = {},
-	Enemy = {}
-}
-
-function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
-	local distance = NeP.Protected.Distance('player', Obj) or 999
-	if distance <= NeP.OM.max_distance then
-		local ObjID = select(6, strsplit('-', GUID))
-		self[ref][GUID] = {
-			key = Obj,
-			name = UnitName(Obj),
-			distance = distance,
-			id = tonumber(ObjID or 0),
-			guid = GUID,
-			isdummy = NeP.DSL:Get('isdummy')(Obj)
-		}
+function NeP.Protected:AddCallBack(func)
+	if not func() then
+		table.insert(self.callbacks, func)
 	end
 end
 
@@ -43,7 +34,6 @@ NeP.Protected.UseInvItem = noop
 NeP.Protected.TargetUnit = noop
 NeP.Protected.SpellStopCasting = noop
 
-local rangeCheck = LibStub("LibRangeCheck-2.0")
 NeP.Protected.Distance = function(_, b)
   local minRange, maxRange = rangeCheck:GetRange(b)
   return maxRange or minRange
@@ -64,6 +54,26 @@ end
 
 local ValidUnits = {'player', 'mouseover', 'target', 'focus', 'pet',}
 local ValidUnitsN = {'boss', 'arena', 'arenapet'}
+
+NeP.Protected.nPlates = {
+	Friendly = {},
+	Enemy = {}
+}
+
+function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
+	local distance = NeP.Protected.Distance('player', Obj) or 999
+	if distance <= NeP.OM.max_distance then
+		local ObjID = select(6, strsplit('-', GUID))
+		self[ref][GUID] = {
+			key = Obj,
+			name = UnitName(Obj),
+			distance = distance,
+			id = tonumber(ObjID or 0),
+			guid = GUID,
+			isdummy = NeP.DSL:Get('isdummy')(Obj)
+		}
+	end
+end
 
 NeP.Protected.OM_Maker = function()
   -- If in Group scan frames...
@@ -105,3 +115,5 @@ NeP.Protected.OM_Maker = function()
 		end
 	end
 end
+
+NeP.Globals.Protected = NeP.Protected
