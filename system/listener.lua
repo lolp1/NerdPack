@@ -1,5 +1,6 @@
 local _, NeP = ...
-local onEvent = onEvent
+local onEvent = _G.onEvent
+local CreateFrame = _G.CreateFrame
 
 NeP.Listener = {}
 NeP.Globals.Listener = NeP.Listener

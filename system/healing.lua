@@ -4,19 +4,16 @@ local Roster 			= NeP.OM.Roster
 local maxDistance = 40
 
 -- Local stuff for speed
-local UnitExists              = ObjectExists or UnitExists
-local UnitHealth              = UnitHealth
-local UnitGUID                = UnitGUID
-local UnitHealthMax           = UnitHealthMax
-local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
-local UnitGetIncomingHeals    = UnitGetIncomingHeals
-local UnitGroupRolesAssigned  = UnitGroupRolesAssigned
-local UnitIsDeadOrGhost       = UnitIsDeadOrGhost
-local UnitInParty             = UnitInParty
-local UnitIsUnit              = UnitIsUnit
-local strsplit                = strsplit
-local UnitInPhase             = UnitInPhase
-local C_Timer                 = C_Timer
+local UnitExists = _G.ObjectExists or _G.UnitExists
+local UnitHealth = _G.UnitHealth
+local UnitHealthMax = _G.UnitHealthMax
+local UnitGetTotalHealAbsorbs = _G.UnitGetTotalHealAbsorbs
+local UnitGetIncomingHeals = _G.UnitGetIncomingHeals
+local UnitGroupRolesAssigned = _G.UnitGroupRolesAssigned
+local UnitInParty = _G.UnitInParty
+local UnitIsUnit = _G.UnitIsUnit
+local strsplit = _G.strsplit
+local C_Timer = _G.C_Timer
 
 local forced_role = {
 	[72218] = "TANK" -- Oto the Protector (Proving Grounds)

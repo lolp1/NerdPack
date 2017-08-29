@@ -1,9 +1,9 @@
-local _, NeP               = ...
-local GetSpellCooldown     = GetSpellCooldown
-local IsUsableSpell        = IsUsableSpell
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local UnitExists           = UnitExists
-local GetTime              = GetTime
+local _, NeP = ...
+local GetSpellCooldown = _G.GetSpellCooldown
+local IsUsableSpell = _G.IsUsableSpell
+local GetSpellBookItemInfo = _G.GetSpellBookItemInfo
+local UnitExists = _G.UnitExists
+local GetTime = _G.GetTime
 
 NeP.Queuer = {}
 local Queue = {}

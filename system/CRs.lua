@@ -1,11 +1,11 @@
-local _, NeP                = ...
-NeP.CR                      = {}
-NeP.CR.CR                   = {}
-local CRs                   = {}
-local UnitClass             = UnitClass
-local GetSpecialization     = GetSpecialization
-local GetSpecializationInfo = GetSpecializationInfo
-local noop                  = function() end
+local _, NeP = ...
+NeP.CR = {}
+NeP.CR.CR = {}
+local CRs = {}
+local UnitClass = _G.UnitClass
+local GetSpecialization = _G.GetSpecialization
+local GetSpecializationInfo = _G.GetSpecializationInfo
+local noop = function() end
 
 function NeP.CR.AddGUI(_, ev)
 	local gui_st = ev.gui_st or {}

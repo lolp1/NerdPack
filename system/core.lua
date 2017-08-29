@@ -3,21 +3,21 @@ NeP.Core         = {}
 NeP.Globals.Core = NeP.Core
 
 -- Locals for speed
-local UnitExists           = ObjectExists or UnitExists
-local UnitClass            = UnitClass
-local GetSpellInfo         = GetSpellInfo
-local GetItemInfo          = GetItemInfo
-local UnitGUID             = UnitGUID
-local strsplit             = strsplit
-local GetSpellTabInfo      = GetSpellTabInfo
-local GetSpellBookItemName = GetSpellBookItemName
-local GetFlyoutInfo        = GetFlyoutInfo
-local GetNumFlyouts        = GetNumFlyouts
-local GetFlyoutID          = GetFlyoutID
-local GetFlyoutSlotInfo    = GetFlyoutSlotInfo
-local HasPetSpells         = HasPetSpells
-local BOOKTYPE_SPELL       = BOOKTYPE_SPELL
-local BOOKTYPE_PET         = BOOKTYPE_PET
+local UnitExists = _G.ObjectExists or _G.UnitExists
+local UnitClass = _G.UnitClass
+local GetSpellInfo = _G.GetSpellInfo
+local GetItemInfo = _G.GetItemInfo
+local UnitGUID = _G.UnitGUID
+local strsplit = _G.strsplit
+local GetSpellTabInfo = _G.GetSpellTabInfo
+local GetSpellBookItemName = _G.GetSpellBookItemName
+local GetFlyoutInfo = _G.GetFlyoutInfo
+local GetNumFlyouts = _G.GetNumFlyouts
+local GetFlyoutID = _G.GetFlyoutID
+local GetFlyoutSlotInfo = _G.GetFlyoutSlotInfo
+local HasPetSpells = _G.HasPetSpells
+local BOOKTYPE_SPELL = _G.BOOKTYPE_SPELL
+local BOOKTYPE_PET = _G.BOOKTYPE_PET
 
 function NeP.Core.Print(_, ...)
 	print('[|cff'..NeP.Color..'NeP|r]', ...)
@@ -150,7 +150,7 @@ function NeP.Core.string_split(_, string, delimiter)
 end
 
 NeP.Listener:Add("NeP_Core_load", "PLAYER_LOGIN", function()
-	C_Timer.After(5, function()
+	_G.C_Timer.After(5, function()
 		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
 		NeP.Color = NeP.Core:ClassColor('player', 'hex')
 		for i=1, #Run_Cache do

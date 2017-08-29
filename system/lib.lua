@@ -1,6 +1,5 @@
 local _, NeP = ...
-local loadstring = loadstring
-local strsplit = strsplit
+local strsplit = _G.strsplit
 
 NeP.Library = {}
 NeP.Library.Libs = {}
