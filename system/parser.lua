@@ -3,16 +3,16 @@ NeP.Parser   = {}
 local c = NeP.CR
 
 -- Local stuff for speed
-local GetTime              = GetTime
-local UnitBuff             = UnitBuff
-local UnitCastingInfo      = UnitCastingInfo
-local UnitChannelInfo      = UnitChannelInfo
-local UnitExists           = ObjectExists or UnitExists
-local UnitIsVisible        = UnitIsVisible
-local UnitIsDeadOrGhost    = UnitIsDeadOrGhost
-local SecureCmdOptionParse = SecureCmdOptionParse
-local InCombatLockdown     = InCombatLockdown
-local C_Timer              = C_Timer
+local GetTime = _G.GetTime
+local UnitBuff = _G.UnitBuff
+local UnitCastingInfo = _G.UnitCastingInfo
+local UnitChannelInfo = _G.UnitChannelInfo
+local UnitExists = _G.ObjectExists or _G.UnitExists
+local UnitIsVisible = _G.UnitIsVisible
+local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
+local SecureCmdOptionParse = _G.SecureCmdOptionParse
+local InCombatLockdown = _G.InCombatLockdown
+local C_Timer = _G.C_Timer
 
 --This is used by the ticker
 --Its used to determin if we should iterate or not

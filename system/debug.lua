@@ -5,12 +5,12 @@ NeP.Debug.Profiles = {}
 NeP.Debug.Profiles.total_usage = 0
 NeP.Debug.Profiles.total_average = 0
 
-local GetFunctionCPUUsage = GetFunctionCPUUsage
-local ResetCPUUsage = ResetCPUUsage
-local C_Timer = C_Timer
-local texplore = texplore
+local GetFunctionCPUUsage = _G.GetFunctionCPUUsage
+local ResetCPUUsage = _G.ResetCPUUsage
+local C_Timer = _G.C_Timer
+local texplore = _G.texplore
 
-SetCVar("scriptProfile", "1")
+_G.SetCVar("scriptProfile", "1")
 
 NeP.Core:WhenInGame(function()
 	NeP.Interface:Add(n_name..' Debugger', function() texplore(NeP) end)

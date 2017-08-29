@@ -1,7 +1,6 @@
 local _, NeP = ...
 local tonumber = tonumber
 local noop = function() end
-local UnitExists = UnitExists
 
 NeP.Compiler = {}
 

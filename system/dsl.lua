@@ -1,7 +1,7 @@
 local _, NeP     = ...
 local DSL        = NeP.DSL
-local UnitExists = ObjectExists or UnitExists
-local strsplit   = strsplit
+local UnitExists = _G.ObjectExists or _G.UnitExists
+local strsplit   = _G.strsplit
 
 local function FilterNum(str)
 	local type_X = type(str)

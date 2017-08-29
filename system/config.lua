@@ -3,11 +3,12 @@ local n_name, NeP = ...
 NeP.Config = {}
 local Data = {}
 local version = "0.2"
+local wipe = _G.wipe
 
 NeP.Listener:Add("NeP_Config", "ADDON_LOADED", function(addon)
 	if addon:lower() == n_name:lower() then
-		NePDATA = NePDATA or Data
-		Data = NePDATA
+		_G.NePDATA = _G.NePDATA or Data
+		Data = _G.NePDATA
 		if Data["config_ver"] ~= version then wipe(Data) end
 		Data["config_ver"] = version
 	end

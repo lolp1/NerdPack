@@ -1,23 +1,23 @@
 local _, NeP = ...
 
 -- Local stuff for speed
-local UnitExists = ObjectExists or UnitExists
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitCanAttack = UnitCanAttack
-local UnitIsFriend = UnitIsFriend
-local UnitGUID = UnitGUID
-local UnitName = UnitName
-local strsplit = strsplit
+local UnitExists = _G.ObjectExists or _G.UnitExists
+local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
+local UnitCanAttack = _G.UnitCanAttack
+local UnitIsFriend = _G.UnitIsFriend
+local UnitGUID = _G.UnitGUID
+local UnitName = _G.UnitName
+local strsplit = _G.strsplit
 local select = select
 local tonumber = tonumber
 local pairs = pairs
-local C_Timer = C_Timer
-local UnitInPhase = UnitInPhase
-local wipe = wipe
+local C_Timer = _G.C_Timer
+local UnitInPhase = _G.UnitInPhase
+local wipe = _G.wipe
 
 --Advanced
-local ObjectIsType = ObjectIsType
-local ObjectTypes  = ObjectTypes
+local ObjectIsType = _G.ObjectIsType
+local ObjectTypes  = _G.ObjectTypes
 
 NeP.OM = {
 	Enemy    = {},
