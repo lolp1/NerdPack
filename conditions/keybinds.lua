@@ -1,18 +1,5 @@
 local _, NeP = ...
 
--- Locals to increase performance
-local IsShiftKeyDown          = IsShiftKeyDown
-local IsLeftShiftKeyDown      = IsLeftShiftKeyDown
-local IsRightShiftKeyDown     = IsRightShiftKeyDown
-local IsControlKeyDown        = IsControlKeyDown
-local IsLeftControlKeyDown    = IsLeftControlKeyDown
-local IsRightControlKeyDown   = IsRightControlKeyDown
-local IsAltKeyDown            = IsAltKeyDown
-local IsLeftAltKeyDown        = IsLeftAltKeyDown
-local IsRightAltKeyDown       = IsRightAltKeyDown
-local IsMouseButtonDown       = IsMouseButtonDown
-local GetCurrentKeyBoardFocus = GetCurrentKeyBoardFocus
-
 local KEYBINDS = {
   -- Shift
   ['shift']    = function() return IsShiftKeyDown() end,

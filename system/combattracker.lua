@@ -1,13 +1,5 @@
 local _, NeP = ...
 
--- Locals
-local GetTime = _G.GetTime
-local UnitGUID = _G.UnitGUID
-local GetSpellInfo = _G.GetSpellInfo
-local InCombatLockdown = _G.InCombatLockdown
-local UnitHealth = _G.UnitHealth
-local wipe = _G.wipe
-
 NeP.CombatTracker = {}
 local Data = {}
 

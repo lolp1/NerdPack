@@ -1,12 +1,4 @@
 local _, NeP = ...
-
-local LibStub = LibStub
-local tremove = tremove
-local tinsert = tinsert
-local UnitHealth = UnitHealth
-local UnitHealthMax = UnitHealthMax
-local TargetUnit = TargetUnit
-local C_Timer = C_Timer
 local DiesalGUI = LibStub('DiesalGUI-1.0')
 local L = NeP.Locale
 

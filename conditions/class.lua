@@ -1,30 +1,4 @@
 local _, NeP = ...
-local UnitPower = UnitPower
-local UnitPowerType = UnitPowerType
-local UnitPowerMax = UnitPowerMax
-local UnitExists = ObjectExists or UnitExists
-local UnitMana = UnitMana
-local UnitManaMax = UnitManaMax
-local GetRuneCooldown = GetRuneCooldown
-local GetTotemInfo = GetTotemInfo
-local GetTime = GetTime
-local GetShapeshiftForm = GetShapeshiftForm
-local UnitName = UnitName
-local C_Timer = C_Timer
-
-local SPELL_POWER_INSANITY = SPELL_POWER_INSANITY
-local SPELL_POWER_FOCUS = SPELL_POWER_FOCUS
-local SPELL_POWER_RUNIC_POWER = SPELL_POWER_RUNIC_POWER
-local SPELL_POWER_MAELSTROM = SPELL_POWER_MAELSTROM
-local SPELL_POWER_SOUL_SHARDS = SPELL_POWER_SOUL_SHARDS
-local SPELL_POWER_CHI = SPELL_POWER_CHI
-local SPELL_POWER_LUNAR_POWER = SPELL_POWER_LUNAR_POWER
-local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
-local SPELL_POWER_RAGE = SPELL_POWER_RAGE
-local SPELL_POWER_FURY = SPELL_POWER_FURY
-local SPELL_POWER_PAIN = SPELL_POWER_PAIN
-local SPELL_POWER_ARCANE_CHARGES = SPELL_POWER_ARCANE_CHARGES
-local SPELL_POWER_COMBO_POINTS = SPELL_POWER_COMBO_POINTS
 
 NeP.DSL:Register('energy', function(target)
   return UnitPower(target, UnitPowerType(target))

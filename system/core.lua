@@ -2,23 +2,6 @@ local _, NeP     = ...
 NeP.Core         = {}
 NeP.Globals.Core = NeP.Core
 
--- Locals for speed
-local UnitExists = _G.ObjectExists or _G.UnitExists
-local UnitClass = _G.UnitClass
-local GetSpellInfo = _G.GetSpellInfo
-local GetItemInfo = _G.GetItemInfo
-local UnitGUID = _G.UnitGUID
-local strsplit = _G.strsplit
-local GetSpellTabInfo = _G.GetSpellTabInfo
-local GetSpellBookItemName = _G.GetSpellBookItemName
-local GetFlyoutInfo = _G.GetFlyoutInfo
-local GetNumFlyouts = _G.GetNumFlyouts
-local GetFlyoutID = _G.GetFlyoutID
-local GetFlyoutSlotInfo = _G.GetFlyoutSlotInfo
-local HasPetSpells = _G.HasPetSpells
-local BOOKTYPE_SPELL = _G.BOOKTYPE_SPELL
-local BOOKTYPE_PET = _G.BOOKTYPE_PET
-
 function NeP.Core.Print(_, ...)
 	print('[|cff'..NeP.Color..'NeP|r]', ...)
 end

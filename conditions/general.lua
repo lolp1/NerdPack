@@ -1,16 +1,4 @@
 local _, NeP = ...
-local UnitIsUnit = UnitIsUnit
-local GetTime = GetTime
-local UnitPowerMax = UnitPowerMax
-local UnitChannelInfo = UnitChannelInfo
-local UnitCastingInfo = UnitCastingInfo
-local UnitPower = UnitPower
-local GetPowerRegen = GetPowerRegen
-local GetShapeshiftForm = GetShapeshiftForm
-local strsplit = strsplit
-local UnitClass = UnitClass
-local GetSpecialization = GetSpecialization
-local GetHaste = GetHaste
 
 local function checkChanneling(target)
   local name, _, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(target)

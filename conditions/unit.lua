@@ -1,31 +1,4 @@
 local _, NeP = ...
-local UnitInParty = UnitInParty
-local UnitInRaid = UnitInRaid
-local GetNumGroupMembers = GetNumGroupMembers
-local UnitClassification = UnitClassification
-local UnitThreatSituation = UnitThreatSituation
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local GetUnitSpeed = GetUnitSpeed
-local UnitGUID = UnitGUID
-local UnitIsPlayer = UnitIsPlayer
-local UnitExists = ObjectExists or UnitExists
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local GetTime = GetTime
-local UnitCanAttack = UnitCanAttack
-local UnitLevel = UnitLevel
-local UnitAffectingCombat = UnitAffectingCombat
-local IsCurrentSpell = IsCurrentSpell
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitName = UnitName
-local UnitCreatureType = UnitCreatureType
-local UnitClass = UnitClass
-local IsSwimming = IsSwimming
-local UnitIsUnit = UnitIsUnit
-local IsFalling = IsFalling
-local UnitIsCharmed = UnitIsCharmed
-local IsIndoors = IsIndoors
-local UnitSpellHaste = UnitSpellHaste
-local IsMounted = IsMounted
 
 NeP.DSL:Register('ingroup', function(target)
   return UnitInParty(target) or UnitInRaid(target)

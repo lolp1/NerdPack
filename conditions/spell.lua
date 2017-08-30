@@ -1,18 +1,5 @@
 local _, NeP = ...
 
-local GetTime = GetTime
-local GetSpellCooldown = GetSpellCooldown
-local GetSpellCharges = GetSpellCharges
-local IsSpellInRange = IsSpellInRange
-local GetSpellCount = GetSpellCount
-local IsUsableSpell = IsUsableSpell
-local GetSpellInfo = GetSpellInfo
-local GetPowerRegen = GetPowerRegen
-local UnitIsUnit = UnitIsUnit
-local GetGlyphSocketInfo = GetGlyphSocketInfo
-local GetWeaponEnchantInfo = GetWeaponEnchantInfo
-
-
 NeP.DSL:Register('spell.cooldown', function(_, spell)
   local start, duration = GetSpellCooldown(spell)
   if not start then return 0 end

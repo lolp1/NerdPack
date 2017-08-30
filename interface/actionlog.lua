@@ -1,12 +1,5 @@
 local _, NeP = ...
 
--- Locals
-local UnitExists 	= ObjectExists or UnitExists
-local date       	= date
-local UnitName   	= UnitName
-local CreateFrame = CreateFrame
-local wipe 				= wipe
-
 NeP.ActionLog = {}
 
 local Data = {}

@@ -1,5 +1,4 @@
 local _, NeP = ...
-local UnitExists = ObjectExists or UnitExists
 
 -- USAGE: UNIT.area(DISTANCE).enemies >= #
 NeP.DSL:Register("area.enemies", function(unit, distance)

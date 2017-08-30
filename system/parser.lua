@@ -2,18 +2,6 @@ local _, NeP = ...
 NeP.Parser   = {}
 local c = NeP.CR
 
--- Local stuff for speed
-local GetTime = _G.GetTime
-local UnitBuff = _G.UnitBuff
-local UnitCastingInfo = _G.UnitCastingInfo
-local UnitChannelInfo = _G.UnitChannelInfo
-local UnitExists = _G.ObjectExists or _G.UnitExists
-local UnitIsVisible = _G.UnitIsVisible
-local UnitIsDeadOrGhost = _G.UnitIsDeadOrGhost
-local SecureCmdOptionParse = _G.SecureCmdOptionParse
-local InCombatLockdown = _G.InCombatLockdown
-local C_Timer = _G.C_Timer
-
 --This is used by the ticker
 --Its used to determin if we should iterate or not
 --Returns true if we're not mounted or in a castable mount

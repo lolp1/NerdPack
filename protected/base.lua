@@ -4,14 +4,6 @@ NeP.Protected = {}
 NeP.Protected.callbacks = {}
 
 local rangeCheck = LibStub("LibRangeCheck-2.0")
-local IsInRaid = IsInRaid
-local GetNumGroupMembers = GetNumGroupMembers
-local IsInGroup = IsInGroup
-local UnitIsFriend = UnitIsFriend
-local UnitExists = UnitExists
-local UnitGUID = UnitGUID
-local strsplit = strsplit
-local UnitName = UnitName
 local noop = function() end
 
 function NeP.Protected:AddCallBack(func)

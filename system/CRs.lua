@@ -2,9 +2,6 @@ local _, NeP = ...
 NeP.CR = {}
 NeP.CR.CR = {}
 local CRs = {}
-local UnitClass = _G.UnitClass
-local GetSpecialization = _G.GetSpecialization
-local GetSpecializationInfo = _G.GetSpecializationInfo
 local noop = function() end
 
 function NeP.CR.AddGUI(_, ev)

@@ -3,7 +3,6 @@ local n_name, NeP = ...
 NeP.Config = {}
 local Data = {}
 local version = "0.2"
-local wipe = _G.wipe
 
 NeP.Listener:Add("NeP_Config", "ADDON_LOADED", function(addon)
 	if addon:lower() == n_name:lower() then

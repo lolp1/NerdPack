@@ -1,10 +1,7 @@
 local _, NeP = ...
-local DBM = DBM
 
 if not DBM then return end
 
-local C_Timer = C_Timer
-local GetSpellInfo = GetSpellInfo
 local Timers = {}
 local fake_timer = 999
 
