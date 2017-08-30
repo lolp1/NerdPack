@@ -1,9 +1,6 @@
-local _, NeP       = ...
-NeP.AddsID         = {}
+local _, NeP = ...
+NeP.AddsID = {}
 NeP.Globals.AddsID = NeP.AddsID
-local strsplit     = strsplit
-local UnitExists   = UnitExists
-local UnitGUID     = UnitGUID
 
 --AddsIDs Lib
 local addsids = {}

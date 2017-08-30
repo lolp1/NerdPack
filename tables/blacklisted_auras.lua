@@ -48,9 +48,6 @@ local BlacklistedAuras = {
 	[184053] = '',     -- Fel Barrier (Socrethar)
 }
 
--- locals
-local UnitDebuff = UnitDebuff
-
 function NeP.BlacklistedDebuffs(unit)
 	for i = 1, 40 do
 		local ID = select(11, UnitDebuff(unit, i))
