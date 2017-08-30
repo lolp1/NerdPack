@@ -1,24 +1,5 @@
 local _, NeP = ...
-local LibStub = LibStub
 local LibDisp = LibStub('LibDispellable-1.0')
-local GetSpellInfo = GetSpellInfo
-local UnitThreatSituation = UnitThreatSituation
-local UnitIsPlayer = UnitIsPlayer
-local IsUsableItem = IsUsableItem
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitPlayerOrPetInParty = UnitPlayerOrPetInParty
-local GetItemCooldown = GetItemCooldown
-local GetItemSpell = GetItemSpell
-local GetItemCount = GetItemCount
-local CancelShapeshiftForm = CancelShapeshiftForm
-local CancelUnitBuff = CancelUnitBuff
-local GetSpellCooldown = GetSpellCooldown
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local IsUsableSpell = IsUsableSpell
-local GetInventorySlotInfo = GetInventorySlotInfo
-local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
-local UnitExists = UnitExists
 
 local funcs = {
 	noop = function() end,

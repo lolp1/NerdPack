@@ -1,8 +1,5 @@
 local _, NeP = ...
 
-local UnitIsUnit 	= UnitIsUnit
-local strsplit 		= strsplit
-
 -- Lowest
 NeP.FakeUnits:Add('lowest', function(num, role)
 	local tempTable = {}
