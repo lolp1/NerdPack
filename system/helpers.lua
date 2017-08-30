@@ -1,6 +1,5 @@
 local _, NeP = ...
 NeP.Helpers = {}
-local UnitGUID = _G.UnitGUID
 local UIErrorsFrame = _G.UIErrorsFrame
 local C_Timer = _G.C_Timer
 
