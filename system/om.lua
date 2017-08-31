@@ -103,23 +103,20 @@ function NeP.OM.Insert(_, ref, Obj, GUID)
 	end
 end
 
-function NeP.OM.Add(_, Obj)
+function NeP.OM.Add(_, Obj, isObject)
 	if not UnitExists(Obj) then return end
 	local GUID = UnitGUID(Obj) or '0'
-	--units
+	-- Units
 	if UnitInPhase(Obj) then
-		-- Dead Units
 		if UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj, GUID)
-		-- Friendly
 		elseif UnitIsFriend('player', Obj) then
 			NeP.OM:Insert('Friendly', Obj, GUID)
-		-- Enemie
 		elseif UnitCanAttack('player', Obj) then
 			NeP.OM:Insert('Enemy', Obj, GUID)
 		end
 	-- Objects
-	elseif ObjectIsType and ObjectIsType(Obj, ObjectTypes.GameObject) then
+	elseif isObject then
 		NeP.OM:Insert('Objects', Obj, GUID)
 	end
 end
@@ -153,5 +150,6 @@ C_Timer.NewTicker(1, MakerStart)
 -- Gobals
 NeP.Globals.OM = {
 	Add = NeP.OM.Add,
-	Get = NeP.OM.Get
+	Get = NeP.OM.Get,
+	clean = clean
 }
