@@ -46,7 +46,7 @@ end
 function clean.Objects()
 	for GUID, Obj in pairs(OM_c["Objects"]) do
 		if Obj.distance > NeP.OM.max_distance
-		or not UnitExists(Obj.key)
+		or not ObjectIsVisible(Obj.key) -- This needs to be out of here.... (EXTERNAL API)
 		or GUID ~= UnitGUID(Obj.key) then
 			OM_c["Objects"][GUID] = nil
 		end
@@ -104,10 +104,10 @@ function NeP.OM.Insert(_, ref, Obj, GUID)
 end
 
 function NeP.OM.Add(_, Obj, isObject)
-	if not UnitExists(Obj) then return end
 	local GUID = UnitGUID(Obj) or '0'
 	-- Units
-	if UnitInPhase(Obj) then
+	if UnitExists(Obj)
+	and UnitInPhase(Obj) then
 		if UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj, GUID)
 		elseif UnitIsFriend('player', Obj) then
