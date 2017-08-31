@@ -125,7 +125,9 @@ local function ParseStart()
 	NeP.Faceroll:Hide()
 	NeP:Wipe_Cache()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
-	and not UnitIsDeadOrGhost('player') and IsMountedCheck() then
+	and not UnitIsDeadOrGhost('player')
+	and IsMountedCheck()
+	and not LootFrame:IsShown() then
 		if NeP.Queuer:Execute() then return end
 		local table = c.CR and c.CR[InCombatLockdown()]
 		if not table then return end
