@@ -1,27 +1,28 @@
 local _, NeP = ...
-local T = NeP.Interface.toggleToggle
 
-local L = {
-	mastertoggle   = function(state) T(self,'MasterToggle', state) end,
-	aoe            = function(state) T(self,'AoE', state) end,
-	cooldowns      = function(state) T(self,'Cooldowns', state) end,
-	interrupts     = function(state) T(self,'Interrupts', state) end,
-    version        = function() NeP.Core:Print(NeP.Version) end,
-    show 			= function() NeP.Interface.MainFrame:Show() end,
-	hide = function()
-		NeP.Interface.MainFrame:Hide()
-		NeP.Core:Print('To Display NerdPack Execute: \n/nep show')
-	end,
-}
+NeP.Commands:Register('nep', nil, 'nep', 'nerdpack')
 
-L.mt = L.mastertoggle
-L.toggle = L.mastertoggle
-L.tg = L.mastertoggle
-L.ver = L.version
-
-NeP.Commands:Register('NeP', function(msg)
-	local command, rest = msg:match("^(%S*)%s*(.-)$");
-	command, rest = tostring(command):lower(), tostring(rest):lower()
+NeP.Commands:Add('nep', 'mastertoggle', function(rest)
 	rest = rest == 'on' or false
-	if L[command] then L[command](rest) end
-end, 'nep', 'nerdpack')
+	NeP.Interface:toggleToggle('MasterToggle', rest)
+end)
+
+NeP.Commands:Add('nep', 'aoe', function(rest)
+	rest = rest == 'on' or false
+	NeP.Interface:toggleToggle('AoE', rest)
+end)
+
+NeP.Commands:Add('nep', 'cooldowns', function(rest)
+	rest = rest == 'on' or false
+	NeP.Interface:toggleToggle('Cooldowns', rest)
+end)
+
+NeP.Commands:Add('nep', 'interrupts', function(rest)
+	rest = rest == 'on' or false
+	NeP.Interface:toggleToggle('Interrupts', rest)
+end)
+
+NeP.Commands:Add('nep', 'version', function() NeP.Core:Print(NeP.Version) end)
+NeP.Commands:Add('nep', 'show', function() NeP.Interface.MainFrame:Show() end)
+NeP.Commands:Add('nep', 'hide', function() NeP.Interface.MainFrame:Hide() end)
+NeP.Commands:Add('nep', 'al', function() NeP.ActionLog.Frame:Show() end)

@@ -10,12 +10,14 @@ local log_items = 10
 local abs_height = log_height * log_items + log_height
 local delta = 0
 
-local NeP_AL = NeP.Interface:BuildGUI({
+
+NeP.ActionLog.Frame = NeP.Interface:BuildGUI({
 	key = 'NeP_ALFrame',
 	width = 460,
 	title = L:TA('AL', 'Option'),
 	height = abs_height
 }).parent
+local NeP_AL = NeP.ActionLog.Frame
 NeP.Interface:Add(L:TA('AL', 'Option'), function() NeP_AL:Show() end)
 NeP_AL:Hide()
 
