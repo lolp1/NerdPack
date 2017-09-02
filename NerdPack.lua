@@ -1,6 +1,4 @@
 local n_name, NeP = ...
-local SetCVar = SetCVar
-local wipe = wipe
 
 NeP.Version = 1.8
 NeP.Branch  = 'Beta10'
@@ -19,9 +17,9 @@ NeP.Cache = {
 
 function NeP.Wipe_Cache()
 	for _, v in pairs(NeP.Cache) do
-		wipe(v)
+		_G.wipe(v)
 	end
 end
 
 -- Force lua erros on
-SetCVar("scriptErrors", "1")
+_G.SetCVar("scriptErrors", "1")
