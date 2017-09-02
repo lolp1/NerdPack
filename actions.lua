@@ -17,10 +17,10 @@ local funcs = {
 }
 
 local function IsSpellReady(spell)
-	if GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' then
 		local isUsable, notEnoughMana = IsUsableSpell(spell)
-		return isUsable and GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')(), notEnoughMana
-	end
+		return isUsable
+		and GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
+		and GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')(), notEnoughMana
 end
 
 -- Clip
