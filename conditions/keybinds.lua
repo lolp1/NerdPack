@@ -1,26 +1,27 @@
 local _, NeP = ...
+local _G = _G
 
 local KEYBINDS = {
   -- Shift
-  ['shift']    = function() return IsShiftKeyDown() end,
-  ['lshift']   = function() return IsLeftShiftKeyDown() end,
-  ['rshift']   = function() return IsRightShiftKeyDown() end,
+  ['shift']    = function() return _G.IsShiftKeyDown() end,
+  ['lshift']   = function() return _G.IsLeftShiftKeyDown() end,
+  ['rshift']   = function() return _G.IsRightShiftKeyDown() end,
   -- Control
-  ['control']  = function() return IsControlKeyDown() end,
-  ['lcontrol'] = function() return IsLeftControlKeyDown() end,
-  ['rcontrol'] = function() return IsRightControlKeyDown() end,
+  ['control']  = function() return _G.IsControlKeyDown() end,
+  ['lcontrol'] = function() return _G.IsLeftControlKeyDown() end,
+  ['rcontrol'] = function() return _G.IsRightControlKeyDown() end,
   -- Alt
-  ['alt']      = function() return IsAltKeyDown() end,
-  ['lalt']     = function() return IsLeftAltKeyDown() end,
-  ['ralt']     = function() return IsRightAltKeyDown() end,
+  ['alt']      = function() return _G.IsAltKeyDown() end,
+  ['lalt']     = function() return _G.IsLeftAltKeyDown() end,
+  ['ralt']     = function() return _G.IsRightAltKeyDown() end,
 }
 
 NeP.DSL:Register("keybind", function(_, Arg)
   Arg = Arg:lower()
-  return KEYBINDS[Arg] and KEYBINDS[Arg]() and not GetCurrentKeyBoardFocus()
+  return KEYBINDS[Arg] and KEYBINDS[Arg]() and not _G.GetCurrentKeyBoardFocus()
 end)
 
 NeP.DSL:Register("mouse", function(_, Arg)
   Arg = tonumber(Arg:lower())
-  return IsMouseButtonDown(Arg) and not GetCurrentKeyBoardFocus()
+  return _G.IsMouseButtonDown(Arg) and not _G.GetCurrentKeyBoardFocus()
 end)

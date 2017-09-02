@@ -1,12 +1,13 @@
 local _, NeP = ...
+local _G = _G
 
 local function UnitBuffL(target, spell, own)
-  local name,_,_,count,_,_,expires,caster = UnitBuff(target, spell, nil, own)
+  local name,_,_,count,_,_,expires,caster = _G.UnitBuff(target, spell, nil, own)
   return name, count, expires, caster
 end
 
 local function UnitDebuffL(target, spell, own)
-  local name, _,_, count, _,_, expires, caster = UnitDebuff(target, spell, nil, own)
+  local name, _,_, count, _,_, expires, caster = _G.UnitDebuff(target, spell, nil, own)
   return name, count, expires, caster
 end
 
@@ -40,7 +41,7 @@ end)
 
 NeP.DSL:Register("buff.duration", function(target, spell)
   local buff,_,expires = UnitBuffL(target, spell, 'PLAYER')
-  return buff and (expires - GetTime()) or 0
+  return buff and (expires - _G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("buff.many", function(target, spell)
@@ -82,7 +83,7 @@ end)
 
 NeP.DSL:Register("debuff.duration", function(target, spell)
   local debuff,_,expires = UnitDebuffL(target, spell)
-  return debuff and (expires - GetTime()) or 0
+  return debuff and (expires - _G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("debuff.many", function(target, spell)

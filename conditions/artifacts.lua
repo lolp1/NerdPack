@@ -1,5 +1,5 @@
 local _, NeP = ...
-local LAD = LibStub("LibArtifactData-1.0")
+local LAD = _G.LibStub("LibArtifactData-1.0")
 --[[
 					ARTIFACT CONDITIONS!
 			Only submit ARTIFACT specific conditions here.
@@ -27,7 +27,7 @@ function NeP.Artifact:TraitInfo(spell)
   if not traits then return end
   for _,v in ipairs(traits) do
     if v.name == spell then
-      return v.isGold, v.bonusRanks, v.maxRank, v.traitID, v.isStart, v.icon, v.isFinal, v.name, v.currentRank, v.spellID
+      return v.isGold,v.bonusRanks,v.maxRank,v.traitID,v.isStart,v.icon,v.isFinal,v.name,v.currentRank,v.spellID
     end
   end
 end

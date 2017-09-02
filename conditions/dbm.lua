@@ -1,13 +1,13 @@
 local _, NeP = ...
 
-if not DBM then return end
+if not _G.DBM then return end
 
 local Timers = {}
 local fake_timer = 999
 
-C_Timer.NewTicker(0.1, function()
-  for bar in pairs(DBM.Bars.bars) do
-      local id = GetSpellInfo(bar.id:match("%d+")) or bar.id:lower()
+_G.C_Timer.NewTicker(0.1, function()
+  for bar in pairs(_G.DBM.Bars.bars) do
+      local id = _G.GetSpellInfo(bar.id:match("%d+")) or bar.id:lower()
       Timers[id] = bar.timer > 0.1 and bar.timer or fake_timer
   end
 end)
