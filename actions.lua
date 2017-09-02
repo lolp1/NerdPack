@@ -18,10 +18,10 @@ local funcs = {
 }
 
 local function IsSpellReady(spell)
-		local _, notEnoughMana = _G.IsUsableSpell(spell)
+		local usable, notEnoughMana = _G.IsUsableSpell(spell)
 		local offCD = (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')()
-		return _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
-		and offCD, offCD and notEnoughMana
+		return usable and offCD
+		and _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL', offCD and notEnoughMana
 end
 
 -- Clip

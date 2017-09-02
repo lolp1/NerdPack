@@ -63,7 +63,8 @@ function NeP.Parser:Target(eval)
 	-- This is to alow casting at the cursor location where no unit exists
 	if eval[3].cursor then return true end
 	-- Eval if the unit is valid
-	return _G.UnitExists(eval.target)
+	return eval.target
+	and _G.UnitExists(eval.target)
 	and _G.UnitIsVisible(eval.target)
 	and NeP.Protected.LineOfSight('player', eval.target)
 	and not self:Unit_Blacklist(eval.target)
