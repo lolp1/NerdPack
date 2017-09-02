@@ -18,10 +18,9 @@ local funcs = {
 }
 
 local function IsSpellReady(spell)
-	if _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' then
-		if (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
-			return _G.IsUsableSpell(spell)
-		end
+	if _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
+	and (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
+		return _G.IsUsableSpell(spell)
 	end
 end
 
