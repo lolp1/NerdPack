@@ -79,6 +79,7 @@ function NeP.Parser:Parse2(eval, func, nest_unit)
 	tmp_target = NeP.FakeUnits:Filter(tmp_target)
 	--tmp_target = NeP.FakeUnits:Filter(tmp_target)
 	for i=1, #tmp_target do
+		--print("TARGET ===", i)
 		eval.target = tmp_target[i]
 		nest_unit = eval.target
 		res = func(self, eval, nest_unit)
@@ -91,6 +92,7 @@ function NeP.Parser:Parse3(eval, nest_unit)
 	local res;
 	if NeP.DSL.Parse(eval[2], eval[1].spell, eval.target) then
 		for i=1, #eval[1] do
+			--print("NEST ===============", i)
 			res = self:Parse(eval[1][i], nest_unit)
 			if res then return res end
 		end
@@ -122,6 +124,7 @@ function NeP.Parser:Parse(eval, nest_unit)
 		--print(">>>>>> waiting for", eval.master.halt_spell)
 		return
 	end
+	--print(eval[1].spell)
 	-- Its a table
 	if eval[1].is_table then
 		return self:Parse2(eval, self.Parse3, nest_unit)
@@ -146,6 +149,7 @@ local function ParseStart()
 		table.master.time = _G.GetTime()
 		table.master.halt = false
 		for i=1, #table do
+			--print("TABLE ============================", i)
 			if NeP.Parser:Parse(table[i]) then break end
 		end
 	end
