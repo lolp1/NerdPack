@@ -98,7 +98,11 @@ end
 function NeP.Parser:Parse4(eval)
 	if not self:Target(eval) then return end
 	eval.spell = eval.spell or eval[1].spell
-	if NeP.DSL.Parse(eval[2], eval.spell, eval.target)
+	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
+	-- dont for spells that failed Conditions
+	eval.master.halt = eval.master.halt and dsl_res
+	if not eval.master.halt
+	and dsl_res
 	and NeP.Helpers:Check(eval.spell, eval.target)
 	and _interrupt(eval) then
 		NeP.ActionLog:Add(eval[1].token, eval.spell or "", eval[1].icon, eval.target)
@@ -118,8 +122,7 @@ function NeP.Parser:Parse(eval, nest_unit)
 		return self:Parse2(eval, self.Parse3, nest_unit)
 	-- Normal
 	elseif (eval[1].bypass or eval.master.endtime == 0)
-	and NeP.Actions:Eval(eval[1].token)(eval)
-	and not eval.master.halt then
+	and NeP.Actions:Eval(eval[1].token)(eval) then
 		return self:Parse2(eval, self.Parse4, nest_unit)
 	end
 end
