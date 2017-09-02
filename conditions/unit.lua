@@ -280,5 +280,6 @@ NeP.DSL:Register('combat.time', function(target)
 end)
 
 NeP.DSL:Register('los', function(a, b)
+  b = b or 'player'
   return NeP.Protected.LineOfSight(a, b)
 end)
