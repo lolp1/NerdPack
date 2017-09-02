@@ -17,9 +17,9 @@ local funcs = {
 }
 
 local function IsSpellReady(spell)
-	local isUsable, notEnoughMana = IsUsableSpell(spell)
-	if GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' and isUsable then
-		return GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')(), notEnoughMana
+	if GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' then
+		local isUsable, notEnoughMana = IsUsableSpell(spell)
+		return isUsable and GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')(), notEnoughMana
 	end
 end
 
@@ -220,11 +220,7 @@ NeP.Actions:Add('spell_cast', function(eval)
 		local ready, nomana = IsSpellReady(eval[1].spell)
 		C[eval[1].spell] = ready or false
 		-- this forces the parser to stop until this spel is ready
-		eval.master.halt = nomana or false
-		if eval.master.halt then
-			print(eval.master.halt, eval[1].spell)
-			return false
-		end
+		eval.master.halt = eval.master.halt or nomana or false
 	end
 	return C[eval[1].spell]
 end)
