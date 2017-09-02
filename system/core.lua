@@ -1,5 +1,6 @@
-local _, NeP     = ...
-NeP.Core         = {}
+local _, NeP = ...
+local _G = _G
+NeP.Core = {}
 NeP.Globals.Core = NeP.Core
 
 function NeP.Core.Print(_, ...)
@@ -13,8 +14,8 @@ local d_color = {
 
 function NeP.Core.ClassColor(_, unit, type)
 	type = type and type:lower() or 'hex'
-	if UnitExists(unit) then
-		local classid  = select(3, UnitClass(unit))
+	if _G.UnitExists(unit) then
+		local classid  = select(3, _G.UnitClass(unit))
 		if classid then
 			return NeP.ClassTable:GetClassColor(classid, type)
 		end
@@ -35,7 +36,7 @@ function NeP.Core.GetSpellID(_, spell)
 		return tonumber(spell)
 	end
 	local index, stype = NeP.Core:GetSpellBookIndex(spell)
-	local spellID = select(7, GetSpellInfo(index, stype))
+	local spellID = select(7, _G.GetSpellInfo(index, stype))
 	return spellID or spell
 end
 
@@ -43,22 +44,22 @@ function NeP.Core.GetSpellName(_, spell)
 	if not spell or type(spell) == 'string' then return spell end
 	local spellID = tonumber(spell)
 	if spellID then
-		return GetSpellInfo(spellID)
+		return _G.GetSpellInfo(spellID)
 	end
 	return spell
 end
 
 function NeP.Core.GetItemID(_, item)
 	if not item or type(item) == 'number' then return item end
-	local itemID = string.match(select(2, GetItemInfo(item)) or '', 'Hitem:(%d+):')
+	local itemID = string.match(select(2, _G.GetItemInfo(item)) or '', 'Hitem:(%d+):')
 	return tonumber(itemID) or item
 end
 
 function NeP.Core.UnitID(_, unit)
-	if unit and UnitExists(unit) then
-		local guid = UnitGUID(unit)
+	if unit and _G.UnitExists(unit) then
+		local guid = _G.UnitGUID(unit)
 		if guid then
-			local type, _, server_id,_,_, npc_id = strsplit("-", guid)
+			local type, _, server_id,_,_, npc_id = _G.strsplit("-", guid)
 			if type == "Player" then
 				return tonumber(server_id)
 			elseif npc_id then
@@ -74,21 +75,21 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 	spellName = spellName:lower()
 
 	for t = 1, 2 do
-		local _, _, offset, numSpells = GetSpellTabInfo(t)
+		local _, _, offset, numSpells = _G.GetSpellTabInfo(t)
 		for i = 1, (offset + numSpells) do
-			if GetSpellBookItemName(i, BOOKTYPE_SPELL):lower() == spellName then
-				return i, BOOKTYPE_SPELL
+			if _G.GetSpellBookItemName(i, _G.BOOKTYPE_SPELL):lower() == spellName then
+				return i, _G.BOOKTYPE_SPELL
 			end
 		end
 	end
 
-	local numFlyouts = GetNumFlyouts()
+	local numFlyouts = _G.GetNumFlyouts()
 	for f = 1, numFlyouts do
-		local flyoutID = GetFlyoutID(f)
-		local _, _, numSlots, isKnown = GetFlyoutInfo(flyoutID)
+		local flyoutID = _G.GetFlyoutID(f)
+		local _, _, numSlots, isKnown = _G.GetFlyoutInfo(flyoutID)
 		if isKnown and numSlots > 0 then
 			for g = 1, numSlots do
-				local spellID, _, isKnownSpell = GetFlyoutSlotInfo(flyoutID, g)
+				local spellID, _, isKnownSpell = _G.GetFlyoutSlotInfo(flyoutID, g)
 				local name = NeP.Core:GetSpellName(spellID)
 				if name and isKnownSpell and name:lower() == spellName then
 					return spellID, nil
@@ -97,11 +98,11 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 		end
 	end
 
-	local numPetSpells = HasPetSpells()
+	local numPetSpells = _G.HasPetSpells()
 	if numPetSpells then
 		for i = 1, numPetSpells do
-			if string.lower(GetSpellBookItemName(i, BOOKTYPE_PET)) == spellName then
-				return i, BOOKTYPE_PET
+			if string.lower(_G.GetSpellBookItemName(i, _G.BOOKTYPE_PET)) == spellName then
+				return i, _G.BOOKTYPE_PET
 			end
 		end
 	end

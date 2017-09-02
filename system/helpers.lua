@@ -1,4 +1,5 @@
 local _, NeP = ...
+local _G = _G
 NeP.Helpers = {}
 local UIErrorsFrame = _G.UIErrorsFrame
 local C_Timer = _G.C_Timer
@@ -27,25 +28,25 @@ local function blackListInfront(GUID)
 end
 
 local UI_Erros = {
-	[ERR_SPELL_FAILED_S] = function(GUID, spell)
+	[_G.ERR_SPELL_FAILED_S] = function(GUID, spell)
 		blackListSpell(GUID, spell)
 		blackListInfront(GUID)
 	end,
-	[ERR_BADATTACKFACING] = function(GUID, spell)
+	[_G.ERR_BADATTACKFACING] = function(GUID, spell)
 		blackListSpell(GUID, spell)
 		blackListInfront(GUID)
 	end,
-	[ERR_SPELL_OUT_OF_RANGE] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_NOT_WHILE_MOVING] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_SPELL_FAILED_ANOTHER_IN_PROGRESS] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_SPELL_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_ABILITY_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_CANT_USE_ITEM] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[ERR_ITEM_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_SPELL_OUT_OF_RANGE] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_NOT_WHILE_MOVING] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_SPELL_FAILED_ANOTHER_IN_PROGRESS] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_SPELL_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_ABILITY_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_CANT_USE_ITEM] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.ERR_ITEM_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
 }
 
 function NeP.Helpers.Infront(_, target, GUID)
-	GUID = GUID or UnitGUID(target)
+	GUID = GUID or _G.UnitGUID(target)
 	if _Failed[GUID] then
 		 return not _Failed[GUID].infront
 	end
@@ -53,7 +54,7 @@ function NeP.Helpers.Infront(_, target, GUID)
 end
 
 function NeP.Helpers.Spell(_, spell, target, GUID)
-	GUID = GUID or UnitGUID(target)
+	GUID = GUID or _G.UnitGUID(target)
 	if _Failed[GUID] then
 		 return not _Failed[GUID][spell]
 	end
@@ -68,7 +69,7 @@ function NeP.Helpers:Check(spell, target)
 		return true
 	end
 
-	local GUID = UnitGUID(target)
+	local GUID = _G.UnitGUID(target)
 	if _Failed[GUID] then
 		return self:Spell(spell, target, GUID) and self:Infront(target, GUID)
 	end
@@ -82,7 +83,7 @@ NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(error)
 	local unit, spell = NeP.Parser.LastTarget, NeP.Parser.LastCast
 	if not unit or not spell then return end
 
-	local GUID = UnitGUID(unit)
+	local GUID = _G.UnitGUID(unit)
 	if GUID then
 		addToData(GUID)
 		UI_Erros[error](GUID, spell)

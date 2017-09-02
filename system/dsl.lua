@@ -1,4 +1,5 @@
 local _, NeP = ...
+local _G = _G
 local DSL = NeP.DSL
 
 local function FilterNum(str)
@@ -85,10 +86,10 @@ local C = NeP.Cache.Conditions
 local function ProcessCondition(Strg, Spell, Target)
 	-- Unit prefix
 	if not NeP.DSL:Exists(Strg:gsub("%((.+)%)", "")) then
-		local unitID, rest = strsplit('.', Strg, 2)
+		local unitID, rest = _G.strsplit('.', Strg, 2)
 		unitID =  NeP.FakeUnits:Filter(unitID)[1]
 		-- condition Target
-		if unitID and UnitExists(unitID) then
+		if unitID and _G.UnitExists(unitID) then
 			Target = unitID
 			Strg = rest
 		else
@@ -133,7 +134,7 @@ end
 local function StringMath(Strg, Spell, Target)
 	local tokens = "[/%*%+%-]"
 	local OP = Strg:match(tokens)
-	local arg1, arg2 = strsplit(OP, Strg, 2)
+	local arg1, arg2 = _G.strsplit(OP, Strg, 2)
 	arg1, arg2 = DSL.Parse(arg1, Spell, Target), DSL.Parse(arg2, Spell, Target)
 	arg1, arg2 = FilterNum(arg1), FilterNum(arg2)
 	return math_OP[OP](arg1, arg2)

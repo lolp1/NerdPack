@@ -1,6 +1,7 @@
-local _, NeP 			= ...
-NeP.Healing 			= {}
-local Roster 			= NeP.OM.Roster
+local _, NeP = ...
+local _G = _G
+NeP.Healing = {}
+local Roster = NeP.OM.Roster
 local maxDistance = 40
 
 local forced_role = {
@@ -8,37 +9,37 @@ local forced_role = {
 }
 
 local function GetPredictedHealth(unit)
-	return UnitHealth(unit)+(UnitGetTotalHealAbsorbs(unit) or 0)+(UnitGetIncomingHeals(unit) or 0)
+	return _G.UnitHealth(unit)+(_G.UnitGetTotalHealAbsorbs(unit) or 0)+(_G.UnitGetIncomingHeals(unit) or 0)
 end
 
 local function GetPredictedHealth_Percent(unit)
-	return math.floor((GetPredictedHealth(unit)/UnitHealthMax(unit))*100)
+	return math.floor((GetPredictedHealth(unit)/_G.UnitHealthMax(unit))*100)
 end
 
 local function healthPercent(unit)
-	return math.floor((UnitHealth(unit)/UnitHealthMax(unit))*100)
+	return math.floor((_G.UnitHealth(unit)/_G.UnitHealthMax(unit))*100)
 end
 
 -- This Add's more index to the Obj in the OM table
 local function Add(Obj)
-	local healthRaw = UnitHealth(Obj.key)
-	local maxHealth = UnitHealthMax(Obj.key)
+	local healthRaw = _G.UnitHealth(Obj.key)
+	local maxHealth = _G.UnitHealthMax(Obj.key)
 	Obj.predicted = GetPredictedHealth_Percent(Obj.key)
 	Obj.predicted_Raw = GetPredictedHealth(Obj.key)
 	Obj.health = healthPercent(Obj.key)
 	Obj.healthRaw = healthRaw
 	Obj.healthMax = maxHealth
-	Obj.role = forced_role[Obj.id] or UnitGroupRolesAssigned(Obj.key)
+	Obj.role = forced_role[Obj.id] or _G.UnitGroupRolesAssigned(Obj.key)
 	Roster[Obj.guid] = Obj
 end
 
 local function Refresh(GUID, Obj)
 	local temp = Roster[GUID]
 	temp.health = healthPercent(Obj.key)
-	temp.healthRaw = UnitHealth(temp.key)
+	temp.healthRaw = _G.UnitHealth(temp.key)
 	temp.predicted = GetPredictedHealth_Percent(Obj.key)
 	temp.predicted_Raw = GetPredictedHealth(Obj.key)
-	temp.role = forced_role[Obj.id] or UnitGroupRolesAssigned(Obj.key)
+	temp.role = forced_role[Obj.id] or _G.UnitGroupRolesAssigned(Obj.key)
 end
 
 function NeP.Healing.GetRoster()
@@ -47,8 +48,8 @@ end
 
 local function Iterate()
 	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if UnitInParty(Obj.key)
-		or UnitIsUnit('player', Obj.key) then
+		if _G.UnitInParty(Obj.key)
+		or _G.UnitIsUnit('player', Obj.key) then
 			if Roster[GUID] then
 				Refresh(GUID, Obj)
 			elseif Obj.distance < maxDistance then
@@ -59,18 +60,18 @@ local function Iterate()
 end
 
 NeP.Debug:Add("Healing", Iterate, true)
-C_Timer.NewTicker(0.1, Iterate)
+_G.C_Timer.NewTicker(0.1, Iterate)
 
 NeP.DSL:Register("health", function(target)
 	return healthPercent(target)
 end)
 
 NeP.DSL:Register("health.actual", function(target)
-	return UnitHealth(target)
+	return _G.UnitHealth(target)
 end)
 
 NeP.DSL:Register("health.max", function(target)
-	return UnitHealthMax(target)
+	return _G.UnitHealthMax(target)
 end)
 
 NeP.DSL:Register("health.predicted", function(target)
@@ -84,8 +85,8 @@ end)
 -- USAGE: UNIT.area(DISTANCE, HEALTH).heal >= #
 NeP.DSL:Register("area.heal", function(unit, args)
 	local total = 0
-	if not UnitExists(unit) then return total end
-	local distance, health = strsplit(",", args, 2)
+	if not _G.UnitExists(unit) then return total end
+	local distance, health = _G.strsplit(",", args, 2)
 	for _,Obj in pairs(NeP.Healing:GetRoster()) do
 		local unit_dist = NeP.Protected.Distance(unit, Obj.key)
 		if unit_dist < (tonumber(distance) or 20)
@@ -99,8 +100,8 @@ end)
 -- USAGE: UNIT.area(DISTANCE, HEALTH).heal.infront >= #
 NeP.DSL:Register("area.heal.infront", function(unit, args)
 	local total = 0
-	if not UnitExists(unit) then return total end
-	local distance, health = strsplit(",", args, 2)
+	if not _G.UnitExists(unit) then return total end
+	local distance, health = _G.strsplit(",", args, 2)
 	for _,Obj in pairs(NeP.Healing:GetRoster()) do
 		local unit_dist = NeP.Protected.Distance(unit, Obj.key)
 		if unit_dist < (tonumber(distance) or 20)

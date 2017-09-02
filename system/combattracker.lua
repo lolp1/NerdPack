@@ -1,4 +1,5 @@
 local _, NeP = ...
+local _G = _G
 
 NeP.CombatTracker = {}
 local Data = {}
@@ -21,7 +22,7 @@ local function addToData(GUID)
 			dmgTaken_P = 0,
 			dmgTaken_M = 0,
 			Hits       = 0,
-			firstHit   = GetTime(),
+			firstHit   = _G.GetTime(),
 			lastHit    = 0
 		}
 	end
@@ -58,7 +59,7 @@ end
 		 !!~counting selfhealing only for now~!!]]
 local logHealing = function(...)
 	local _,_,_, sourceGUID, _,_,_, GUID, _,_,_,_,_,_, Amount = ...
-	local playerGUID = UnitGUID('player')
+	local playerGUID = _G.UnitGUID('player')
 	if sourceGUID == playerGUID then
 		Data[GUID].dmgTaken_P = Data[GUID].dmgTaken_P - Amount
 		Data[GUID].dmgTaken_M = Data[GUID].dmgTaken_M - Amount
@@ -72,8 +73,8 @@ local addAction = function(...)
 	if not spellName then return end
 	addToData(sourceGUID)
 	-- Add to action Log, only for self for now
-	if sourceGUID == UnitGUID('player') then
-		local icon = select(3, GetSpellInfo(spellName))
+	if sourceGUID == _G.UnitGUID('player') then
+		local icon = select(3, _G.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)
 	end
 	Data[sourceGUID].lastcast = spellName
@@ -95,9 +96,9 @@ local EVENTS = {
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, UNIT)
-	local GUID = UnitGUID(UNIT)
-	if Data[GUID] and InCombatLockdown() then
-		local combatTime = (GetTime()-Data[GUID].firstHit)
+	local GUID = _G.UnitGUID(UNIT)
+	if Data[GUID] and _G.InCombatLockdown() then
+		local combatTime = (_G.GetTime()-Data[GUID].firstHit)
 		return combatTime
 	end
 	return 0
@@ -105,9 +106,9 @@ end
 
 function NeP.CombatTracker:getDMG(UNIT)
 	local total, Hits, phys, magic = 0, 0, 0, 0
-	local GUID = UnitGUID(UNIT)
+	local GUID = _G.UnitGUID(UNIT)
 	if Data[GUID] then
-		local time = GetTime()
+		local time = _G.GetTime()
 		-- Remove a unit if it hasnt recived dmg for more then 5 sec
 		if (time-Data[GUID].lastHit) > 5 then
 			Data[GUID] = nil
@@ -126,13 +127,13 @@ function NeP.CombatTracker:TimeToDie(unit)
 	local ttd = 0
 	local DMG, Hits = self:getDMG(unit)
 	if DMG >= 1 and Hits > 1 then
-		ttd = UnitHealth(unit) / DMG
+		ttd = _G.UnitHealth(unit) / DMG
 	end
 	return ttd or 8675309
 end
 
 function NeP.CombatTracker.LastCast(_, unit)
-  local GUID = UnitGUID(unit)
+  local GUID = _G.UnitGUID(unit)
   if Data[GUID] then
     return Data[GUID].lastcast
   end
@@ -143,15 +144,15 @@ NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function(..
 	-- Add the unit to our data if we dont have it
 	addToData(GUID)
 	-- Update last  hit time
-	Data[GUID].lastHit = GetTime()
+	Data[GUID].lastHit = _G.GetTime()
 	-- Add the amount of dmg/heak
 	if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end)
 
 NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_ENABLED', function()
-	wipe(Data)
+	_G.wipe(Data)
 end)
 
 NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_DISABLED', function()
-	wipe(Data)
+	_G.wipe(Data)
 end)
