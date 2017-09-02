@@ -3,7 +3,7 @@ local SetCVar = SetCVar
 local wipe = wipe
 
 NeP.Version = 1.8
-NeP.Branch  = 'Beta9'
+NeP.Branch  = 'Beta10'
 NeP.Media   = 'Interface\\AddOns\\' .. n_name .. '\\Media\\'
 NeP.Color   = 'FFFFFF'
 
