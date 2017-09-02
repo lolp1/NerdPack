@@ -278,3 +278,7 @@ end)
 NeP.DSL:Register('combat.time', function(target)
   return NeP.CombatTracker:CombatTime(target)
 end)
+
+NeP.DSL:Register('los', function(a, b)
+  return NeP.Protected.LineOfSight(a, b)
+end)
