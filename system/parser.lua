@@ -111,12 +111,15 @@ end
 --Reads and figures out what it should execute from the CR
 --The CR when it reaches this point must be already compiled and be ready to run.
 function NeP.Parser:Parse(eval, nest_unit)
+	-- a spell is waiting for mana
+	if eval.master.halt then return end
 	-- Its a table
 	if eval[1].is_table then
 		return self:Parse2(eval, self.Parse3, nest_unit)
 	-- Normal
 	elseif (eval[1].bypass or eval.master.endtime == 0)
-	and NeP.Actions:Eval(eval[1].token)(eval) then
+	and NeP.Actions:Eval(eval[1].token)(eval)
+	and not eval.master.halt then
 		return self:Parse2(eval, self.Parse4, nest_unit)
 	end
 end
@@ -133,6 +136,7 @@ local function ParseStart()
 		if not table then return end
 		table.master.endtime, table.master.cname = castingTime()
 		table.master.time = GetTime()
+		table.master.halt = false
 		for i=1, #table do
 			if NeP.Parser:Parse(table[i]) then break end
 		end

@@ -17,10 +17,9 @@ local funcs = {
 }
 
 local function IsSpellReady(spell)
-	local skillType = GetSpellBookItemInfo(spell)
 	local isUsable, notEnoughMana = IsUsableSpell(spell)
-	if skillType ~= 'FUTURESPELL' and isUsable and not notEnoughMana then
-		return GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')()
+	if GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' and isUsable then
+		return GetSpellCooldown(spell) <= NeP.DSL:Get('gcd')(), notEnoughMana
 	end
 end
 
@@ -218,7 +217,14 @@ local C = NeP.Cache.Spells
 NeP.Actions:Add('spell_cast', function(eval)
 	-- cached
 	if C[eval[1].spell] == nil then
-		C[eval[1].spell] = IsSpellReady(eval[1].spell) or false
+		local ready, nomana = IsSpellReady(eval[1].spell)
+		C[eval[1].spell] = ready or false
+		-- this forces the parser to stop until this spel is ready
+		eval.master.halt = nomana or false
+		if eval.master.halt then
+			print(eval.master.halt, eval[1].spell)
+			return false
+		end
 	end
 	return C[eval[1].spell]
 end)
