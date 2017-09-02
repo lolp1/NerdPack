@@ -61,7 +61,8 @@ function clean.Dead()
 		or not _G.UnitExists(Obj.key)
 		or not _G.UnitInPhase(Obj.key)
 		or GUID ~= _G.UnitGUID(Obj.key)
-		or not _G.UnitIsDeadOrGhost(Obj.key) then
+		or not _G.UnitIsDeadOrGhost(Obj.key)
+		or not NeP.Protected.LineOfSight('player', Obj.key) then
 			OM_c["Dead"][GUID] = nil
 		end
 	end
@@ -74,7 +75,8 @@ function clean.Others(ref)
 		or not _G.UnitExists(Obj.key)
 		or not _G.UnitInPhase(Obj.key)
 		or GUID ~= _G.UnitGUID(Obj.key)
-		or _G.UnitIsDeadOrGhost(Obj.key) then
+		or _G.UnitIsDeadOrGhost(Obj.key)
+		or not NeP.Protected.LineOfSight('player', Obj.key) then
 			OM_c[ref][GUID] = nil
 		end
 	end
@@ -108,7 +110,8 @@ function NeP.OM.Add(_, Obj, isObject)
 	local GUID = _G.UnitGUID(Obj) or '0'
 	-- Units
 	if _G.UnitExists(Obj)
-	and _G.UnitInPhase(Obj) then
+	and _G.UnitInPhase(Obj)
+	and NeP.Protected.LineOfSight('player', Obj) then
 		if _G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj, GUID)
 		elseif _G.UnitIsFriend('player', Obj) then
