@@ -3,8 +3,13 @@ local _G = _G
 NeP.Core = {}
 NeP.Globals.Core = NeP.Core
 
+local last_print = ""
+
 function NeP.Core.Print(_, ...)
-	print('[|cff'..NeP.Color..'NeP|r]', ...)
+	if last_print ~= ... then
+		last_print = ...
+		print('[|cff'..NeP.Color..'NeP|r]', ...)
+	end
 end
 
 local d_color = {
@@ -37,7 +42,7 @@ function NeP.Core.GetSpellID(_, spell)
 	end
 	local index, stype = NeP.Core:GetSpellBookIndex(spell)
 	local spellID = select(7, _G.GetSpellInfo(index, stype))
-	return spellID or spell
+	return spellID
 end
 
 function NeP.Core.GetSpellName(_, spell)

@@ -19,13 +19,10 @@ local funcs = {
 
 local function IsSpellReady(spell)
 	if _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL' then
-		local offCD = (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')()
-		if offCD then
-			local usable, notEnoughMana = _G.IsUsableSpell(spell)
-			return usable and offCD, offCD and notEnoughMana
+		if (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
+			return _G.IsUsableSpell(spell)
 		end
 	end
-	return false, false
 end
 
 -- Clip
@@ -213,6 +210,7 @@ end)
 NeP.Compiler:RegisterToken("spell_cast", function(eval, ref)
 	ref.spell = NeP.Spells:Convert(ref.spell, eval.master.name)
 	ref.icon = select(3,_G.GetSpellInfo(ref.spell))
+	ref.id = NeP.Core:GetSpellID(ref.spell)
 	eval.exe = funcs["Cast"]
 	ref.token = 'spell_cast'
 end)
@@ -226,6 +224,7 @@ NeP.Actions:Add('spell_cast', function(eval)
 		C[eval[1].spell] = ready or false
 		-- this forces the parser to stop until this spel is ready
 		eval.master.halt = eval.master.halt or nomana or false
+		eval.master.halt_spell = eval.master.halt and eval[1].spell or eval.master.halt_spell
 	end
 	return C[eval[1].spell]
 end)

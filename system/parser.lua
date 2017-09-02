@@ -118,7 +118,10 @@ end
 --The CR when it reaches this point must be already compiled and be ready to run.
 function NeP.Parser:Parse(eval, nest_unit)
 	-- a spell is waiting for mana
-	if eval.master.halt then return end
+	if eval.master.halt then
+		--print(">>>>>> waiting for", eval.master.halt_spell)
+		return
+	end
 	-- Its a table
 	if eval[1].is_table then
 		return self:Parse2(eval, self.Parse3, nest_unit)
