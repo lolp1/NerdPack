@@ -22,50 +22,23 @@ end
 
 -- This Add's more index to the Obj in the OM table
 local function Add(Obj)
-	local healthRaw = _G.UnitHealth(Obj.key)
-	local maxHealth = _G.UnitHealthMax(Obj.key)
 	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
 	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
 	Obj.health = NeP.Healing.healthPercent(Obj.key)
-	Obj.healthRaw = healthRaw
-	Obj.healthMax = maxHealth
+	Obj.healthRaw = _G.UnitHealth(Obj.key)
+	Obj.healthMax = _G.UnitHealthMax(Obj.key)
 	Obj.role = forced_role[Obj.id] or _G.UnitGroupRolesAssigned(Obj.key)
 	Roster[Obj.guid] = Obj
 end
 
-local function Refresh(GUID, Obj)
-	local temp = Roster[GUID]
-	temp.health = NeP.Healing.healthPercent(Obj.key)
-	temp.healthRaw = _G.UnitHealth(temp.key)
-	temp.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
-	temp.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
-	temp.role = forced_role[Obj.id] or _G.UnitGroupRolesAssigned(Obj.key)
-end
-
-local function clean()
-	for GUID, Obj in pairs(Roster) do
-		-- remove invalid units
-		if Obj.distance > maxDistance
-		or not _G.UnitExists(Obj.key)
-		or not _G.UnitInPhase(Obj.key)
-		or GUID ~= _G.UnitGUID(Obj.key)
-		or _G.UnitIsDeadOrGhost(Obj.key)
-		or not NeP.Protected.LineOfSight('player', Obj.key) then
-			Roster[GUID] = nil
-		else
-			Refresh(GUID, Obj)
-		end
-	end
-end
-
 local function Iterate()
-	clean()
 	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if (_G.UnitInParty(Obj.key)
-		or _G.UnitIsUnit('player', Obj.key))
-		and Obj.distance < maxDistance
-		and not Roster[GUID] then
+		if _G.UnitExists(Obj.key)
+		and (_G.UnitInParty(Obj.key) or _G.UnitIsUnit('player', Obj.key))
+		and Obj.distance < maxDistance then
 			Add(Obj)
+		else
+			Roster[GUID] = nil
 		end
 	end
 end
