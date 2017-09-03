@@ -1,7 +1,7 @@
 local n_name, NeP = ...
 
 NeP.Version = 1.8
-NeP.Branch  = 'Beta10'
+NeP.Branch  = 'Beta11'
 NeP.Media   = 'Interface\\AddOns\\' .. n_name .. '\\Media\\'
 NeP.Color   = 'FFFFFF'
 
