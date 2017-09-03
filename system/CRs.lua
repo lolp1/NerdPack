@@ -81,7 +81,7 @@ function NeP.CR.Add(_, SpecID, ...)
 	-- Import SpellIDs from the cr
 	if ev.ids then NeP.Spells:Add(ev.ids) end
 	-- This compiles the CR
-	local master_cr = { name = ev.name}
+	local master_cr = { name = ev.name, waitfor = ev.waitfor }
 	ev.ic.master = master_cr
 	ev.ooc.master = master_cr
 	NeP.Compiler:Iterate(ev.ic)
