@@ -46,13 +46,29 @@ function NeP.Healing.GetRoster()
 	return Roster
 end
 
+local function clean()
+	for GUID, Obj in pairs(Roster) do
+		-- remove invalid units
+		if Obj.distance > maxDistance
+		or not _G.UnitExists(Obj.key)
+		or not _G.UnitInPhase(Obj.key)
+		or GUID ~= _G.UnitGUID(Obj.key)
+		or _G.UnitIsDeadOrGhost(Obj.key)
+		or not NeP.Protected.LineOfSight('player', Obj.key) then
+			Roster[GUID] = nil
+		else
+			Refresh(GUID, Obj)
+		end
+	end
+end
+
 local function Iterate()
+	clean()
 	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if _G.UnitInParty(Obj.key)
-		or _G.UnitIsUnit('player', Obj.key) then
-			if Roster[GUID] then
-				Refresh(GUID, Obj)
-			elseif Obj.distance < maxDistance then
+		if (_G.UnitInParty(Obj.key)
+		or _G.UnitIsUnit('player', Obj.key))
+		and Obj.distance < maxDistance then
+			if not Roster[GUID] then
 				Add(Obj)
 			end
 		end
