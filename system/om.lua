@@ -54,20 +54,6 @@ function clean.Objects()
 	end
 end
 
-function clean.Dead()
-	for GUID, Obj in pairs(OM_c["Dead"]) do
-		-- remove invalid units
-		if Obj.distance > NeP.OM.max_distance
-		or not _G.UnitExists(Obj.key)
-		or not _G.UnitInPhase(Obj.key)
-		or GUID ~= _G.UnitGUID(Obj.key)
-		or not _G.UnitIsDeadOrGhost(Obj.key)
-		or not NeP.Protected.LineOfSight('player', Obj.key) then
-			OM_c["Dead"][GUID] = nil
-		end
-	end
-end
-
 function clean.Others(ref)
 	for GUID, Obj in pairs(OM_c[ref]) do
 		-- remove invalid units
@@ -75,7 +61,7 @@ function clean.Others(ref)
 		or not _G.UnitExists(Obj.key)
 		or not _G.UnitInPhase(Obj.key)
 		or GUID ~= _G.UnitGUID(Obj.key)
-		or _G.UnitIsDeadOrGhost(Obj.key)
+		or ref ~= "Dead" and _G.UnitIsDeadOrGhost(Obj.key)
 		or not NeP.Protected.LineOfSight('player', Obj.key) then
 			OM_c[ref][GUID] = nil
 		end
@@ -128,7 +114,7 @@ end
 local function CleanStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		clean.Objects()
-		clean.Dead()
+		clean.Others("Dead")
 		clean.Others("Friendly")
 		clean.Others("Enemy")
 		clean.Others("Roster")
