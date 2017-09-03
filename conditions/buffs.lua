@@ -120,7 +120,7 @@ end)
 -- USAGE: count(BUFF).buffs > = #
 NeP.DSL:Register("count.friendly.buffs", function(_,buff)
   local n1 = 0
-  for _, Obj in pairs(NeP.Healing:GetRoster()) do
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
       if NeP.DSL:Get('buff')(Obj.key, buff) then
           n1 = n1 + 1
       end
@@ -144,7 +144,7 @@ end)
 -- USAGE: count(DEBUFF).debuffs > = #
 NeP.DSL:Register("count.friendly.debuffs", function(_,debuff)
   local n1 = 0
-  for _, Obj in pairs(NeP.Healing:GetRoster()) do
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
       if NeP.DSL:Get('debuff')(Obj.key, debuff) then
           n1 = n1 + 1
       end

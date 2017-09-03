@@ -62,7 +62,7 @@ end)
 
 -- Dispell all
 NeP.Actions:Add('dispelall', function(eval)
-  for _, Obj in pairs(NeP.Healing:GetRoster()) do
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if FindDispell(eval, Obj.key) then return true end
   end
 end)

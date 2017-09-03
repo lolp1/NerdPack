@@ -4,7 +4,7 @@ local _G = _G
 -- Lowest
 NeP.FakeUnits:Add('lowest', function(num, role)
 	local tempTable = {}
-	for _, Obj in pairs(NeP.Healing:GetRoster()) do
+	for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if not role or (role and Obj.role == role:upper()) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
@@ -18,7 +18,7 @@ end)
 
 NeP.FakeUnits:Add({'lowestpredicted', 'lowestp'}, function(num, role)
 	local tempTable = {}
-	for _, Obj in pairs(NeP.Healing:GetRoster()) do
+	for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if not role or (role and Obj.role == role:upper()) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
@@ -38,7 +38,7 @@ NeP.FakeUnits:Add({'lowestbuff', 'lbuff'}, function(num, args)
 	end
   local buff, role = _G.strsplit(',', args, 2)
     local tempTable = {}
-    for _, Obj in pairs(NeP.Healing:GetRoster()) do
+    for _, Obj in pairs(NeP.OM:Get('Roster')) do
         if (not role or Obj.role == role) and NeP.DSL:Get('buff')(Obj.key, buff) then
             tempTable[#tempTable+1] = {
                 key = Obj.key,
@@ -58,7 +58,7 @@ NeP.FakeUnits:Add({'lowestnotbuff', 'lnbuff'}, function(num, args)
 	end
 		local buff, role = _G.strsplit(',', args, 2)
     local tempTable = {}
-    for _, Obj in pairs(NeP.Healing:GetRoster()) do
+    for _, Obj in pairs(NeP.OM:Get('Roster')) do
         if (not role or Obj.role == role) and not NeP.DSL:Get('buff')(Obj.key, buff) then
             tempTable[#tempTable+1] = {
                 key = Obj.key,
@@ -78,7 +78,7 @@ NeP.FakeUnits:Add({'lowestdebuff', 'ldebuff'}, function(num, args)
 	end
 		local buff, role = _G.strsplit(',', args, 2)
     local tempTable = {}
-    for _, Obj in pairs(NeP.Healing:GetRoster()) do
+    for _, Obj in pairs(NeP.OM:Get('Roster')) do
         if (not role or Obj.role == role) and NeP.DSL:Get('debuff.any')(Obj.key, buff) then
             tempTable[#tempTable+1] = {
                 key = Obj.key,
@@ -98,7 +98,7 @@ NeP.FakeUnits:Add({'lowestnotdebuff', 'lndebuff'}, function(num, args)
 	end
 		local buff, role = _G.strsplit(',', args, 2)
     local tempTable = {}
-    for _, Obj in pairs(NeP.Healing:GetRoster()) do
+    for _, Obj in pairs(NeP.OM:Get('Roster')) do
         if (not role or Obj.role == role) and not NeP.DSL:Get('debuff.any')(Obj.key, buff) then
             tempTable[#tempTable+1] = {
                 key = Obj.key,
@@ -121,7 +121,7 @@ local Roles = {
 -- Tank
 NeP.FakeUnits:Add('tank', function(num)
 	local tempTable = {}
-	for _, Obj in pairs(NeP.Healing:GetRoster()) do
+	for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if Obj.role == 'TANK' then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
@@ -136,7 +136,7 @@ end)
 -- Healer
 NeP.FakeUnits:Add('healer', function(num)
 	local tempTable = {}
-	for _, Obj in pairs(NeP.Healing:GetRoster()) do
+	for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if Obj.role == 'HEALER' and not _G.UnitIsUnit('player', Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
@@ -151,7 +151,7 @@ end)
 -- DAMAGER
 NeP.FakeUnits:Add('damager', function(num)
 	local tempTable = {}
-	for _, Obj in pairs(NeP.Healing:GetRoster()) do
+	for _, Obj in pairs(NeP.OM:Get('Roster')) do
 		if Obj.role == 'DAMAGER' and not _G.UnitIsUnit('player', Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
@@ -236,5 +236,5 @@ NeP.FakeUnits:Add('enemies', function()
 end)
 
 NeP.FakeUnits:Add('friendly', function()
-	return NeP.Healing:GetRoster()
+	return NeP.OM:Get('Roster')
 end)

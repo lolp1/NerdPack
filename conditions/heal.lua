@@ -25,7 +25,7 @@ NeP.DSL:Register("area.heal", function(unit, args)
 	local total = 0
 	if not _G.UnitExists(unit) then return total end
 	local distance, health = _G.strsplit(",", args, 2)
-	for _,Obj in pairs(NeP.Healing:GetRoster()) do
+	for _,Obj in pairs(NeP.OM:Get('Roster')) do
 		local unit_dist = NeP.Protected.Distance(unit, Obj.key)
 		if unit_dist < (tonumber(distance) or 20)
 		and Obj.health < (tonumber(health) or 100) then
@@ -40,7 +40,7 @@ NeP.DSL:Register("area.heal.infront", function(unit, args)
 	local total = 0
 	if not _G.UnitExists(unit) then return total end
 	local distance, health = _G.strsplit(",", args, 2)
-	for _,Obj in pairs(NeP.Healing:GetRoster()) do
+	for _,Obj in pairs(NeP.OM:Get('Roster')) do
 		local unit_dist = NeP.Protected.Distance(unit, Obj.key)
 		if unit_dist < (tonumber(distance) or 20)
 		and Obj.health < (tonumber(health) or 100)

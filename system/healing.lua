@@ -42,10 +42,6 @@ local function Refresh(GUID, Obj)
 	temp.role = forced_role[Obj.id] or _G.UnitGroupRolesAssigned(Obj.key)
 end
 
-function NeP.Healing.GetRoster()
-	return Roster
-end
-
 local function clean()
 	for GUID, Obj in pairs(Roster) do
 		-- remove invalid units
@@ -76,5 +72,3 @@ end
 
 NeP.Debug:Add("Healing", Iterate, true)
 _G.C_Timer.NewTicker(0.1, Iterate)
-
-NeP.Globals.OM.GetRoster = NeP.Healing.GetRoster
