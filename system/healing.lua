@@ -67,10 +67,9 @@ local function Iterate()
 	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
 		if (_G.UnitInParty(Obj.key)
 		or _G.UnitIsUnit('player', Obj.key))
-		and Obj.distance < maxDistance then
-			if not Roster[GUID] then
-				Add(Obj)
-			end
+		and Obj.distance < maxDistance
+		and not Roster[GUID] then
+			Add(Obj)
 		end
 	end
 end
