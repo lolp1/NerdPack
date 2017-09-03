@@ -104,7 +104,7 @@ function NeP.Parser:Parse4(eval)
 	eval.spell = eval.spell or eval[1].spell
 	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
 	-- dont for spells that failed Conditions
-	eval.master.halt = eval.master.halt and eval.master.waitfor and dsl_res
+	eval.master.halt = eval.master.halt and dsl_res
 	if not eval.master.halt
 	and dsl_res
 	and NeP.Helpers:Check(eval.spell, eval.target)
