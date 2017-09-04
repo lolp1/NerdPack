@@ -143,7 +143,7 @@ local function ParseStart()
 	and IsMountedCheck()
 	and not _G.LootFrame:IsShown() then
 		if NeP.Queuer:Execute() then return end
-		local table = c.CR and c.CR[_G.InCombatLockdown()]
+		local table = c.CR and c.CR[_G.UnitAffectingCombat('player')]
 		if not table then return end
 		table.master.endtime, table.master.cname = castingTime()
 		table.master.time = _G.GetTime()
