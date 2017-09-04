@@ -222,8 +222,8 @@ NeP.Actions:Add('spell_cast', function(eval)
 		local ready, nomana = IsSpellReady(eval[1].spell)
 		C[eval[1].spell] = ready or false
 		-- this forces the parser to stop until this spel is ready
-		eval.master.halt = eval.master.halt or nomana and eval.master.waitfor or false
-		eval.master.halt_spell = eval.master.halt and eval[1].spell or eval.master.halt_spell
+		--eval.master.halt = eval.master.halt or nomana and eval.master.waitfor or false
+		--eval.master.halt_spell = eval.master.halt and eval[1].spell or eval.master.halt_spell
 	end
 	return C[eval[1].spell]
 end)

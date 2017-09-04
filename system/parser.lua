@@ -102,11 +102,10 @@ end
 function NeP.Parser:Parse4(eval)
 	if not self:Target(eval) then return end
 	eval.spell = eval.spell or eval[1].spell
-	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
 	-- dont for spells that failed Conditions
-	eval.master.halt = eval.master.halt and dsl_res
-	if not eval.master.halt
-	and dsl_res
+	--eval.master.halt = eval.master.halt and dsl_res
+	--if not eval.master.halt
+	if NeP.DSL.Parse(eval[2], eval.spell, eval.target)
 	and NeP.Helpers:Check(eval.spell, eval.target)
 	and _interrupt(eval) then
 		NeP.ActionLog:Add(eval[1].token, eval.spell or "", eval[1].icon, eval.target)
@@ -120,10 +119,10 @@ end
 --The CR when it reaches this point must be already compiled and be ready to run.
 function NeP.Parser:Parse(eval, nest_unit)
 	-- a spell is waiting for mana
-	if eval.master.halt then
+	--if eval.master.halt then
 		--print(">>>>>> waiting for", eval.master.halt_spell)
-		return
-	end
+		--return
+	--end
 	--print(eval[1].spell)
 	-- Its a table
 	if eval[1].is_table then
