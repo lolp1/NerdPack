@@ -19,10 +19,6 @@ local OM_c = {
 }
 local clean = {}
 
--- This cleans/updates the tables and then returns it
--- Due to Generic OM, a unit can still exist (target) but no longer be the same unit,
--- To counter this we compare GUID's.
-
 local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and _G.UnitExists(Obj.key)
