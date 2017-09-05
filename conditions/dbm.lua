@@ -1,6 +1,8 @@
 local _, NeP = ...
 NeP.DBM = {}
 
+--dont load if DBM is not installed
+function NeP.DBM.BuildTimers()end
 if not _G.DBM then return end
 
 NeP.Cache.DBM_Timers = {}

@@ -136,12 +136,12 @@ end
 
 local function ParseStart()
 	NeP.Faceroll:Hide()
-	NeP:Wipe_Cache()
-	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not _G.UnitIsDeadOrGhost('player')
 	and IsMountedCheck()
 	and not _G.LootFrame:IsShown() then
+		NeP:Wipe_Cache()
+		NeP.DBM.BuildTimers()
 		if NeP.Queuer:Execute() then return end
 		local table = c.CR and c.CR[_G.InCombatLockdown()]
 		if not table then return end
@@ -158,6 +158,5 @@ end
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
 _G.C_Timer.NewTicker(0.1, ParseStart)
-end, -99)
-
 NeP.Debug:Add("Parser", ParseStart, true)
+end, -99)
