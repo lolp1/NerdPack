@@ -137,6 +137,7 @@ end
 local function ParseStart()
 	NeP.Faceroll:Hide()
 	NeP:Wipe_Cache()
+	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not _G.UnitIsDeadOrGhost('player')
 	and IsMountedCheck()
