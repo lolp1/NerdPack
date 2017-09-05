@@ -98,7 +98,7 @@ function NeP.OM.Add(_, Obj, isObject)
 			NeP.OM:Insert('Dead', Obj)
 		elseif _G.UnitIsFriend('player', Obj) then
 			NeP.OM:Insert('Friendly', Obj)
-		elseif _G.UnitCanAttack('player') then
+		elseif _G.UnitCanAttack('player', Obj) then
 			NeP.OM:Insert('Enemy', Obj)
 		end
 	-- Objects
