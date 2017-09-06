@@ -16,8 +16,8 @@ NeP.ActionLog.Frame = NeP.Interface:BuildGUI({
 	width = 460,
 	title = L:TA('AL', 'Option'),
 	height = abs_height
-}).parent
-local NeP_AL = NeP.ActionLog.Frame
+})
+local NeP_AL = NeP.ActionLog.Frame.parent
 NeP.Interface:Add(L:TA('AL', 'Option'), function() NeP_AL:Show() end)
 NeP_AL:Hide()
 
@@ -53,7 +53,7 @@ local LogItem = { }
  headers[3][3] = -3
 
 for i = 1, (log_items) do
-	LogItem[i] = CreateFrame('Frame', nil, NeP_AL.frame)
+	LogItem[i] = _G.CreateFrame('Frame', nil, NeP_AL.frame)
 	LogItem[i]:SetFrameLevel(94)
 	local texture = LogItem[i]:CreateTexture(nil, 'BACKGROUND')
 	texture:SetAllPoints(LogItem[i])
@@ -77,14 +77,14 @@ function NeP.ActionLog:Refresh(event, spell, target)
 	and Data[1]['description'] == spell
 	and Data[1]['target'] == target then
 		Data[1]['count'] = Data[1]['count'] + 1
-		Data[1]['time'] = date('%H:%M:%S')
+		Data[1]['time'] = _G.date('%H:%M:%S')
 		self:Update()
 		return true
 	end
 end
 
 function NeP.ActionLog.Add(_, event, spell, icon, target)
-	target = UnitExists(target) and UnitName(target) or target
+	target = _G.UnitExists(target) and _G.UnitName(target) or target
 	event = event or 'Unknown'
 	icon = icon or 'Interface\\ICONS\\Inv_gizmo_02.png'
 	if NeP.ActionLog:Refresh(event, spell, target) then return end
@@ -94,7 +94,7 @@ function NeP.ActionLog.Add(_, event, spell, icon, target)
 		icon = icon,
 		description = spell,
 		count = 1,
-		time = date('%H:%M:%S')
+		time = _G.date('%H:%M:%S')
 	})
 	if delta > 0 and delta < #Data - log_items then
 		delta = delta + 1
@@ -126,7 +126,7 @@ end
 
 -- wipe data when we enter combat
 NeP.Listener:Add('NeP_AL','PLAYER_REGEN_DISABLED', function()
-	wipe(Data)
+	_G.wipe(Data)
 end)
 
 --Export global
