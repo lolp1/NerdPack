@@ -27,15 +27,7 @@ local headers = {
 	{'TOPRIGHT', 'Time', -25}
 }
 
---[[
-for i=1, 3 do
-	NeP_AL.header = NeP_AL.content:CreateFontString('NeP_ALHeaderText')
-	NeP_AL.header:SetFont('Fonts\\ARIALN.TTF', log_height-3)
-	NeP_AL.header:SetPoint(headers[i][1], NeP_AL.frame, headers[i][3], 0)
-	NeP_AL.header:SetText('|cff'..NeP.Color..L:TA('AL', headers[i][2]))
-end]]
-
-NeP_AL.frame:SetScript('OnMouseWheel', function(_, mouse)
+local function scroll(_, mouse)
 	local top = #Data - log_items
 	if mouse == 1 then
 		if delta < top then
@@ -47,20 +39,23 @@ NeP_AL.frame:SetScript('OnMouseWheel', function(_, mouse)
 		end
 	end
 	NeP.ActionLog:Update()
-end)
+end
+
+NeP_AL.frame:SetScript('OnMouseWheel', scroll)
+NeP_AL.content:SetScript('OnMouseWheel', scroll)
 
 local LogItem = { }
- headers[3][3] = -3
+headers[3][3] = -3
 
 for i = 1, (log_items) do
-	LogItem[i] = _G.CreateFrame('Frame', nil, NeP_AL.frame)
+	LogItem[i] = _G.CreateFrame('Frame', nil, NeP_AL.content)
 	LogItem[i]:SetFrameLevel(94)
 	local texture = LogItem[i]:CreateTexture(nil, 'BACKGROUND')
 	texture:SetAllPoints(LogItem[i])
 	LogItem[i].texture = texture
 	LogItem[i]:SetHeight(log_height)
-	LogItem[i]:SetPoint('LEFT', NeP_AL.frame, 'LEFT')
-	LogItem[i]:SetPoint('RIGHT', NeP_AL.frame, 'RIGHT')
+	LogItem[i]:SetPoint('LEFT', NeP_AL.content, 'LEFT')
+	LogItem[i]:SetPoint('RIGHT', NeP_AL.content, 'RIGHT')
 	for k=1, 3 do
 		LogItem[i][k] = LogItem[i]:CreateFontString('itemA')
 		LogItem[i][k]:SetFont('Fonts\\ARIALN.TTF', log_height-3)
@@ -68,8 +63,9 @@ for i = 1, (log_items) do
 		LogItem[i][k]:SetShadowOffset(-1,-1)
 		LogItem[i][k]:SetPoint(headers[k][1], LogItem[i], headers[k][3], 0)
 	end
-	local position = ((i * log_height) * -1)
-	LogItem[i]:SetPoint('TOPLEFT', NeP_AL.frame, 'TOPLEFT', 0, position)
+	local position = ((i * log_height) * -1)+log_height
+	LogItem[i]:SetPoint('TOPLEFT', NeP_AL.content, 'TOPLEFT', 0, position)
+	LogItem[i]:SetScript('OnMouseWheel', scroll)
 end
 
 function NeP.ActionLog:Refresh(event, spell, target)
