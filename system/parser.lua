@@ -3,22 +3,28 @@ NeP.Parser   = {}
 local _G = _G
 local c = NeP.CR
 
---This is used by the ticker
---Its used to determin if we should iterate or not
+--[[
+	<< WARNING! This is not a friendly place >>
+	ParseStart() calls Parse,
+	Parse calls Target_P,
+	Target_P iterates units and calls function provided by Parse.
+
+	- Nest_P iterates NESTS and calls Parse (REPEAT ABOVE)
+	- Reg_P is the regular parser IE no looping.
+	- Pool_P is the POOLING parser IE waits for spells to have mana/energy
+]]
+
 --Returns true if we're not mounted or in a castable mount
 local function IsMountedCheck()
-	--Figure out if we're mounted on a castable mount
 	for i = 1, 40 do
 		local mountID = select(11, _G.UnitBuff('player', i))
 		if mountID and NeP.ByPassMounts(mountID) then
 			return true
 		end
 	end
-	--return boolean (true if not mounted)
 	return (_G.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
 end
 
---This is used by the parser.spell
 --Returns if we're casting/channeling anything, its remaning time and name
 --Also used by the parser for (!spell) if order to figure out if we should clip
 local function castingTime()
@@ -39,6 +45,7 @@ local function _interrupt(eval)
 	return true
 end
 
+-- blacklist
 local function tst(_type, unit)
 	local tbl = c.CR.blacklist[_type]
 	if not tbl then return end
@@ -72,14 +79,14 @@ end
 
 local function noob_target() return _G.UnitExists('target') and 'target' or 'player' end
 
-function NeP.Parser:Parse2(eval, func, nest_unit)
+-- Part of the parser that handles unit looping, and fakeunits
+function NeP.Parser:Target_P(eval, func, nest_unit)
 	local res;
 	--target is target, nest target or fallback
 	local tmp_target = eval[3].target or nest_unit or noob_target
 	tmp_target = NeP.FakeUnits:Filter(tmp_target)
-	--tmp_target = NeP.FakeUnits:Filter(tmp_target)
 	for i=1, #tmp_target do
-		--print("TARGET ===", i)
+		print("TARGET ===", i)
 		eval.target = tmp_target[i]
 		nest_unit = eval.target
 		res = func(self, eval, nest_unit)
@@ -88,26 +95,49 @@ function NeP.Parser:Parse2(eval, func, nest_unit)
 	return res
 end
 
-function NeP.Parser:Parse3(eval, nest_unit)
+-- Part of the parser that iterates nests
+function NeP.Parser:Nest_P(eval, nest_unit)
 	local res;
 	if NeP.DSL.Parse(eval[2], eval[1].spell, eval.target) then
 		for i=1, #eval[1] do
-			--print("NEST ===============", i)
+			print("NEST ===============", i)
 			res = self:Parse(eval[1][i], nest_unit)
 			if res then return res end
 		end
 	end
 end
 
-function NeP.Parser:Parse4(eval)
+-- POOLING PARSER (TARGET->COND->SPELL)
+function NeP.Parser:Pool_P(eval)
 	if not self:Target(eval) then return end
 	eval.spell = eval.spell or eval[1].spell
-	-- dont for spells that failed Conditions
-	--eval.master.halt = eval.master.halt and dsl_res
-	--if not eval.master.halt
-	if NeP.DSL.Parse(eval[2], eval.spell, eval.target)
+	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
+	--dont waitfor spells that failed Conditions
+	eval.master.halt = eval.master.halt and dsl_res
+	print(eval.spell, dsl_res, eval.stats)
+	-- a spell is waiting for mana
+	if eval.master.halt then
+		print(">>>>>> waiting for", eval.master.halt_spell)
+		return
+	end
+	-- Sanity CHecks
+	if eval.stats
+	and not eval.master.halt
+	and dsl_res then
+		NeP.Parser:Reg_P(eval, nil, true)
+	end
+end
+
+--REGULAR PARSER (SPELL->TARGET->COND)
+function NeP.Parser:Reg_P(eval, _, bypass_dsl)
+	if not self:Target(eval) then return end
+	eval.spell = eval.spell or eval[1].spell
+	print(eval.spell, bypass_dsl)
+	--check everything
+	if (bypass_dsl or NeP.DSL.Parse(eval[2], eval.spell, eval.target))
 	and NeP.Helpers:Check(eval.spell, eval.target)
 	and _interrupt(eval) then
+		print(">>> HIT")
 		NeP.ActionLog:Add(eval[1].token, eval.spell or "", eval[1].icon, eval.target)
 		NeP.Interface:UpdateIcon('mastertoggle', eval[1].icon)
 		return eval.exe(eval)
@@ -118,19 +148,20 @@ end
 --Reads and figures out what it should execute from the CR
 --The CR when it reaches this point must be already compiled and be ready to run.
 function NeP.Parser:Parse(eval, nest_unit)
-	-- a spell is waiting for mana
-	--if eval.master.halt then
-		--print(">>>>>> waiting for", eval.master.halt_spell)
-		--return
-	--end
-	--print(eval[1].spell)
 	-- Its a table
 	if eval[1].is_table then
-		return self:Parse2(eval, self.Parse3, nest_unit)
+		return self:Target_P(eval, self.Nest_P, nest_unit)
 	-- Normal
-	elseif (eval[1].bypass or eval.master.endtime == 0)
-	and NeP.Actions:Eval(eval[1].token)(eval) then
-		return self:Parse2(eval, self.Parse4, nest_unit)
+	elseif (eval[1].bypass or eval.master.endtime == 0) then
+		eval.stats = NeP.Actions:Eval(eval[1].token)(eval)
+		-- POOLING PARSER
+		if eval.master.waitfor then
+			print(eval[1].spell, eval.stats)
+			return self:Target_P(eval, self.Pool_P, nest_unit)
+		-- REGULAR PARSER
+		elseif eval.stats then
+			return self:Target_P(eval, self.Reg_P, nest_unit)
+		end
 	end
 end
 
@@ -149,7 +180,7 @@ local function ParseStart()
 		table.master.time = _G.GetTime()
 		table.master.halt = false
 		for i=1, #table do
-			--print("TABLE ============================", i)
+			print("TABLE ============================", i)
 			if NeP.Parser:Parse(table[i]) then break end
 		end
 	end
