@@ -218,7 +218,7 @@ local C = NeP.Cache.Spells
 
 -- this forces the parser to stop until this spel is ready
 local function POLLING_PARSER(eval, nomana)
-	if not eval.master.waitfor then return end
+	if not eval.master.pooling then return end
 	eval.master.halt = eval.master.halt or nomana or false
 	if eval.master.halt then eval.master.halt_spell = eval[1].spell end
 end

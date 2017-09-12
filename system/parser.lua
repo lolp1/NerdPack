@@ -107,7 +107,7 @@ function NeP.Parser:Pool_P(eval)
 	if not self:Target(eval) then return end
 	eval.spell = eval.spell or eval[1].spell
 	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
-	--dont waitfor spells that failed Conditions
+	--dont wait for spells that failed Conditions
 	eval.master.halt = eval.master.halt and dsl_res
 	print(eval.spell, dsl_res, eval.stats)
 	-- a spell is waiting for mana
@@ -151,7 +151,7 @@ function NeP.Parser:Parse(eval, nest_unit)
 		eval.stats = NeP.Actions:Eval(eval[1].token)(eval)
 		print(eval.stats, eval[1].spell)
 		-- POOLING PARSER
-		if eval.master.waitfor then
+		if eval.master.pooling then
 			print(eval[1].spell, eval.stats)
 			return self:Target_P(eval, self.Pool_P, nest_unit)
 		-- REGULAR PARSER
