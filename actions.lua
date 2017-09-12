@@ -225,7 +225,7 @@ end
 
 NeP.Actions:Add('spell_cast', function(eval)
 	-- cached
-	if C[eval[1].spell] == nil then return C[eval[1].spell]; end
+	if C[eval[1].spell] ~= nil then return C[eval[1].spell]; end
 	-- normal stuff
 	local ready, nomana = IsSpellReady(eval[1].spell)
 	C[eval[1].spell] = ready or false

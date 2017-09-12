@@ -80,29 +80,24 @@ end
 local function noob_target() return _G.UnitExists('target') and 'target' or 'player' end
 
 -- Part of the parser that handles unit looping, and fakeunits
+-- target is target, nest target or fallback
 function NeP.Parser:Target_P(eval, func, nest_unit)
-	local res;
-	--target is target, nest target or fallback
 	local tmp_target = eval[3].target or nest_unit or noob_target
 	tmp_target = NeP.FakeUnits:Filter(tmp_target)
 	for i=1, #tmp_target do
 		print("TARGET ===", i)
 		eval.target = tmp_target[i]
 		nest_unit = eval.target
-		res = func(self, eval, nest_unit)
-		if res then break end
+		if func(self, eval, nest_unit) then return true end
 	end
-	return res
 end
 
 -- Part of the parser that iterates nests
 function NeP.Parser:Nest_P(eval, nest_unit)
-	local res;
 	if NeP.DSL.Parse(eval[2], eval[1].spell, eval.target) then
 		for i=1, #eval[1] do
 			print("NEST ===============", i)
-			res = self:Parse(eval[1][i], nest_unit)
-			if res then return res end
+			if self:Parse(eval[1][i], nest_unit) then return true end
 		end
 	end
 end
@@ -154,6 +149,7 @@ function NeP.Parser:Parse(eval, nest_unit)
 	-- Normal
 	elseif (eval[1].bypass or eval.master.endtime == 0) then
 		eval.stats = NeP.Actions:Eval(eval[1].token)(eval)
+		print(eval.stats, eval[1].spell)
 		-- POOLING PARSER
 		if eval.master.waitfor then
 			print(eval[1].spell, eval.stats)
