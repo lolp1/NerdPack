@@ -85,7 +85,7 @@ function NeP.Parser:Target_P(eval, func, nest_unit)
 	local tmp_target = eval[3].target or nest_unit or noob_target
 	tmp_target = NeP.FakeUnits:Filter(tmp_target)
 	for i=1, #tmp_target do
-		print("TARGET ===", i)
+		--print("TARGET ===", i)
 		eval.target = tmp_target[i]
 		nest_unit = eval.target
 		if func(self, eval, nest_unit) then return true end
@@ -96,7 +96,7 @@ end
 function NeP.Parser:Nest_P(eval, nest_unit)
 	if NeP.DSL.Parse(eval[2], eval[1].spell, eval.target) then
 		for i=1, #eval[1] do
-			print("NEST ===============", i)
+			--print("NEST ===============", i)
 			if self:Parse(eval[1][i], nest_unit) then return true end
 		end
 	end
@@ -109,10 +109,11 @@ function NeP.Parser:Pool_P(eval)
 	local dsl_res = NeP.DSL.Parse(eval[2], eval.spell, eval.target)
 	--dont wait for spells that failed Conditions
 	eval.master.halt = eval.master.halt and dsl_res
-	print(eval.spell, dsl_res, eval.stats)
+	--print(eval.spell, dsl_res, eval.stats)
 	-- a spell is waiting for mana
 	if eval.master.halt then
-		print(">>>>>> waiting for", eval.master.halt_spell)
+		NeP.ActionLog:Add(">>> POOLING", eval.master.halt_spell)
+		--print(">>>>>> waiting for", eval.master.halt_spell)
 		return
 	end
 	-- Sanity CHecks
@@ -127,12 +128,12 @@ end
 function NeP.Parser:Reg_P(eval, _, bypass_dsl)
 	if not self:Target(eval) then return end
 	eval.spell = eval.spell or eval[1].spell
-	print(eval.spell, bypass_dsl)
+	--print(eval.spell, bypass_dsl, NeP.DSL.Parse(eval[2], eval.spell, eval.target))
 	--check everything
 	if (bypass_dsl or NeP.DSL.Parse(eval[2], eval.spell, eval.target))
 	and NeP.Helpers:Check(eval.spell, eval.target)
 	and _interrupt(eval) then
-		print(">>> HIT")
+		--print(">>> HIT")
 		NeP.ActionLog:Add(eval[1].token, eval.spell or "", eval[1].icon, eval.target)
 		NeP.Interface:UpdateIcon('mastertoggle', eval[1].icon)
 		return eval.exe(eval)
@@ -149,10 +150,9 @@ function NeP.Parser:Parse(eval, nest_unit)
 	-- Normal
 	elseif (eval[1].bypass or eval.master.endtime == 0) then
 		eval.stats = NeP.Actions:Eval(eval[1].token)(eval)
-		print(eval.stats, eval[1].spell)
 		-- POOLING PARSER
 		if eval.master.pooling then
-			print(eval[1].spell, eval.stats)
+			--print(eval[1].spell, eval.stats)
 			return self:Target_P(eval, self.Pool_P, nest_unit)
 		-- REGULAR PARSER
 		elseif eval.stats then
@@ -176,7 +176,7 @@ local function ParseStart()
 		table.master.time = _G.GetTime()
 		table.master.halt = false
 		for i=1, #table do
-			print("TABLE ============================", i)
+			--print("TABLE ============================", i)
 			if NeP.Parser:Parse(table[i]) then break end
 		end
 	end
