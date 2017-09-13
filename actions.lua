@@ -63,7 +63,7 @@ end)
 -- Dispell all
 NeP.Actions:Add('dispelall', function(eval)
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
-		if FindDispell(eval, Obj.key) then return true end
+		if FindDispell(eval, Obj.key) then return true; end
   end
 end)
 
@@ -216,14 +216,19 @@ end)
 
 local C = NeP.Cache.Spells
 
+-- this forces the parser to stop until this spel is ready
+local function POLLING_PARSER(eval, nomana)
+	if not eval.master.pooling then return end
+	eval.master.halt = eval.master.halt or nomana or false
+	if eval.master.halt then eval.master.halt_spell = eval[1].spell end
+end
+
 NeP.Actions:Add('spell_cast', function(eval)
 	-- cached
-	if C[eval[1].spell] == nil then
-		local ready, nomana = IsSpellReady(eval[1].spell)
-		C[eval[1].spell] = ready or false
-		-- this forces the parser to stop until this spel is ready
-		--eval.master.halt = eval.master.halt or nomana and eval.master.waitfor or false
-		--eval.master.halt_spell = eval.master.halt and eval[1].spell or eval.master.halt_spell
-	end
-	return C[eval[1].spell]
+	if C[eval[1].spell] ~= nil then return C[eval[1].spell]; end
+	-- normal stuff
+	local ready, nomana = IsSpellReady(eval[1].spell)
+	C[eval[1].spell] = ready or false
+	POLLING_PARSER(eval, nomana)
+	return ready or false
 end)

@@ -201,7 +201,7 @@ end)
 
 NeP.DSL:Register('inmelee', function(target)
   local range = NeP.Protected.UnitCombatRange('player', target)
-  return range <= 1.5, range
+  return range <= 1.6, range
 end)
 
 NeP.DSL:Register('inranged', function(target)
