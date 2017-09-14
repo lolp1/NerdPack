@@ -196,12 +196,13 @@ end)
 
 NeP.Actions:Add('item', function(eval)
   local item = eval[1]
-  if item and item.id and _G.GetItemSpell(item.spell) then
-    if _G.IsUsableItem(item.spell)
-      and select(2,_G.GetItemCooldown(item.id)) == 0
-      and _G.GetItemCount(item.spell) > 0 then
-      return true
-    end
+  if item
+	and item.id
+	and _G.GetItemSpell(item.spell)
+  and _G.IsUsableItem(item.spell)
+  and select(2,_G.GetItemCooldown(item.id)) == 0
+  and _G.GetItemCount(item.spell) > 0 then
+    return true
   end
 end)
 
