@@ -113,7 +113,6 @@ local function CleanStart()
 		clean.Others("Dead")
 		clean.Others("Friendly")
 		clean.Others("Enemy")
-		clean.Others("Roster")
 	else
 		for _, v in pairs(OM_c) do
 			_G.wipe(v)

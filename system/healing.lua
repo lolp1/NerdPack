@@ -32,13 +32,13 @@ local function Add(Obj)
 end
 
 local function Iterate()
-	for GUID, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if _G.UnitExists(Obj.key)
+	_G.wipe(Roster)
+	for _, Obj in pairs(NeP.OM:Get('Friendly')) do
+		if Obj.distance < maxDistance
+		and _G.UnitExists(Obj.key)
 		and (_G.UnitInParty(Obj.key) or _G.UnitIsUnit('player', Obj.key))
-		and Obj.distance < maxDistance then
+		and not _G.UnitIsCharmed(Obj.key) then
 			Add(Obj)
-		else
-			Roster[GUID] = nil
 		end
 	end
 end
