@@ -179,30 +179,37 @@ local invItems = {
 }
 
 NeP.Compiler:RegisterToken("#", function(eval, ref)
-	local temp_spell, fake_id = ref.spell, 09324
+	local temp_spell = ref.spell
 	ref.token = 'item'
 	eval.bypass = true
 	if invItems[temp_spell] then
 		local invItem = _G.GetInventorySlotInfo(invItems[temp_spell])
 		temp_spell = _G.GetInventoryItemID("player", invItem) or ref.spell
+		ref.invitem = true
+		ref.invslot = invItem
 	end
-	ref.id = tonumber(temp_spell) or NeP.Core:GetItemID(temp_spell) or fake_id
+	ref.id = tonumber(temp_spell) or NeP.Core:GetItemID(temp_spell)
 	local itemName, itemLink, _,_,_,_,_,_,_, texture = _G.GetItemInfo(ref.id)
 	ref.spell = itemName or ref.spell
-	ref.icon = texture or ""
-	ref.link = itemLink or ""
+	ref.icon = texture
+	ref.link = itemLink
 	eval.exe = funcs["UseItem"]
 end)
 
 NeP.Actions:Add('item', function(eval)
   local item = eval[1]
-  if item
-	and item.id
-	and _G.GetItemSpell(item.spell)
-  and _G.IsUsableItem(item.spell)
-  and select(2,_G.GetItemCooldown(item.id)) == 0
-  and _G.GetItemCount(item.spell) > 0 then
-    return true
+	if item.id then
+		--Iventory invItems
+		if item.invitem then
+			return select(2,_G.GetInventoryItemCooldown('player', item.invslot)) == 0
+			and _G.IsUsableItem(item.link)
+		--regular
+		else
+			return _G.GetItemSpell(item.spell)
+			and _G.IsUsableItem(item.spell)
+			and select(2,_G.GetItemCooldown(item.id)) == 0
+			and _G.GetItemCount(item.spell) > 0
+		end
   end
 end)
 

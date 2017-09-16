@@ -5,6 +5,8 @@ local UIErrorsFrame = _G.UIErrorsFrame
 local C_Timer = _G.C_Timer
 
 local _Failed = {}
+
+--this disables the error messages
 UIErrorsFrame:UnregisterEvent("UI_ERROR_MESSAGE")
 
 local function addToData(GUID)
