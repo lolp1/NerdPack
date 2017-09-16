@@ -106,7 +106,7 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 	local numPetSpells = _G.HasPetSpells()
 	if numPetSpells then
 		for i = 1, numPetSpells do
-			if string.lower(_G.GetSpellBookItemName(i, _G.BOOKTYPE_PET)) == spellName then
+			if _G.GetSpellBookItemName(i, _G.BOOKTYPE_PET):lower() == spellName then
 				return i, _G.BOOKTYPE_PET
 			end
 		end
