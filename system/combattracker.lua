@@ -97,16 +97,16 @@ end
 
 --[[ These are the events we're looking for and its respective action ]]
 local EVENTS = {
-	['SPELL_DAMAGE'] = function(...) logDamage(...) end,
-	['DAMAGE_SHIELD'] = function(...) logDamage(...) end,
-	['SPELL_PERIODIC_DAMAGE']	= function(...) logDamage(...) end,
-	['SPELL_BUILDING_DAMAGE']	= function(...) logDamage(...) end,
-	['RANGE_DAMAGE'] = function(...) logDamage(...) end,
-	['SWING_DAMAGE'] = function(...) logSwing(...) end,
-	['SPELL_HEAL'] = function(...) logHealing(...) end,
-	['SPELL_PERIODIC_HEAL'] = function(...) logHealing(...) end,
+	['SPELL_DAMAGE'] = logDamage,
+	['DAMAGE_SHIELD'] = logDamage,
+	['SPELL_PERIODIC_DAMAGE']	= logDamage,
+	['SPELL_BUILDING_DAMAGE']	= logDamage,
+	['RANGE_DAMAGE'] = logDamage,
+	['SWING_DAMAGE'] = logSwing,
+	['SPELL_HEAL'] = logHealing,
+	['SPELL_PERIODIC_HEAL'] = logHealing,
 	['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
-	['SPELL_CAST_SUCCESS'] = function(...) addAction(...) end
+	['SPELL_CAST_SUCCESS'] = addAction
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
