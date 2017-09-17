@@ -31,6 +31,7 @@ title = n_name,
     { type = 'spacer' },
     { type = 'header', text = L('misc') },
 		{ type = 'checkbox', text = 'Change talents while not resting', key = 'talents_exp', default = false },
+    { type = 'checkbox', text = 'Auto accept LFG', key = 'LFG_acp', default = false },
 
     { type = 'spacer' },
 		{ type = 'button', text = L('apply_bt'), callback = function() NeP.Interface:Update() end },

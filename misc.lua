@@ -1,5 +1,11 @@
 local n_name, NeP = ...
 
+NeP.Listener:Add(n_name..'_misc', 'LFG_PROPOSAL_SHOW', function()
+  if NeP.Interface:Fetch(n_name..'_Settings', 'LFG_acp', false) then
+    _G.C_Timer.After(math.random(3, 8), _G.AcceptProposal)
+  end
+end)
+
 local function ScanNewTalent(row)
   local active_talent, new_talent;
   -- scans
