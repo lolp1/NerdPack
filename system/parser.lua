@@ -60,7 +60,10 @@ local function tst(_type, unit)
 end
 
 function NeP.Parser.Unit_Blacklist(_, unit)
-	return c.CR.blacklist.units[NeP.Core:UnitID(unit)] or tst("buff", unit) or tst("debuff", unit)
+	return NeP.Debuffs:Eval(unit)
+	or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
+	or tst("buff", unit)
+	or tst("debuff", unit)
 end
 
 --This works on the current parser target.
