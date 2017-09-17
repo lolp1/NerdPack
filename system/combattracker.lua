@@ -19,18 +19,24 @@ local Doubles = {
 local function addToData(GUID)
 	if not Data[GUID] then
 		Data[GUID] = {
-			-- Taken
+			-- Damage Taken
 			dmgTaken = 0,
 			dmgTaken_P = 0,
 			dmgTaken_M = 0,
 			hits_taken = 0,
 			lastHit_taken = 0,
-			-- Done
+			-- Damage Done
 			dmgDone = 0,
 			dmgDone_P = 0,
 			dmgDone_M = 0,
 			hits_done = 0,
 			lastHit_done = 0,
+			-- Healing taken
+			heal_taken = 0,
+			heal_hits_taken = 0,
+			-- Healing Done
+			heal_done = 0,
+			heal_hits_done = 0,
 			--shared
 			combat_time = _G.GetTime(),
 			spell_value = {}
@@ -81,7 +87,12 @@ end
 --[[ This Logs the healing done for every unit
 		 !!~counting selfhealing only for now~!!]]
 local logHealing = function(...)
-	-- To be done
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _,_, Amount = ...
+	Data[DestGUID].heal_taken = Data[DestGUID].heal_taken + Amount
+	Data[DestGUID].heal_hits_taken = Data[DestGUID].heal_hits_taken + 1
+	Data[SourceGUID].heal_done = Data[SourceGUID].heal_done + Amount
+	Data[SourceGUID].heal_hits_done = Data[SourceGUID].heal_hits_done + 1
+	Data[SourceGUID][spellID] = ((Data[SourceGUID][spellID] or Amount) + Amount) / 2
 end
 
 --[[ This Logs the last action done for every unit ]]
