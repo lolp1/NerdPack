@@ -107,6 +107,7 @@ NeP.Actions:Add('cancelform', function(eval)
 end)
 
 -- Automated tauting
+-- USAGE %taunt(SPELL)
 NeP.Actions:Add('taunt', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
