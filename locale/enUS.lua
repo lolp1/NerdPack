@@ -50,6 +50,7 @@ NeP.Locale.enUS = {
     OM_Dis_desc = "This limits the maximum distance of the units/objects that can be added to the OM\n|cfffd1c15Affects performance!|r",
     UI_Settings = "User Interface Settings",
     OM_Settings = "Object Manager Settings",
+    misc = 'Extras'
   },
   States = {
     charm        = {'^charmed'},

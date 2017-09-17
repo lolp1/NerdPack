@@ -1,4 +1,4 @@
-local NeP = _G.NeP
+local n_name, NeP = ...
 
 local function ScanNewTalent(row)
   local active_talent, new_talent;
@@ -28,7 +28,8 @@ end
 _G.C_Timer.NewTicker(0.1, function()
   if _G.PlayerTalentFrame
   and _G.PlayerTalentFrame:IsVisible()
-  and not _G.IsResting() then
+  and not _G.IsResting()
+  and NeP.Interface:Fetch(n_name..'_Settings', 'talents_exp', false) then
     for row=1, 7 do
       ScanNewTalent(row)
     end
