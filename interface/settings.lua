@@ -15,7 +15,8 @@ title = n_name,
   width = 250,
   height = 270,
   config = {
-		{ type = 'header', text = n_name..' |r'..NeP.Version..' '..NeP.Branch, size = 14, align = 'Center'},
+		{ type = 'header', text = n_name, size = 24, align = 'Center'},
+    { type = 'text', text = NeP.Version..' '..NeP.Branch, size = 18, align = 'Center'},
 
     { type = 'spacer' },{ type = 'ruler' },{ type = 'spacer' },
     { type = 'header', text = L('UI_Settings') },
@@ -23,15 +24,15 @@ title = n_name,
 		{ type = 'spinner', text = L('bpad'), key = 'bpad', default = 2},
     { type = 'spinner', text = L('brow'), key = 'brow', step = 1, min = 1, max = 20, default = 10},
 
-    { type = 'ruler' },{ type = 'spacer' },
+    { type = 'spacer' },
     { type = 'header', text = L('OM_Settings') },
     { type = 'spinner', text = L('OM_Dis'), key = 'OM_Dis', step = 10, min = 40, max = 300, default = 100, desc = L("OM_Dis_desc")},
 
-    { type = 'spacer' },{ type = 'ruler' },
+    { type = 'spacer' },
     { type = 'header', text = L('misc') },
 		{ type = 'checkbox', text = 'Change talents while not resting', key = 'talents_exp', default = false },
 
-    { type = 'spacer' },{ type = 'ruler' },
+    { type = 'spacer' },
 		{ type = 'button', text = L('apply_bt'), callback = function() NeP.Interface:Update() end },
 
 	}
