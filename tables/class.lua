@@ -338,4 +338,6 @@ function NeP.ClassTable:GetRole(specid)
 	return spec.role
 end
 
-NeP.Globals.ClassTable = NeP.ClassTable
+--Export to global
+NeP.Globals.Tables = NeP.Globals.Tables or {}
+NeP.Globals.Tables.ClassTable = NeP.ClassTable

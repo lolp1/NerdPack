@@ -46,3 +46,7 @@ NeP.Taunts:Add({
   { id = 143767, stacks = 2 },-- Scorching Breath (Thok (Yaungol eaten))
   { id = 145183, stacks = 3 } -- Gripping Despair (Garrosh/71865)
 })
+
+--Export to global
+NeP.Globals.Tables = NeP.Globals.Tables or {}
+NeP.Globals.Tables.Taunts = NeP.Taunts
