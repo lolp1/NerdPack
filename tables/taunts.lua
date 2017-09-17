@@ -1,5 +1,6 @@
 local _, NeP = ...
 NeP.Taunts = {}
+NeP.Taunts.table = {}
 
 function NeP.Taunts:Add(id, stacks)
   if type(id) == 'table' then

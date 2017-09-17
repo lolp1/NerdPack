@@ -1,5 +1,6 @@
 local _, NeP = ...
 NeP.ByPassMounts = {}
+NeP.ByPassMounts.table = {}
 
 function NeP.ByPassMounts:Eval(ID)
 	for i=1, #self.table do

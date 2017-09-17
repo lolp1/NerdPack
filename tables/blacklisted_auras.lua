@@ -1,5 +1,6 @@
 local _, NeP = ...
 NeP.Debuffs = {}
+NeP.Debuffs.table = {}
 
 --[[
 	DESC: Checks if unit has a Blacklisted Debuff.

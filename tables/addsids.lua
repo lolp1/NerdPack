@@ -1,5 +1,6 @@
 local _, NeP = ...
 NeP.AddsID = {}
+NeP.AddsID.table = {}
 
 function NeP.AddsID:Add(ID)
   if type(ID) == 'table' then
