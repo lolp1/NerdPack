@@ -117,7 +117,7 @@ function NeP.Parser:Pool_P(eval)
 	if eval.master.halt then
 		NeP.ActionLog:Add(">>> POOLING", eval.master.halt_spell)
 		--print(">>>>>> waiting for", eval.master.halt_spell)
-		return
+		return true
 	end
 	-- Sanity CHecks
 	if eval.stats
