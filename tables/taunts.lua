@@ -12,7 +12,7 @@ function NeP.Taunts:Add(id, stacks)
   end
 end
 
-function NeP.Taunts:ShouldTaunr(unit)
+function NeP.Taunts:ShouldTaunt(unit)
   --Quit if we have its threat
   local threat = _G.UnitThreatSituation("player", unit) or 0
   if threat >= 3 then return end
