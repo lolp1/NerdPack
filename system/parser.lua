@@ -123,7 +123,7 @@ function NeP.Parser:Pool_P(eval)
 	if eval.stats
 	and not eval.master.halt
 	and dsl_res then
-		NeP.Parser:Reg_P(eval, nil, true)
+		return NeP.Parser:Reg_P(eval, nil, true)
 	end
 end
 
