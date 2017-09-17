@@ -2,7 +2,8 @@ local _, NeP = ...
 local _G = _G
 
 NeP.CombatTracker = {}
-local Data = {}
+NeP.CombatTracker.Data = {}
+local Data = NeP.CombatTracker.Data
 
 -- Thse are Mixed Damage types (magic and pysichal)
 local Doubles = {
@@ -39,10 +40,10 @@ end
 
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_,_,spellName, school, Amount, a, b, c = ...
-	--if SourceGUID == _G.UnitGUID('player') then
-	--	print(spellName)
-	--end
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount, a, b, c = ...
+	if SourceGUID == _G.UnitGUID('player') then
+		print(spellID)
+	end
 	-- Mixed
 	if Doubles[school] then
 		Data[DestGUID].dmgTaken_P = Data[DestGUID].dmgTaken_P + Amount
@@ -63,7 +64,7 @@ local logDamage = function(...)
 	Data[DestGUID].hits_taken = Data[DestGUID].hits_taken + 1
 	Data[SourceGUID].dmgDone = Data[SourceGUID].dmgDone + Amount
 	Data[DestGUID].hits_done = Data[DestGUID].hits_done + 1
-	Data[SourceGUID][spellName] = ((Data[SourceGUID][spellName] or Amount) + Amount) / 2
+	Data[SourceGUID][spellID] = ((Data[SourceGUID][spellID] or Amount) + Amount) / 2
 end
 
 --[[ This Logs the swings (damage) done for every unit ]]
@@ -151,6 +152,11 @@ function NeP.CombatTracker.LastCast(_, unit)
   if Data[GUID] then
     return Data[GUID].lastcast
   end
+end
+
+function NeP.CombatTracker.SpellDamage(_, unit, spellID)
+  local GUID = _G.UnitGUID(unit)
+  return Data[GUID] and Data[GUID][spellID] or 0
 end
 
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
