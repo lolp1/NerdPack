@@ -1,10 +1,11 @@
 local _, NeP = ...
 NeP.ByPassMounts = {}
 NeP.ByPassMounts.table = {}
+local T = NeP.ByPassMounts.table
 
 function NeP.ByPassMounts:Eval(ID)
-	for i=1, #self.table do
-		if tonumber(ID) == self.table[i] then
+	for i=1, #T do
+		if tonumber(ID) == T[i] then
 			return true
 		end
 	end
@@ -16,8 +17,12 @@ function NeP.ByPassMounts:Add(ID)
 			self:Add(ID[i])
 		end
 	else
-		table.insert(self.table, ID)
+		table.insert(T, ID)
 	end
+end
+
+function NeP.ByPassMounts:Get()
+	return T
 end
 
 NeP.ByPassMounts:Add({
@@ -33,5 +38,8 @@ NeP.ByPassMounts:Add({
 })
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.ByPassMounts = NeP.ByPassMounts
+NeP.Globals.ByPassMounts = {
+  Add = NeP.ByPassMounts.Add,
+  Eval = NeP.ByPassMounts.Eval,
+  Get = NeP.ByPassMounts.Get
+}

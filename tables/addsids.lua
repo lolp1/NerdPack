@@ -1,6 +1,7 @@
 local _, NeP = ...
 NeP.AddsID = {}
 NeP.AddsID.table = {}
+local T = NeP.AddsID.table
 
 function NeP.AddsID:Add(ID)
   if type(ID) == 'table' then
@@ -8,17 +9,21 @@ function NeP.AddsID:Add(ID)
 			self:Add(ID[i])
 		end
 	else
-		self.table[ID] = true
+		T[ID] = true
 	end
 end
 
-function NeP.AddsID:Eval(unit)
+function NeP.AddsID.Eval(_, unit)
   if tonumber(unit) then
-    return self.table[tonumber(unit)]
+    return T[tonumber(unit)]
   elseif _G.UnitExists(unit) then
     unit = select(6, _G.strsplit("-", _G.UnitGUID(unit)))
-    return self.table[tonumber(unit)]
+    return T[tonumber(unit)]
   end
+end
+
+function NeP.AddsID.Get()
+  return T
 end
 
 NeP.AddsID:Add({
@@ -66,5 +71,8 @@ NeP.AddsID:Add({
 })
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.AddsID = NeP.AddsID
+NeP.Globals.AddsID = {
+  Add = NeP.AddsID.Add,
+  Eval = NeP.AddsID.Eval,
+  Get = NeP.AddsID.Get
+}

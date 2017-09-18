@@ -33,5 +33,4 @@ function NeP.Spells.Convert(_, spell)
 end
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.Spells = NeP.Spells
+NeP.Globals.Spells = NeP.Spells

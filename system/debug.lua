@@ -43,4 +43,6 @@ _G.C_Timer.NewTicker(1, function()
 	_G.ResetCPUUsage()
 end, nil)
 
-NeP.Globals.Debug = NeP.Debug
+NeP.Globals.Debug = {
+	Add =  NeP.Debug.Add
+}

@@ -136,5 +136,4 @@ _G.C_Timer.NewTicker(1, MakerStart)
 NeP.Globals.OM = {
 	Add = NeP.OM.Add,
 	Get = NeP.OM.Get,
-	clean = clean
 }

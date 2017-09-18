@@ -1,6 +1,7 @@
 local _, NeP = ...
 NeP.Debuffs = {}
 NeP.Debuffs.table = {}
+local T = NeP.Debuffs.table
 
 --[[
 	DESC: Checks if unit has a Blacklisted Debuff.
@@ -10,7 +11,7 @@ NeP.Debuffs.table = {}
 function NeP.Debuffs:Eval(unit)
 	for i = 1, 40 do
 		local ID = select(11, _G.UnitDebuff(unit, i))
-		if ID and self.table[ID] then
+		if ID and T[ID] then
 			return true
 		end
 	end
@@ -22,8 +23,12 @@ function NeP.Debuffs:Add(ID)
 			self:Add(ID[i])
 		end
 	else
-		self.table[ID] = true
+		T[ID] = true
 	end
+end
+
+function NeP.Debuffs:Get()
+	return T
 end
 
 NeP.Debuffs:Add({
@@ -71,5 +76,8 @@ NeP.Debuffs:Add({
 })
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.Debuffs = NeP.Debuffs
+NeP.Globals.Debuffs = {
+  Add = NeP.Debuffs.Add,
+  Eval = NeP.Debuffs.Eval,
+  Get = NeP.Debuffs.Get
+}

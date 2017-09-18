@@ -1,6 +1,7 @@
 local _, NeP = ...
 NeP.Taunts = {}
 NeP.Taunts.table = {}
+local T = NeP.Taunts.table
 
 function NeP.Taunts:Add(id, stacks)
   if type(id) == 'table' then
@@ -9,7 +10,7 @@ function NeP.Taunts:Add(id, stacks)
       self:Add(tmp.id, tmp.stacks)
     end
   else
-    table.insert(self.table, {id=id, stacks=stacks})
+    table.insert(T, {id=id, stacks=stacks})
   end
 end
 
@@ -19,10 +20,10 @@ function NeP.Taunts:ShouldTaunt(unit)
   if threat >= 3 then return end
   -- Taunts in a raid, where you have 2 tanks
   if _G.IsInRaid() then
-    for i=1, #self.table do
-      local debuff = _G.etSpellInfo(self.table[i].id)
+    for i=1, #T do
+      local debuff = _G.etSpellInfo(T[i].id)
       if not _G.UnitDebuff('player', debuff)
-      and (select(4, _G.UnitDebuff(unit..'target', debuff)) or 0) > self.table[i].stacks then
+      and (select(4, _G.UnitDebuff(unit..'target', debuff)) or 0) > T[i].stacks then
         return true
       end
     end
@@ -30,6 +31,10 @@ function NeP.Taunts:ShouldTaunt(unit)
   else
     return threat > 0 and threat < 3
   end
+end
+
+function NeP.Taunts:Get()
+  return T
 end
 
 NeP.Taunts:Add({
@@ -49,5 +54,8 @@ NeP.Taunts:Add({
 })
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.Taunts = NeP.Taunts
+NeP.Globals.Taunts = {
+  Add = NeP.Taunts.Add,
+  ShouldTaunt = NeP.Taunts.ShouldTaunt,
+  Get = NeP.Taunts.Get
+}

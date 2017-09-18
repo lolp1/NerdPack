@@ -3,7 +3,6 @@ local strsplit = _G.strsplit
 
 NeP.Library = {}
 NeP.Library.Libs = {}
-NeP.Globals.Library = NeP.Library
 
 -- This needs to be global for loadstring :C
 local libs = NeP.Library.Libs
@@ -23,3 +22,9 @@ function NeP.Library:Parse(strg, ...)
 	local lib = self:Fetch(strg)
 	return lib(...)
 end
+
+NeP.Globals.Library = {
+	Add = NeP.Library.Add,
+	Fetch = NeP.Library.Fetch,
+	Parse = NeP.Library.Parse
+}

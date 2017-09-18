@@ -3,19 +3,20 @@ NeP.BossID = {}
 
 --BossIDs Lib
 NeP.BossID.table = _G.LibStub("LibBossIDs-1.0").BossIDs
+local T = NeP.BossID.table
 
 function NeP.BossID:Add(...)
   if type(...) == 'table' then
     for id in pairs(...) do
       id = tonumber(id)
       if id then
-        self.table[id] = true
+        T[id] = true
       end
     end
   else
     local id = tonumber(...)
     if id then
-      self.table[id] = true
+      T[id] = true
     end
   end
 end
@@ -38,10 +39,14 @@ local function UnitID(unit)
   end
 end
 
-function NeP.BossID:Eval(unit)
+function NeP.BossID.Eval(_, unit)
   if not unit then return false end
-  local unit, unitid = UnitID(unit)
-  return _G.UnitExists(unit) and WoWBossID(unit) or self.table[unitid]
+  local unit2, unitid = UnitID(unit)
+  return _G.UnitExists(unit2) and WoWBossID(unit2) or T[unitid]
+end
+
+function NeP.BossID.Get()
+  return T
 end
 
 NeP.BossID:Add({
@@ -59,5 +64,8 @@ NeP.BossID:Add({
 })
 
 --Export to global
-NeP.Globals.Tables = NeP.Globals.Tables or {}
-NeP.Globals.Tables.BossID = NeP.BossID
+NeP.Globals.BossID = {
+  Add = NeP.BossID.Add,
+  Eval = NeP.BossID.Eval,
+  Get = NeP.BossID.Get
+}
