@@ -16,5 +16,6 @@
 	<Script file="commands.lua" />
 	<Script file="fakeunits.lua" />
 	<Script file="actions.lua" />
+	<Script file="misc.lua" />
 
 </Ui>

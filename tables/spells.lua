@@ -1,12 +1,10 @@
 local _, NeP       = ...
 NeP.Spells         = {}
-NeP.Globals.Spells = NeP.Spells
 local SpellsTable  = {}
-local GetSpellInfo = GetSpellInfo
 
 local function _add(...)
 	local name, id = ...
-	local native_spell = GetSpellInfo(id)
+	local native_spell = _G.GetSpellInfo(id)
 	if native_spell then
 		SpellsTable[name:lower()] = native_spell
 	end
@@ -25,7 +23,7 @@ end
 function NeP.Spells.Convert(_, spell)
 	if not spell then return end
 	if type(spell) == 'number' or spell:find('%d') then
-		spell = GetSpellInfo(spell) or spell
+		spell = _G.GetSpellInfo(spell) or spell
 	else
 		if SpellsTable[spell:lower()] then
 			spell = SpellsTable[spell:lower()]
@@ -33,3 +31,7 @@ function NeP.Spells.Convert(_, spell)
 	end
 	return spell
 end
+
+--Export to global
+NeP.Globals.Tables = NeP.Globals.Tables or {}
+NeP.Globals.Tables.Spells = NeP.Spells

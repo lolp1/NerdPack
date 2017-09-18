@@ -7,5 +7,6 @@
 	<Script file="spells.lua" />
 	<Script file="bossids.lua" />
 	<Script file="addsids.lua" />
+	<Script file="taunts.lua" />
 
 </Ui>

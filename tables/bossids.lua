@@ -1,22 +1,21 @@
-local _, NeP       = ...
-NeP.BossID         = {}
-NeP.Globals.BossID = NeP.BossID
+local _, NeP = ...
+NeP.BossID = {}
 
 --BossIDs Lib
-local bossids = LibStub("LibBossIDs-1.0").BossIDs
+NeP.BossID.table = _G.LibStub("LibBossIDs-1.0").BossIDs
 
 function NeP.BossID:Add(...)
   if type(...) == 'table' then
     for id in pairs(...) do
       id = tonumber(id)
       if id then
-        bossids[id] = true
+        self.table[id] = true
       end
     end
   else
     local id = tonumber(...)
     if id then
-      bossids[id] = true
+      self.table[id] = true
     end
   end
 end
@@ -24,7 +23,7 @@ end
 local function WoWBossID(unit)
   if not unit then return false end
   for i=1, 4 do
-    if UnitIsUnit(unit, "boss"..i) then
+    if _G.UnitIsUnit(unit, "boss"..i) then
       return true
     end
   end
@@ -34,7 +33,7 @@ local function UnitID(unit)
   if tonumber(unit) then
     return nil, tonumber(unit)
   else
-    local unitid = select(6, strsplit("-", UnitGUID(unit)))
+    local unitid = select(6, _G.strsplit("-", _G.UnitGUID(unit)))
     return unit, tonumber(unitid)
   end
 end
@@ -42,7 +41,7 @@ end
 function NeP.BossID:Eval(unit)
   if not unit then return false end
   local unit, unitid = UnitID(unit)
-  return UnitExists(unit) and WoWBossID(unit) or bossids[unitid]
+  return _G.UnitExists(unit) and WoWBossID(unit) or self.table[unitid]
 end
 
 NeP.BossID:Add({
@@ -58,3 +57,7 @@ NeP.BossID:Add({
   [104528] = true, -- High Botanist Tel'arn
   [103685] = true, -- Tichondrius
 })
+
+--Export to global
+NeP.Globals.Tables = NeP.Globals.Tables or {}
+NeP.Globals.Tables.BossID = NeP.BossID

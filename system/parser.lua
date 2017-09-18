@@ -18,7 +18,7 @@ local c = NeP.CR
 local function IsMountedCheck()
 	for i = 1, 40 do
 		local mountID = select(11, _G.UnitBuff('player', i))
-		if mountID and NeP.ByPassMounts(mountID) then
+		if mountID and NeP.ByPassMounts:Eval(mountID) then
 			return true
 		end
 	end
@@ -60,7 +60,10 @@ local function tst(_type, unit)
 end
 
 function NeP.Parser.Unit_Blacklist(_, unit)
-	return c.CR.blacklist.units[NeP.Core:UnitID(unit)] or tst("buff", unit) or tst("debuff", unit)
+	return NeP.Debuffs:Eval(unit)
+	or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
+	or tst("buff", unit)
+	or tst("debuff", unit)
 end
 
 --This works on the current parser target.
@@ -114,13 +117,13 @@ function NeP.Parser:Pool_P(eval)
 	if eval.master.halt then
 		NeP.ActionLog:Add(">>> POOLING", eval.master.halt_spell)
 		--print(">>>>>> waiting for", eval.master.halt_spell)
-		return
+		return true
 	end
 	-- Sanity CHecks
 	if eval.stats
 	and not eval.master.halt
 	and dsl_res then
-		NeP.Parser:Reg_P(eval, nil, true)
+		return NeP.Parser:Reg_P(eval, nil, true)
 	end
 end
 
