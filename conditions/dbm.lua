@@ -11,7 +11,7 @@ local fake_timer = 999
 function NeP.DBM.BuildTimers()
   for bar in pairs(_G.DBM.Bars.bars) do
       local id = _G.GetSpellInfo(bar.id:match("%d+")) or bar.id:lower()
-      NeP.Cache.DBM_Timers[id] = bar.timer and bar.timer > 0.1 or fake_timer
+      NeP.Cache.DBM_Timers[id] = bar.timer and bar.timer
   end
 end
 
