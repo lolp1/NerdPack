@@ -43,7 +43,7 @@ end
 function clean.Objects()
 	for GUID, Obj in pairs(OM_c["Objects"]) do
 		if Obj.distance > NeP.OM.max_distance
-		or not _G.ObjectIsVisible(Obj.key) -- This needs to be out of here.... (EXTERNAL API)
+		or not NeP.Protected.ObjectExists(Obj.key)
 		or GUID ~= _G.UnitGUID(Obj.key) then
 			OM_c["Objects"][GUID] = nil
 		end
