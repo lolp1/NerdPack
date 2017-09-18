@@ -47,9 +47,10 @@ end
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount, a, b, c = ...
-	if SourceGUID == _G.UnitGUID('player') then
-		print(spellID)
-	end
+	-- Chat Output for Debugging
+--	if SourceGUID == _G.UnitGUID('player') then
+--		print(spellID)
+--	end
 	-- Mixed
 	if Doubles[school] then
 		Data[DestGUID].dmgTaken_P = Data[DestGUID].dmgTaken_P + Amount
