@@ -31,8 +31,7 @@ NeP.Compiler:RegisterToken("!", function(_, ref)
 end)
 
 -- No GCD
-NeP.Compiler:RegisterToken("&", function(eval, ref)
-    ref.bypass = true
+NeP.Compiler:RegisterToken("&", function(eval)
     eval.nogcd = true
 end)
 
@@ -70,7 +69,6 @@ end)
 -- Executes a users macro
 NeP.Compiler:RegisterToken("/", function(eval, ref)
   ref.token = 'macro'
-  eval.nogcd = true
   eval.exe = funcs["Macro"]
 end)
 
@@ -86,7 +84,6 @@ end)
 -- Executes a users lib
 NeP.Compiler:RegisterToken("@", function(eval, ref)
   ref.token = 'lib'
-  eval.nogcd = true
   eval.exe = funcs["Lib"]
 end)
 
