@@ -124,8 +124,8 @@ NeP.Actions:Add('ressdead', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Friendly')) do
     if Obj.distance < 40
-    and _G.UnitExists(Obj.Key)
-    and _G.UnitIsPlayer(Obj.Key)
+    and _G.UnitExists(Obj.key)
+    and _G.UnitIsPlayer(Obj.key)
     and _G.UnitIsDeadOrGhost(Obj.key)
     and _G.UnitPlayerOrPetInParty(Obj.key) then
       eval.spell = eval[1].args
