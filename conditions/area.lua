@@ -71,7 +71,7 @@ NeP.DSL:Register("area.dead", function(target, max_dist)
   local total = 0
   for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if NeP.DSL:Get("range")(target, Obj.key) < tonumber(max_dist) then
-      total = total + NeP.DSL:Get("incdmg")(Obj.key)
+      total = total + 1
     end
   end
   return total
