@@ -8,6 +8,7 @@ NeP.Media = 'Interface\\AddOns\\' .. n_name .. '\\Media\\'
 NeP.Color = 'FFFFFF'
 NeP.Paypal = 'https://www.paypal.me/JaimeMarques/25'
 NeP.Patreon = 'https://www.patreon.com/mrthesoulz'
+NeP.Discord = 'https://discord.gg/XtSZbjM'
 NeP.Author = 'MrTheSoulz'
 
 -- This exports stuff into global space
