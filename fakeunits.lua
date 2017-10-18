@@ -168,10 +168,12 @@ end)
 NeP.FakeUnits:Add({'lowestenemy', 'loweste', 'le'}, function(num)
 	local tempTable = {}
 	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-		tempTable[#tempTable+1] = {
-			key = Obj.key,
-			health = NeP.DSL:Get("health")(Obj.key)
-		}
+		if _G.UnitExists(Obj.key) then
+			tempTable[#tempTable+1] = {
+				key = Obj.key,
+				health = NeP.DSL:Get("health")(Obj.key)
+			}
+		end
 	end
 	table.sort( tempTable, function(a,b) return a.health < b.health end )
 	return tempTable[num] and tempTable[num].key
