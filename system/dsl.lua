@@ -129,8 +129,10 @@ local function Comperatores(strg, spell, target)
 	if not func then return false end
 	--actual process
 	local arg1, arg2 = strg:match("(.*)"..OP.."(.*)")
-	arg1, arg2 = DSL.Parse(arg1, spell, target), DSL.Parse(arg2, spell, target)
-	arg1, arg2 = FilterNum(arg1), FilterNum(arg2)
+	arg1 = DSL.Parse(arg1, spell, target)
+	arg2 = DSL.Parse(arg2, spell, target)
+	arg1 = FilterNum(arg1)
+	arg2 = FilterNum(arg2)
 	return func(arg1 or 1, arg2 or 1)
 end
 
@@ -138,8 +140,10 @@ local function StringMath(strg, spell, target)
 	local tokens = "[/%*%+%-]"
 	local OP = strg:match(tokens)
 	local arg1, arg2 = _G.strsplit(OP, strg, 2)
-	arg1, arg2 = DSL.Parse(arg1, spell, target), DSL.Parse(arg2, spell, target)
-	arg1, arg2 = FilterNum(arg1), FilterNum(arg2)
+	arg1 = DSL.Parse(arg1, spell, target)
+	arg2 = DSL.Parse(arg2, spell, target)
+	arg1 = FilterNum(arg1)
+	arg2 = FilterNum(arg2)
 	return math_OP[OP](arg1, arg2)
 end
 
