@@ -169,7 +169,7 @@ NeP.DSL:Register({'distance', 'range'}, function(unit)
 end)
 
 NeP.DSL:Register({'distancefrom', 'rangefrom'}, function(unit, unit2)
-  return NeP.Protected.UnitCombatRange(unit2, unit)
+  return NeP.Protected.UnitCombatRange(unit, unit2)
 end)
 
 NeP.DSL:Register('level', function(target)
