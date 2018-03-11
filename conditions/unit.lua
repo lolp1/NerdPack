@@ -254,6 +254,23 @@ NeP.DSL:Register("falling", function()
   return _G.IsFalling()
 end)
 
+local last_fall = 0;
+NeP.DSL:Register({"falling.duration", "fall.duration"}, function()
+  -- if we´re not falling then reset the counter and return 0
+  if not _G.IsFalling() then
+    last_fall = 0
+    return 0
+  end
+  -- if we have a time set then return the difference
+  local time = _G.GetTime()
+  if last_fall then
+    return time - last_fall
+  end
+  -- otherwise set time and return 0
+  last_fall = time
+  return 0
+end)
+
 NeP.DSL:Register({"deathin", "ttd", "timetodie"}, function(target)
   return NeP.CombatTracker:TimeToDie(target)
 end)
