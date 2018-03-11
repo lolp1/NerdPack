@@ -263,7 +263,7 @@ NeP.DSL:Register({"falling.duration", "fall.duration"}, function()
   end
   -- if we have a time set then return the difference
   local time = _G.GetTime()
-  if last_fall then
+  if last_fall > 0 then
     return time - last_fall
   end
   -- otherwise set time and return 0
