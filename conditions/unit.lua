@@ -255,20 +255,28 @@ NeP.DSL:Register("falling", function()
 end)
 
 local last_fall = 0;
-NeP.DSL:Register({"falling.duration", "fall.duration"}, function()
-  -- if we´re not falling then reset the counter and return 0
+local falling_for = 0;
+function buildFallTime()
+	-- if we´re not falling then reset the counter and return 0
   if not _G.IsFalling() then
     last_fall = 0
-    return 0
+		falling_for = 0
+		return;
   end
   -- if we have a time set then return the difference
   local time = _G.GetTime()
   if last_fall > 0 then
-    return time - last_fall
+    falling_for = time - last_fall
+		return;
   end
   -- otherwise set time and return 0
   last_fall = time
-  return 0
+	falling_for = 0
+end
+_G.C_Timer.NewTicker(0.1, buildFallTime)
+
+NeP.DSL:Register({"falling.duration", "fall.duration"}, function()
+  return falling_for
 end)
 
 NeP.DSL:Register({"deathin", "ttd", "timetodie"}, function(target)
