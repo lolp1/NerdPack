@@ -38,8 +38,7 @@ end)
 
 NeP.DSL:Register('spell.range', function(target, spell)
   local spellIndex, spellBook = NeP.Core:GetSpellBookIndex(spell)
-  if not spellIndex then return false end
-  return spellIndex and _G.IsSpellInRange(spellIndex, spellBook, target)
+  return spellIndex and _G.IsSpellInRange(spellIndex, spellBook, target) == 1
 end)
 
 NeP.DSL:Register('spell.casttime', function(_, spell)
