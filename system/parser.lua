@@ -184,7 +184,8 @@ local function ParseStart()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not _G.UnitIsDeadOrGhost('player')
 	and IsMountedCheck()
-	and not _G.LootFrame:IsShown() then
+	and not _G.LootFrame:IsShown()
+	and not (_G.GetNumLootItems() > 0) then
 		if NeP.Queuer:Execute() then return end
 		local t = c.CR and c.CR[_G.InCombatLockdown()]
 		if not t then return end
