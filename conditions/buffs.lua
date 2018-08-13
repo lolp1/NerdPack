@@ -2,13 +2,23 @@ local _, NeP = ...
 local _G = _G
 
 local function UnitBuffL(target, spell, own)
-  local name,_,_,count,_,_,expires,caster = _G.UnitBuff(target, spell, nil, own)
-  return name, count, expires, caster
+  for i=1,40 do
+    local name, _, count, type, duration, expiration, caster, isStealable,
+    _,spellId,_, isBoss = _G.UnitBuff(target, i, own)
+    if name == spell or tonumber(spell) == tonumber(spellId) then
+      return name, count, expiration, caster, type, isStealable, isBoss
+    end
+  end
 end
 
 local function UnitDebuffL(target, spell, own)
-  local name, _,_, count, _,_, expires, caster = _G.UnitDebuff(target, spell, nil, own)
-  return name, count, expires, caster
+  for i=1,40 do
+    local name, _, count, type, duration, expiration, caster, isStealable,
+    _,spellId,_, isBoss = _G.UnitDebuff(target, i, own)
+    if name == spell or tonumber(spell) == tonumber(spellId) then
+      return name, count, expiration, caster, type, isStealable, isBoss
+    end
+  end
 end
 
 local heroismBuffs = { 32182, 90355, 80353, 2825, 146555 }
