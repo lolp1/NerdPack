@@ -133,9 +133,9 @@ local function Constructor()
 			self:SetChecked(not self.settings.checked)
 
 			if self.settings.checked then
-				PlaySound(856)
+				PlaySound("igMainMenuOptionCheckBoxOn")
 			else
-				PlaySound(857)
+				PlaySound("igMainMenuOptionCheckBoxOff")
 			end
 
 			self:FireEvent("OnValueChanged", self.settings.checked)

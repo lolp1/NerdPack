@@ -171,6 +171,7 @@ function NeP.CombatTracker.SpellDamage(_, unit, spellID)
   return Data[GUID] and Data[GUID][spellID] or 0
 end
 
+--[[
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
 	local _, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
 	-- Add the unit to our data if we dont have it
@@ -189,4 +190,4 @@ end)
 
 NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_DISABLED', function()
 	_G.wipe(Data)
-end)
+end)]]
