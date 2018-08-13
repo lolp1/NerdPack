@@ -31,9 +31,9 @@ end
 local function castingTime(tbl)
 	tbl.time = _G.GetTime()
 	tbl.channeling = nil
-	local name, _,_,_,_, endTime = _G.UnitCastingInfo("player")
+	local name, _,_,_, endTime = _G.UnitCastingInfo("player")
 	if not name then
-		name, _,_,_,_, endTime = _G.UnitChannelInfo("player")
+		name, _,_,_, endTime = _G.UnitChannelInfo("player")
 		tbl.channeling = true
 	end
 	tbl.endtime = (name and (endTime/1000)-tbl.time) or 0
