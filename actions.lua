@@ -8,7 +8,7 @@ local funcs = {
     NeP.Parser.LastCast = eva.spell
     NeP.Parser.LastGCD = not eva.nogcd and eva.spell or NeP.Parser.LastGCD
     NeP.Parser.LastTarget = eva.target
-    NeP.Protected["Cast"](eva.spell, eva.target)
+    NeP.Protected["Cast"](eva.spell, eva.target, eva)
     return true
   end,
   UseItem = function(eva) NeP.Protected["UseItem"](eva.spell, eva.target); return true end,
