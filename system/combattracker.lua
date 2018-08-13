@@ -171,18 +171,31 @@ function NeP.CombatTracker.SpellDamage(_, unit, spellID)
   return Data[GUID] and Data[GUID][spellID] or 0
 end
 
+local lastTimestamp = nil
+
+local function fakeListener(...)
+	 local timestamp, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
+	 if not timestamp or timestamp == lastTimestamp then
+		 return
+	 end
+	 lastTimestamp = timestamp
+ 	-- Add the unit to our data if we dont have it
+ 	addToData(SourceGUID)
+ 	addToData(DestGUID)
+ 	-- Update last  hit time
+ 	Data[DestGUID].lastHit_taken = _G.GetTime()
+ 	Data[SourceGUID].lastHit_done = _G.GetTime()
+ 	-- Add the amount of dmg/heak
+ 	if EVENTS[EVENT] then EVENTS[EVENT](...) end
+end
+
+-- FIXME: NOT SURE ABOUT THIS!
+C_Timer.NewTicker(.001, function() fakeListener(CombatLogGetCurrentEventInfo()) end)
+
 --[[
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function(...)
-	local _, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
-	-- Add the unit to our data if we dont have it
-	addToData(SourceGUID)
-	addToData(DestGUID)
-	-- Update last  hit time
-	Data[DestGUID].lastHit_taken = _G.GetTime()
-	Data[SourceGUID].lastHit_done = _G.GetTime()
-	-- Add the amount of dmg/heak
-	if EVENTS[EVENT] then EVENTS[EVENT](...) end
-end)
+
+end)]]
 
 NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_ENABLED', function()
 	_G.wipe(Data)
@@ -190,4 +203,4 @@ end)
 
 NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_DISABLED', function()
 	_G.wipe(Data)
-end)]]
+end)
