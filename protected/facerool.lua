@@ -4,7 +4,7 @@ local CreateFrame = _G.CreateFrame
 NeP.Faceroll = {}
 
 -- This to put an icon on top of the spell we want
-local activeFrame = CreateFrame('Frame', 'activeCastFrame', _G.UIParent)
+local activeFrame = CreateFrame('Frame', 'NePFaceroolFrame', _G.UIParent)
 activeFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 	edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
 	tile = true, tileSize = 16, edgeSize = 16,

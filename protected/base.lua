@@ -17,12 +17,12 @@ function NeP.Protected:AddCallBack(func)
 	end
 end
 
-NeP.Protected.Cast = function(spell, target)
-  NeP.Faceroll:Set(spell, target)
+NeP.Protected.Cast = function(...)
+  NeP.Faceroll:Set(...)
 end
 
-NeP.Protected.CastGround = function(spell, target)
-  NeP.Faceroll:Set(spell, target)
+NeP.Protected.CastGround = function(...)
+  NeP.Faceroll:Set(...)
 end
 
 NeP.Protected.Macro = noop
