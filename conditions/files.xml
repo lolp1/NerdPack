@@ -8,7 +8,7 @@
 	<Script file="artifacts.lua" />
 	<Script file="area.lua" />
 	<Script file="talents.lua" />
-	<Script file="honor_talents.lua" />
+	<Script file="pvp.lua" />
 	<Script file="buffs.lua" />
 	<Script file="dbm.lua" />
 	<Script file="items.lua" />
