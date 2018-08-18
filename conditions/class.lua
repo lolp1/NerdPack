@@ -1,5 +1,6 @@
 local _, NeP = ...
 local _G = _G
+local pt = _G.Enum.PowerType
 
 NeP.DSL:Register('energy', function(target)
   return _G.UnitPower(target, _G.UnitPowerType(target))
@@ -15,7 +16,7 @@ end)
 
 NeP.DSL:Register('mana', function(target)
   if _G.UnitExists(target) then
-    return math.floor((_G.UnitMana(target) / _G.UnitManaMax(target)) * 100)
+    return math.floor((_G.UnitPower(target, pt.Mana) / _G.UnitPowerMax(target, pt.mana)) * 100)
   end
   return 0
 end)
@@ -23,7 +24,7 @@ end)
 --[[
 GONE???
 NeP.DSL:Register('insanity', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType._INSANITY)
+  return _G.UnitPower(target,pt._INSANITY)
 end)
 ]]
 
@@ -32,11 +33,11 @@ NeP.DSL:Register('petrange', function(target)
 end)
 
 NeP.DSL:Register('focus', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Focus)
+  return _G.UnitPower(target,pt.Focus)
 end)
 
 NeP.DSL:Register('runicpower', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.RunicPower)
+  return _G.UnitPower(target,pt.RunicPower)
 end)
 
 NeP.DSL:Register('runes', function()
@@ -55,7 +56,7 @@ NeP.DSL:Register('runes', function()
 end)
 
 NeP.DSL:Register('maelstrom', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Maelstrom)
+  return _G.UnitPower(target,pt.Maelstrom)
 end)
 
 NeP.DSL:Register('totem', function(_, totem)
@@ -89,17 +90,17 @@ NeP.DSL:Register('totem.time', function(_, totem)
 end)
 
 NeP.DSL:Register('soulshards', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.SoulShards)
+  return _G.UnitPower(target,pt.SoulShards)
 end)
 
 NeP.DSL:Register('chi', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Chi)
+  return _G.UnitPower(target,pt.Chi)
 end)
 
 -- Returns the number of chi you have left till max (e.g. you have a max of 5 chi and 3 chi now, so it will return 2)
 NeP.DSL:Register('chidiff', function(target)
-  local max = _G.UnitPowerMax(target,_G.Enum.PowerType.Chi)
-  local curr = _G.UnitPower(target,_G.Enum.PowerType.Chi)
+  local max = _G.UnitPowerMax(target,pt.Chi)
+  local curr = _G.UnitPower(target,pt.Chi)
   return (max - curr)
 end)
 
@@ -110,7 +111,7 @@ end)
 --[[
 GONE???
 NeP.DSL:Register('lunarpower', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType._LUNAR_POWER)
+  return _G.UnitPower(target,pt._LUNAR_POWER)
 end)
 ]]
 
@@ -124,11 +125,11 @@ NeP.DSL:Register('mushrooms', function()
 end)
 
 NeP.DSL:Register('holypower', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.HolyPower)
+  return _G.UnitPower(target,pt.HolyPower)
 end)
 
 NeP.DSL:Register('rage', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Rage)
+  return _G.UnitPower(target,pt.Rage)
 end)
 
 NeP.DSL:Register('stance', function()
@@ -136,27 +137,27 @@ NeP.DSL:Register('stance', function()
 end)
 
 NeP.DSL:Register('fury', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Fury)
+  return _G.UnitPower(target,pt.Fury)
 end)
 
 -- Returns the number of fury you have left till max (e.g. you have a max of 100 fury and 80 fury now,
 -- so it will return 20)
 NeP.DSL:Register('fury.diff', function(target)
-  local max = _G.UnitPowerMax(target,_G.Enum.PowerType.Fury)
-  local curr = _G.UnitPower(target,_G.Enum.PowerType.Fury)
+  local max = _G.UnitPowerMax(target,pt.Fury)
+  local curr = _G.UnitPower(target,pt.Fury)
   return (max - curr)
 end)
 
 NeP.DSL:Register('pain', function(target)
-  return _G.UnitPower(target,_G.Enum.PowerType.Pain)
+  return _G.UnitPower(target,pt.Pain)
 end)
 
 NeP.DSL:Register('arcanecharges', function(target)
-  return _G.UnitPower(target, _G.Enum.PowerType.ArcaneCharges)
+  return _G.UnitPower(target, pt.ArcaneCharges)
 end)
 
 NeP.DSL:Register('combopoints', function(target)
-  return _G.UnitPower(target, _G.Enum.PowerType.ComboPoints)
+  return _G.UnitPower(target, pt.ComboPoints)
 end)
 
 --This should be replaced by ids
