@@ -90,8 +90,11 @@ function NeP.OM.Insert(_, ref, Obj)
 end
 
 function NeP.OM.Add(_, Obj, isObject)
+	-- Objects
+	if isObject then
+		NeP.OM:Insert('Objects', Obj)
 	-- Units
-	if _G.UnitExists(Obj)
+	elseif _G.UnitExists(Obj)
 	and _G.UnitInPhase(Obj)
 	and NeP.Protected.LineOfSight('player', Obj) then
 		if _G.UnitIsDeadOrGhost(Obj) then
@@ -101,9 +104,6 @@ function NeP.OM.Add(_, Obj, isObject)
 		elseif _G.UnitCanAttack('player', Obj) then
 			NeP.OM:Insert('Enemy', Obj)
 		end
-	-- Objects
-	elseif isObject then
-		NeP.OM:Insert('Objects', Obj)
 	end
 end
 
