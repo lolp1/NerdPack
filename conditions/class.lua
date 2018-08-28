@@ -16,17 +16,14 @@ end)
 
 NeP.DSL:Register('mana', function(target)
   if _G.UnitExists(target) then
-    return math.floor((_G.UnitPower(target, pt.Mana) / _G.UnitPowerMax(target, pt.mana)) * 100)
+    return math.floor((_G.UnitPower(target, pt.Mana) / _G.UnitPowerMax(target, pt.Mana)) * 100)
   end
   return 0
 end)
 
---[[
-GONE???
 NeP.DSL:Register('insanity', function(target)
-  return _G.UnitPower(target,pt._INSANITY)
+  return _G.UnitPower(target,pt.Insanity)
 end)
-]]
 
 NeP.DSL:Register('petrange', function(target)
   return target and NeP.Protected.Distance('pet', target) or 0
@@ -108,12 +105,9 @@ NeP.DSL:Register('form', function()
   return _G.GetShapeshiftForm()
 end)
 
---[[
-GONE???
 NeP.DSL:Register('lunarpower', function(target)
-  return _G.UnitPower(target,pt._LUNAR_POWER)
+  return _G.UnitPower(target,pt.LunarPower)
 end)
-]]
 
 NeP.DSL:Register('mushrooms', function()
   local count = 0
