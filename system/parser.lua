@@ -65,25 +65,33 @@ local function tst(_type, unit)
 	end
 end
 
+local Unit_Blacklist_cache = {}
 function NeP.Parser.Unit_Blacklist(_, unit)
-	return NeP.Debuffs:Eval(unit)
-	or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
-	or tst("buff", unit)
-	or tst("debuff", unit)
+	if not Unit_Blacklist_cache[unit] then
+		Unit_Blacklist_cache[unit] = NeP.Debuffs:Eval(unit)
+		or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
+		or tst("buff", unit)
+		or tst("debuff", unit)
+	end
+	return Unit_Blacklist_cache[unit]
 end
 
 --This works on the current parser target.
 --This function takes care of psudo units (fakeunits).
 --Returns boolean (true if the target is valid).
+local Target_cache = {}
 function NeP.Parser:Target(eval)
 	-- This is to alow casting at the cursor location where no unit exists
-	if eval[3].cursor then return true end
+	if eval[3].cursor or eval[1].is_table then return true end
 	-- Eval if the unit is valid
-	return eval.target
-	and _G.UnitExists(eval.target)
-	and _G.UnitIsVisible(eval.target)
-	and NeP.Protected.LineOfSight('player', eval.target)
-	and not self:Unit_Blacklist(eval.target)
+	if not Target_cache[eval.target] then
+		Target_cache[eval.target] = eval.target
+		and _G.UnitExists(eval.target)
+		and _G.UnitIsVisible(eval.target)
+		and NeP.Protected.LineOfSight('player', eval.target)
+		and not self:Unit_Blacklist(eval.target)
+	end
+	return Target_cache[eval.target]
 end
 
 local function noob_target() return _G.UnitExists('target') and 'target' or 'player' end
@@ -180,6 +188,8 @@ end
 local function ParseStart()
 	NeP.Faceroll:Hide()
 	NeP:Wipe_Cache()
+	_G.wipe(Unit_Blacklist_cache)
+	_G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not _G.UnitIsDeadOrGhost('player')
