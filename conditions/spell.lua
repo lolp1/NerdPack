@@ -42,9 +42,8 @@ NeP.DSL:Register('spell.range', function(target, spell)
 end)
 
 NeP.DSL:Register('spell.casttime', function(_, spell)
-  local CastTime = select(4, _G.GetSpellInfo(spell)) / 1000
-  if CastTime then return CastTime end
-  return 0
+  local CastTime = select(4, _G.GetSpellInfo(spell))
+  return CastTime and CastTime / 1000 or 0
 end)
 
 local _procs = {}
