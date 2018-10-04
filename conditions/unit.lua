@@ -164,12 +164,20 @@ NeP.DSL:Register('enemy', function(target)
   return _G.UnitCanAttack('player', target)
 end)
 
-NeP.DSL:Register({'distance', 'range'}, function(unit)
+NeP.DSL:Register('range', function(unit)
   return NeP.Protected.UnitCombatRange('player', unit)
 end)
 
-NeP.DSL:Register({'distancefrom', 'rangefrom'}, function(unit, unit2)
+NeP.DSL:Register('distance', function(unit)
+  return NeP.Protected.Distance('player', unit)
+end)
+
+NeP.DSL:Register('rangefrom', function(unit, unit2)
   return NeP.Protected.UnitCombatRange(unit, unit2)
+end)
+
+NeP.DSL:Register('distancefrom', function(unit, unit2)
+  return NeP.Protected.Distance(unit, unit2)
 end)
 
 NeP.DSL:Register('level', function(target)
@@ -207,9 +215,13 @@ NeP.DSL:Register('class', function (target, expectedClass)
   end
 end)
 
+NeP.DSL:Register('melee', function()
+  return 4.5
+end)
+
 NeP.DSL:Register('inmelee', function(target)
   local range = NeP.Protected.UnitCombatRange('player', target)
-  return range <= 1.6, range
+  return range <= NeP.DSL:Get('melee')(), range
 end)
 
 NeP.DSL:Register('inranged', function(target)
