@@ -35,6 +35,11 @@ NeP.Compiler:RegisterToken("&", function(eval)
     eval.nogcd = true
 end)
 
+-- Castable while casting other spells
+NeP.Compiler:RegisterToken("*", function(_, ref)
+    ref.bypass = true
+end)
+
 -- Regular actions
 NeP.Compiler:RegisterToken("%", function(eval, ref)
   eval.exe = funcs["noop"]
