@@ -83,14 +83,13 @@ NeP.DSL:Register('interruptAt', function (target, spell)
   end
 end)
 
+local TimeOutTable ={}
+
+--USAGE: timeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('timeout', function(_, args)
   local name, time = _G.strsplit(',', args, 2)
-  time = tonumber(time)
-  if time then
-    if NeP.timeOut.check(name) then return false end
-    NeP.timeOut.set(name, time)
-    return true
-  end
+   if not TimeOutTable[name] then TimeOutTable[name] = true; C_Timer.After(tonumber(time), function() TimeOutTable[name] = nil end); return true; end
+   return not TimeOutTable[name]
 end)
 
 NeP.DSL:Register('isnear', function(target, args)
