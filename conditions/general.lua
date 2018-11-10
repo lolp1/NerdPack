@@ -92,6 +92,16 @@ NeP.DSL:Register('timeout', function(_, args)
    return not TimeOutTable[name]
 end)
 
+local TimeOutUnitTable ={}
+
+--USAGE: UNIT.targettimeout(TIMER_NAME, SECONDS)
+NeP.DSL:Register('targettimeout', function(target, args)
+  target = UnitGUID(target)
+  local name, time = _G.strsplit(',', args, 2)
+   if not TimeOutUnitTable[target..name] then TimeOutUnitTable[target..name] = true; C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end); return true; end
+   return not TimeOutUnitTable[target..name]
+end)
+
 NeP.DSL:Register('isnear', function(target, args)
   local targetID, distance = _G.strsplit(',', args, 2)
   targetID = tonumber(targetID) or 0
