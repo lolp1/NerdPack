@@ -10,10 +10,10 @@ end)
 NeP.DSL:Register('spell.recharge', function(_, spell)
   local time = _G.GetTime()
   local _, _, start, duration = _G.GetSpellCharges(spell)
-  if (start + duration - time) > duration then
+  if start and (start + duration - time) > duration then
     return 0
   end
-  return (start + duration - time)
+  return start and (start + duration - time)
 end)
 
 NeP.DSL:Register('spell.usable', function(_, spell)
