@@ -151,7 +151,7 @@ function NeP.CombatTracker:getDMG(UNIT)
 end
 
 function NeP.CombatTracker:TimeToDie(unit)
-	local ttd = 0
+	local ttd = nil
 	local DMG, Hits = self:getDMG(unit)
 	if DMG >= 1 and Hits > 1 then
 		ttd = _G.UnitHealth(unit) / DMG
