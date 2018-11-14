@@ -125,9 +125,10 @@ NeP.Actions:Add('taunt', function(eval)
 end)
 
 -- Ress all dead
+-- USAGE: %ressdead(SPELL)
 NeP.Actions:Add('ressdead', function(eval)
   if not IsSpellReady(eval[1].args) then return end
-  for _, Obj in pairs(NeP.OM:Get('Friendly')) do
+  for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if Obj.distance < 40
     and _G.UnitExists(Obj.key)
     and _G.UnitIsPlayer(Obj.key)
