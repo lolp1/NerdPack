@@ -24,12 +24,12 @@ local UnitClsf = {
   ['worldboss'] = 5
 }
 
-NeP.DSL:Register('boss', function (target)
-  local classification = _G.UnitClassification(target)
+NeP.DSL:Register("boss", function (target)
+  if NeP.DSL:Get("isdummy")(target) then return end
+  local classification = UnitClassification(target)
   if UnitClsf[classification] then
-    return UnitClsf[classification] >= 3
+    return UnitClsf[classification] >= 3 or NeP.BossID:Eval(target)
   end
-  return NeP.BossID:Eval(target)
 end)
 
 NeP.DSL:Register('elite', function (target)
