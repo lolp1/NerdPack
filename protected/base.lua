@@ -33,6 +33,8 @@ NeP.Protected.SpellStopCasting = noop
 NeP.Protected.ObjectExists = noop
 NeP.Protected.ObjectCreator = noop
 NeP.Protected.GameObjectIsAnimating = noop
+NeP.Protected.UnitName = _G.UnitName
+NeP.Protected.ObjectGUID = _G.UnitGUID
 
 NeP.Protected.Distance = function(_, b)
   local minRange, maxRange = rangeCheck:GetRange(b)

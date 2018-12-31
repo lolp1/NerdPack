@@ -31,7 +31,7 @@ local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and _G.UnitExists(Obj.key)
 	and _G.UnitInPhase(Obj.key)
-	and GUID == _G.UnitGUID(Obj.key) then
+	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
 		Obj.distance = NeP.Protected.Distance('player', Obj.key)
 	end
@@ -52,7 +52,7 @@ function clean.Objects()
 	for GUID, Obj in pairs(OM_c["Objects"]) do
 		if Obj.distance > NeP.OM.max_distance
 		or not NeP.Protected.ObjectExists(Obj.key)
-		or GUID ~= _G.UnitGUID(Obj.key) then
+		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
 			OM_c.Objects[GUID] = nil
 		end
 	end
@@ -64,7 +64,7 @@ function clean.Others(ref)
 		if Obj.distance > NeP.OM.max_distance
 		or not _G.UnitExists(Obj.key)
 		or not _G.UnitInPhase(Obj.key)
-		or GUID ~= _G.UnitGUID(Obj.key)
+		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
 		or ref ~= "Dead" and _G.UnitIsDeadOrGhost(Obj.key)
 		or not CacheLos(Obj.key) then
 			OM_c[ref][GUID] = nil
@@ -82,13 +82,13 @@ function NeP.OM.Get(_, ref, want_plates)
 end
 
 function NeP.OM.Insert(_, ref, Obj)
-	local GUID = _G.UnitGUID(Obj) or '0'
+	local GUID = NeP.Protected.ObjectGUID(Obj)
 	local distance = NeP.Protected.Distance('player', Obj) or 999
-	if distance <= NeP.OM.max_distance then
+	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, _G.strsplit('-', GUID))
 		OM_c[ref][GUID] = {
 			key = Obj,
-			name = _G.UnitName(Obj),
+			name = NeP.Protected.UnitName(Obj),
 			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,

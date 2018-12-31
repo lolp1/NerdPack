@@ -157,6 +157,7 @@ end)
 --This should be replaced by ids
 local minions = {
   count = 0,
+  count_sperate = {},
   empower = {},
   empower_count = 0,
   ["Wild Imp"] = 12,
@@ -172,7 +173,7 @@ local minions = {
 }
 
 NeP.Listener:Add('lock_P', 'COMBAT_LOG_EVENT_UNFILTERED', function()
-	local _, event, _,_, sName, _,_, dGUID, dName, _,_, sid = CombatLogGetCurrentEventInfo()
+  local _, event, _,_, sName, _,_, dGUID, dName, _,_, sid = CombatLogGetCurrentEventInfo()
 		
   if not sName == _G.UnitName("player")
   or not minions[dName] then return end
@@ -180,9 +181,11 @@ NeP.Listener:Add('lock_P', 'COMBAT_LOG_EVENT_UNFILTERED', function()
   -- Count active
   if event == "SPELL_SUMMON" then
     minions.count = minions.count + 1
+    minions.count_sperate[dName] = ( minions.count_sperate[dName] or 0 ) + 1
     -- removes the unit after it expires
     _G.C_Timer.After(minions[dName], function()
       minions.count = minions.count - 1
+      minions.count_sperate[dName] = ( minions.count_sperate[dName] or 1 ) - 1
       if minions.empower[dGUID] then
         minions.empower[dGUID] = nil
         minions.empower_count = minions.empower_count - 1
@@ -202,6 +205,10 @@ end)
 
 NeP.DSL:Register('warlock.minions', function()
   return minions.count
+end)
+
+NeP.DSL:Register('warlock.minions.type', function(type)
+  return type and minions.count_sperate[type] or 0
 end)
 
 NeP.DSL:Register('warlock.empower', function()
