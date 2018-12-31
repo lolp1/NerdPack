@@ -171,7 +171,9 @@ local minions = {
   Voidwalker = 25
 }
 
-NeP.Listener:Add('lock_P', 'COMBAT_LOG_EVENT_UNFILTERED', function(_, event, _,_, sName, _,_, dGUID, dName, _,_, sid)
+NeP.Listener:Add('lock_P', 'COMBAT_LOG_EVENT_UNFILTERED', function()
+	local _, event, _,_, sName, _,_, dGUID, dName, _,_, sid = CombatLogGetCurrentEventInfo()
+		
   if not sName == _G.UnitName("player")
   or not minions[dName] then return end
 
