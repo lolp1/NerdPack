@@ -13,7 +13,7 @@ frame:SetScript('OnEvent', function(_, event, ...)
 end)
 
 function NeP.Listener.Add(_, name, event, callback)
-	if event:type() == "table" then
+	if type(event) == "table" then
 		for i=1, #eval do
 			 NeP.Listener:Add(name, event, callback)
 		end
