@@ -167,8 +167,8 @@ end
 function NeP.Compiler:Compile(eval)
 	for i=1, #eval do
 		-- check if this was already done
-		if not eval[i][4] then
-			eval[i][4] = true
+		if not eval[i]['compliter_ran] then
+			eval[i]['compliter_ran'] = true
 			eval[i].master = eval.master
 			self.Spell(eval[i])
 			self.Target(eval[i])
@@ -177,7 +177,21 @@ function NeP.Compiler:Compile(eval)
 	end
 end
 
+local recompileOn = {"PLAYER_LEVEL_UP", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED"}
+
 function NeP.Compiler.Iterate(_, eval)
 	if not eval then return end
+	--save original
+	if not eval['compiler_original'] then
+		compiled[#compiled+1] = eval
+		eval['compiler_original'] = {eval:unpack()}
+		--recompilr if needed
+		NeP.Listener:Add("NeP_Core_load", recompileOn, function()
+			eval = eval['compiler_original']
+			NeP.Compiler:Iterate(eval)
+		end)
+	end
 	NeP.Compiler:Compile(eval)
 end
+
+
