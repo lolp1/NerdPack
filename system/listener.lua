@@ -14,7 +14,7 @@ end)
 
 function NeP.Listener.Add(_, name, event, callback)
 	if type(event) == "table" then
-		for i=1, #eval do
+		for i=1, #event do
 			 NeP.Listener:Add(name, event, callback)
 		end
 		return
