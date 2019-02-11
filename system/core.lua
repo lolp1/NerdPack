@@ -137,12 +137,12 @@ function NeP.Core.string_split(_, string, delimiter)
 end
 
 NeP.Listener:Add("NeP_Core_load", "PLAYER_ENTERING_WORLD", function()
-	--_G.C_Timer.After(5, function()
+	_G.C_Timer.After(1, function()
 		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
 		NeP.Color = NeP.Core:ClassColor('player', 'hex')
 		for i=1, #Run_Cache do
 			Run_Cache[i].func()
 		end
 		Run_Cache = nil
-	--end)
+	end)
 end)
