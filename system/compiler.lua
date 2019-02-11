@@ -167,7 +167,7 @@ end
 function NeP.Compiler:Compile(eval)
 	for i=1, #eval do
 		-- check if this was already done
-		if not eval[i]['compliter_ran] then
+		if not eval[i]['compliter_ran'] then
 			eval[i]['compliter_ran'] = true
 			eval[i].master = eval.master
 			self.Spell(eval[i])
