@@ -81,6 +81,12 @@ NeP.DSL:Register('lastcast', function(Unit, Spell)
   return LastCast == Spell, LastCast
 end)
 
+NeP.DSL:Register('lastcast.succeed', function(_, spell)
+  Spell = _G.GetSpellInfo(spell)
+  local LastCast = NeP.CombatTracker:LastCast("player")
+  return LastCast == Spell, LastCast
+end)
+
 NeP.DSL:Register("lastgcd", function(Unit, Spell)
   -- Convert the spell into name
   Spell = _G.GetSpellInfo(Spell)
