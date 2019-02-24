@@ -26,7 +26,7 @@ local function _add(name, condition, overwrite)
 
 			local target, spell = ...
 			local key = name .. (target or '') .. (spell or '')
-			if C[key] == null then
+			if C[key] == nil then
 				C[key] = condition(...)
 			end
 			return C[key]
