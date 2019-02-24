@@ -17,10 +17,19 @@ function NeP.DSL.Exists(_, Strg)
 	return conditions[Strg:lower()] ~= nil
 end
 
+
+local C = NeP.Cache.Conditions
+
 local function _add(name, condition, overwrite)
 	name = name:lower()
 	if not conditions[name] or overwrite then
-		conditions[name] = condition
+		conditions[name] = function(target,spell)
+			if not c[target] then c[target] = {} end
+			if not c[target][spell] then
+				c[target][spell] = condition
+			end
+			return c[target][spell]
+		end
 		--NeP.Debug:Add(name, condition, true)
 	end
 end
