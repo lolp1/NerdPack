@@ -15,16 +15,12 @@ local OM_c = {
 	Friendly = NeP.OM.Friendly,
 	Dead     = NeP.OM.Dead,
 	Objects  = NeP.OM.Objects,
-	Roster   = NeP.OM.Roster,
-	los_cache = {}
+	Roster   = NeP.OM.Roster
 }
 local clean = {}
 
 local function CacheLos(unit)
-	if not OM_c.los_cache[unit] then
-		OM_c.los_cache[unit] = NeP.Protected.LineOfSight('player', unit)
-	end
-	return OM_c.los_cache[unit]
+	return NeP.DSL:Get('los')('player', unit)
 end
 
 local function MergeTable_Insert(table, Obj, GUID)
@@ -116,7 +112,6 @@ function NeP.OM.Add(_, Obj, isObject)
 end
 
 local function CleanStart()
-	_G.wipe(OM_c.los_cache)
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		clean.Objects()
 		clean.Others("Dead")
