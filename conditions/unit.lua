@@ -96,12 +96,12 @@ NeP.DSL:Register('alive', function(target)
   return not _G.UnitIsDeadOrGhost(target)
 end)
 
-NeP.DSL:Register('behind', function(target)
-  return not NeP.Protected.Infront('player', target)
+NeP.DSL:Register('behind', function(target, target2)
+  return not NeP.Protected.Infront(target2 or 'player', target)
 end)
 
-NeP.DSL:Register('infront', function(target)
-  return NeP.Protected.Infront('player', target)
+NeP.DSL:Register('infront', function(target, target2)
+  return NeP.Protected.Infront(target2 or 'player', target)
 end)
 
 local movingCache = {}
