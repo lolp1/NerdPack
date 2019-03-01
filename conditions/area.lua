@@ -23,7 +23,7 @@ NeP.DSL:Register("area.enemies.infront", function(unit, distance)
     if _G.UnitCanAttack(Obj.key, "player")
 	  and (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy)
     and NeP.DSL:Get("distancefrom")(unit, Obj.key) < tonumber(distance)
-    and NeP.Protected.Infront(unit, Obj.key) then
+    and NeP.DSL:Get("infront")(Obj.key, unit) then
       total = total +1
     end
   end
@@ -48,7 +48,7 @@ NeP.DSL:Register("area.friendly.infront", function(unit, distance)
   local total = 0
   for _, Obj in pairs(NeP.OM:Get('Friendly', true)) do
     if NeP.DSL:Get("distancefrom")(unit, Obj.key) < tonumber(distance)
-    and NeP.Protected.Infront(unit, Obj.key) then
+    and NeP.DSL:Get("infront")(Obj.key, unit) then
       total = total +1
     end
   end
