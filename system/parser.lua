@@ -89,7 +89,7 @@ function NeP.Parser:Target(eval)
 		and _G.UnitExists(eval.target)
 		and _G.UnitIsVisible(eval.target)
 		and (_G.UnitIsFriend("player", eval.target) or _G.UnitCanAttack(eval.target, "player"))
-		and NeP.Protected.LineOfSight('player', eval.target)
+		and NeP.DSL:Get('los')('player', eval.target)
 		and not self:Unit_Blacklist(eval.target)
 	end
 	return Target_cache[eval.target]

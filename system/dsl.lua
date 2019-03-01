@@ -84,8 +84,6 @@ local function Nest(strg, spell, target)
 	return DSL.Parse(strg, spell, target)
 end
 
-local C = NeP.Cache.Conditions
-
 local function ProcessCondition(strg, spell, target)
 	-- Unit prefix
 	if not NeP.DSL:Exists(strg:gsub("%((.+)%)", "")) then
@@ -107,13 +105,7 @@ local function ProcessCondition(strg, spell, target)
 	strg = strg:gsub("%((.+)%)", "")
 	target = target or 'player'
 
-	C[strg] = C[strg] or {}
-	C[strg][target] = C[strg][target] or {}
-	if C[strg][target][Args] == nil then
-		C[strg][target][Args] = DSL:Get(strg)(target, Args) or false
-	end
-
-	return C[strg][target][Args]
+	return DSL:Get(strg)(target, Args) or false
 end
 
 local function Comperatores(strg, spell, target)
