@@ -86,7 +86,7 @@ function NeP.Parser:Target(eval)
 	-- Eval if the unit is valid
 	if not Target_cache[eval.target] then
 		Target_cache[eval.target] = eval.target
-		and _G.UnitExists(eval.target)
+		and NeP.DSL:Get('exists')(eval.target)
 		and _G.UnitIsVisible(eval.target)
 		and (_G.UnitIsFriend("player", eval.target) or _G.UnitCanAttack(eval.target, "player"))
 		and NeP.DSL:Get('los')('player', eval.target)
@@ -95,7 +95,7 @@ function NeP.Parser:Target(eval)
 	return Target_cache[eval.target]
 end
 
-local function noob_target() return _G.UnitExists('target') and 'target' or 'player' end
+local function noob_target() return NeP.DSL:Get('exists')('target') and 'target' or 'player' end
 
 -- Part of the parser that handles unit looping, and fakeunits
 -- target is target, nest target or fallback
