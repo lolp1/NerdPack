@@ -15,10 +15,8 @@ NeP.DSL:Register('energydiff', function(target)
 end)
 
 NeP.DSL:Register('mana', function(target)
-  if _G.UnitExists(target) then
-    return math.floor((_G.UnitPower(target, pt.Mana) / _G.UnitPowerMax(target, pt.Mana)) * 100)
-  end
-  return 0
+    return not NeP.DSL:Get('exists')(target) and 0
+	or math.floor((_G.UnitPower(target, pt.Mana) / _G.UnitPowerMax(target, pt.Mana)) * 100)
 end)
 
 NeP.DSL:Register('insanity', function(target)
