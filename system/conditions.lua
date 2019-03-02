@@ -27,9 +27,9 @@ local function _add(name, condition, overwrite)
 			local target, spell = ...
 			local key = name .. (target or '') .. (spell or '')
 			if C[key] == nil then
-				C[key] = condition(...)
+				C[key] = {condition(...)}
 			end
-			return C[key]
+			return unpack(C[key])
 
 		end
 		--NeP.Debug:Add(name, condition, true)
