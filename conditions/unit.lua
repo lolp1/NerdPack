@@ -85,7 +85,7 @@ NeP.DSL:Register('player', function(target)
 end)
 
 NeP.DSL:Register('exists', function(target)
-  return _G.UnitExists(target)
+  return NeP.Protected.ObjectExists(target)
 end)
 
 NeP.DSL:Register('dead', function (target)
@@ -96,18 +96,18 @@ NeP.DSL:Register('alive', function(target)
   return not _G.UnitIsDeadOrGhost(target)
 end)
 
-NeP.DSL:Register('behind', function(target)
-  return not NeP.Protected.Infront('player', target)
+NeP.DSL:Register('behind', function(target, target2)
+  return not NeP.Protected.Infront(target2 or 'player', target)
 end)
 
-NeP.DSL:Register('infront', function(target)
-  return NeP.Protected.Infront('player', target)
+NeP.DSL:Register('infront', function(target, target2)
+  return NeP.Protected.Infront(target2 or 'player', target)
 end)
 
 local movingCache = {}
 
 NeP.DSL:Register('lastmoved', function(target)
-  if _G.UnitExists(target) then
+  if NeP.DSL:Get('exists')(target) then
     local guid = _G.UnitGUID(target)
     if movingCache[guid] then
       local moving = (_G.GetUnitSpeed(target) > 0)
@@ -132,7 +132,7 @@ NeP.DSL:Register('lastmoved', function(target)
 end)
 
 NeP.DSL:Register('movingfor', function(target)
-  if _G.UnitExists(target) then
+  if NeP.DSL:Get('exists')(target) then
     local guid = _G.UnitGUID(target)
     if movingCache[guid] then
       local moving = (_G.GetUnitSpeed(target) > 0)
@@ -230,7 +230,7 @@ NeP.DSL:Register('inranged', function(target)
 end)
 
 NeP.DSL:Register('incdmg', function(target, args)
-  if args and _G.UnitExists(target) then
+  if args and NeP.DSL:Get('exists')(target) then
     local pDMG = NeP.CombatTracker:getDMG(target)
     return pDMG * tonumber(args)
   end
@@ -238,7 +238,7 @@ NeP.DSL:Register('incdmg', function(target, args)
 end)
 
 NeP.DSL:Register('incdmg.phys', function(target, args)
-  if args and _G.UnitExists(target) then
+  if args and NeP.DSL:Get('exists')(target) then
     local pDMG = select(3, NeP.CombatTracker:getDMG(target))
     return pDMG * tonumber(args)
   end
@@ -246,7 +246,7 @@ NeP.DSL:Register('incdmg.phys', function(target, args)
 end)
 
 NeP.DSL:Register('incdmg.magic', function(target, args)
-  if args and _G.UnitExists(target) then
+  if args and NeP.DSL:Get('exists')(target) then
     local mDMG = select(4, NeP.CombatTracker:getDMG(target))
     return mDMG * tonumber(args)
   end
@@ -303,7 +303,7 @@ local communName = NeP.Locale:TA('Dummies', 'Name')
 local matchs = NeP.Locale:TA('Dummies', 'Pattern')
 
 NeP.DSL:Register('isdummy', function(unit)
-  if not _G.UnitExists(unit) then return end
+  if not NeP.DSL:Get('exists')(unit) then return end
   if _G.UnitName(unit):lower():find(communName) then return true end
   return NeP.Tooltip:Unit(unit, matchs)
 end)
