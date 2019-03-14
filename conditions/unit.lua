@@ -168,8 +168,8 @@ NeP.DSL:Register('range', function(unit)
   return NeP.Protected.UnitCombatRange('player', unit)
 end)
 
-NeP.DSL:Register('distance', function(unit)
-  return NeP.Protected.Distance('player', unit)
+NeP.DSL:Register('distance', function(unit, unit2)
+  return NeP.Protected.Distance(unit2 or 'player', unit)
 end)
 
 NeP.DSL:Register('rangefrom', function(unit, unit2)
