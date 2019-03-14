@@ -47,7 +47,7 @@ end
 function clean.Objects()
 	for GUID, Obj in pairs(OM_c["Objects"]) do
 		if Obj.distance > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
+		or not NeP.Protected.ObjectExists(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
 			OM_c.Objects[GUID] = nil
 		end
@@ -58,7 +58,7 @@ function clean.Others(ref)
 	for GUID, Obj in pairs(OM_c[ref]) do
 		-- remove invalid units
 		if Obj.distance > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
+		or not _G.UnitExists(Obj.key)
 		or not _G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
 		or ref ~= "Dead" and _G.UnitIsDeadOrGhost(Obj.key)
@@ -79,7 +79,7 @@ end
 
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local distance = NeP.DSL:Get('distance')('player', Obj) or 999
+	local distance = NeP.Protected.Distance('player', Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, _G.strsplit('-', GUID))
 		OM_c[ref][GUID] = {
@@ -98,7 +98,7 @@ function NeP.OM.Add(_, Obj, isObject)
 	if isObject then
 		NeP.OM:Insert('Objects', Obj)
 	-- Units
-	elseif NeP.DSL:Get('exists')(Obj)
+	elseif NeP.DSL:Get("exists")(Obj)
 	and _G.UnitInPhase(Obj)
 	and CacheLos(Obj) then
 		if _G.UnitIsDeadOrGhost(Obj) then
