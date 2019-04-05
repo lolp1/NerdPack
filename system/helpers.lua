@@ -79,7 +79,7 @@ function NeP.Helpers:Check(spell, target)
 	return true
 end
 
-NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(error)
+NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(code, error)
 	if not UI_Erros[error] then return end
 
 	local unit, spell = NeP.Parser.LastTarget, NeP.Parser.LastCast
