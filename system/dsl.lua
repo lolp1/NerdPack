@@ -35,6 +35,7 @@ local math_OP = {
 	['-']  = function(arg1, arg2) return arg1 - arg2 end,
 	['/']  = function(arg1, arg2) return arg1 / arg2 end,
 	['*']  = function(arg1, arg2) return arg1 * arg2 end,
+	['%']  = function(arg1, arg2) return arg1 % arg2 end
 }
 
 local DSL_OP = {
@@ -162,7 +163,7 @@ function NeP.DSL.Parse(strg, spell, target)
 	-- != needs to be seperate otherwise we end up with false positives
 	elseif strg:find('[><=~]') or strg:find('!=') then
 		return Comperatores(strg, spell, target)
-	elseif strg:find("[/%*%+%-]") then
+	elseif strg:find("[/%*%+%-%\%]") then
 		return StringMath(strg, spell, target)
 	elseif strg:find('^%a') then
 		return ProcessCondition(strg, spell, target)
