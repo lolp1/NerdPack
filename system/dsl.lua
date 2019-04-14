@@ -130,8 +130,7 @@ local function Comperatores(strg, spell, target)
 end
 
 local function StringMath(strg, spell, target)
-	local tokens = "[/%*%+%-%\%]"
-	local OP = strg:match(tokens)
+	local OP = strg:match("[/%*%+%-%\%]")
 	local arg1, arg2 = _G.strsplit(OP, strg, 2)
 	arg1 = DSL.Parse(arg1, spell, target)
 	arg2 = DSL.Parse(arg2, spell, target)
