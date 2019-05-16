@@ -5,7 +5,7 @@ NeP.DSL.Conditions = {}
 local conditions = NeP.DSL.Conditions
 local noop = function() end
 
-function NeP.DSL.Get(_, Strg, ...)
+function NeP.DSL.Get(_, Strg)
 	return conditions[Strg:lower()] or noop
 end
 
