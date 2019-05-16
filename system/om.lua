@@ -79,7 +79,7 @@ end
 
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local distance = NeP.DSL:Get('distance')('player', null, Obj) or 999
+	local distance = NeP.DSL:Get('distance')('player', Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, _G.strsplit('-', GUID))
 		OM_c[ref][GUID] = {
