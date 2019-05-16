@@ -5,12 +5,8 @@ NeP.DSL.Conditions = {}
 local conditions = NeP.DSL.Conditions
 local noop = function() end
 
-function NeP.DSL.Get(_, Strg)
-	Strg = Strg:lower()
-	if conditions[Strg] then
-		return conditions[Strg]
-	end
-	return noop
+function NeP.DSL.Get(_, Strg, ...)
+	return conditions[Strg:lower()] or noop
 end
 
 function NeP.DSL.Exists(_, Strg)
@@ -22,15 +18,12 @@ local C = NeP.Cache.Conditions
 local function _add(name, condition, overwrite)
 	name = name:lower()
 	if not conditions[name] or overwrite then
-		conditions[name] = function(...)
-
-			local target, spell = ...
+		conditions[name] = function(target, spell, spell2, ...)
 			local key = name .. (target or '') .. (spell or '')
 			if C[key] == nil then
-				C[key] = {condition(...)}
+				C[key] = {condition(target, spell or spell2, spell2, ...)}
 			end
 			return unpack(C[key])
-
 		end
 		--NeP.Debug:Add(name, condition, true)
 	end
