@@ -19,7 +19,7 @@ local function _add(name, condition, overwrite)
 	name = name:lower()
 	if not conditions[name] or overwrite then
 		conditions[name] = function(target, spell, spell2, ...)
-			spell = spell or spell2
+			spell, spell2 = spell or spell2, spell2 or spell
 			local key = name .. (target or '') .. (spell or '') .. (spell2 or '')
 			if C[key] == nil then
 				C[key] = {condition(target, spell, spell2, ...)}
