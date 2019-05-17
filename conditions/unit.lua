@@ -164,7 +164,7 @@ NeP.DSL:Register('enemy', function(target)
   return _G.UnitCanAttack('player', target)
 end)
 
-NeP.DSL:Register({'range', 'rangefrom'}, function(unit, unit2)
+NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
   return NeP.Protected.UnitCombatRange(unit2 or 'player', unit)
 end)
 
