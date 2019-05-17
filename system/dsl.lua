@@ -54,7 +54,7 @@ end
 
 local function _OR(strg, spell, target)
 	local Arg1, Arg2 = strg:match('(.*)||(.*)')
-	Arg1 = DSL.Parse(Arg1, spell)
+	Arg1 = DSL.Parse(Arg1, spell, target)
 	-- Dont process anything in front sence we already hit
 	if Arg1 then return Arg1 end
 	Arg2 = DSL.Parse(Arg2, spell, target)
