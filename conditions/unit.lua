@@ -164,20 +164,12 @@ NeP.DSL:Register('enemy', function(target)
   return _G.UnitCanAttack('player', target)
 end)
 
-NeP.DSL:Register('range', function(unit)
-  return NeP.Protected.UnitCombatRange('player', unit)
+NeP.DSL:Register({'range', 'rangefrom'}, function(unit, unit2)
+  return NeP.Protected.UnitCombatRange(unit2 or 'player', unit)
 end)
 
-NeP.DSL:Register('distance', function(unit, _, unit2)
+NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
   return NeP.Protected.Distance(unit2 or 'player', unit)
-end)
-
-NeP.DSL:Register('rangefrom', function(unit, _, unit2)
-  return NeP.Protected.UnitCombatRange(unit, unit2)
-end)
-
-NeP.DSL:Register('distancefrom', function(unit, _, unit2)
-  return NeP.Protected.Distance(unit, unit2)
 end)
 
 NeP.DSL:Register('level', function(target)
