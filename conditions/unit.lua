@@ -317,5 +317,5 @@ NeP.DSL:Register('combat.time', function(target)
 end)
 
 NeP.DSL:Register('los', function(a, b)
-  return NeP.Protected.LineOfSight(a, b)
+  return UnitIsUnit(a,b) or NeP.Protected.LineOfSight(a, b)
 end)
