@@ -19,8 +19,9 @@ local OM_c = {
 }
 local clean = {}
 
+local playerGuid = UnitGUID('player')
 local function CacheLos(unit)
-	return NeP.DSL:Get('los')('player', unit)
+	return playerGuid == UnitGUID(unit) or NeP.DSL:Get('los')('player', unit)
 end
 
 local function MergeTable_Insert(table, Obj, GUID)
