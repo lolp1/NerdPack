@@ -45,6 +45,10 @@ local UI_Erros = {
 	[_G.ERR_ABILITY_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
 	[_G.ERR_CANT_USE_ITEM] = function(GUID, spell) blackListSpell(GUID, spell) end,
 	[_G.ERR_ITEM_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.SPELL_FAILED_PREVENTED_BY_MECHANIC] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.SPELL_FAILED_NOPATH] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.SPELL_FAILED_LINE_OF_SIGHT] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[_G.SPELL_FAILED_VISION_OBSCURED] = function(GUID, spell) blackListSpell(GUID, spell) end,
 }
 
 function NeP.Helpers.Infront(_, target, GUID)
