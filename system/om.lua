@@ -19,11 +19,6 @@ local OM_c = {
 }
 local clean = {}
 
-local playerGuid = UnitGUID('player')
-local function CacheLos(unit)
-	return playerGuid == UnitGUID(unit) or NeP.DSL:Get('los')('player', unit)
-end
-
 local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and NeP.DSL:Get('exists')(Obj.key)
@@ -63,7 +58,7 @@ function clean.Others(ref)
 		or not _G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
 		or ref ~= "Dead" and _G.UnitIsDeadOrGhost(Obj.key)
-		or not CacheLos(Obj.key) then
+		or not NeP.DSL:Get('los')('player', Obj.key) then
 			OM_c[ref][GUID] = nil
 		end
 	end
@@ -101,7 +96,7 @@ function NeP.OM.Add(_, Obj, isObject)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
 	and _G.UnitInPhase(Obj)
-	and CacheLos(Obj) then
+	and NeP.DSL:Get('los')('player', Obj) then
 		if _G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj)
 		elseif _G.UnitIsFriend('player', Obj) then
