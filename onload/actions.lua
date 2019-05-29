@@ -48,7 +48,7 @@ end)
 
 local function FindDispell(eval, unit)
   if not _G.UnitExists(unit) then return end
-  for _, spellID, _,_,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
+  for _, spellID, _,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
     local spell = _G.GetSpellInfo(spellID)
     if IsSpellReady(spell) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
       eval.spell = spell
@@ -67,7 +67,7 @@ end)
 -- Dispell all
 NeP.Actions:Add('dispelall', function(eval)
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
-    if FindDispell(eval, Obj.key) then return true; end
+    if FindDispell(eval, Obj.key) and NeP.DSL:Get("spell.range")(Obj.key, eval.spell) then return true; end
   end
 end)
 

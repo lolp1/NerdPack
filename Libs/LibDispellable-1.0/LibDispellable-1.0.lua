@@ -31,10 +31,19 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local MAJOR, MINOR = "LibDispellable-1.0", 30
+local MAJOR, MINOR = "LibDispellable-1.0", 32
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
+
+local wipe = _G.wipe
+
+local IsSpellKnown = _G.IsSpellKnown
+local UnitBuff = _G.UnitBuff
+local UnitCanAssist = _G.UnitCanAssist
+local UnitCanAttack = _G.UnitCanAttack
+local UnitClass = _G.UnitClass
+local UnitDebuff = _G.UnitDebuff
 
 -- ----------------------------------------------------------------------------
 -- Event dispatcher
@@ -87,6 +96,14 @@ function lib:UpdateSpells()
 		local mendingBandage = CheckSpell(212640) -- Mending Bandage (PvP)
 		self.debuff.Disease = mendingBandage
 		self.debuff.Poison = mendingBandage
+		self.buff.Magic = CheckSpell(264028, true) -- Chi-Ji's Tranquility (crane)
+			or CheckSpell(264055, true) -- Serenity Dust (moth)
+			or CheckSpell(264056, true) -- Spore Cloud (sporebat)
+			or CheckSpell(264262, true) -- Soothing Water (water strider)
+			or CheckSpell(264263, true) -- Sonic Blast (bat)
+			or CheckSpell(264264, true) -- Nether Shock (nether ray)
+			or CheckSpell(264265, true) -- Spirit Shock (spirit beast)
+			or CheckSpell(264266, true) -- Nature's Grace (stag)
 
 	elseif class == "MAGE" then
 		self.buff.Magic = CheckSpell(30449) -- Spellsteal
@@ -120,15 +137,15 @@ function lib:UpdateSpells()
 		self.buff.Magic = CheckSpell(370) -- Purge
 
 	elseif class == "WARLOCK" then
-		self.buff.Magic = CheckSpell(171021, true) -- Torch Magic (Infernal)
 		self.debuff.Magic = CheckSpell(89808, true) or CheckSpell(212623) -- Singe Magic (Imp) / (PvP)
 	end
 
 	wipe(self.spells)
-	if self.buff.Magic then
-		self.spells[self.buff.Magic] = 'offensive'
+	local spellID = self.buff.Magic
+	if spellID then
+		self.spells[spellID] = 'offensive'
 	end
-	for dispelType, id in pairs(self.debuff) do
+	for _, id in pairs(self.debuff) do
 		self.spells[id] = 'defensive'
 	end
 
@@ -192,10 +209,10 @@ local function noop() end
 local function buffIterator(unit, index)
 	repeat
 		index = index + 1
-		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura = UnitBuff(unit, index)
+		local name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura = UnitBuff(unit, index)
 		local spell = lib:GetDispelSpell(dispelType, spellID, true)
 		if spell then
-			return index, spell, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura
+			return index, spell, name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura
 		end
 	until not name
 end
@@ -203,9 +220,9 @@ end
 local function allBuffIterator(unit, index)
 	repeat
 		index = index + 1
-		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura = UnitBuff(unit, index)
+		local name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura = UnitBuff(unit, index)
 		if lib:IsDispellable(dispelType, spellID) then
-			return index, lib:GetDispelSpell(dispelType, spellID, true), name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura
+			return index, lib:GetDispelSpell(dispelType, spellID, true), name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura
 		end
 	until not name
 end
@@ -213,10 +230,10 @@ end
 local function debuffIterator(unit, index)
 	repeat
 		index = index + 1
-		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitDebuff(unit, index)
+		local name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitDebuff(unit, index)
 		local spell = lib:GetDispelSpell(dispelType, spellID, false)
 		if spell then
-			return index, spell, name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
+			return index, spell, name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
 		end
 	until not name
 end
@@ -224,9 +241,9 @@ end
 local function allDebuffIterator(unit, index)
 	repeat
 		index = index + 1
-		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitDebuff(unit, index)
+		local name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitDebuff(unit, index)
 		if lib:IsDispellable(dispelType, spellID) then
-			return index, lib:GetDispelSpell(dispelType, spellID, false), name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
+			return index, lib:GetDispelSpell(dispelType, spellID, false), name, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff
 		end
 	until not name
 end
