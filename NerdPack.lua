@@ -14,6 +14,7 @@ NeP.Author = 'MrTheSoulz'
 -- This exports stuff into global space
 NeP.Globals = {}
 _G.NeP = NeP.Globals
+NeP._G = {}
 
 NeP.Cache = {
 	Conditions = {},
@@ -21,8 +22,12 @@ NeP.Cache = {
 	Targets = {}
 }
 
+for name, func in pairs(_G) do
+	NeP._G[name] = func
+end
+
 function NeP.Wipe_Cache()
 	for _, v in pairs(NeP.Cache) do
-		_G.wipe(v)
+		NeP._G.wipe(v)
 	end
 end

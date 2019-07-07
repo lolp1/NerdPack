@@ -1,8 +1,8 @@
 local _, NeP = ...
 local _G = _G
 NeP.Helpers = {}
-local UIErrorsFrame = _G.UIErrorsFrame
-local C_Timer = _G.C_Timer
+local UIErrorsFrame = NeP._G.UIErrorsFrame
+local C_Timer = NeP._G.C_Timer
 
 local _Failed = {}
 
@@ -30,25 +30,25 @@ local function blackListInfront(GUID)
 end
 
 local UI_Erros = {
-	[_G.ERR_SPELL_FAILED_S] = function(GUID, spell)
+	[NeP._G.ERR_SPELL_FAILED_S] = function(GUID, spell)
 		blackListSpell(GUID, spell)
 		blackListInfront(GUID)
 	end,
-	[_G.ERR_BADATTACKFACING] = function(GUID, spell)
+	[NeP._G.ERR_BADATTACKFACING] = function(GUID, spell)
 		blackListSpell(GUID, spell)
 		blackListInfront(GUID)
 	end,
-	[_G.ERR_SPELL_OUT_OF_RANGE] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_NOT_WHILE_MOVING] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_SPELL_FAILED_ANOTHER_IN_PROGRESS] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_SPELL_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_ABILITY_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_CANT_USE_ITEM] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.ERR_ITEM_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.SPELL_FAILED_PREVENTED_BY_MECHANIC] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.SPELL_FAILED_NOPATH] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.SPELL_FAILED_LINE_OF_SIGHT] = function(GUID, spell) blackListSpell(GUID, spell) end,
-	[_G.SPELL_FAILED_VISION_OBSCURED] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_SPELL_OUT_OF_RANGE] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_NOT_WHILE_MOVING] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_SPELL_FAILED_ANOTHER_IN_PROGRESS] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_SPELL_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_ABILITY_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_CANT_USE_ITEM] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.ERR_ITEM_COOLDOWN] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.SPELL_FAILED_PREVENTED_BY_MECHANIC] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.SPELL_FAILED_NOPATH] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.SPELL_FAILED_LINE_OF_SIGHT] = function(GUID, spell) blackListSpell(GUID, spell) end,
+	[NeP._G.SPELL_FAILED_VISION_OBSCURED] = function(GUID, spell) blackListSpell(GUID, spell) end,
 }
 
 function NeP.Helpers.Infront(_, target, GUID)

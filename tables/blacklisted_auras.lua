@@ -10,7 +10,7 @@ local T = NeP.Debuffs.table
 
 function NeP.Debuffs:Eval(unit)
 	for i = 1, 40 do
-		local ID = select(11, _G.UnitDebuff(unit, i))
+		local ID = select(11, NeP._G.UnitDebuff(unit, i))
 		if ID and T[ID] then
 			return true
 		end

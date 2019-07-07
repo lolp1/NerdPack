@@ -1,6 +1,6 @@
 local _, NeP = ...
 local _G = _G
-local LibDisp = _G.LibStub('LibDispellable-1.0')
+local LibDisp = NeP._G.LibStub('LibDispellable-1.0')
 
 local funcs = {
   noop = function() end,
@@ -14,13 +14,13 @@ local funcs = {
   UseItem = function(eva) NeP.Protected["UseItem"](eva.spell, eva.target); return true end,
   Macro = function(eva) NeP.Protected["Macro"]("/"..eva.spell, eva.target); return true end,
   Lib = function(eva) return NeP.Library:Parse(eva.spell, eva.target, eva[1].args) end,
-  C_Buff = function(eva) _G.CancelUnitBuff('player', _G.GetSpellInfo(eva[1].args)) end
+  C_Buff = function(eva) NeP._G.CancelUnitBuff('player', NeP._G.GetSpellInfo(eva[1].args)) end
 }
 
 local function IsSpellReady(spell)
-  if _G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
-  and (_G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
-    return _G.IsUsableSpell(spell)
+  if NeP._G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
+  and (NeP._G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
+    return NeP._G.IsUsableSpell(spell)
   end
 end
 
@@ -47,9 +47,9 @@ NeP.Compiler:RegisterToken("%", function(eval, ref)
 end)
 
 local function FindDispell(eval, unit)
-  if not _G.UnitExists(unit) then return end
+  if not NeP._G.UnitExists(unit) then return end
   for _, spellID, _,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
-    local spell = _G.GetSpellInfo(spellID)
+    local spell = NeP._G.GetSpellInfo(spellID)
     if IsSpellReady(spell) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
       eval.spell = spell
       eval[3].target = unit
@@ -104,7 +104,7 @@ end)
 
 -- Cancel Shapeshift Form
 NeP.Actions:Add('cancelform', function(eval)
-  eval.exe = _G.CancelShapeshiftForm
+  eval.exe = NeP._G.CancelShapeshiftForm
   return true
 end)
 
@@ -113,7 +113,7 @@ end)
 NeP.Actions:Add('taunt', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if _G.UnitExists(Obj.key)
+    if NeP._G.UnitExists(Obj.key)
     and Obj.distance <= 30
     and NeP.Taunts:ShouldTaunt(Obj.key) then
       eval.spell = eval[1].args
@@ -130,10 +130,10 @@ NeP.Actions:Add('ressdead', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if Obj.distance < 40
-    and _G.UnitExists(Obj.key)
-    and _G.UnitIsPlayer(Obj.key)
-    and _G.UnitIsDeadOrGhost(Obj.key)
-    and _G.UnitPlayerOrPetInParty(Obj.key) then
+    and NeP._G.UnitExists(Obj.key)
+    and NeP._G.UnitIsPlayer(Obj.key)
+    and NeP._G.UnitIsDeadOrGhost(Obj.key)
+    and NeP._G.UnitPlayerOrPetInParty(Obj.key) then
       eval.spell = eval[1].args
       eval[3].target = Obj.key
       eval.exe = funcs["Cast"]
@@ -185,13 +185,13 @@ NeP.Compiler:RegisterToken("#", function(eval, ref)
   ref.token = 'item'
   eval.bypass = true
   if invItems[temp_spell] then
-    local invItem = _G.GetInventorySlotInfo(invItems[temp_spell])
-    temp_spell = _G.GetInventoryItemID("player", invItem) or ref.spell
+    local invItem = NeP._G.GetInventorySlotInfo(invItems[temp_spell])
+    temp_spell = NeP._G.GetInventoryItemID("player", invItem) or ref.spell
     ref.invitem = true
     ref.invslot = invItem
   end
   ref.id = tonumber(temp_spell) or NeP.Core:GetItemID(temp_spell)
-  local itemName, itemLink, _,_,_,_,_,_,_, texture = _G.GetItemInfo(ref.id)
+  local itemName, itemLink, _,_,_,_,_,_,_, texture = NeP._G.GetItemInfo(ref.id)
   ref.spell = itemName or ref.spell
   ref.icon = texture
   ref.link = itemLink
@@ -203,14 +203,14 @@ NeP.Actions:Add('item', function(eval)
   if item.id then
     --Iventory invItems
     if item.invitem then
-      return select(2,_G.GetInventoryItemCooldown('player', item.invslot)) == 0
-      and _G.IsUsableItem(item.link)
+      return select(2,NeP._G.GetInventoryItemCooldown('player', item.invslot)) == 0
+      and NeP._G.IsUsableItem(item.link)
     --regular
     else
-      return _G.GetItemSpell(item.spell)
-      and _G.IsUsableItem(item.spell)
-      and select(2,_G.GetItemCooldown(item.id)) == 0
-      and _G.GetItemCount(item.spell) > 0
+      return NeP._G.GetItemSpell(item.spell)
+      and NeP._G.IsUsableItem(item.spell)
+      and select(2,NeP._G.GetItemCooldown(item.id)) == 0
+      and NeP._G.GetItemCount(item.spell) > 0
     end
   end
 end)
@@ -218,7 +218,7 @@ end)
 -- regular spell
 NeP.Compiler:RegisterToken("spell_cast", function(eval, ref)
   ref.spell = NeP.Spells:Convert(ref.spell, eval.master.name)
-  ref.icon = select(3,_G.GetSpellInfo(ref.spell))
+  ref.icon = select(3,NeP._G.GetSpellInfo(ref.spell))
   ref.id = NeP.Core:GetSpellID(ref.spell)
   eval.exe = funcs["Cast"]
   ref.token = 'spell_cast'

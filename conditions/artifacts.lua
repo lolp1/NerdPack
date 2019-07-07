@@ -1,5 +1,5 @@
 local _, NeP = ...
-local LAD = _G.LibStub("LibArtifactData-1.0")
+local LAD = NeP._G.LibStub("LibArtifactData-1.0")
 --[[
 					ARTIFACT CONDITIONS!
 			Only submit ARTIFACT specific conditions here.

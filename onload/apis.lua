@@ -4,6 +4,7 @@ local g = NeP.Globals
 g.Actions = NeP.Actions
 g.RegisterCommand = NeP.Commands.Register
 g.Core = NeP.Core
+g._G = NeP._G
 g.FakeUnits = NeP.FakeUnits
 g.Listener = NeP.Listener
 g.Queue = NeP.Queuer.Add

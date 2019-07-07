@@ -17,23 +17,23 @@ local c = NeP.CR
 --Returns true if we're not mounted or in a castable mount
 local function IsMountedCheck()
 	for i = 1, 40 do
-		local mountID = select(11, _G.UnitBuff('player', i))
+		local mountID = select(11, NeP._G.UnitBuff('player', i))
 		if mountID and NeP.ByPassMounts:Eval(mountID) then
 			return true
 		end
 	end
-	return (_G.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
+	return (NeP._G.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
 end
 
 --Returns if we're casting/channeling anything, its remaning time and name
 --Also used by the parser for (!spell) if order to figure out if we should clip
 -- t.master.endtime, t.master.cname, t.master.time, t.master.channeling
 local function castingTime(tbl)
-	tbl.time = _G.GetTime()
+	tbl.time = NeP._G.GetTime()
 	tbl.channeling = nil
-	local name, _,_,_, endTime = _G.UnitCastingInfo("player")
+	local name, _,_,_, endTime = NeP._G.UnitCastingInfo("player")
 	if not name then
-		name, _,_,_, endTime = _G.UnitChannelInfo("player")
+		name, _,_,_, endTime = NeP._G.UnitChannelInfo("player")
 		tbl.channeling = true
 	end
 	tbl.endtime = (name and (endTime/1000)-tbl.time) or 0
@@ -87,8 +87,8 @@ function NeP.Parser:Target(eval)
 	if not Target_cache[eval.target] then
 		Target_cache[eval.target] = eval.target
 		and NeP.DSL:Get('exists')(eval.target)
-		and _G.UnitIsVisible(eval.target)
-		and (_G.UnitIsFriend("player", eval.target) or _G.UnitCanAttack(eval.target, "player"))
+		and NeP._G.UnitIsVisible(eval.target)
+		and (NeP._G.UnitIsFriend("player", eval.target) or NeP._G.UnitCanAttack(eval.target, "player"))
 		and NeP.DSL:Get('los')('player', eval.target)
 		and not self:Unit_Blacklist(eval.target)
 	end
@@ -189,16 +189,16 @@ end
 local function ParseStart()
 	NeP.Faceroll:Hide()
 	NeP:Wipe_Cache()
-	_G.wipe(Unit_Blacklist_cache)
-	_G.wipe(Target_cache)
+	NeP._G.wipe(Unit_Blacklist_cache)
+	NeP._G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
-	and not _G.UnitIsDeadOrGhost('player')
+	and not NeP._G.UnitIsDeadOrGhost('player')
 	and IsMountedCheck()
-	and not _G.LootFrame:IsShown()
-	and not (_G.GetNumLootItems() > 0) then
+	and not NeP._G.LootFrame:IsShown()
+	and not (NeP._G.GetNumLootItems() > 0) then
 		if NeP.Queuer:Execute() then return end
-		local t = c.CR and c.CR[_G.InCombatLockdown()]
+		local t = c.CR and c.CR[NeP._G.InCombatLockdown()]
 		if not t then return end
 		castingTime(t.master)
 		t.master.halt = false
@@ -211,7 +211,7 @@ end
 
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
-_G.C_Timer.NewTicker(0.1, ParseStart)
+NeP._G.C_Timer.NewTicker(0.1, ParseStart)
 NeP.Debug:Add("Parser0", ParseStart, false)
 NeP.Debug:Add("Parser1", NeP.Parser.Parse, false)
 NeP.Debug:Add("Parser2", NeP.Parser.Reg_P, false)

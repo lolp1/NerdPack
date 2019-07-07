@@ -4,7 +4,7 @@ local _G = _G
 local function UnitBuffL(target, spell, own)
   for i=1,40 do
     local name, _, count, type, duration, expiration, caster, isStealable,
-    _,spellId,_, isBoss = _G.UnitBuff(target, i, own)
+    _,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
     if name == spell or tonumber(spell) == tonumber(spellId) then
       return name, count, expiration, caster, type, isStealable, isBoss
     end
@@ -14,7 +14,7 @@ end
 local function UnitDebuffL(target, spell, own)
   for i=1,40 do
     local name, _, count, type, duration, expiration, caster, isStealable,
-    _,spellId,_, isBoss = _G.UnitDebuff(target, i, own)
+    _,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
     if name == spell or tonumber(spell) == tonumber(spellId) then
       return name, count, expiration, caster, type, isStealable, isBoss
     end
@@ -51,12 +51,12 @@ end)
 
 NeP.DSL:Register("buff.duration", function(target, spell)
   local buff,_,expires = UnitBuffL(target, spell, 'PLAYER')
-  return buff and (expires - _G.GetTime()) or 0
+  return buff and (expires - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("buff.duration.any", function(target, spell)
   local buff,_,expires = UnitBuffL(target, spell)
-  return buff and (expires - _G.GetTime()) or 0
+  return buff and (expires - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("buff.many", function(target, spell)
@@ -98,12 +98,12 @@ end)
 
 NeP.DSL:Register("debuff.duration", function(target, spell)
   local debuff,_,expires = UnitDebuffL(target, spell, 'PLAYER')
-  return debuff and (expires - _G.GetTime()) or 0
+  return debuff and (expires - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("debuff.duration.any", function(target, spell)
   local debuff,_,expires = UnitDebuffL(target, spell)
-  return debuff and (expires - _G.GetTime()) or 0
+  return debuff and (expires - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("debuff.many", function(target, spell)

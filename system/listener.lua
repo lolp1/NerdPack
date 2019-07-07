@@ -1,6 +1,6 @@
 local _, NeP = ...
-local onEvent = _G.onEvent
-local CreateFrame = _G.CreateFrame
+local onEvent = NeP._G.onEvent
+local CreateFrame = NeP._G.CreateFrame
 NeP.Listener = {}
 local listeners = {}
 

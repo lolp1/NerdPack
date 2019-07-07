@@ -1,14 +1,14 @@
 local _, NeP = ...
 local _G = _G
-local strsplit = _G.strsplit
-local IsInGroup = _G.IsInGroup
-local IsInRaid = _G.IsInRaid
-local GetNumGroupMembers = _G.GetNumGroupMembers
+local strsplit = NeP._G.strsplit
+local IsInGroup = NeP._G.IsInGroup
+local IsInRaid = NeP._G.IsInRaid
+local GetNumGroupMembers = NeP._G.GetNumGroupMembers
 
 NeP.Protected = {}
 NeP.Protected.callbacks = {}
 
-local rangeCheck = _G.LibStub("LibRangeCheck-2.0")
+local rangeCheck = NeP._G.LibStub("LibRangeCheck-2.0")
 local noop = function() end
 
 function NeP.Protected:AddCallBack(func)
@@ -33,8 +33,8 @@ NeP.Protected.SpellStopCasting = noop
 NeP.Protected.ObjectExists = UnitExists
 NeP.Protected.ObjectCreator = noop
 NeP.Protected.GameObjectIsAnimating = noop
-NeP.Protected.UnitName = _G.UnitName
-NeP.Protected.ObjectGUID = _G.UnitGUID
+NeP.Protected.UnitName = NeP._G.UnitName
+NeP.Protected.ObjectGUID = NeP._G.UnitGUID
 
 NeP.Protected.Distance = function(_, b)
   local minRange, maxRange = rangeCheck:GetRange(b)
@@ -67,7 +67,7 @@ function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
 		local ObjID = select(6, strsplit('-', GUID))
 		self[ref][GUID] = {
 			key = Obj,
-			name = _G.UnitName(Obj),
+			name = NeP._G.UnitName(Obj),
 			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
@@ -107,9 +107,9 @@ NeP.Protected.OM_Maker = function()
   --nameplates
 	for i=1, 40 do
 		local Obj = 'nameplate'..i
-		if _G.UnitExists(Obj) then
-			local GUID = _G.UnitGUID(Obj) or '0'
-			if _G.UnitIsFriend('player',Obj) then
+		if NeP._G.UnitExists(Obj) then
+			local GUID = NeP._G.UnitGUID(Obj) or '0'
+			if NeP._G.UnitIsFriend('player',Obj) then
 				NeP.Protected.nPlates:Insert('Friendly', Obj, GUID)
 			else
 				NeP.Protected.nPlates:Insert('Enemy', Obj, GUID)

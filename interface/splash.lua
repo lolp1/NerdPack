@@ -1,11 +1,11 @@
 local _, NeP = ...
 local _G = _G
-local UIParent = _G.UIParent
-local CreateFrame = _G.CreateFrame
-local C_Timer = _G.C_Timer
-local PlaySound = _G.PlaySound
-local GetSpecialization = _G.GetSpecialization
-local GetSpecializationInfo = _G.GetSpecializationInfo
+local UIParent = NeP._G.UIParent
+local CreateFrame = NeP._G.CreateFrame
+local C_Timer = NeP._G.C_Timer
+local PlaySound = NeP._G.PlaySound
+local GetSpecialization = NeP._G.GetSpecialization
+local GetSpecializationInfo = NeP._G.GetSpecializationInfo
 
 -- Splash stuff
 local frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)

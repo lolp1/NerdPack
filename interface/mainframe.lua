@@ -3,11 +3,11 @@ local logo = '|T'..NeP.Media..'logo.blp:10:10|t'
 local L = NeP.Locale
 local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..NeP.Version.branch)
 
-local EasyMenu = _G.EasyMenu
-local CreateFrame = _G.CreateFrame
-local GetSpecializationInfo = _G.GetSpecializationInfo
-local GetSpecialization = _G.GetSpecialization
-local GetBuildInfo = _G.GetBuildInfo
+local EasyMenu = NeP._G.EasyMenu
+local CreateFrame = NeP._G.CreateFrame
+local GetSpecializationInfo = NeP._G.GetSpecializationInfo
+local GetSpecialization = NeP._G.GetSpecialization
+local GetBuildInfo = NeP._G.GetBuildInfo
 
 local function CR_Ver_WoW(cr_wow_ver, wow_ver)
 	return wow_ver:find('^'..tostring(cr_wow_ver))

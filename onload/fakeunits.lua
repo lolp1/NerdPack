@@ -1,6 +1,6 @@
 local _, NeP = ...
 local _G = _G
-local strsplit = _G.strsplit
+local strsplit = NeP._G.strsplit
 
 -- Lowest
 NeP.FakeUnits:Add('lowest', function(num, role)
@@ -138,7 +138,7 @@ end)
 NeP.FakeUnits:Add('healer', function(num)
 	local tempTable = {}
 	for _, Obj in pairs(NeP.OM:Get('Roster')) do
-		if Obj.role == 'HEALER' and not _G.UnitIsUnit('player', Obj.key) then
+		if Obj.role == 'HEALER' and not NeP._G.UnitIsUnit('player', Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
 				prio = Obj.healthMax
@@ -153,7 +153,7 @@ end)
 NeP.FakeUnits:Add('damager', function(num)
 	local tempTable = {}
 	for _, Obj in pairs(NeP.OM:Get('Roster')) do
-		if Obj.role == 'DAMAGER' and not _G.UnitIsUnit('player', Obj.key) then
+		if Obj.role == 'DAMAGER' and not NeP._G.UnitIsUnit('player', Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
 				prio = Obj.healthMax
@@ -168,7 +168,7 @@ end)
 NeP.FakeUnits:Add({'lowestenemy', 'loweste', 'le'}, function(num)
 	local tempTable = {}
 	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-		if _G.UnitExists(Obj.key) then
+		if NeP._G.UnitExists(Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
 				health = NeP.DSL:Get("health")(Obj.key)
@@ -227,7 +227,7 @@ end)
 -- enemy Boss
 NeP.FakeUnits:Add('boss', function()
     for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-        if _G.UnitExists(Obj.key)
+        if NeP._G.UnitExists(Obj.key)
 		and NeP.BossID:Eval(Obj.key) then
             return Obj.key
         end

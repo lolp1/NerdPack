@@ -15,7 +15,7 @@ local default_func = function(a, msg)
 end
 
 function NeP.Commands:Register(name, func, ...)
-	_G.SlashCmdList[name] = func or function(msg) default_func(name, msg) end
+	NeP._G.SlashCmdList[name] = func or function(msg) default_func(name, msg) end
 	local command
 	for i = 1, select('#', ...) do
 		command = select(i, ...)

@@ -2,5 +2,16 @@
 ..\FrameXML\UI.xsd">
 
 	<include file="hunter\files.xml" />
+	<include file="druid\files.xml" />
+	<include file="deathknight\files.xml" />
+	<include file="demonhunter\files.xml" />
+	<include file="mage\files.xml" />
+	<include file="monk\files.xml" />
+	<include file="paladin\files.xml" />
+	<include file="priest\files.xml" />
+	<include file="rogue\files.xml" />
+	<include file="shaman\files.xml" />
+	<include file="warlock\files.xml" />
+	<include file="warrior\files.xml" />
 
 </Ui>

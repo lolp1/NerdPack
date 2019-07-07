@@ -1,7 +1,7 @@
 local _, NeP = ...
 NeP.Interface.usedGUIs = {}
-local LibStub = _G.LibStub
-local unpack = _G.unpack
+local LibStub = NeP._G.LibStub
+local unpack = NeP._G.unpack
 local DiesalGUI = LibStub("DiesalGUI-1.0")
 local element_space = 2
 function NeP.Interface.Noop() end
@@ -38,7 +38,7 @@ local function new_prof(table, parent)
 			return pFrame.Button:SetText('Profile with that name exists!')
 		end
 	end
-	_G.table.insert(table.av_profiles, {key = profileName, text = profileName})
+	NeP._G.table.insert(table.av_profiles, {key = profileName, text = profileName})
 	NeP.Config:Write(table.key, 'av_profiles', table.av_profiles, 'settings')
 	NeP.Config:Write(table.key, 'selected_profile', profileName, 'settings')
 	pFrame:Hide()

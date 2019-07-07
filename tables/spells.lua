@@ -4,7 +4,7 @@ local SpellsTable  = {}
 
 local function _add(...)
 	local name, id = ...
-	local native_spell = _G.GetSpellInfo(id)
+	local native_spell = NeP._G.GetSpellInfo(id)
 	if native_spell then
 		SpellsTable[name:lower()] = native_spell
 	end
@@ -23,7 +23,7 @@ end
 function NeP.Spells.Convert(_, spell)
 	if not spell then return end
 	if type(spell) == 'number' or spell:find('%d') then
-		spell = _G.GetSpellInfo(spell) or spell
+		spell = NeP._G.GetSpellInfo(spell) or spell
 	else
 		if SpellsTable[spell:lower()] then
 			spell = SpellsTable[spell:lower()]

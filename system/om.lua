@@ -22,7 +22,7 @@ local clean = {}
 local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and NeP.DSL:Get('exists')(Obj.key)
-	and _G.UnitInPhase(Obj.key)
+	and NeP._G.UnitInPhase(Obj.key)
 	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
 		Obj.distance = NeP.DSL:Get('distance')('player', Obj.key)
@@ -55,9 +55,9 @@ function clean.Others(ref)
 		-- remove invalid units
 		if Obj.distance > NeP.OM.max_distance
 		or not NeP.DSL:Get('exists')(Obj.key)
-		or not _G.UnitInPhase(Obj.key)
+		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or ref ~= "Dead" and _G.UnitIsDeadOrGhost(Obj.key)
+		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
 		or not NeP.DSL:Get('los')('player', Obj.key) then
 			OM_c[ref][GUID] = nil
 		end
@@ -77,7 +77,7 @@ function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	local distance = NeP.DSL:Get('distance')('player', Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
-		local ObjID = select(6, _G.strsplit('-', GUID))
+		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		OM_c[ref][GUID] = {
 			key = Obj,
 			name = NeP.Protected.UnitName(Obj),
@@ -95,13 +95,13 @@ function NeP.OM.Add(_, Obj, isObject)
 		NeP.OM:Insert('Objects', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
-	and _G.UnitInPhase(Obj)
+	and NeP._G.UnitInPhase(Obj)
 	and NeP.DSL:Get('los')('player', Obj) then
-		if _G.UnitIsDeadOrGhost(Obj) then
+		if NeP._G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj)
-		elseif _G.UnitIsFriend('player', Obj) then
+		elseif NeP._G.UnitIsFriend('player', Obj) then
 			NeP.OM:Insert('Friendly', Obj)
-		elseif _G.UnitCanAttack('player', Obj) then
+		elseif NeP._G.UnitCanAttack('player', Obj) then
 			NeP.OM:Insert('Enemy', Obj)
 		end
 	end
@@ -115,7 +115,7 @@ local function CleanStart()
 		clean.Others("Enemy")
 	else
 		for _, v in pairs(OM_c) do
-			_G.wipe(v)
+			NeP._G.wipe(v)
 		end
 	end
 end
@@ -129,5 +129,5 @@ end
 NeP.Debug:Add("OM_Clean", CleanStart, true)
 NeP.Debug:Add("OM_Maker", MakerStart, true)
 
-_G.C_Timer.NewTicker(0.5, CleanStart)
-_G.C_Timer.NewTicker(1, MakerStart)
+NeP._G.C_Timer.NewTicker(0.5, CleanStart)
+NeP._G.C_Timer.NewTicker(1, MakerStart)

@@ -2,7 +2,7 @@ local _, NeP = ...
 NeP.BossID = {}
 
 --BossIDs Lib
-NeP.BossID.table = _G.LibStub("LibBossIDs-1.0").BossIDs
+NeP.BossID.table = NeP._G.LibStub("LibBossIDs-1.0").BossIDs
 local T = NeP.BossID.table
 
 function NeP.BossID:Add(...)
@@ -24,7 +24,7 @@ end
 local function WoWBossID(unit)
   if not unit then return false end
   for i=1, 4 do
-    if _G.UnitIsUnit(unit, "boss"..i) then
+    if NeP._G.UnitIsUnit(unit, "boss"..i) then
       return true
     end
   end
@@ -34,7 +34,7 @@ local function UnitID(unit)
   if tonumber(unit) then
     return nil, tonumber(unit)
   else
-    local unitid = select(6, _G.strsplit("-", _G.UnitGUID(unit)))
+    local unitid = select(6, NeP._G.strsplit("-", NeP._G.UnitGUID(unit)))
     return unit, tonumber(unitid)
   end
 end
@@ -42,7 +42,7 @@ end
 function NeP.BossID.Eval(_, unit)
   if not unit then return false end
   local unit2, unitid = UnitID(unit)
-  return _G.UnitExists(unit2) and WoWBossID(unit2) or T[unitid]
+  return NeP._G.UnitExists(unit2) and WoWBossID(unit2) or T[unitid]
 end
 
 function NeP.BossID.Get()

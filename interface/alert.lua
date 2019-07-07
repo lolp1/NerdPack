@@ -1,7 +1,7 @@
 local _, NeP = ...
-local CreateFrame = _G.CreateFrame
-local ChatFrame1 = _G.ChatFrame1
-local C_Timer = _G.C_Timer
+local CreateFrame = NeP._G.CreateFrame
+local ChatFrame1 = NeP._G.ChatFrame1
+local C_Timer = NeP._G.C_Timer
 
 -- create the frame
 local frame = CreateFrame("Frame",nil,ChatFrame1)

@@ -7,10 +7,10 @@ local cols = 3
 
 local function UpdateTalents()
   -- this is always 1, dont know why bother but oh well...
-  local spec = _G.GetActiveSpecGroup()
+  local spec = NeP._G.GetActiveSpecGroup()
   for i = 1, rows do
     for k = 1, cols do
-      local talent_ID, talent_name = _G.GetTalentInfo(i, k, spec)
+      local talent_ID, talent_name = NeP._G.GetTalentInfo(i, k, spec)
       if not talent_name then return end
       talents[talent_name] = talent_ID
       talents[talent_ID] = talent_ID
@@ -27,5 +27,5 @@ NeP.Listener:Add('NeP_Talents', 'PLAYER_LOGIN', function()
 end)
 
 NeP.DSL:Register("talent", function(_, args)
-  return select(10, _G.GetTalentInfoByID(talents[args], _G.GetActiveSpecGroup()))
+  return select(10, NeP._G.GetTalentInfoByID(talents[args], NeP._G.GetActiveSpecGroup()))
 end)
