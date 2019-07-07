@@ -11,6 +11,12 @@ local exeOnLoad = function()
 		text = 'Click this toggle for awesome things!',
 		icon ='Interface\\Icons\\Ability_creature_cursed_05.png'
 	})
+	NeP.Interface:AddToggle({
+		key = 'forceDps',
+		name = 'Force DPS',
+		text = 'Click this toggle for awesome things!',
+		icon ='Interface\\Icons\\Ability_creature_cursed_04.png'
+	})
 end
 
 local exeOnUnload = function()
@@ -52,7 +58,7 @@ local solo = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
-	{solo, 'group.type==1'},
+	{solo, 'group.type==1||toggle(forceDps)'},
 	{prio, 'lowest.health<100'},
 	{'Power Word: Solance', 'toggle(dps)&&enemy&&player.mana<95', 'target'},
 	{tank, 'health<100', 'tank'},
