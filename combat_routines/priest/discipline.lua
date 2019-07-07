@@ -61,7 +61,7 @@ local inCombat = {
 
 local outCombat = {
 	{Keybinds},
-	{'Power Word: Fortitude', '!buff', {'player', 'tank', 'lowest'}}
+	{'Power Word: Fortitude', '!buff', {'player', 'tank', 'lowest'}},
 	{'Penance', 'health<75', 'lowest'},
 }
 
