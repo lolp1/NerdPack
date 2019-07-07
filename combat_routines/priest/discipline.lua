@@ -41,9 +41,18 @@ local lowest = {
 	{'Smite', 'toggle(dps)&&enemy', 'target'},
 }
 
+local solo = {
+	{'Power Word: Shield', 'health<75', 'player'},
+	{'Penance', 'health<60', 'player'},
+	{'Penance', nil, 'target'},
+	{'Shadow Word: Pain', '!debuff', 'target'},
+	{'Smite', nil, 'target'},
+}
+
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
+	{solo, 'group.type==1'},
 	{prio, 'lowest.health<100'},
 	{'Power Word: Solance', 'toggle(dps)&&enemy&&player.mana<95', 'target'},
 	{tank, 'health<100', 'tank'},
@@ -53,6 +62,7 @@ local inCombat = {
 local outCombat = {
 	{Keybinds},
 	{'Power Word: Fortitude', '!buff', {'player', 'tank', 'lowest'}}
+	{'Penance', 'health<75', 'lowest'},
 }
 
 NeP.CR:Add(256, {
