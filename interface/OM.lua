@@ -58,7 +58,7 @@ local function RefreshGUI()
 	local offset = -5
 	recycleStatusBars()
 	for _, Obj in pairs(GetTable()) do
-		local Health = math.floor(((UnitHealth(Obj.key) or 1) / (UnitHealthMax(Obj.key) or 1)) * 100)
+		local Health = math.floor(((NeP._G.UnitHealth(Obj.key) or 1) / (NeP._G.UnitHealthMax(Obj.key) or 1)) * 100)
 		local SB = getStatusBar()
 		local distance = NeP.Core:Round(Obj.distance or 0)
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
