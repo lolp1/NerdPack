@@ -34,9 +34,11 @@ local outCombat = {
 
 NeP.CR:Add(103, {
 	name = '[NeP] Druid | Feral',
-	  ic = inCombat,
-	 ooc = outCombat,
-	 gui = GUI,
+	wow_ver = "8.2",
+	nep_ver = "1.12",
+	ic = inCombat,
+	ooc = outCombat,
+	gui = GUI,
 	load = exeOnLoad,
 	unload = exeOnUnload
 })
