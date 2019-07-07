@@ -97,7 +97,7 @@ NeP.FakeUnits:Add({'lowestnotdebuff', 'lndebuff'}, function(num, args)
 		print('lowestnotdebuff: incorrect usage, args', args,'-', type(args))
 		return
 	end
-		local buff, role = strsplit(',', args, 2)
+	local buff, role = strsplit(',', args, 2)
     local tempTable = {}
     for _, Obj in pairs(NeP.OM:Get('Roster')) do
         if (not role or Obj.role == role) and not NeP.DSL:Get('debuff.any')(Obj.key, buff) then
