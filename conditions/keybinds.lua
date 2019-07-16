@@ -18,7 +18,7 @@ local KEYBINDS = {
 
 NeP.DSL:Register("keybind", function(_, Arg)
   Arg = Arg:lower()
-  return KEYBINDS[Arg] and KEYBINDS[Arg]() and not NeP._G.GetCurrentKeyBoardFocus()
+  return (KEYBINDS[Arg] and KEYBINDS[Arg]() or NeP._G.IsKeyDown(Arg:upper())) and not NeP._G.GetCurrentKeyBoardFocus()
 end)
 
 NeP.DSL:Register("mouse", function(_, Arg)
