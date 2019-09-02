@@ -21,7 +21,7 @@ NeP.Interface.MainFrame = NeP.Interface:BuildGUI({
 	key = 'NePMFrame',
 	width = 100,
 	height = 60,
-	title = logo..n_name,
+	title = logo..n_name..' | CLASSIC!',
 	subtitle = 'v:'..NeP_ver
 }).parent
 NeP.Interface.MainFrame:SetEventListener('OnClose', function()
