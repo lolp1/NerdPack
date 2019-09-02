@@ -177,7 +177,7 @@ function NeP.Compiler:Compile(eval)
 	end
 end
 
-local recompileOn = {"PLAYER_LEVEL_UP", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED"}
+local recompileOn = {"PLAYER_LEVEL_UP", "PLAYER_EQUIPMENT_CHANGED"}
 
 function NeP.Compiler.Iterate(_, eval)
 	if not eval then return end

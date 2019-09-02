@@ -46,21 +46,6 @@ NeP.DSL:Register('spell.casttime', function(_, spell)
   return CastTime and CastTime / 1000 or 0
 end)
 
-local _procs = {}
-NeP.Listener:Add('NeP_Procs_add', 'SPELL_ACTIVATION_OVERLAY_GLOW_SHOW', function(spellID)
-	_procs[spellID] = true
-	_procs[NeP._G.GetSpellInfo(spellID)] = true
-end)
-
-NeP.Listener:Add('NeP_Procs_rem', 'SPELL_ACTIVATION_OVERLAY_GLOW_HIDE', function(spellID)
-	_procs[spellID] = nil
-	_procs[NeP._G.GetSpellInfo(spellID)] = nil
-end)
-
-NeP.DSL:Register("spell.proc", function(_, spell)
-	return _procs[spell] or _procs[NeP._G.GetSpellInfo(spell)] or false
-end)
-
 NeP.DSL:Register('power.regen', function(target)
   return select(2, NeP._G.GetPowerRegen(target))
 end)

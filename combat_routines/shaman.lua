@@ -7,7 +7,7 @@ local GUI = {
 
 -- OPTIONAL!
 local GUI_ST = {
-    title='[NeP] Humter - Beast Mastery',
+    title='[NeP] Shaman',
     --width='256',
     --height='300',
     --color='A330C9'
@@ -17,7 +17,7 @@ local GUI_ST = {
 -- OPTIONAL!
 local ExeOnLoad = function()
      -- This will print a message everytime the user selects your CR.
-     NeP.Core:Print('Hello User!\nThanks for using [NeP] Humter - Beast Mastery\nRemember this is just a basic routine.')
+     NeP.Core:Print('Hello User!\nThanks for using [NeP] Shaman\nRemember this is just a basic routine.')
 end
 
 -- this is executed on unload
@@ -60,10 +60,10 @@ local blacklist = {
 
 -- SPEC_ID can be found on:
 -- https://github.com/MrTheSoulz/NerdPack/wiki/Class-&-Spec-IDs
-NeP.CR:Add(253, {
+NeP.CR:Add(9, {
      wow_ver = "8.0", -- Optional!
      nep_ver = "1.11", -- Optional!
-     name = '[NeP] Humter - Beast Mastery',
+     name = '[NeP] Shaman',
      ic = InCombat, -- Optional!
      ooc= OutCombat, -- Optional!
      load = ExeOnLoad, -- Optional!

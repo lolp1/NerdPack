@@ -5,7 +5,6 @@
 	<Script file="keybinds.lua" />
 	<Script file="states.lua" />
 	<Script file="deprecated.lua" />
-	<Script file="artifacts.lua" />
 	<Script file="area.lua" />
 	<Script file="talents.lua" />
 	<Script file="pvp.lua" />

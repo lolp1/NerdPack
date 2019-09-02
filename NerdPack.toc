@@ -1,6 +1,6 @@
 ## Title: |r[|cff0070deNerdPack|r]
 ## Notes: NerdPack custom engine.
-## Interface: 80200
+## Interface: 11302
 ## Author: MrTheSoulz
 ## SavedVariablesPerCharacter: NePDATA
 

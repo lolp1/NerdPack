@@ -41,16 +41,16 @@ local DropMenu = {
 function NeP.Interface.ResetCRs()
 	DropMenu[2].menuList = {}
 	DropMenu[3].menuList = {}
-	local spec = GetSpecializationInfo(GetSpecialization())
-	for _,v in pairs(NeP.CR:GetList(spec)) do
+	local ClassID = select(3, UnitClass('player'))
+	for _,v in pairs(NeP.CR:GetList(ClassID)) do
 		NeP.Interface:AddCR(v)
 		if v.has_gui then NeP.Interface:AddCR_ST(v.name) end
 	end
 end
 
 function NeP.Interface.UpdateCRs()
-	local spec = GetSpecializationInfo(GetSpecialization())
-	local last = NeP.Config:Read('SELECTED', spec)
+	local ClassID = select(3, UnitClass('player'))
+	local last = NeP.Config:Read('SELECTED', ClassID)
 	for _,v in pairs(DropMenu[2].menuList) do
 		v.checked = last == v.name
 	end
@@ -102,8 +102,4 @@ end
 ----------------------------EVENTS
 NeP.Listener:Add("NeP_CR_interface", "PLAYER_LOGIN", function()
 	NeP.Interface.ResetCRs()
-end)
-NeP.Listener:Add("NeP_CR_interface", "PLAYER_SPECIALIZATION_CHANGED", function(unitID)
-	if unitID ~= 'player' then return end
-	NeP.Interface:ResetCRs()
 end)

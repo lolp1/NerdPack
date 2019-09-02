@@ -53,8 +53,8 @@ local function add(ev)
 	CRs[ev.id][ev.name] = cr
 end
 
-local function refs(ev, SpecID)
-	ev.id = SpecID
+local function refs(ev, ClassID)
+	ev.id = ClassID
 	ev.ic = ev.ic or {}
 	ev.ooc = ev.ooc or {}
 	ev.wow_ver = ev.wow_ver or 0.00
@@ -67,17 +67,16 @@ local function refs(ev, SpecID)
 	ev.blacklist.debuff = ev.blacklist.debuff or {}
 end
 
-function NeP.CR.Add(_, SpecID, ...)
+function NeP.CR.Add(_, ClassID, ...)
 	local classIndex = select(3, UnitClass('player'))
 	-- This only allows crs we can use to be registered
-	if not NeP.ClassTable:SpecIsFromClass(classIndex, SpecID )
-	and classIndex ~= SpecID then
+	if classIndex ~= ClassID then
 		return
 	end
 	-- Legacy stuff
 	local ev = legacy_PE(...)
 	--refs
-	refs(ev, SpecID)
+	refs(ev, ClassID)
 	-- Import SpellIDs from the cr
 	if ev.ids then NeP.Spells:Add(ev.ids) end
 	-- This compiles the CR
@@ -88,44 +87,31 @@ function NeP.CR.Add(_, SpecID, ...)
 	NeP.Compiler:Iterate(ev.ooc)
 	--Create user GUI
 	if ev.gui then NeP.CR:AddGUI(ev) end
-	-- Class Cr (gets added to all specs whitin that class)
-	if classIndex == SpecID then
-		SpecID = NeP.ClassTable:GetClassSpecs(classIndex)
-		for i=1, #SpecID do
-			ev.id = SpecID[i]
-			add(ev)
-		end
-		return
-	end
 	-- normal add
 	add(ev)
 end
 
-function NeP.CR:Set(Spec, Name)
-	Spec = Spec or GetSpecializationInfo(GetSpecialization())
-	Name = Name or NeP.Config:Read('SELECTED', Spec)
+function NeP.CR:Set(ClassID, Name)
+	ClassID = ClassID or select(3, UnitClass('player'))
+	Name = Name or NeP.Config:Read('SELECTED', ClassID)
 	--break if no sec or name
-	if not Spec or not Name then return end
+	if not ClassID or not Name then return end
 	--break if cr dosent exist
-	if not (CRs[Spec] and CRs[Spec][Name]) then return end
+	if not (CRs[ClassID] and CRs[ClassID][Name]) then return end
 	-- execute the previous unload
 	if self.CR and self.CR.unload then self.CR.unload() end
-	self.CR = CRs[Spec][Name]
-	NeP.Config:Write('SELECTED', Spec, Name)
+	self.CR = CRs[ClassID][Name]
+	NeP.Config:Write('SELECTED', ClassID, Name)
 	NeP.Interface:ResetToggles()
 	--Execute onload
 	if self.CR then self.CR.load() end
 end
 
-function NeP.CR.GetList(_, Spec)
-	return CRs[Spec] or {}
+function NeP.CR.GetList(_, ClassID)
+	return CRs[ClassID] or {}
 end
 
 ----------------------------EVENTS
 NeP.Listener:Add("NeP_CR", "PLAYER_LOGIN", function()
-	NeP.CR:Set()
-end)
-NeP.Listener:Add("NeP_CR", "PLAYER_SPECIALIZATION_CHANGED", function(unitID)
-	if unitID ~= 'player' then return end
 	NeP.CR:Set()
 end)

@@ -7,7 +7,7 @@ local GUI = {
 
 -- OPTIONAL!
 local GUI_ST = {
-    title='[NeP] Humter - Marksmanship',
+    title='[NeP] Rogue',
     --width='256',
     --height='300',
     --color='A330C9'
@@ -17,7 +17,7 @@ local GUI_ST = {
 -- OPTIONAL!
 local ExeOnLoad = function()
      -- This will print a message everytime the user selects your CR.
-     NeP.Core:Print('Hello User!\nThanks for using [NeP] Humter - Marksmanship\nRemember this is just a basic routine.')
+     NeP.Core:Print('Hello User!\nThanks for using [NeP] Rogue\nRemember this is just a basic routine.')
 end
 
 -- this is executed on unload
@@ -29,29 +29,10 @@ end
 
 --CR for in-combat
 --[[
-Hunter's Mark maintain at all times (if selected).
-Explosive Shot when available (if selected).
-Arcane Shot to consume Precise Shots procs.
-Aimed Shot with 2 charges.
-Rapid Fire when available and <= 70 Focus.
-Barrage on cooldown (if selected).
-Steady Focus maintain at all times (if selected).
-Piercing Shot when available (if selected).
-Aimed Shot when available.
-Arcane Shot to dump Focus.
-Steady Shot to build Focus.
+
 ]]
 local InCombat = {
-     {'Hunter\'s Mark', '!debuff', 'target'},
-     {'Explosive Shot', nil, 'target'},
-     {'Arcane Shot', 'player.buff(Precise Shots)', 'target'},
-     {'Aimed Shot', 'spell.charges>=2', 'target'},
-     {'Rapid Fire', 'player.focus<=70', 'target'},
-     {'Barrage', nil, 'target'},
-     {'Aimed Shot', nil, 'target'},
-     {'Piercing Shot', nil, 'target'},
-     {'Arcane Shot', 'player.focus>40', 'target'},
-     {'Steady Shot', nil, 'target'},
+
 }
 
 --CR for out of combat
@@ -79,10 +60,10 @@ local blacklist = {
 
 -- SPEC_ID can be found on:
 -- https://github.com/MrTheSoulz/NerdPack/wiki/Class-&-Spec-IDs
-NeP.CR:Add(254, {
+NeP.CR:Add(4, {
      wow_ver = "8.0", -- Optional!
      nep_ver = "1.11", -- Optional!
-     name = '[NeP] Humter - Marksmanship',
+     name = '[NeP] Rogue',
      ic = InCombat, -- Optional!
      ooc= OutCombat, -- Optional!
      load = ExeOnLoad, -- Optional!
