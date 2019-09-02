@@ -9,7 +9,7 @@ local forced_role = {
 }
 
 function NeP.Healing.GetPredictedHealth(unit)
-	return NeP._G.UnitHealth(unit)+(NeP._G.UnitGetTotalHealAbsorbs(unit) or 0)+(NeP._G.UnitGetIncomingHeals(unit) or 0)
+	return NeP._G.UnitHealth(unit)
 end
 
 function NeP.Healing.GetPredictedHealth_Percent(unit)
@@ -27,7 +27,7 @@ local function Add(Obj)
 	Obj.health = NeP.Healing.healthPercent(Obj.key)
 	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
 	Obj.healthMax = NeP._G.UnitHealthMax(Obj.key)
-	Obj.role = forced_role[Obj.id] or NeP._G.UnitGroupRolesAssigned(Obj.key)
+	Obj.role = forced_role[Obj.id] or "DAMAGER" --[[ FIX ME ]]
 	Roster[Obj.guid] = Obj
 end
 
