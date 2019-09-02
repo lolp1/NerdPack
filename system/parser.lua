@@ -31,9 +31,9 @@ end
 local function castingTime(tbl)
 	tbl.time = NeP._G.GetTime()
 	tbl.channeling = nil
-	local name, _,_,_, endTime = NeP._G.UnitCastingInfo("player")
+	local name, _,_,_, endTime = NeP._G.CastingInfo()
 	if not name then
-		name, _,_,_, endTime = NeP._G.UnitChannelInfo("player")
+		name, _,_,_, endTime = NeP._G.ChannelInfo()
 		tbl.channeling = true
 	end
 	tbl.endtime = (name and (endTime/1000)-tbl.time) or 0
