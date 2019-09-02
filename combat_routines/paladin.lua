@@ -32,7 +32,7 @@ end
 
 ]]
 local InCombat = {
-
+     {'Seal of Righteousness', '!buff', 'player'}
 }
 
 --CR for out of combat
