@@ -35,7 +35,7 @@ NeP.Interface:AddToggle({
   key = 'cooldowns',
   name = 'Cooldowns',
   text = L:TA('mainframe', 'Cooldowns'),
-  icon = 'Interface\\ICONS\\Achievement_BG_winAB_underXminutes.png',
+  icon = 'Interface\\ICONS\\Inv_shield_05.png',
   nohide = true
 })
 
@@ -44,6 +44,6 @@ NeP.Interface:AddToggle({
   key = 'aoe',
   name = 'Multitarget',
   text = L:TA('mainframe', 'AoE'),
-  icon = 'Interface\\ICONS\\Ability_Druid_Starfall.png',
+  icon = 'Interface\\ICONS\\Ability_thunderbolt.png',
   nohide = true
 })
