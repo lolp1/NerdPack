@@ -86,7 +86,7 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 		end
 	end
 
-	local numFlyouts = NeP._G.GetNumFlyouts()
+	--[[local numFlyouts = NeP._G.GetNumFlyouts()
 	for f = 1, numFlyouts do
 		local flyoutID = NeP._G.GetFlyoutID(f)
 		local _, _, numSlots, isKnown = NeP._G.GetFlyoutInfo(flyoutID)
@@ -99,7 +99,7 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 				end
 			end
 		end
-	end
+	end]]
 
 	local numPetSpells = NeP._G.HasPetSpells()
 	if numPetSpells then
