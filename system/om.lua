@@ -25,16 +25,16 @@ local function MergeTable_Insert(table, Obj, GUID)
 	and NeP._G.UnitInPhase(Obj.key)
 	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.distance = NeP.DSL:Get('distance')('player', Obj.key)
+		Obj.distance = NeP.DSL:Get('distance')('player', nil, Obj.key)
 	end
 end
 
 local function MergeTable(ref)
 	local temp = {}
-	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
+	for GUID, Obj in pairs(OM_c[ref]) do
 		MergeTable_Insert(temp, Obj, GUID)
 	end
-	for GUID, Obj in pairs(OM_c[ref]) do
+	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
 		MergeTable_Insert(temp, Obj, GUID)
 	end
 	return temp
@@ -75,7 +75,7 @@ end
 
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local distance = NeP.DSL:Get('distance')('player', Obj) or 999
+	local distance = NeP.DSL:Get('distance')('player', nil, Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		OM_c[ref][GUID] = {
