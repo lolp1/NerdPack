@@ -96,12 +96,12 @@ NeP.DSL:Register('alive', function(target)
   return not NeP._G.UnitIsDeadOrGhost(target)
 end)
 
-NeP.DSL:Register('behind', function(target, _, target2)
-  return not NeP.Protected.Infront(target2 or 'player', target)
+NeP.DSL:Register('behind', function(target, t3, target2)
+  return not NeP.Protected.Infront(target2 or t3 or 'player', target)
 end)
 
-NeP.DSL:Register('infront', function(target, _, target2)
-  return NeP.Protected.Infront(target2 or 'player', target)
+NeP.DSL:Register('infront', function(target, t3, target2)
+  return NeP.Protected.Infront(target2 or t3 or 'player', target)
 end)
 
 local movingCache = {}
@@ -164,12 +164,12 @@ NeP.DSL:Register('enemy', function(target)
   return NeP._G.UnitCanAttack('player', target)
 end)
 
-NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
-  return NeP.Protected.UnitCombatRange(unit2 or 'player', unit)
+NeP.DSL:Register({'range', 'rangefrom'}, function(unit, t3, unit2)
+  return NeP.Protected.UnitCombatRange(unit2 or t3 or 'player', unit)
 end)
 
-NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
-  return NeP.Protected.Distance(unit2 or 'player', unit)
+NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, t3, unit2)
+  return NeP.Protected.Distance(unit2 or t3 or 'player', unit)
 end)
 
 NeP.DSL:Register('level', function(target)
