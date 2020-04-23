@@ -62,7 +62,7 @@ NeP.Protected.nPlates = {
 }
 
 function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
-	local distance = NeP.Protected.Distance('player', Obj) or 999
+	local distance = NeP.DSL:Get('distance')(Obj) or 999
 	if distance <= NeP.OM.max_distance then
 		local ObjID = select(6, strsplit('-', GUID))
 		self[ref][GUID] = {
