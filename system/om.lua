@@ -2,22 +2,13 @@ local _, NeP = ...
 local _G = _G
 
 NeP.OM = {
-	Enemy    = {},
+	Enemy = {},
 	Friendly = {},
-	Dead     = {},
-	Objects  = {},
-	Roster   = {},
+	Dead = {},
+	Objects = {},
+	Roster = {},
 	max_distance = 100
 }
-
-local OM_c = {
-	Enemy    = NeP.OM.Enemy,
-	Friendly = NeP.OM.Friendly,
-	Dead     = NeP.OM.Dead,
-	Objects  = NeP.OM.Objects,
-	Roster   = NeP.OM.Roster
-}
-local clean = {}
 
 local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
@@ -31,7 +22,7 @@ end
 
 local function MergeTable(ref)
 	local temp = {}
-	for GUID, Obj in pairs(OM_c[ref]) do
+	for GUID, Obj in pairs(NeP.OM[ref]) do
 		MergeTable_Insert(temp, Obj, GUID)
 	end
 	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
@@ -40,37 +31,13 @@ local function MergeTable(ref)
 	return temp
 end
 
-function clean.Objects()
-	for GUID, Obj in pairs(OM_c["Objects"]) do
-		if Obj.distance > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
-		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
-			OM_c.Objects[GUID] = nil
-		end
-	end
-end
-
-function clean.Others(ref)
-	for GUID, Obj in pairs(OM_c[ref]) do
-		-- remove invalid units
-		if Obj.distance > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
-		or not NeP._G.UnitInPhase(Obj.key)
-		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
-		or not NeP.DSL:Get('los')('player', Obj.key) then
-			OM_c[ref][GUID] = nil
-		end
-	end
-end
-
 function NeP.OM.Get(_, ref, want_plates)
 	if want_plates
 	and NeP.Protected.nPlates
 	and NeP.Protected.nPlates[ref] then
 		return MergeTable(ref)
 	end
-	return OM_c[ref]
+	return NeP.OM[ref]
 end
 
 function NeP.OM.Insert(_, ref, Obj)
@@ -78,7 +45,7 @@ function NeP.OM.Insert(_, ref, Obj)
 	local distance = NeP.DSL:Get('distance')(Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
-		OM_c[ref][GUID] = {
+		NeP.OM[ref][GUID] = {
 			key = Obj,
 			name = NeP.Protected.UnitName(Obj),
 			distance = distance,
@@ -96,7 +63,7 @@ function NeP.OM.Add(_, Obj, isObject)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
 	and NeP._G.UnitInPhase(Obj)
-	and NeP.DSL:Get('los')('player', Obj) then
+	and NeP.DSL:Get('los')(Obj) then
 		if NeP._G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj)
 		elseif NeP._G.UnitIsFriend('player', Obj) then
@@ -107,14 +74,38 @@ function NeP.OM.Add(_, Obj, isObject)
 	end
 end
 
+function cleanObjects()
+	for GUID, Obj in pairs(NeP.OM["Objects"]) do
+		if Obj.distance > NeP.OM.max_distance
+		or not NeP.DSL:Get('exists')(Obj.key)
+		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
+			NeP.OM.Objects[GUID] = nil
+		end
+	end
+end
+
+function cleanOthers(ref)
+	for GUID, Obj in pairs(NeP.OM[ref]) do
+		-- remove invalid units
+		if Obj.distance > NeP.OM.max_distance
+		or not NeP.DSL:Get('exists')(Obj.key)
+		or not NeP._G.UnitInPhase(Obj.key)
+		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
+		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
+		or not NeP.DSL:Get('los')(Obj.key) then
+			NeP.OM[ref][GUID] = nil
+		end
+	end
+end
+
 local function CleanStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
-		clean.Objects()
-		clean.Others("Dead")
-		clean.Others("Friendly")
-		clean.Others("Enemy")
+		cleanObjects()
+		cleanOthers("Dead")
+		cleanOthers("Friendly")
+		cleanOthers("Enemy")
 	else
-		for _, v in pairs(OM_c) do
+		for _, v in pairs(NeP.OM) do
 			NeP._G.wipe(v)
 		end
 	end
