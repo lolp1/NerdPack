@@ -106,26 +106,6 @@ local addAction = function(...)
 	end
 end
 
-local function UnitBuffL(target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
-	while name do
-		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
-		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, count, expiration, caster, type, isStealable, isBoss, duration
-		end
-	end
-end
-  
-local function UnitDebuffL(target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
-	while name do
-		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
-		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, count, expiration, caster, type, isStealable, isBoss, duration
-		end
-	end
-end
-
 local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)

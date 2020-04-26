@@ -136,6 +136,26 @@ function NeP.Core.string_split(_, string, delimiter)
 	return result
 end
 
+function  NeP.Core.UnitBuffL(_, target, spell, own)
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
+	while name do
+		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
+		if name == spell or tonumber(spell) == tonumber(spellId) then
+			return name, count, expiration, caster, type, isStealable, isBoss, duration
+		end
+	end
+end
+  
+function  NeP.Core.UnitDebuffL(_, target, spell, own)
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
+	while name do
+		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
+		if name == spell or tonumber(spell) == tonumber(spellId) then
+			return name, count, expiration, caster, type, isStealable, isBoss, duration
+		end
+	end
+end
+
 NeP.Listener:Add("NeP_Core_load", "PLAYER_ENTERING_WORLD", function()
 	NeP._G.C_Timer.After(1, function()
 		if not Run_Cache then return end
