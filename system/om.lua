@@ -105,9 +105,10 @@ local function CleanStart()
 		cleanOthers("Friendly")
 		cleanOthers("Enemy")
 	else
-		for _, v in pairs(NeP.OM) do
-			NeP._G.wipe(v)
-		end
+		NeP._G.wipe(NeP.OM['Objects'])
+		NeP._G.wipe(NeP.OM['Dead'])
+		NeP._G.wipe(NeP.OM['Friendly'])
+		NeP._G.wipe(NeP.OM['Enemy'])
 	end
 end
 
