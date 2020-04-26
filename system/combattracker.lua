@@ -113,7 +113,8 @@ end
 local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
 	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, 
-	spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod, ... = AuraUtil.FindAuraByName(auraName, unit, filter)
+	local filter = auraType == 'BUFF' and 'HELPFULL' or 'HARMFUL'
+	spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod, ... = AuraUtil.FindAuraByName(spellName, GUID, filter)
 	local data = {
 		isCastByPlayer = isCastByPlayer,
 		SourceGUID = SourceGUID,
@@ -128,14 +129,14 @@ local addAura = function(...)
 		duration = duration,
 		unitCaster = unitCaster,
 	}
-	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellName] = data
-	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellId] = data
+	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellName] = data
+	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellId] = data
 end
 
 local removeAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
-	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellName] = nil
-	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellId] = nil
+	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellName] = nil
+	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellId] = nil
 end
 
 local auraStack = function(...)
