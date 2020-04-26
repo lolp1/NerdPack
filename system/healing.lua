@@ -34,7 +34,7 @@ end
 local function Iterate()
 	NeP._G.wipe(Roster)
 	for _, Obj in pairs(NeP.OM:Get('Friendly')) do
-		if Obj.distance < maxDistance
+		if Obj.range < maxDistance
 		and NeP._G.UnitExists(Obj.key)
 		and (NeP._G.UnitInParty(Obj.key) or NeP._G.UnitIsUnit('player', Obj.key))
 		and not NeP._G.UnitIsCharmed(Obj.key) then
