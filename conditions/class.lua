@@ -23,8 +23,19 @@ NeP.DSL:Register('insanity', function(target)
   return NeP._G.UnitPower(target,pt.Insanity)
 end)
 
+local PetNames ={
+  ["Non-combat Pet"]=true,
+  ["Wild Pet"]=true,
+  ["CritPetter"]=true,
+  ["Totem"]=true
+}
+
+NeP.DSL:Register("isPet",function(unit)
+  return UnitIsOtherPlayersPet(unit) or PetNames[UnitCreatureType(unit)] ~= nil 
+end)
+
 NeP.DSL:Register('petrange', function(target)
-  return target and NeP.Protected.Distance('pet', target) or 0
+  return target and NeP.DSL:Get('distance')('pet', target) or 0
 end)
 
 NeP.DSL:Register('focus', function(target)
