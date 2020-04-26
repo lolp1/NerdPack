@@ -40,7 +40,7 @@ end)
 NeP.DSL:Register("buff.duration.any", function(target, spell)
   local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
   return obj and obj.buffs[spell] 
-  and ( obj.buffs[spell].expires - NeP._G.GetTime()) )
+  and ( obj.buffs[spell].expires - NeP._G.GetTime())
 end)
 
 NeP.DSL:Register("buff.many", function(target, spell)
