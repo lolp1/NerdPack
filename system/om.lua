@@ -46,6 +46,12 @@ local forced_role = {
 	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
 }
 
+function NeP.OM.UpdateObject(_, ref, GUID)
+	local Obj = NeP.OM[ref][GUID]
+	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+	Obj.range = NeP.DSL:Get('range')(Obj.key)
+end
+
 function NeP.OM.UpdateUnit(_, ref, GUID)
 	local Obj = NeP.OM[ref][GUID]
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
@@ -56,6 +62,30 @@ function NeP.OM.UpdateUnit(_, ref, GUID)
 	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
 	Obj.healthMax = NeP._G.UnitHealthMax(Obj.key)
 	Obj.role = forced_role[Obj.id] or NeP._G.UnitGroupRolesAssigned(Obj.key)
+end
+
+function NeP.OM.InsertObject(_, ref, Obj)
+	local GUID = NeP.Protected.ObjectGUID(Obj)
+	if GUID then
+		local range = NeP.DSL:Get('range')(Obj) or 999
+		if range > NeP.OM.max_distance then
+			NeP.OM[ref][GUID] = nil
+			return
+		end
+		if NeP.OM[ref][GUID] then
+			NeP.OM:UpdateObject(ref, GUID)
+			return
+		end
+		local ObjID = select(6, NeP._G.strsplit('-', GUID))
+		NeP.OM[ref][GUID] = {
+			key = Obj,
+			name = NeP.Protected.UnitName(Obj),
+			distance = NeP.DSL:Get('distance')(Obj),
+			range = range,
+			id = tonumber(ObjID or 0),
+			guid = GUID,
+		}
+	end
 end
 
 function NeP.OM.Insert(_, ref, Obj)
@@ -117,9 +147,9 @@ end
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	-- Objects
 	if isObject then
-		NeP.OM:Insert('Objects', Obj)
+		NeP.OM:InsertObject('Objects', Obj)
 	elseif isAreaTrigger then 
-		NeP.OM:Insert('AreaTriggers', Obj)
+		NeP.OM:InsertObject('AreaTriggers', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
 	and NeP._G.UnitInPhase(Obj)
