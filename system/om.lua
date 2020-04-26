@@ -6,6 +6,7 @@ NeP.OM = {
 	Friendly = {},
 	Dead = {},
 	Objects = {},
+	AreaTriggers = {},
 	Roster = {},
 	max_distance = 100
 }
@@ -113,10 +114,12 @@ function NeP.OM.Insert(_, ref, Obj)
 	end
 end
 
-function NeP.OM.Add(_, Obj, isObject)
+function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	-- Objects
 	if isObject then
 		NeP.OM:Insert('Objects', Obj)
+	elseif isAreaTrigger then 
+		NeP.OM:Insert('AreaTriggers', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
 	and NeP._G.UnitInPhase(Obj)
@@ -132,11 +135,13 @@ function NeP.OM.Add(_, Obj, isObject)
 end
 
 function cleanObjects()
-	for GUID, Obj in pairs(NeP.OM["Objects"]) do
-		if Obj.range > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
-		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
-			NeP.OM.Objects[GUID] = nil
+	for _, ref in pairs["Objects", "AreaTriggers"]) do
+		for GUID, Obj in pairs(NeP.OM[ref]) do
+			if Obj.range > NeP.OM.max_distance
+			or not NeP.DSL:Get('exists')(Obj.key)
+			or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
+				NeP.OM.Objects[GUID] = nil
+			end
 		end
 	end
 end
@@ -176,10 +181,11 @@ local function MakerStart()
 end
 
 function NeP.OM.FindObjectByGuid(_, guid)
-	return NeP.OM['Objects'][guid]
-	or NeP.OM['Dead'][guid]
-	or NeP.OM['Friendly'][guid]
+	return NeP.OM['Friendly'][guid]
 	or NeP.OM['Enemy'][guid]
+	or NeP.OM['Dead'][guid]
+	or NeP.OM['Objects'][guid]
+	or NeP.OM['AreaTriggers'][guid]
 end
 
 NeP.Debug:Add("OM_Clean", CleanStart, true)
