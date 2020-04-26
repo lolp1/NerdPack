@@ -15,9 +15,9 @@ end
 
 local C = NeP.Cache.Conditions
 
-local dontCache = [
+local dontCache = {
 	'exists'
-]
+}
 
 local function _add(name, condition, overwrite)
 	name = name:lower()
