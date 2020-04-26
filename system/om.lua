@@ -198,6 +198,7 @@ local function CleanStart()
 		cleanOthers("Enemy")
 	else
 		NeP._G.wipe(NeP.OM['Objects'])
+		NeP._G.wipe(NeP.OM['AreaTriggers'])
 		NeP._G.wipe(NeP.OM['Dead'])
 		NeP._G.wipe(NeP.OM['Friendly'])
 		NeP._G.wipe(NeP.OM['Enemy'])
