@@ -112,9 +112,9 @@ end
 
 local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
-	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, 
 	local filter = auraType == 'BUFF' and 'HELPFULL' or 'HARMFUL'
-	spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod, ... = AuraUtil.FindAuraByName(spellName, GUID, filter)
+	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, 
+	spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = AuraUtil.FindAuraByName(spellName, GUID, filter)
 	local data = {
 		isCastByPlayer = isCastByPlayer,
 		SourceGUID = SourceGUID,
@@ -155,7 +155,7 @@ local EVENTS = {
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
 	['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
-	['SPELL_CAST_SUCCESS'] = addAction
+	['SPELL_CAST_SUCCESS'] = addAction,
 	["SPELL_AURA_REFRESH"] = addAura,
 	["SPELL_AURA_APPLIED"] = addAura,
 	["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
