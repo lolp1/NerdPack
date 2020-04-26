@@ -7,17 +7,13 @@ TEST STUFF
 ]]
 
 NeP.DSL:Register("buff.new", function(target, spell)
-  local guid = UnitGUID(target)
-  return guid 
-  and NeP.CombatTracker.Data[guid]
-  and NeP.CombatTracker.Data[guid].buffs[spell] ~= nil
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.buffs[spell] ~= nil
 end)
 
 NeP.DSL:Register("debuff.new", function(target, spell)
-  local guid = UnitGUID(target)
-  return guid 
-  and NeP.CombatTracker.Data[guid]
-  and NeP.CombatTracker.Data[guid].debuffs[spell] ~= nil
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.debuffs[spell] ~= nil
 end)
 
 --[[
