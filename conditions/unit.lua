@@ -208,7 +208,7 @@ NeP.DSL:Register('class', function (target, expectedClass)
 end)
 
 NeP.DSL:Register('melee', function()
-  return 4.5
+  return 1.9
 end)
 
 NeP.DSL:Register('inmelee', function(target)
@@ -317,5 +317,5 @@ NeP.DSL:Register('combat.time', function(target)
 end)
 
 NeP.DSL:Register('los', function(a, b)
-  return UnitIsUnit(a,b) or NeP.Protected.LineOfSight(a, b)
+  return UnitIsUnit(a,b or 'player') or NeP.Protected.LineOfSight(a, b or 'player')
 end)
