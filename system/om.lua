@@ -120,6 +120,13 @@ local function MakerStart()
 	end
 end
 
+function NeP.OM.FindObjectByGuid(_, guid)
+	return NeP.OM['Objects'][guid]
+	or NeP.OM['Dead'][guid]
+	or NeP.OM['Friendly'][guid]
+	or NeP.OM['Enemy'][guid]
+end
+
 NeP.Debug:Add("OM_Clean", CleanStart, true)
 NeP.Debug:Add("OM_Maker", MakerStart, true)
 

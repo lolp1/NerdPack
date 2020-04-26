@@ -110,25 +110,43 @@ local addAction = function(...)
 	Data[sourceGUID].lastcast = spellName
 end
 
+local function UnitBuffL(target, spell, own)
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss
+	while name do
+		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
+		if name == spell or tonumber(spell) == tonumber(spellId) then
+			return name, count, expiration, caster, type, isStealable, isBoss, duration
+		end
+	end
+end
+  
+local function UnitDebuffL(target, spell, own)
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss
+	while name do
+		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
+		if name == spell or tonumber(spell) == tonumber(spellId) then
+			return name, count, expiration, caster, type, isStealable, isBoss, duration
+		end
+	end
+end
+
 local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
-	local filter = auraType == 'BUFF' and 'HELPFULL' or 'HARMFUL'
-	--print(GUID, spellId, auraType, filter, AuraUtil.FindAuraByName(spellId, GUID, filter))
-	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, 
-	_, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = AuraUtil.FindAuraByName(spellId, GUID, filter)
+	local obj = NeP.OM:FindObjectByGuid(GUID)
+	if not obj then return end
+	local _, count, expiration, caster, type, isStealable, isBoss, duration = (auraType == 'BUFF' and UnitBuffL or UnitDebuffL)(spellName, obj.key)
 	local data = {
-		isCastByPlayer = isCastByPlayer,
+		isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
 		SourceGUID = SourceGUID,
 		spellId = spellId,
 		spellName = spellName,
 		auraType = auraType,
 		count = count,
-		canStealOrPurge = canStealOrPurge,
-		isBossDebuff = isBossDebuff,
-		debuffType = debuffType,
-		expirationTime = expirationTime,
+		isStealable = isStealable,
+		isBoss = isBoss,
+		expiration = expiration,
 		duration = duration,
-		unitCaster = unitCaster,
+		caster = caster,
 	}
 	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellName] = data
 	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellId] = data
