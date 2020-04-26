@@ -136,23 +136,25 @@ function NeP.Core.string_split(_, string, delimiter)
 	return result
 end
 
-function  NeP.Core.UnitBuffL(_, target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
+function  NeP.Core.UnitBuffL(target, spell, own)
+	local i, name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = 1, true
 	while name do
 		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then
 			return name, count, expiration, caster, type, isStealable, isBoss, duration
 		end
+		i=i+1
 	end
 end
   
-function  NeP.Core.UnitDebuffL(_, target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
+function  NeP.Core.UnitDebuffL(target, spell, own)
+	local i, name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = 1, true
 	while name do
 		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then
 			return name, count, expiration, caster, type, isStealable, isBoss, duration
 		end
+		i=i+1
 	end
 end
 

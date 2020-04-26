@@ -106,6 +106,9 @@ local addAction = function(...)
 	end
 end
 
+local UnitBuffL = NeP.Core.UnitBuffL
+local UnitDebuffL = NeP.Core.UnitDebuffL
+
 local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
@@ -117,6 +120,7 @@ local addAura = function(...)
 		spellId = spellId,
 		spellName = spellName,
 		auraType = auraType,
+		type = type,
 		count = count,
 		isStealable = isStealable,
 		isBoss = isBoss,

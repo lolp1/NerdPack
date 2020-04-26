@@ -64,6 +64,60 @@ function NeP.OM.UpdateUnit(_, ref, GUID)
 	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 end
 
+local function preLoadBuffs(Obj)
+	local i, spellName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, SourceGUID, data = 1, true
+	while spellName do
+		spellName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
+		if spellName then
+			SourceGUID = caster and UnitGUID(caster) or ''
+			data = {
+				isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
+				SourceGUID = SourceGUID,
+				spellId = spellId,
+				spellName = spellName,
+				auraType = 'BUFF',
+				type = type,
+				count = count,
+				isStealable = isStealable,
+				isBoss = isBoss,
+				expiration = expiration,
+				duration = duration,
+				caster = caster,
+			}
+			Obj.buffs[spellName] = data
+			Obj.buffs[spellId] = data
+			i=i+1
+		end
+	end
+end
+
+local function preLoadDebuffs(Obj)
+	local i, spellName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, SourceGUID, data = 1, true
+	while spellName do
+		spellName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
+		if spellName then
+			SourceGUID = caster and UnitGUID(caster) or ''
+			data = {
+				isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
+				SourceGUID = SourceGUID,
+				spellId = spellId,
+				spellName = spellName,
+				auraType = 'DEBUFF',
+				type = type,
+				count = count,
+				isStealable = isStealable,
+				isBoss = isBoss,
+				expiration = expiration,
+				duration = duration,
+				caster = caster,
+			}
+			Obj.debuffs[spellName] = data
+			Obj.debuffs[spellId] = data
+			i=i+1
+		end
+	end
+end
+
 function NeP.OM.InsertObject(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
@@ -101,7 +155,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
-		NeP.OM[ref][GUID] = {
+		local data = {
 			key = Obj,
 			name = NeP.DSL:Get('name')(Obj),
 			distance = NeP.DSL:Get('distance')(Obj),
@@ -141,6 +195,9 @@ function NeP.OM.Insert(_, ref, Obj)
 			buffs = {},
 			debuffs = {},
 		}
+		preLoadBuffs(data)
+		preLoadDebuffs(data)
+		NeP.OM[ref][GUID] = data
 	end
 end
 
