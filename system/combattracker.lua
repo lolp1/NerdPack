@@ -174,7 +174,7 @@ local EVENTS = {
 	['SWING_DAMAGE'] = logSwing,
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
-	['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
+	--['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
 	['SPELL_CAST_SUCCESS'] = addAction,
 	["SPELL_AURA_REFRESH"] = addAura,
 	["SPELL_AURA_APPLIED"] = addAura,
