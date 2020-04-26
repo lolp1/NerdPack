@@ -39,7 +39,10 @@ local function addToData(GUID)
 			heal_hits_done = 0,
 			--shared
 			combat_time = NeP._G.GetTime(),
-			spell_value = {}
+			spell_value = {},
+			--buffs
+			buffs = {},
+			debuffs = {},
 		}
 	end
 end
@@ -108,15 +111,36 @@ local addAction = function(...)
 end
 
 local addAura = function(...)
-	--print('added aura', ...)
+	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
+	local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, 
+	spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod, ... = AuraUtil.FindAuraByName(auraName, unit, filter)
+	local data = {
+		isCastByPlayer = isCastByPlayer,
+		SourceGUID = SourceGUID,
+		spellId = spellId,
+		spellName = spellName,
+		auraType = auraType,
+		count = count,
+		canStealOrPurge = canStealOrPurge,
+		isBossDebuff = isBossDebuff,
+		debuffType = debuffType,
+		expirationTime = expirationTime,
+		duration = duration,
+		unitCaster = unitCaster,
+	}
+	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellName] = data
+	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellId] = data
 end
 
 local removeAura = function(...)
-	--print('removed aura', ...)
+	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
+	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellName] = nil
+	Data[GUID][auraType === 'BUFF' and 'buffs' or 'debuffs'][spellId] = nil
 end
 
 local auraStack = function(...)
-	--print('stack aura', ...)
+	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount, spellId, spellName, auraType, amount = ...
+	--print(amount)
 end
 
 --[[ These are the events we're looking for and its respective action ]]
@@ -130,6 +154,7 @@ local EVENTS = {
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
 	['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
+	['SPELL_CAST_SUCCESS'] = addAction
 	["SPELL_AURA_REFRESH"] = addAura,
 	["SPELL_AURA_APPLIED"] = addAura,
 	["SPELL_PERIODIC_AURA_APPLIED"] = addAura,

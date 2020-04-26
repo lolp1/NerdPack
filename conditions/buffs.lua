@@ -1,6 +1,29 @@
 local _, NeP = ...
 local _G = _G
 
+
+--[[
+TEST STUFF
+]]
+
+NeP.DSL:Register("buff.new", function(target, spell)
+  local guid = UnitGUID(target)
+  return guid 
+  and NeP.CombatTracker.Data[guid]
+  and NeP.CombatTracker.Data[guid].buffs[spell] ~= nil
+end)
+
+NeP.DSL:Register("debuff.new", function(target, spell)
+  local guid = UnitGUID(target)
+  return guid 
+  and NeP.CombatTracker.Data[guid]
+  and NeP.CombatTracker.Data[guid].debuffs[spell] ~= nil
+end)
+
+--[[
+  END TEST
+]]
+
 local function UnitBuffL(target, spell, own)
   for i=1,40 do
     local name, _, count, type, duration, expiration, caster, isStealable,
