@@ -53,7 +53,31 @@ function NeP.OM.Insert(_, ref, Obj)
 			range = range,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
-			isdummy = NeP.DSL:Get('isdummy')(Obj)
+			isdummy = NeP.DSL:Get('isdummy')(Obj),
+			-- Damage Taken
+			dmgTaken = 0,
+			dmgTaken_P = 0,
+			dmgTaken_M = 0,
+			hits_taken = 0,
+			lastHit_taken = 0,
+			-- Damage Done
+			dmgDone = 0,
+			dmgDone_P = 0,
+			dmgDone_M = 0,
+			hits_done = 0,
+			lastHit_done = 0,
+			-- Healing taken
+			heal_taken = 0,
+			heal_hits_taken = 0,
+			-- Healing Done
+			heal_done = 0,
+			heal_hits_done = 0,
+			--shared
+			combat_time = NeP._G.GetTime(),
+			spell_value = {},
+			--buffs
+			buffs = {},
+			debuffs = {},
 		}
 	end
 end

@@ -2,8 +2,6 @@ local _, NeP = ...
 local _G = _G
 
 NeP.CombatTracker = {}
-NeP.CombatTracker.Data = {}
-local Data = NeP.CombatTracker.Data
 
 -- Thse are Mixed Damage types (magic and pysichal)
 local Doubles = {
@@ -16,87 +14,82 @@ local Doubles = {
 	[127] = 'Arcane + Shadow + Frost + Nature + Fire + Holy + Physical',
 }
 
-local function addToData(GUID)
-	if not Data[GUID] then
-		Data[GUID] = {
-			-- Damage Taken
-			dmgTaken = 0,
-			dmgTaken_P = 0,
-			dmgTaken_M = 0,
-			hits_taken = 0,
-			lastHit_taken = 0,
-			-- Damage Done
-			dmgDone = 0,
-			dmgDone_P = 0,
-			dmgDone_M = 0,
-			hits_done = 0,
-			lastHit_done = 0,
-			-- Healing taken
-			heal_taken = 0,
-			heal_hits_taken = 0,
-			-- Healing Done
-			heal_done = 0,
-			heal_hits_done = 0,
-			--shared
-			combat_time = NeP._G.GetTime(),
-			spell_value = {},
-			--buffs
-			buffs = {},
-			debuffs = {},
-		}
-	end
-end
-
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount, a, b, c = ...
-	-- Chat Output for Debugging
---	if SourceGUID == NeP._G.UnitGUID('player') then
---		print(spellID)
---	end
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Mixed
 	if Doubles[school] then
-		Data[DestGUID].dmgTaken_P = Data[DestGUID].dmgTaken_P + Amount
-		Data[DestGUID].dmgTaken_M = Data[DestGUID].dmgTaken_M + Amount
-		Data[SourceGUID].dmgDone_P = Data[SourceGUID].dmgDone_P + Amount
-		Data[SourceGUID].dmgDone_M = Data[SourceGUID].dmgDone_M + Amount
+		if DestObj then
+			DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
+			DestObj.dmgTaken_M = DestObj.dmgTaken_M + Amount
+		end
+		if SourceObj then
+			SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
+			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
+		end
 	-- Pysichal
 	elseif school == 1  then
-		Data[DestGUID].dmgTaken_P = Data[DestGUID].dmgTaken_P + Amount
-		Data[SourceGUID].dmgDone_P = Data[SourceGUID].dmgDone_P + Amount
+		if DestObj then
+			DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
+		end
+		if SourceObj then
+			SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
+		end
 	-- Magic
 	else
-		Data[DestGUID].dmgTaken_M = Data[DestGUID].dmgTaken_M + Amount
-		Data[SourceGUID].dmgDone_M = Data[SourceGUID].dmgDone_M + Amount
+		if DestObj then
+			DestObj.dmgTaken_M = DestObj.dmgTaken_M + Amount
+		end
+		if SourceObj then
+			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
+		end
 	end
 	-- Totals
-	Data[DestGUID].dmgTaken = Data[DestGUID].dmgTaken + Amount
-	Data[DestGUID].hits_taken = Data[DestGUID].hits_taken + 1
-	Data[SourceGUID].dmgDone = Data[SourceGUID].dmgDone + Amount
-	Data[DestGUID].hits_done = Data[DestGUID].hits_done + 1
-	Data[SourceGUID][spellID] = ((Data[SourceGUID][spellID] or Amount) + Amount) / 2
+	if DestObj then
+		DestObj.dmgTaken = DestObj.dmgTaken + Amount
+		DestObj.hits_taken = DestObj.hits_taken + 1
+		DestObj.hits_done = DestObj.hits_done + 1
+	end
+	if SourceObj then
+		SourceObj.dmgDone = SourceObj.dmgDone + Amount
+		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
+	end
 end
 
 --[[ This Logs the swings (damage) done for every unit ]]
 local logSwing = function(...)
-	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, Amount = ...
-	Data[GUID].dmgTaken_P = Data[GUID].dmgTaken_P + Amount
-	Data[GUID].dmgTaken = Data[GUID].dmgTaken + Amount
-	Data[GUID].hits_taken = Data[GUID].hits_taken + 1
-	Data[SourceGUID].dmgDone_P = Data[SourceGUID].dmgDone_P + Amount
-	Data[SourceGUID].dmgDone = Data[SourceGUID].dmgDone + Amount
-	Data[SourceGUID].hits_done = Data[SourceGUID].hits_done + 1
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, Amount = ...
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
+	if DestObj then
+		DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
+		DestObj.dmgTaken = DestObj.dmgTaken + Amount
+		DestObj.hits_taken = DestObj.hits_taken + 1
+	end
+	if SourceObj then
+		SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
+		SourceObj.dmgDone = SourceObj.dmgDone + Amount
+		SourceObj.hits_done = SourceObj.hits_done + 1
+	end
 end
 
 --[[ This Logs the healing done for every unit
 		 !!~counting selfhealing only for now~!!]]
 local logHealing = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _,_, Amount = ...
-	Data[DestGUID].heal_taken = Data[DestGUID].heal_taken + Amount
-	Data[DestGUID].heal_hits_taken = Data[DestGUID].heal_hits_taken + 1
-	Data[SourceGUID].heal_done = Data[SourceGUID].heal_done + Amount
-	Data[SourceGUID].heal_hits_done = Data[SourceGUID].heal_hits_done + 1
-	Data[SourceGUID][spellID] = ((Data[SourceGUID][spellID] or Amount) + Amount) / 2
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
+	if DestObj then
+		DestObj.heal_taken = DestObj.heal_taken + Amount
+		DestObj.heal_hits_taken = DestObj.heal_hits_taken + 1
+	end
+	if SourceObj then
+		SourceObj.heal_done = SourceObj.heal_done + Amount
+		SourceObj.heal_hits_done = SourceObj.heal_hits_done + 1
+		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
+	end
 end
 
 --[[ This Logs the last action done for every unit ]]
@@ -107,7 +100,10 @@ local addAction = function(...)
 		local icon = select(3, NeP._G.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)
 	end
-	Data[sourceGUID].lastcast = spellName
+	local obj = NeP.OM:FindObjectByGuid(SourceGUID)
+	if obj then
+		obj.lastcast = spellName
+	end
 end
 
 local function UnitBuffL(target, spell, own)
@@ -131,10 +127,10 @@ local function UnitDebuffL(target, spell, own)
 end
 
 local addAura = function(...)
-	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
-	local obj = NeP.OM:FindObjectByGuid(GUID)
-	if not obj then return end
-	local _, count, expiration, caster, type, isStealable, isBoss, duration = (auraType == 'BUFF' and UnitBuffL or UnitDebuffL)(spellName, obj.key)
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	if not DestObj then return end
+	local _, count, expiration, caster, type, isStealable, isBoss, duration = (auraType == 'BUFF' and UnitBuffL or UnitDebuffL)(spellName, DestObj.key)
 	local data = {
 		isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
 		SourceGUID = SourceGUID,
@@ -148,14 +144,19 @@ local addAura = function(...)
 		duration = duration,
 		caster = caster,
 	}
-	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellName] = data
-	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellId] = data
+	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
+	DestObj[arrType][spellName] = data
+	DestObj[arrType][spellId] = data
 end
 
 local removeAura = function(...)
-	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
-	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellName] = nil
-	Data[GUID][auraType == 'BUFF' and 'buffs' or 'debuffs'][spellId] = nil
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
+	if DestObj then
+		DestObj[arrType][spellName] = nil
+		DestObj[arrType][spellId] = nil
+	end
 end
 
 local auraStack = function(...)
@@ -188,29 +189,23 @@ local EVENTS = {
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, UNIT)
-	local GUID = NeP._G.UnitGUID(UNIT)
-	if Data[GUID] and NeP._G.InCombatLockdown() then
-		local combatTime = (NeP._G.GetTime()-Data[GUID].combat_time)
-		return combatTime
+	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	if Obj and NeP._G.InCombatLockdown() then
+		return NeP._G.GetTime() - Obj.combat_time
 	end
 	return 0
 end
 
 function NeP.CombatTracker:getDMG(UNIT)
 	local total, Hits, phys, magic = 0, 0, 0, 0
-	local GUID = NeP._G.UnitGUID(UNIT)
-	if Data[GUID] then
+	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	if Obj then
 		local time = NeP._G.GetTime()
-		-- Remove a unit if it hasnt recived dmg for more then 5 sec
-		if (time-Data[GUID].lastHit_taken) > 5 then
-			Data[GUID] = nil
-		else
-			local combatTime = self:CombatTime(UNIT)
-			total = Data[GUID].dmgTaken / combatTime
-			phys = Data[GUID].dmgTaken_P / combatTime
-			magic = Data[GUID].dmgTaken_M / combatTime
-			Hits = Data[GUID].hits_taken
-		end
+		local combatTime = self:CombatTime(UNIT)
+		total = Obj.dmgTaken / combatTime
+		phys = Obj.dmgTaken_P / combatTime
+		magic = Obj.dmgTaken_M / combatTime
+		Hits = Obj.hits_taken
 	end
 	return total, Hits, phys, magic
 end
@@ -225,25 +220,22 @@ function NeP.CombatTracker:TimeToDie(unit)
 end
 
 function NeP.CombatTracker.LastCast(_, unit)
-  local GUID = NeP._G.UnitGUID(unit)
-  if Data[GUID] then
-    return Data[GUID].lastcast
-  end
+	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	return Obj and Obj.lastcast
 end
 
 function NeP.CombatTracker.SpellDamage(_, unit, spellID)
-  local GUID = NeP._G.UnitGUID(unit)
-  return Data[GUID] and Data[GUID][spellID] or 0
+  local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+  return Obj and Obj[spellID] or 0
 end
 
 local function doStuff(...)
 	local _, EVENT, _, SourceGUID, _,_,_, DestGUID = ...
-	-- Add the unit to our data if we dont have it
-	addToData(SourceGUID)
-	addToData(DestGUID)
+	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
+	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Update last  hit time
-	Data[DestGUID].lastHit_taken = NeP._G.GetTime()
-	Data[SourceGUID].lastHit_done = NeP._G.GetTime()
+	DestObj.lastHit_taken = NeP._G.GetTime()
+	SourceObj.lastHit_done = NeP._G.GetTime()
 	-- Add the amount of dmg/heak
 	if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end
