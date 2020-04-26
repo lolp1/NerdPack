@@ -165,7 +165,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 end
 
 function cleanObjects()
-	for _, ref in pairs["Objects", "AreaTriggers"]) do
+	for _, ref in pairs({"Objects", "AreaTriggers"}) do
 		for GUID, Obj in pairs(NeP.OM[ref]) do
 			if Obj.range > NeP.OM.max_distance
 			or not NeP.DSL:Get('exists')(Obj.key)
