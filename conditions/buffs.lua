@@ -12,7 +12,9 @@ end)
 ------------------------------------------ BUFFS -----------------------------------------
 ------------------------------------------------------------------------------------------
 NeP.DSL:Register("buff", function(target, spell)
-  return NeP.Core.UnitBuffL(target, spell, 'PLAYER') ~= nil
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.buffs[spell]
+  and obj.buffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("buff.any", function(target, spell)
@@ -65,7 +67,9 @@ end)
 ------------------------------------------------------------------------------------------
 
 NeP.DSL:Register("debuff", function(target, spell)
-  return  NeP.Core.UnitDebuffL(target, spell, 'PLAYER') ~= nil
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.debuffs[spell]
+  and obj.debuffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("debuff.any", function(target, spell)
