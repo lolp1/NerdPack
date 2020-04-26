@@ -225,13 +225,17 @@ NeP.FakeUnits:Add('adds', function()
 end)
 
 -- enemy Boss
-NeP.FakeUnits:Add('boss', function()
+NeP.FakeUnits:Add('boss', function(num)
+	local tempTable = {}
     for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-        if NeP._G.UnitExists(Obj.key)
+		if NeP._G.UnitExists(Obj.key)
 		and NeP.BossID:Eval(Obj.key) then
-            return Obj.key
-        end
-    end
+            tempTable[#tempTable+1] = {
+                key = Obj.key,
+			}
+		end
+	end
+	return tempTable[num] and tempTable[num].key
 end)
 
 NeP.FakeUnits:Add('enemies', function()
