@@ -107,7 +107,7 @@ local addAction = function(...)
 end
 
 local function UnitBuffL(target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
 	while name do
 		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then
@@ -117,7 +117,7 @@ local function UnitBuffL(target, spell, own)
 end
   
 local function UnitDebuffL(target, spell, own)
-	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss
+	local name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = true
 	while name do
 		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then

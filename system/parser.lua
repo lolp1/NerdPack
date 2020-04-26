@@ -16,8 +16,9 @@ local c = NeP.CR
 
 --Returns true if we're not mounted or in a castable mount
 local function IsMountedCheck()
-	for i = 1, 40 do
-		local mountID = select(11, NeP._G.UnitBuff('player', i))
+	local mountID = true
+	while mountID do
+		mountID = select(11, NeP._G.UnitBuff('player', i))
 		if mountID and NeP.ByPassMounts:Eval(mountID) then
 			return true
 		end
