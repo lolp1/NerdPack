@@ -60,8 +60,8 @@ function NeP.OM.UpdateUnit(_, ref, GUID)
 	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
 	Obj.health = NeP.Healing.healthPercent(Obj.key)
 	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
-	Obj.healthMax = NeP._G.UnitHealthMax(Obj.key)
-	Obj.role = forced_role[Obj.id] or NeP._G.UnitGroupRolesAssigned(Obj.key)
+	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
+	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 end
 
 function NeP.OM.InsertObject(_, ref, Obj)
@@ -79,7 +79,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		NeP.OM[ref][GUID] = {
 			key = Obj,
-			name = NeP.Protected.UnitName(Obj),
+			name = NeP.DSL:Get('name')(Obj),
 			distance = NeP.DSL:Get('distance')(Obj),
 			range = range,
 			id = tonumber(ObjID or 0),
@@ -103,7 +103,7 @@ function NeP.OM.Insert(_, ref, Obj)
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		NeP.OM[ref][GUID] = {
 			key = Obj,
-			name = NeP.Protected.UnitName(Obj),
+			name = NeP.DSL:Get('name')(Obj),
 			distance = NeP.DSL:Get('distance')(Obj),
 			range = range,
 			id = tonumber(ObjID or 0),
@@ -114,8 +114,8 @@ function NeP.OM.Insert(_, ref, Obj)
 			predicted_Raw = NeP.Healing.GetPredictedHealth(Obj),
 			health = NeP.Healing.healthPercent(Obj),
 			healthRaw = NeP.DSL:Get('health.actual')(Obj),
-			healthMax = NeP._G.UnitHealthMax(Obj),
-			role = forced_role[ObjID] or NeP._G.UnitGroupRolesAssigned(Obj),
+			healthMax = NeP.DSL:Get('health.max')(Obj),
+			role = forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
 			-- Damage Taken
 			dmgTaken = 0,
 			dmgTaken_P = 0,
