@@ -82,7 +82,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			predicted = NeP.Healing.GetPredictedHealth_Percent(Obj),
 			predicted_Raw = NeP.Healing.GetPredictedHealth(Obj),
 			health = NeP.Healing.healthPercent(Obj),
-			healthRaw = NeP._G.UnitHealth(Obj),
+			healthRaw = NeP.DSL:Get('health')(Obj),
 			healthMax = NeP._G.UnitHealthMax(Obj),
 			role = forced_role[ObjID] or NeP._G.UnitGroupRolesAssigned(Obj),
 			-- Damage Taken
