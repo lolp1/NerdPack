@@ -41,10 +41,24 @@ function NeP.OM.Get(_, ref, want_plates)
 	return NeP.OM[ref]
 end
 
+function NeP.OM.UpdateUnit(_, ref, GUID)
+	local obj = NeP.OM[ref][GUID]
+	obj.distance = NeP.DSL:Get('distance')(obj.key)
+	obj.range = NeP.DSL:Get('range')(obj.key)
+end
+
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local range = NeP.DSL:Get('range')(Obj) or 999
-	if GUID and range <= NeP.OM.max_distance then
+	if GUID then
+		local range = NeP.DSL:Get('range')(Obj) or 999
+		if range > NeP.OM.max_distance then
+			NeP.OM[ref][GUID] = nil
+			return
+		end
+		if NeP.OM[ref][GUID] then
+			NeP.OM:UpdateUnit(ref, GUID)
+			return
+		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		NeP.OM[ref][GUID] = {
 			key = Obj,
