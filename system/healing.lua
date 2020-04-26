@@ -5,7 +5,7 @@ local Roster = NeP.OM.Roster
 local maxDistance = 40
 
 function NeP.Healing.GetPredictedHealth(unit)
-	return NeP.DSL:Get('health')(unit)+(NeP._G.UnitGetTotalHealAbsorbs(unit) or 0)+(NeP._G.UnitGetIncomingHeals(unit) or 0)
+	return NeP.DSL:Get('health.actual')(unit)+(NeP._G.UnitGetTotalHealAbsorbs(unit) or 0)+(NeP._G.UnitGetIncomingHeals(unit) or 0)
 end
 
 function NeP.Healing.GetPredictedHealth_Percent(unit)
@@ -13,7 +13,7 @@ function NeP.Healing.GetPredictedHealth_Percent(unit)
 end
 
 function NeP.Healing.healthPercent(unit)
-	return math.floor((NeP.DSL:Get('health')(unit)/NeP._G.UnitHealthMax(unit))*100)
+	return math.floor((NeP.DSL:Get('health.actual')(unit)/NeP._G.UnitHealthMax(unit))*100)
 end
 
 local function Iterate()
