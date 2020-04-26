@@ -226,13 +226,15 @@ NeP.DSL:Register('ranged', function()
 end)
 
 NeP.DSL:Register('inmelee', function(target, spell)
-  local range = NeP.DSL:Get('range')(target)
-  return NeP.DSL:Get('spell.range')(target, spell) or range <= NeP.DSL:Get('melee')(), range
+  return NeP.DSL:Get('spell.range')(target, spell) 
+  or NeP.DSL:Get('range')(target) <= NeP.DSL:Get('melee')()
+  , range
 end)
 
 NeP.DSL:Register('inranged', function(target, spell)
-  local range = NeP.DSL:Get('range')(target)
-  return NeP.DSL:Get('spell.range')(target, spell) or range <= NeP.DSL:Get('ranged')(), range
+  return NeP.DSL:Get('spell.range')(target, spell) 
+  or NeP.DSL:Get('range')(target) <= NeP.DSL:Get('ranged')()
+  , range
 end)
 
 NeP.DSL:Register('incdmg', function(target, args)
