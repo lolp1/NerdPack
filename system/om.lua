@@ -16,7 +16,8 @@ local function MergeTable_Insert(table, Obj, GUID)
 	and NeP._G.UnitInPhase(Obj.key)
 	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.distance = NeP.DSL:Get('range')(Obj.key)
+		Obj.range = NeP.DSL:Get('range')(Obj.key)
+		Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 	end
 end
 
@@ -42,13 +43,14 @@ end
 
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local distance = NeP.DSL:Get('range')(Obj) or 999
-	if GUID and distance <= NeP.OM.max_distance then
+	local range = NeP.DSL:Get('range')(Obj) or 999
+	if GUID and range <= NeP.OM.max_distance then
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		NeP.OM[ref][GUID] = {
 			key = Obj,
 			name = NeP.Protected.UnitName(Obj),
-			distance = distance,
+			distance = NeP.DSL:Get('distance')(Obj.key),
+			range = range,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj)
@@ -76,7 +78,7 @@ end
 
 function cleanObjects()
 	for GUID, Obj in pairs(NeP.OM["Objects"]) do
-		if Obj.distance > NeP.OM.max_distance
+		if Obj.range > NeP.OM.max_distance
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
 			NeP.OM.Objects[GUID] = nil
@@ -87,7 +89,7 @@ end
 function cleanOthers(ref)
 	for GUID, Obj in pairs(NeP.OM[ref]) do
 		-- remove invalid units
-		if Obj.distance > NeP.OM.max_distance
+		if Obj.range > NeP.OM.max_distance
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
