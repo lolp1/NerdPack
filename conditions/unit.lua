@@ -186,12 +186,20 @@ NeP.DSL:Register('isattacking', function()
   return NeP._G.IsCurrentSpell(6603)
 end)
 
-NeP.DSL:Register('role', function(target, role)
-  return role:upper() == NeP._G.UnitGroupRolesAssigned(target)
+NeP.DSL:Register('role', function(target)
+  return NeP._G.UnitGroupRolesAssigned(target)
 end)
 
-NeP.DSL:Register('name', function (target, expectedName)
-  return target and (NeP._G.UnitName(target) or ''):lower():find(expectedName:lower()) ~= nil
+NeP.DSL:Register('name', function (target)
+  return target and (NeP._G.UnitName(target) or '')
+end)
+
+NeP.DSL:Register('hasRole', function(target, role)
+  return NeP.DSL:Get('role')(target):upper() == NeP._G.UnitGroupRolesAssigned(target)
+end)
+
+NeP.DSL:Register('hasName', function (target, expectedName)
+  return target and NeP.DSL:Get('name')(target):lower():find(expectedName:lower()) ~= nil
 end)
 
 NeP.DSL:Register('creatureType', function (target, expectedType)
