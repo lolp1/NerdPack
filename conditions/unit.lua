@@ -191,7 +191,7 @@ NeP.DSL:Register('role', function(target, role)
 end)
 
 NeP.DSL:Register('name', function (target, expectedName)
-  return NeP._G.UnitName(target):lower():find(expectedName:lower()) ~= nil
+  return (NeP._G.UnitName(target) or ''):lower():find(expectedName:lower()) ~= nil
 end)
 
 NeP.DSL:Register('creatureType', function (target, expectedType)
