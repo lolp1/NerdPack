@@ -208,7 +208,13 @@ NeP.DSL:Register('class', function (target, expectedClass)
 end)
 
 NeP.DSL:Register('melee', function()
+  -- probably should add talents and other exeptions that mess with range here
   return 2.1
+end)
+
+NeP.DSL:Register('ranged', function()
+  -- probably should add talents and other exeptions that mess with range here
+  return 40
 end)
 
 NeP.DSL:Register('inmelee', function(target)
@@ -218,7 +224,7 @@ end)
 
 NeP.DSL:Register('inranged', function(target)
   local range = NeP.DSL:Get('range')(target)
-  return range <= 40, range
+  return range <= NeP.DSL:Get('ranged')(), range
 end)
 
 NeP.DSL:Register('incdmg', function(target, args)
