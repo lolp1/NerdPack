@@ -11,9 +11,19 @@ NeP.DSL:Register("buff.new", function(target, spell)
   return obj and obj.buffs[spell] ~= nil
 end)
 
+NeP.DSL:Register("buff.new.duration", function(target, spell)
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.buffs[spell] and obj.buffs[spell].duration
+end)
+
 NeP.DSL:Register("debuff.new", function(target, spell)
   local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
   return obj and obj.debuffs[spell] ~= nil
+end)
+
+NeP.DSL:Register("debuff.new.duration", function(target, spell)
+  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  return obj and obj.debuffs[spell] and obj.debuffs[spell].duration
 end)
 
 --[[
