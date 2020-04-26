@@ -73,7 +73,7 @@ NeP.DSL:Register('lastcast', function(Unit, Spell)
   -- Convert the spell into name
   Spell = NeP._G.GetSpellInfo(Spell)
   -- if Unit is player, returns lasr parser execute.
-  if NeP._G.UnitIsUnit('player', Unit) then
+  if  NeP.DSL:Get('is')('player', Unit) then
     local LastCast = NeP.Parser.LastCast
     return LastCast == Spell, LastCast
   end
@@ -91,7 +91,7 @@ NeP.DSL:Register("lastgcd", function(Unit, Spell)
   -- Convert the spell into name
   Spell = NeP._G.GetSpellInfo(Spell)
   -- if Unit is player, returns lasr parser execute.
-  if NeP._G.UnitIsUnit('player', Unit) then
+  if NeP.DSL:Get('is')('player', Unit) then
     local LastCast = NeP.Parser.LastGCD
     return NeP.Parser.LastGCD == Spell, LastCast
   end

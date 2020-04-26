@@ -19,8 +19,8 @@ end
 local function Iterate()
 	for _, Obj in pairs(NeP.OM:Get('Friendly')) do
 		if Obj.range < maxDistance
-		and NeP._G.UnitExists(Obj.key)
-		and (NeP._G.UnitInParty(Obj.key) or NeP._G.UnitIsUnit('player', Obj.key))
+		and NeP.DSL:Get('exists')(Obj.key)
+		and (NeP.DSL:Get('ingroup')(Obj.key) or NeP.DSL:Get('is')('player', Obj.key))
 		and not NeP._G.UnitIsCharmed(Obj.key) then
 			Roster[Obj.guid] = Obj
 		else

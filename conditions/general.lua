@@ -75,7 +75,7 @@ NeP.DSL:Register('casting', function(target, spell)
 end)
 
 NeP.DSL:Register('interruptAt', function (target, spell)
-  if NeP._G.UnitIsUnit('player', target) then return false end
+  if NeP.DSL:Get('is')('player', target) then return false end
   if spell and NeP.DSL:Get('toggle')(nil, 'Interrupts') then
     local stopAt = (tonumber(spell) or 35) + math.random(-5, 5)
     local secondsLeft, castLength = NeP.DSL:Get('casting.delta')(target)
