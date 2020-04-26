@@ -209,11 +209,19 @@ end)
 
 NeP.DSL:Register('melee', function()
   -- probably should add talents and other exeptions that mess with range here
+  --[[
+    since im lazy to figure out all of them you can overwrite this condition in your own code doing:
+      NeP.DSL:Register('melee', function() ... end, true)
+  ]]
   return 3
 end)
 
 NeP.DSL:Register('ranged', function()
   -- probably should add talents and other exeptions that mess with range here
+  --[[
+    since im lazy to figure out all of them you can overwrite this condition in your own code doing:
+      NeP.DSL:Register('ranged', function() ... end, true)
+  ]]
   return 40
 end)
 
