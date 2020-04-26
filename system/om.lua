@@ -41,10 +41,20 @@ function NeP.OM.Get(_, ref, want_plates)
 	return NeP.OM[ref]
 end
 
+local forced_role = {
+	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
+}
+
 function NeP.OM.UpdateUnit(_, ref, GUID)
-	local obj = NeP.OM[ref][GUID]
-	obj.distance = NeP.DSL:Get('distance')(obj.key)
-	obj.range = NeP.DSL:Get('range')(obj.key)
+	local Obj = NeP.OM[ref][GUID]
+	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+	Obj.range = NeP.DSL:Get('range')(Obj.key)
+	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
+	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
+	Obj.health = NeP.Healing.healthPercent(Obj.key)
+	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
+	Obj.healthMax = NeP._G.UnitHealthMax(Obj.key)
+	Obj.role = forced_role[Obj.id] or NeP._G.UnitGroupRolesAssigned(Obj.key)
 end
 
 function NeP.OM.Insert(_, ref, Obj)
@@ -63,11 +73,18 @@ function NeP.OM.Insert(_, ref, Obj)
 		NeP.OM[ref][GUID] = {
 			key = Obj,
 			name = NeP.Protected.UnitName(Obj),
-			distance = NeP.DSL:Get('distance')(Obj.key),
+			distance = NeP.DSL:Get('distance')(Obj),
 			range = range,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj),
+			--healing
+			predicted = NeP.Healing.GetPredictedHealth_Percent(Obj),
+			predicted_Raw = NeP.Healing.GetPredictedHealth(Obj),
+			health = NeP.Healing.healthPercent(Obj),
+			healthRaw = NeP._G.UnitHealth(Obj),
+			healthMax = NeP._G.UnitHealthMax(Obj),
+			role = forced_role[ObjID] or NeP._G.UnitGroupRolesAssigned(Obj),
 			-- Damage Taken
 			dmgTaken = 0,
 			dmgTaken_P = 0,
