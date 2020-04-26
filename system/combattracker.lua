@@ -107,6 +107,18 @@ local addAction = function(...)
 	Data[sourceGUID].lastcast = spellName
 end
 
+local addAura = function(...)
+	--print('added aura', ...)
+end
+
+local removeAura = function(...)
+	--print('removed aura', ...)
+end
+
+local auraStack = function(...)
+	--print('stack aura', ...)
+end
+
 --[[ These are the events we're looking for and its respective action ]]
 local EVENTS = {
 	['SPELL_DAMAGE'] = logDamage,
@@ -118,7 +130,15 @@ local EVENTS = {
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
 	['UNIT_DIED'] = function(...) Data[select(8, ...)] = nil end,
-	['SPELL_CAST_SUCCESS'] = addAction
+	["SPELL_AURA_REFRESH"] = addAura,
+	["SPELL_AURA_APPLIED"] = addAura,
+	["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
+	["SPELL_AURA_REMOVED"] = removeAura,
+	["SPELL_PERIODIC_AURA_REMOVED"] = removeAura,
+	["SPELL_AURA_APPLIED_DOSE"] = auraStack,
+	["SPELL_PERIODIC_AURA_APPLIED_DOSE"] = auraStack,
+	["SPELL_AURA_REMOVED_DOSE"] = auraStack,
+	["SPELL_PERIODIC_AURA_REMOVED_DOSE"] = auraStack,
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
