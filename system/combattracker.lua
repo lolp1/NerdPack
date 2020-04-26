@@ -234,8 +234,12 @@ local function doStuff(...)
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Update last  hit time
-	DestObj.lastHit_taken = NeP._G.GetTime()
-	SourceObj.lastHit_done = NeP._G.GetTime()
+	if DestObj then
+		DestObj.lastHit_taken = NeP._G.GetTime()
+	end
+	if SourceObj then
+		SourceObj.lastHit_done = NeP._G.GetTime()
+	end
 	-- Add the amount of dmg/heak
 	if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end
