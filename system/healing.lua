@@ -9,11 +9,11 @@ function NeP.Healing.GetPredictedHealth(unit)
 end
 
 function NeP.Healing.GetPredictedHealth_Percent(unit)
-	return math.floor((NeP.Healing.GetPredictedHealth(unit)/NeP._G.UnitHealthMax(unit))*100)
+	return math.floor((NeP.Healing.GetPredictedHealth(unit)/NeP.DSL:Get('health.max')(unit))*100)
 end
 
 function NeP.Healing.healthPercent(unit)
-	return math.floor((NeP.DSL:Get('health.actual')(unit)/NeP._G.UnitHealthMax(unit))*100)
+	return math.floor((NeP.DSL:Get('health.actual')(unit)/NeP.DSL:Get('health.max')(unit))*100)
 end
 
 local function Iterate()
