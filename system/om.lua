@@ -16,7 +16,7 @@ local function MergeTable_Insert(table, Obj, GUID)
 	and NeP._G.UnitInPhase(Obj.key)
 	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+		Obj.distance = NeP.DSL:Get('range')(Obj.key)
 	end
 end
 
@@ -42,7 +42,7 @@ end
 
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
-	local distance = NeP.DSL:Get('distance')(Obj) or 999
+	local distance = NeP.DSL:Get('range')(Obj) or 999
 	if GUID and distance <= NeP.OM.max_distance then
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		NeP.OM[ref][GUID] = {
