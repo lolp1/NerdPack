@@ -172,7 +172,7 @@ local EVENTS = {
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
-function NeP.CombatTracker.CombatTime(_, UNIT)
+function NeP.CombatTracker.CombatTime(_, unit)
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
 	if Obj and NeP._G.InCombatLockdown() then
 		return NeP._G.GetTime() - Obj.combat_time
@@ -180,12 +180,12 @@ function NeP.CombatTracker.CombatTime(_, UNIT)
 	return 0
 end
 
-function NeP.CombatTracker:getDMG(UNIT)
+function NeP.CombatTracker:getDMG(unit)
 	local total, Hits, phys, magic = 0, 0, 0, 0
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
 	if Obj then
 		local time = NeP._G.GetTime()
-		local combatTime = self:CombatTime(UNIT)
+		local combatTime = self:CombatTime(unit)
 		total = Obj.dmgTaken / combatTime
 		phys = Obj.dmgTaken_P / combatTime
 		magic = Obj.dmgTaken_M / combatTime
