@@ -145,6 +145,9 @@ end
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
+		if not NeP.DSL:Get('los')(Obj) then
+			return
+		end
 		local range = NeP.DSL:Get('range')(Obj) or 999
 		if range > NeP.OM.max_distance then
 			NeP.OM[ref][GUID] = nil
@@ -240,8 +243,7 @@ function cleanOthers(ref)
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
-		or not NeP.DSL:Get('los')(Obj.key) then
+		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key) then
 			NeP.OM[ref][GUID] = nil
 		end
 	end
