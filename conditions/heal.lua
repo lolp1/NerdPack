@@ -5,11 +5,11 @@ NeP.DSL:Register("health", function(target)
 end)
 
 NeP.DSL:Register("health.actual", function(target)
-	return NeP._G.UnitHealth(target)
+	return NeP._G.UnitHealth(target) or 0
 end)
 
 NeP.DSL:Register("health.max", function(target)
-	return NeP._G.UnitHealthMax(target)
+	return NeP._G.UnitHealthMax(target) or 0
 end)
 
 NeP.DSL:Register("health.predicted", function(target)
