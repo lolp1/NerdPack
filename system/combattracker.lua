@@ -115,7 +115,7 @@ local addAura = function(...)
 	if not DestObj then return end
 	local _, count, expiration, caster, type, isStealable, isBoss, duration = (auraType == 'BUFF' and UnitBuffL or UnitDebuffL)(spellName, DestObj.key)
 	local data = {
-		isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
+		isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
 		SourceGUID = SourceGUID,
 		spellId = spellId,
 		spellName = spellName,
