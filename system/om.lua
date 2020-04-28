@@ -125,8 +125,8 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
-		local range = NeP.DSL:Get('range')(Obj) or 999
-		if range > NeP.OM.max_distance then
+		local distance = NeP.DSL:Get('distance')(Obj) or 999
+		if distance > NeP.OM.max_distance then
 			NeP.OM[ref][GUID] = nil
 			return
 		end
@@ -134,8 +134,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 		NeP.OM[ref][GUID] = {
 			key = Obj,
 			name = NeP.DSL:Get('name')(Obj),
-			distance = NeP.DSL:Get('distance')(Obj),
-			range = range,
+			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 		}
