@@ -231,11 +231,3 @@ end
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function()
 	doStuff(CombatLogGetCurrentEventInfo())
 end)
-
-NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_ENABLED', function()
-	NeP._G.wipe(Data)
-end)
-
-NeP.Listener:Add('NeP_CombatTracker', 'PLAYER_REGEN_DISABLED', function()
-	NeP._G.wipe(Data)
-end)
