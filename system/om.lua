@@ -212,8 +212,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		NeP.OM:InsertObject('AreaTriggers', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
-	and NeP._G.UnitInPhase(Obj)
-	and NeP.DSL:Get('los')(Obj) then
+	and NeP._G.UnitInPhase(Obj) then
 		if NeP._G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj)
 		elseif NeP._G.UnitIsFriend('player', Obj) then
@@ -243,7 +242,8 @@ function cleanOthers(ref)
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key) then
+		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
+		or not NeP.DSL:Get('los')(Obj.key) then
 			NeP.OM[ref][GUID] = nil
 		end
 	end
