@@ -121,13 +121,13 @@ end
 function NeP.OM.InsertObject(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
+		if NeP.OM[ref][GUID] then
+			NeP.OM:UpdateObject(ref, GUID)
+			return
+		end
 		local range = NeP.DSL:Get('range')(Obj) or 999
 		if range > NeP.OM.max_distance then
 			NeP.OM[ref][GUID] = nil
-			return
-		end
-		if NeP.OM[ref][GUID] then
-			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
@@ -145,7 +145,8 @@ end
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
-		if not NeP.DSL:Get('los')(Obj) then
+		if NeP.OM[ref][GUID] then
+			NeP.OM:UpdateUnit(ref, GUID)
 			return
 		end
 		local range = NeP.DSL:Get('range')(Obj) or 999
@@ -153,8 +154,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			NeP.OM[ref][GUID] = nil
 			return
 		end
-		if NeP.OM[ref][GUID] then
-			NeP.OM:UpdateUnit(ref, GUID)
+		if not NeP.DSL:Get('los')(Obj) then
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
