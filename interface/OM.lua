@@ -63,9 +63,9 @@ local function RefreshGUI()
 		local distance = NeP.Core:Round(Obj.distance or 0)
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
 		SB.frame.Left:SetText('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')..(Obj.name or '???'))
-		SB.frame.Right:SetText('( |cffff0000ID|r: '..Obj.id..' / |cffff0000Health|r: '..Obj.health..' / |cffff0000Dist|r: '..distance..' )')
+		SB.frame.Right:SetText('( |cffff0000ID|r: '..(Obj.id or '??')..' / |cffff0000Health|r: '..(Obj.health or 0)..' / |cffff0000Dist|r: '..(distance or 0)..' )')
 		SB.frame:SetScript('OnMouseDown', function() NeP.Protected.TargetUnit(Obj.key) end)
-		SB:SetValue(Obj.health)
+		SB:SetValue(Obj.health or 0)
 		offset = offset -18
 	end
 end
