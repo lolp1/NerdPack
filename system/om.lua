@@ -71,7 +71,7 @@ local function preLoadBuffs(Obj)
 		if spellName then
 			SourceGUID = caster and UnitGUID(caster) or ''
 			data = {
-				isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
+				isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
 				SourceGUID = SourceGUID,
 				spellId = spellId,
 				spellName = spellName,
@@ -98,7 +98,7 @@ local function preLoadDebuffs(Obj)
 		if spellName then
 			SourceGUID = caster and UnitGUID(caster) or ''
 			data = {
-				isCastByPlayer = sourceGUID == NeP._G.UnitGUID('player'),
+				isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
 				SourceGUID = SourceGUID,
 				spellId = spellId,
 				spellName = spellName,
