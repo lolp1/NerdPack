@@ -1,6 +1,5 @@
 local _, NeP = ...
 NeP.Parser   = {}
-local _G = _G
 local c = NeP.CR
 
 --[[
