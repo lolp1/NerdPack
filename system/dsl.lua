@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 local DSL = NeP.DSL
 local strsplit = NeP._G.strsplit
 DSL.cust_funcs = {}
@@ -130,7 +129,7 @@ local function Comperatores(strg, spell, target)
 end
 
 local function StringMath(strg, spell, target)
-	local OP = strg:match("[/%*%+%-%\%]")
+	local OP = strg:match("[/%*%+%-%%]")
 	local arg1, arg2 = NeP._G.strsplit(OP, strg, 2)
 	arg1 = DSL.Parse(arg1, spell, target)
 	arg2 = DSL.Parse(arg2, spell, target)
@@ -162,7 +161,7 @@ function NeP.DSL.Parse(strg, spell, target)
 	-- != needs to be seperate otherwise we end up with false positives
 	elseif strg:find('[><=~]') or strg:find('!=') then
 		return Comperatores(strg, spell, target)
-	elseif strg:find("[/%*%+%-%\%]") then
+	elseif strg:find("[/%*%+%-%%]") then
 		return StringMath(strg, spell, target)
 	elseif strg:find('^%a') then
 		return ProcessCondition(strg, spell, target)
