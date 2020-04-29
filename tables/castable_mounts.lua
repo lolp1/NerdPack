@@ -3,7 +3,7 @@ NeP.ByPassMounts = {}
 NeP.ByPassMounts.table = {}
 local T = NeP.ByPassMounts.table
 
-function NeP.ByPassMounts:Eval(ID)
+function NeP.ByPassMounts.Eval(_,ID)
 	for i=1, #T do
 		if tonumber(ID) == T[i] then
 			return true
@@ -21,7 +21,7 @@ function NeP.ByPassMounts:Add(ID)
 	end
 end
 
-function NeP.ByPassMounts:Get()
+function NeP.ByPassMounts.Get()
 	return T
 end
 

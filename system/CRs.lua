@@ -68,7 +68,7 @@ local function refs(ev, SpecID)
 end
 
 function NeP.CR.Add(_, SpecID, ...)
-	local classIndex = select(3, UnitClass('player'))
+	local classIndex = select(3, NeP._G.UnitClass('player'))
 	-- This only allows crs we can use to be registered
 	if not NeP.ClassTable:SpecIsFromClass(classIndex, SpecID )
 	and classIndex ~= SpecID then
@@ -102,7 +102,7 @@ function NeP.CR.Add(_, SpecID, ...)
 end
 
 function NeP.CR:Set(Spec, Name)
-	Spec = Spec or GetSpecializationInfo(GetSpecialization())
+	Spec = Spec or NeP._G.GetSpecializationInfo(NeP._G.GetSpecialization())
 	Name = Name or NeP.Config:Read('SELECTED', Spec)
 	--break if no sec or name
 	if not Spec or not Name then return end

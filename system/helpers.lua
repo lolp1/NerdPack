@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 NeP.Helpers = {}
 local UIErrorsFrame = NeP._G.UIErrorsFrame
 local C_Timer = NeP._G.C_Timer
@@ -83,7 +82,7 @@ function NeP.Helpers:Check(spell, target)
 	return true
 end
 
-NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(code, error)
+NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(_, error)
 	if not UI_Erros[error] then return end
 
 	local unit, spell = NeP.Parser.LastTarget, NeP.Parser.LastCast

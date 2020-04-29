@@ -1,6 +1,4 @@
 local _, NeP = ...
-local _G = _G
-
 local function checkChanneling(target)
   local name, _, _, startTime, endTime, _, notInterruptible = NeP._G.UnitChannelInfo(target)
   if name then return name, startTime, endTime, notInterruptible end
@@ -88,7 +86,9 @@ local TimeOutTable ={}
 --USAGE: timeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('timeout', function(_, args)
   local name, time = NeP._G.strsplit(',', args, 2)
-   if not TimeOutTable[name] then TimeOutTable[name] = true; C_Timer.After(tonumber(time), function() TimeOutTable[name] = nil end); return true; end
+   if not TimeOutTable[name] then TimeOutTable[name] = true;
+    NeP._G.C_Timer.After(tonumber(time), function() TimeOutTable[name] = nil end);
+    return true; end
    return not TimeOutTable[name]
 end)
 
@@ -96,9 +96,11 @@ local TimeOutUnitTable ={}
 
 --USAGE: UNIT.targettimeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('targettimeout', function(target, args)
-  target = UnitGUID(target)
+  target = NeP._G.UnitGUID(target)
   local name, time = NeP._G.strsplit(',', args, 2)
-   if not TimeOutUnitTable[target..name] then TimeOutUnitTable[target..name] = true; C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end); return true; end
+   if not TimeOutUnitTable[target..name] then TimeOutUnitTable[target..name] = true;
+    NeP._G.C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end);
+    return true; end
    return not TimeOutUnitTable[target..name]
 end)
 

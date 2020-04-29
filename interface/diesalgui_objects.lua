@@ -1,10 +1,10 @@
 local _, NeP = ...
-local LibStub = LibStub
+local LibStub = NeP._G.LibStub
 local DiesalGUI   = LibStub("DiesalGUI-1.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")
-local UIParent = UIParent
-local Type = Type
-local CreateFrame = CreateFrame
+local UIParent = NeP._G.UIParent
+local Type = NeP._G.Type
+local CreateFrame = NeP._G.CreateFrame
 
 DiesalGUI:RegisterObjectConstructor("FontString", function()
   local slf 		= DiesalGUI:CreateObjectBase(Type)

@@ -5,7 +5,7 @@ NeP.BossID = {}
 NeP.BossID.table = NeP._G.LibStub("LibBossIDs-1.0").BossIDs
 local T = NeP.BossID.table
 
-function NeP.BossID:Add(...)
+function NeP.BossID.Add(_,...)
   if type(...) == 'table' then
     for id in pairs(...) do
       id = tonumber(id)

@@ -32,7 +32,7 @@ local function _add(name, condition, overwrite)
 			if C[key] == nil then
 				C[key] = {condition(target, spell, spell2, ...)}
 			end
-			return unpack(C[key])
+			return NeP._G.unpack(C[key])
 		end
 		--NeP.Debug:Add(name, condition, true)
 	end

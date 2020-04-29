@@ -65,16 +65,16 @@ function NeP.OM.UpdateUnit(_, ref, GUID)
 end
 
 local function preLoadBuffs(Obj)
-	local i, spellName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, SourceGUID, data = 1, true
-	while spellName do
-		spellName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
-		if spellName then
-			SourceGUID = caster and UnitGUID(caster) or ''
+	local i, sName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, sGUID, data = 1, true
+	while sName do
+		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
+		if sName then
+			sGUID = caster and UnitGUID(caster) or ''
 			data = {
-				isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
-				SourceGUID = SourceGUID,
+				isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
+				sGUID = sGUID,
 				spellId = spellId,
-				spellName = spellName,
+				sName = sName,
 				auraType = 'BUFF',
 				type = type,
 				count = count,
@@ -84,7 +84,7 @@ local function preLoadBuffs(Obj)
 				duration = duration,
 				caster = caster,
 			}
-			Obj.buffs[spellName] = data
+			Obj.buffs[sName] = data
 			Obj.buffs[spellId] = data
 			i=i+1
 		end
@@ -92,16 +92,16 @@ local function preLoadBuffs(Obj)
 end
 
 local function preLoadDebuffs(Obj)
-	local i, spellName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, SourceGUID, data = 1, true
-	while spellName do
-		spellName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
-		if spellName then
-			SourceGUID = caster and UnitGUID(caster) or ''
+	local i, sName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, sGUID, data = 1, true
+	while sName do
+		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
+		if sName then
+			sGUID = caster and UnitGUID(caster) or ''
 			data = {
-				isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
-				SourceGUID = SourceGUID,
+				isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
+				sGUID = sGUID,
 				spellId = spellId,
-				spellName = spellName,
+				sName = sName,
 				auraType = 'DEBUFF',
 				type = type,
 				count = count,
@@ -111,7 +111,7 @@ local function preLoadDebuffs(Obj)
 				duration = duration,
 				caster = caster,
 			}
-			Obj.debuffs[spellName] = data
+			Obj.debuffs[sName] = data
 			Obj.debuffs[spellId] = data
 			i=i+1
 		end
@@ -207,7 +207,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	-- Objects
 	if isObject then
 		NeP.OM:InsertObject('Objects', Obj)
-	elseif isAreaTrigger then 
+	elseif isAreaTrigger then
 		NeP.OM:InsertObject('AreaTriggers', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
@@ -222,7 +222,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	end
 end
 
-function cleanObjects()
+local function cleanObjects()
 	for _, ref in pairs({"Objects", "AreaTriggers"}) do
 		for GUID, Obj in pairs(NeP.OM[ref]) do
 			if Obj.range > NeP.OM.max_distance
@@ -234,7 +234,7 @@ function cleanObjects()
 	end
 end
 
-function cleanOthers(ref)
+local function cleanOthers(ref)
 	for GUID, Obj in pairs(NeP.OM[ref]) do
 		-- remove invalid units
 		if Obj.range > NeP.OM.max_distance

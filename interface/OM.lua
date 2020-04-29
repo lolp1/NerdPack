@@ -1,5 +1,5 @@
 local _, NeP = ...
-local DiesalGUI = LibStub('DiesalGUI-1.0')
+local DiesalGUI = NeP._G.LibStub('DiesalGUI-1.0')
 local L = NeP.Locale
 
 local statusBars = {}
@@ -26,7 +26,7 @@ dropdown:SetEventListener('OnValueChanged', function(_,_, value) dOM = value end
 OM_GUI.parent:Hide()
 
 local function getStatusBar()
-	local statusBar = tremove(statusBars)
+	local statusBar = NeP._G.tremove(statusBars)
 	if not statusBar then
 		statusBar = DiesalGUI:Create('StatusBar')
 		OM_GUI.window:AddChild(statusBar)
@@ -42,7 +42,7 @@ end
 local function recycleStatusBars()
 	for i = #statusBarsUsed, 1, -1 do
 		statusBarsUsed[i]:Hide()
-		tinsert(statusBars, tremove(statusBarsUsed))
+		NeP._G.tinsert(statusBars, NeP._G.tremove(statusBarsUsed))
 	end
 end
 
@@ -63,14 +63,22 @@ local function RefreshGUI()
 		local distance = NeP.Core:Round(Obj.distance or 0)
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
 		SB.frame.Left:SetText('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')..(Obj.name or '???'))
-		SB.frame.Right:SetText('( |cffff0000ID|r: '..(Obj.id or '??')..' / |cffff0000Health|r: '..(Obj.health or 0)..' / |cffff0000Dist|r: '..(distance or 0)..' )')
+		SB.frame.Right:SetText(
+			'( |cffff0000ID|r: '
+			..(Obj.id or '??')
+			..' / |cffff0000Health|r: '
+			..(Obj.health or 0)
+			..' / |cffff0000Dist|r: '
+			..(distance or 0)
+			..' )'
+		)
 		SB.frame:SetScript('OnMouseDown', function() NeP.Protected.TargetUnit(Obj.key) end)
 		SB:SetValue(Obj.health or 0)
 		offset = offset -18
 	end
 end
 
-C_Timer.NewTicker(0.1, (function()
+NeP._G.C_Timer.NewTicker(0.1, (function()
 	if OM_GUI.parent:IsShown() then
 		RefreshGUI()
 	end

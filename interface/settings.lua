@@ -27,7 +27,16 @@ title = n_name,
 
     { type = 'spacer' },
     { type = 'header', text = L('OM_Settings') },
-    { type = 'spinner', text = L('OM_Dis'), key = 'OM_Dis', step = 10, min = 40, max = 300, default = 100, desc = L("OM_Dis_desc")},
+    {
+      type = 'spinner',
+      text = L('OM_Dis'),
+      key = 'OM_Dis',
+      step = 10,
+      min = 40,
+      max = 300,
+      default = 100,
+      desc = L("OM_Dis_desc")
+    },
 
     { type = 'spacer' },
     { type = 'header', text = L('misc') },

@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 NeP.Core = {}
 
 local last_print = ""
@@ -137,22 +136,22 @@ function NeP.Core.string_split(_, string, delimiter)
 end
 
 function  NeP.Core.UnitBuffL(target, spell, own)
-	local i, name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = 1, true
+	local i, name, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
 	while name do
-		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, count, expiration, caster, type, isStealable, isBoss, duration
+			return name, cnt, expi, caster, tp, canSteal, isBoss, duration
 		end
 		i=i+1
 	end
 end
-  
+
 function  NeP.Core.UnitDebuffL(target, spell, own)
-	local i, name, count, type, duration, expiration, caster, isStealable, spellId, isBoss = 1, true
+	local i, name, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
 	while name do
-		name, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
 		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, count, expiration, caster, type, isStealable, isBoss, duration
+			return name, cnt, expi, caster, tp, canSteal, isBoss, duration
 		end
 		i=i+1
 	end

@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 NeP.DSL:Register('ingroup', function(target)
   return NeP._G.UnitInParty(target) or NeP._G.UnitInRaid(target)
@@ -26,7 +25,7 @@ local UnitClsf = {
 
 NeP.DSL:Register("boss", function (target)
   if NeP.DSL:Get("isdummy")(target) then return end
-  local classification = UnitClassification(target)
+  local classification = NeP._G.UnitClassification(target)
   if UnitClsf[classification] then
     return UnitClsf[classification] >= 3 or NeP.BossID:Eval(target)
   end
@@ -194,8 +193,8 @@ NeP.DSL:Register('name', function (target)
   return target and (NeP._G.UnitName(target) or '')
 end)
 
-NeP.DSL:Register('hasRole', function(target, role)
-  return NeP.DSL:Get('role')(target):upper() == NeP._G.UnitGroupRolesAssigned(target)
+NeP.DSL:Register('hasRole', function(target, expectedName)
+  return target and NeP.DSL:Get('role')(target):upper():find(expectedName:lower()) ~= nil
 end)
 
 NeP.DSL:Register('hasName', function (target, expectedName)
@@ -234,15 +233,19 @@ NeP.DSL:Register('ranged', function()
 end)
 
 NeP.DSL:Register('inmelee', function(target, spell)
-  return NeP.DSL:Get('spell.range')(target, spell) 
-  or NeP.DSL:Get('range')(target) <= NeP.DSL:Get('melee')()
-  , range
+  if NeP.DSL:Get('spell.range')(target, spell) then
+    return true
+  end
+  local range = NeP.DSL:Get('range')(target)
+  return range <= NeP.DSL:Get('melee')(), range
 end)
 
 NeP.DSL:Register('inranged', function(target, spell)
-  return NeP.DSL:Get('spell.range')(target, spell) 
-  or NeP.DSL:Get('range')(target) <= NeP.DSL:Get('ranged')()
-  , range
+  if NeP.DSL:Get('spell.range')(target, spell) then
+    return true
+  end
+  local range = NeP.DSL:Get('range')(target)
+  return range <= NeP.DSL:Get('ranged')(), range
 end)
 
 NeP.DSL:Register('incdmg', function(target, args)
@@ -284,7 +287,8 @@ end)
 
 local last_fall = 0;
 local falling_for = 0;
-function buildFallTime()
+
+local function buildFallTime()
 	-- if we´re not falling then reset the counter and return 0
   if not NeP._G.IsFalling() then
     last_fall = 0
@@ -341,6 +345,6 @@ NeP.DSL:Register('combat.time', function(target)
 end)
 
 NeP.DSL:Register('los', function(a, b)
-  return NeP.DSL:Get('is')(a,b or 'player') 
+  return NeP.DSL:Get('is')(a,b or 'player')
   or NeP.Protected.LineOfSight(a, b or 'player')
 end)

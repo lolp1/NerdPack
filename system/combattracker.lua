@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 NeP.CombatTracker = {}
 
@@ -16,7 +15,7 @@ local Doubles = {
 
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount, a, b, c = ...
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Mixed
@@ -110,10 +109,11 @@ local UnitBuffL = NeP.Core.UnitBuffL
 local UnitDebuffL = NeP.Core.UnitDebuffL
 
 local addAura = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	if not DestObj then return end
-	local _, count, expiration, caster, type, isStealable, isBoss, duration = (auraType == 'BUFF' and UnitBuffL or UnitDebuffL)(spellName, DestObj.key)
+	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
+	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(spellName, DestObj.key)
 	local data = {
 		isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
 		SourceGUID = SourceGUID,
@@ -134,7 +134,7 @@ local addAura = function(...)
 end
 
 local removeAura = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType, amount = ...
+	local _,_,_, _, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
 	if DestObj then
@@ -143,10 +143,10 @@ local removeAura = function(...)
 	end
 end
 
-local auraStack = function(...)
-	local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
+--local auraStack = function(...)
+	--local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
 	--print(amount)
-end
+--end
 
 --[[ These are the events we're looking for and its respective action ]]
 local EVENTS = {
@@ -165,10 +165,10 @@ local EVENTS = {
 	["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
 	["SPELL_AURA_REMOVED"] = removeAura,
 	["SPELL_PERIODIC_AURA_REMOVED"] = removeAura,
-	["SPELL_AURA_APPLIED_DOSE"] = auraStack,
-	["SPELL_PERIODIC_AURA_APPLIED_DOSE"] = auraStack,
-	["SPELL_AURA_REMOVED_DOSE"] = auraStack,
-	["SPELL_PERIODIC_AURA_REMOVED_DOSE"] = auraStack,
+	--["SPELL_AURA_APPLIED_DOSE"] = auraStack,
+	--["SPELL_PERIODIC_AURA_APPLIED_DOSE"] = auraStack,
+	--["SPELL_AURA_REMOVED_DOSE"] = auraStack,
+	--["SPELL_PERIODIC_AURA_REMOVED_DOSE"] = auraStack,
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
@@ -184,7 +184,6 @@ function NeP.CombatTracker:getDMG(unit)
 	local total, Hits, phys, magic = 0, 0, 0, 0
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
 	if Obj then
-		local time = NeP._G.GetTime()
 		local combatTime = self:CombatTime(unit)
 		total = Obj.dmgTaken / combatTime
 		phys = Obj.dmgTaken_P / combatTime
@@ -229,5 +228,5 @@ local function doStuff(...)
 end
 
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function()
-	doStuff(CombatLogGetCurrentEventInfo())
+	doStuff(NeP._G.CombatLogGetCurrentEventInfo())
 end)

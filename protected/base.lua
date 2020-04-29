@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 local strsplit = NeP._G.strsplit
 local IsInGroup = NeP._G.IsInGroup
 local IsInRaid = NeP._G.IsInRaid
@@ -30,7 +29,7 @@ NeP.Protected.UseItem = noop
 NeP.Protected.UseInvItem = noop
 NeP.Protected.TargetUnit = noop
 NeP.Protected.SpellStopCasting = noop
-NeP.Protected.ObjectExists = UnitExists
+NeP.Protected.ObjectExists = NeP._G.UnitExists
 NeP.Protected.ObjectCreator = noop
 NeP.Protected.GameObjectIsAnimating = noop
 NeP.Protected.UnitName = NeP._G.UnitName

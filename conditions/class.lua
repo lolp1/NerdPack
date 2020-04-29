@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 local pt = NeP._G.Enum.PowerType
 
 NeP.DSL:Register('energy', function(target)
@@ -31,7 +30,8 @@ local PetNames ={
 }
 
 NeP.DSL:Register("isPet",function(unit)
-  return UnitIsOtherPlayersPet(unit) or PetNames[UnitCreatureType(unit)] ~= nil 
+  return NeP._G.UnitIsOtherPlayersPet(unit)
+  or PetNames[NeP._G.UnitCreatureType(unit)] ~= nil
 end)
 
 NeP.DSL:Register('petrange', function(target)
@@ -182,8 +182,8 @@ local minions = {
 }
 
 NeP.Listener:Add('lock_P', 'COMBAT_LOG_EVENT_UNFILTERED', function()
-  local _, event, _,_, sName, _,_, dGUID, dName, _,_, sid = CombatLogGetCurrentEventInfo()
-		
+  local _, event, _,_, sName, _,_, dGUID, dName, _,_, sid = NeP._G.CombatLogGetCurrentEventInfo()
+
   if not sName == NeP._G.UnitName("player")
   or not minions[dName] then return end
 

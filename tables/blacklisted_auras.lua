@@ -8,7 +8,7 @@ local T = NeP.Debuffs.table
 	This will remove the unit from the OM cache.
 ---------------------------------------------------]]
 
-function NeP.Debuffs:Eval(unit)
+function NeP.Debuffs.Eval(_, unit)
 	for i = 1, 40 do
 		local ID = select(11, NeP._G.UnitDebuff(unit, i))
 		if ID and T[ID] then
@@ -27,7 +27,7 @@ function NeP.Debuffs:Add(ID)
 	end
 end
 
-function NeP.Debuffs:Get()
+function NeP.Debuffs.Get()
 	return T
 end
 

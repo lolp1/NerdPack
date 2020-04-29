@@ -1,11 +1,12 @@
 local _, NeP = ...
-local _G = _G
 NeP.Healing = {}
 local Roster = NeP.OM.Roster
 local maxDistance = 40
 
 function NeP.Healing.GetPredictedHealth(unit)
-	return NeP.DSL:Get('health.actual')(unit)+(NeP._G.UnitGetTotalHealAbsorbs(unit) or 0)+(NeP._G.UnitGetIncomingHeals(unit) or 0)
+	return NeP.DSL:Get('health.actual')(unit)
+	+ (NeP._G.UnitGetTotalHealAbsorbs(unit) or 0)
+	+ (NeP._G.UnitGetIncomingHeals(unit) or 0)
 end
 
 function NeP.Healing.GetPredictedHealth_Percent(unit)

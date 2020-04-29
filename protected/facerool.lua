@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 local CreateFrame = NeP._G.CreateFrame
 NeP.Faceroll = {}
 

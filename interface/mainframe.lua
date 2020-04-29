@@ -13,8 +13,8 @@ local function CR_Ver_WoW(cr_wow_ver, wow_ver)
 	return wow_ver:find('^'..tostring(cr_wow_ver))
 end
 
-local function CR_Ver_NeP(cr_nep_ver, NeP_ver)
-	return NeP_ver:find('^'..tostring(cr_nep_ver))
+local function CR_Ver_NeP(cr_nep_ver, nep_version)
+	return nep_version:find('^'..tostring(cr_nep_ver))
 end
 
 NeP.Interface.MainFrame = NeP.Interface:BuildGUI({
@@ -68,7 +68,6 @@ end
 
 function NeP.Interface.AddCR(_, ev)
 	local text = ev.name..'|cff0F0F0F <->|r [WoW: '..ev.wow_ver..' NeP: '..ev.nep_ver..']'
-	local NeP_ver = NeP_ver
 	local wow_ver = GetBuildInfo()
 	table.insert(DropMenu[2].menuList, {
 		text = text,

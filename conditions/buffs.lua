@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 local heroismBuffs = { 32182, 90355, 80353, 2825, 146555 }
 NeP.DSL:Register("hashero", function()
@@ -12,13 +11,13 @@ end)
 ------------------------------------------ BUFFS -----------------------------------------
 ------------------------------------------------------------------------------------------
 NeP.DSL:Register("buff", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
   return obj and obj.buffs[spell]
   and obj.buffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("buff.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
   return obj and obj.buffs[spell] ~= nil
 end)
 
@@ -38,8 +37,8 @@ NeP.DSL:Register("buff.duration", function(target, spell)
 end)
 
 NeP.DSL:Register("buff.duration.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
-  return obj and obj.buffs[spell] 
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  return obj and obj.buffs[spell]
   and ( obj.buffs[spell].expires - NeP._G.GetTime())
 end)
 
@@ -47,8 +46,8 @@ NeP.DSL:Register("buff.many", function(target, spell)
   local i, name, count = 1, true, 0
   while name do
     name = NeP.Core.UnitBuffL(target, i, 'PLAYER')
-    if name == spell then 
-      count = count + 1 
+    if name == spell then
+      count = count + 1
     end
     i=i+1
   end
@@ -67,13 +66,13 @@ end)
 ------------------------------------------------------------------------------------------
 
 NeP.DSL:Register("debuff", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
   return obj and obj.debuffs[spell]
   and obj.debuffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("debuff.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
   return obj and obj.debuffs[spell] ~= nil
 end)
 
@@ -93,8 +92,8 @@ NeP.DSL:Register("debuff.duration", function(target, spell)
 end)
 
 NeP.DSL:Register("debuff.duration.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(UnitGUID(target))
-  return obj and obj.debuffs[spell] 
+  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  return obj and obj.debuffs[spell]
   and (obj.debuffs[spell].expires - NeP._G.GetTime())
 end)
 
@@ -102,8 +101,8 @@ NeP.DSL:Register("debuff.many", function(target, spell)
   local i, name, count = 1, true, 0
   while name do
     name = NeP.Core.UnitDebuffL(target, i, 'PLAYER')
-    if name == spell then 
-      count = count + 1 
+    if name == spell then
+      count = count + 1
     end
     i=i+1
   end

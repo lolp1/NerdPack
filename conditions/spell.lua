@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 NeP.DSL:Register('spell.cooldown', function(_, spell)
   local start, duration = NeP._G.GetSpellCooldown(spell)
@@ -82,9 +81,9 @@ NeP.DSL:Register('lastcast', function(Unit, Spell)
 end)
 
 NeP.DSL:Register('lastcast.succeed', function(Unit, spell)
-  Spell = NeP._G.GetSpellInfo(spell)
+  spell = NeP._G.GetSpellInfo(spell)
   local LastCast = NeP.CombatTracker:LastCast(Unit)
-  return LastCast == Spell, LastCast
+  return LastCast == spell, LastCast
 end)
 
 NeP.DSL:Register("lastgcd", function(Unit, Spell)

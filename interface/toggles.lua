@@ -1,8 +1,8 @@
 local n_name, NeP = ...
 local mainframe = NeP.Interface.MainFrame
 local L = NeP.Locale
-local GameTooltip = GameTooltip
-local CreateFrame = CreateFrame
+local GameTooltip = NeP._G.GameTooltip
+local CreateFrame = NeP._G.CreateFrame
 
 NeP.ButtonsSize = 40
 NeP.ButtonsPadding = 2
@@ -27,7 +27,7 @@ local function SetTexture(parent, icon)
 		temp:SetTexture(icon)
 		temp:SetTexCoord(.08, .92, .08, .92)
 	else
-		local r,g,b = unpack(NeP.Core:ClassColor('player', 'rgb'))
+		local r,g,b = NeP._G.unpack(NeP.Core:ClassColor('player', 'rgb'))
 		temp:SetColorTexture(r,g,b,.7)
 	end
 	temp:SetAllPoints(parent)

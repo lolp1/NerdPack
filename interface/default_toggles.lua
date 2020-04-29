@@ -1,6 +1,6 @@
 local _, NeP = ...
 local L = NeP.Locale
-local IsControlKeyDown = IsControlKeyDown
+local IsControlKeyDown = NeP._G.IsControlKeyDown
 
 -- MasterToggle
 NeP.Interface:AddToggle({

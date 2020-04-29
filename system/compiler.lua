@@ -183,7 +183,7 @@ function NeP.Compiler.Iterate(_, eval)
 	if not eval then return end
 	--save original
 	if not eval['compiler_original'] then
-		eval['compiler_original'] = {unpack(eval)}
+		eval['compiler_original'] = {NeP._G.unpack(eval)}
 		--recompile if needed
 		NeP.Listener:Add("NeP_Core_load", recompileOn, function()
 			eval = eval['compiler_original']
