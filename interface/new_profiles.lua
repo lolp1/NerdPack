@@ -1,5 +1,5 @@
 local _, NeP = ...
-local DiesalGUI = LibStub("DiesalGUI-1.0")
+local DiesalGUI = NeP._G.LibStub("DiesalGUI-1.0")
 local new_prof_Name = "New Profile Name"
 
 NeP.Interface.pFrame = DiesalGUI:Create('Window')

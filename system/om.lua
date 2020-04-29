@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 NeP.OM = {
 	Enemy = {},
@@ -69,7 +68,7 @@ local function preLoadBuffs(Obj)
 	while sName do
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
 		if sName then
-			sGUID = caster and UnitGUID(caster) or ''
+			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = {
 				isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
 				sGUID = sGUID,
@@ -96,7 +95,7 @@ local function preLoadDebuffs(Obj)
 	while sName do
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
 		if sName then
-			sGUID = caster and UnitGUID(caster) or ''
+			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = {
 				isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
 				sGUID = sGUID,
