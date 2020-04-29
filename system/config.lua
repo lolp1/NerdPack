@@ -15,6 +15,7 @@ end)
 
 function NeP.Config.Read(_, a, b, default, profile)
 	profile = profile or "default"
+	if a == nil or b == nil then return end
 	if Data[a] then
 		if not Data[a][profile] then
 			Data[a][profile] = {}
