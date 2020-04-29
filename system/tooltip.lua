@@ -19,7 +19,7 @@ function NeP.Tooltip.Scan_Buff(_, target, pattern)
 	for i = 1, 40 do
 		frame:SetOwner(NeP._G.UIParent, 'ANCHOR_NONE')
 		frame:SetUnitBuff(target, i)
-		local tooltipText = NeP._G["NeP_ScanningTooltipTextLeft2"]:GetText()
+		local tooltipText = _G["NeP_ScanningTooltipTextLeft2"]:GetText()
 		if tooltipText and pPattern(tooltipText, pattern) then return true end
 	end
 	return false
@@ -29,7 +29,7 @@ function NeP.Tooltip.Scan_Debuff(_, target, pattern)
 	for i = 1, 40 do
 		frame:SetOwner(NeP._G.UIParent, 'ANCHOR_NONE')
 		frame:SetUnitDebuff(target, i)
-		local tooltipText = NeP._G["NeP_ScanningTooltipTextLeft2"]:GetText()
+		local tooltipText = _G["NeP_ScanningTooltipTextLeft2"]:GetText()
 		if tooltipText and pPattern(tooltipText, pattern) then return true end
 	end
 	return false
@@ -38,7 +38,7 @@ end
 function NeP.Tooltip.Unit(_, target, pattern)
 	frame:SetOwner(NeP._G.UIParent, 'ANCHOR_NONE')
 	frame:SetUnit(target)
-	local tooltipText = NeP._G["NeP_ScanningTooltipTextLeft2"]:GetText()
+	local tooltipText = _G["NeP_ScanningTooltipTextLeft2"]:GetText()
 	if pPattern(NeP._G.UnitName(target):lower(), pattern) then return true end
 	return tooltipText and pPattern(tooltipText, pattern)
 end

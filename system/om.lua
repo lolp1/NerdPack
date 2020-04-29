@@ -224,7 +224,7 @@ end
 local function cleanObjects()
 	for _, ref in pairs({"Objects", "AreaTriggers"}) do
 		for GUID, Obj in pairs(NeP.OM[ref]) do
-			if Obj.range > NeP.OM.max_distance
+			if Obj.distance > NeP.OM.max_distance
 			or not NeP.DSL:Get('exists')(Obj.key)
 			or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
 				NeP.OM.Objects[GUID] = nil
