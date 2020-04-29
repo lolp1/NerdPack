@@ -103,9 +103,10 @@ end
 
 function NeP.CR:Set(Spec, Name)
 	Spec = Spec or GetSpecializationInfo(GetSpecialization())
+	if not Spec then return end
 	Name = Name or NeP.Config:Read('SELECTED', Spec)
 	--break if no sec or name
-	if not Spec or not Name then return end
+	if not Name then return end
 	--break if cr dosent exist
 	if not (CRs[Spec] and CRs[Spec][Name]) then return end
 	-- execute the previous unload
