@@ -129,15 +129,17 @@ local addAura = function(...)
 		caster = caster,
 	}
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
-	DestObj[arrType][spellName] = data
-	DestObj[arrType][spellId] = data
+	if DestObj[arrType] then
+		DestObj[arrType][spellName] = data
+		DestObj[arrType][spellId] = data
+	end
 end
 
 local removeAura = function(...)
 	local _,_,_, _, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
-	if DestObj then
+	if DestObj and DestObj[arrType] then
 		DestObj[arrType][spellName] = nil
 		DestObj[arrType][spellId] = nil
 	end
