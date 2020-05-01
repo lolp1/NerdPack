@@ -132,11 +132,35 @@ NeP.DSL:Register("count.enemies.buffs", function(_,buff)
 end)
 
 -- Counts how many units have the buff
+-- USAGE: count(BUFF).buffs.any > = #
+NeP.DSL:Register("count.enemies.buffs.any", function(_,buff)
+  local n1 = 0
+  for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+      if NeP.DSL:Get('buff.any')(Obj.key, buff) then
+          n1 = n1 + 1
+      end
+  end
+  return n1
+end)
+
+-- Counts how many units have the buff
 -- USAGE: count(BUFF).buffs > = #
 NeP.DSL:Register("count.friendly.buffs", function(_,buff)
   local n1 = 0
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
       if NeP.DSL:Get('buff')(Obj.key, buff) then
+          n1 = n1 + 1
+      end
+  end
+  return n1
+end)
+
+-- Counts how many units have the debuff
+-- USAGE: count(DEBUFF).debuffs > = #
+NeP.DSL:Register("count.friendly.buffs.any", function(_,buff)
+  local n1 = 0
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
+      if NeP.DSL:Get('buff.any')(Obj.key, buff) then
           n1 = n1 + 1
       end
   end
@@ -156,11 +180,35 @@ NeP.DSL:Register("count.enemies.debuffs", function(_,debuff)
 end)
 
 -- Counts how many units have the debuff
+-- USAGE: count(DEBUFF).debuffs.any > = #
+NeP.DSL:Register("count.enemies.debuffs.any", function(_,debuff)
+  local n1 = 0
+  for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+      if NeP.DSL:Get('debuff.any')(Obj.key, debuff) then
+          n1 = n1 + 1
+      end
+  end
+  return n1
+end)
+
+-- Counts how many units have the debuff
 -- USAGE: count(DEBUFF).debuffs > = #
 NeP.DSL:Register("count.friendly.debuffs", function(_,debuff)
   local n1 = 0
   for _, Obj in pairs(NeP.OM:Get('Roster')) do
       if NeP.DSL:Get('debuff')(Obj.key, debuff) then
+          n1 = n1 + 1
+      end
+  end
+  return n1
+end)
+
+-- Counts how many units have the debuff
+-- USAGE: count(DEBUFF).debuffs.any > = #
+NeP.DSL:Register("count.friendly.debuffs.any", function(_,debuff)
+  local n1 = 0
+  for _, Obj in pairs(NeP.OM:Get('Roster')) do
+      if NeP.DSL:Get('debuff.any')(Obj.key, debuff) then
           n1 = n1 + 1
       end
   end
