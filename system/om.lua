@@ -125,6 +125,11 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
+		local distance = NeP.DSL:Get('distance')(Obj) or 999
+		if distance > NeP.OM.max_distance then
+			NeP.OM[ref][GUID] = nil
+			return
+		end
 		--restore a unit
 		if NeP.OM.Memory[GUID] then
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
@@ -132,11 +137,6 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			xobj.key = Obj
 			xobj.tbl = ref
 			NeP.OM:UpdateObject(ref, GUID)
-			return
-		end
-		local distance = NeP.DSL:Get('distance')(Obj) or 999
-		if distance > NeP.OM.max_distance then
-			NeP.OM[ref][GUID] = nil
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
@@ -165,6 +165,14 @@ function NeP.OM.Insert(_, ref, Obj)
 			NeP.OM:UpdateUnit(ref, GUID)
 			return
 		end
+		local range = NeP.DSL:Get('range')(Obj) or 999
+		if range > NeP.OM.max_distance then
+			NeP.OM[ref][GUID] = nil
+			return
+		end
+		if not NeP.DSL:Get('los')(Obj) then
+			return
+		end
 		--restore a unit
 		if NeP.OM.Memory[GUID] then
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
@@ -176,14 +184,6 @@ function NeP.OM.Insert(_, ref, Obj)
 			NeP.OM:UpdateObject(ref, GUID)
 			preLoadBuffs(xobj)
 			preLoadDebuffs(xobj)
-			return
-		end
-		local range = NeP.DSL:Get('range')(Obj) or 999
-		if range > NeP.OM.max_distance then
-			NeP.OM[ref][GUID] = nil
-			return
-		end
-		if not NeP.DSL:Get('los')(Obj) then
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
