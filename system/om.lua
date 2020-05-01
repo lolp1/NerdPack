@@ -298,12 +298,24 @@ local function MakerStart()
 end
 
 function NeP.OM.FindObjectByGuid(_, guid)
-	return NeP.OM['Friendly'][guid] and NeP.OM['Friendly'][guid], 'Friendly'
-	or NeP.OM['Enemy'][guid] and NeP.OM['Enemy'][guid], 'Enemy'
-	or NeP.OM['Dead'][guid] and NeP.OM['Dead'][guid], 'Dead'
-	or NeP.OM['Objects'][guid] and NeP.OM['Objects'][guid], 'Objects'
-	or NeP.OM['AreaTriggers'][guid] and NeP.OM['AreaTriggers'][guid], 'AreaTriggers'
-	or NeP.OM['Critters'][guid] and NeP.OM['Critters'][guid], 'Critters'
+	if NeP.OM['Friendly'][guid] then
+		return NeP.OM['Friendly'][guid], 'Friendly'
+	end
+	if NeP.OM['Enemy'][guid] then
+		return NeP.OM['Enemy'][guid], 'Enemy'
+	end
+	if NeP.OM['Dead'][guid] then
+		return NeP.OM['Dead'][guid], 'Dead'
+	end
+	if NeP.OM['Objects'][guid] then
+		return NeP.OM['Objects'][guid], 'Objects'
+	end
+	if NeP.OM['AreaTriggers'][guid] then
+		return NeP.OM['AreaTriggers'][guid], 'AreaTriggers'
+	end
+	if NeP.OM['Critters'][guid] then
+		return NeP.OM['Critters'][guid], 'Critters'
+	end
 end
 
 function NeP.OM.RemoveObjectByGuid(_, guid)
