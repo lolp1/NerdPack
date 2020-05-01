@@ -266,7 +266,9 @@ local function cleanOthers(ref)
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or not NeP.DSL:Get('los')(Obj.key) then
+		or not NeP.DSL:Get('los')(Obj.key)
+		or ref ~= 'dead' and NeP._G.UnitIsDeadOrGhost(Obj.key)
+		or ref == 'dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 			NeP.OM[ref][GUID] = nil
 		end
 	end
