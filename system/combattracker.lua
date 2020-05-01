@@ -175,7 +175,7 @@ local EVENTS = {
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, unit)
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
-	if Obj and Obj.combat_tack_enable and NeP._G.InCombatLockdown() then
+	if Obj and Obj.combat_tack_enable then
 		return NeP._G.GetTime() - Obj.combat_time
 	end
 	return 0
@@ -234,7 +234,11 @@ end)
 
 NeP.Listener:Add('NeP_CombatTracker_enter_combat', 'UNIT_COMBAT', function(unitid)
 	local DestObj = NeP.OM:FindObjectByGuid(UnitGUID(unitid))
-	if not DestObj then return end
+	if not (DestObj and DestObj.combat_tack_enable) then return end
+	if (NeP.DSL:Get('combat')(DestObj.key)) then 
+		return
+	end
+	print(DestObj.guid)
 	DestObj.combat_time = NeP._G.GetTime()
 	DestObj.dmgTaken = 0
 	DestObj.dmgTaken_P = 0
