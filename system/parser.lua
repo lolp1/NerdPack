@@ -15,13 +15,12 @@ local c = NeP.CR
 
 --Returns true if we're not mounted or in a castable mount
 local function IsMountedCheck()
-	local i, mountID = 1, true
-	while mountID do
-		mountID = select(10, NeP._G.UnitBuff('player', i))
-		if mountID and NeP.ByPassMounts:Eval(mountID) then
+	local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID('player'))
+	if not obj then return end
+	for _,buff in pairs(obj.buffs) do
+		if NeP.ByPassMounts:Eval(buff.spellId) then
 			return true
 		end
-		i=i+1
 	end
 	return (NeP._G.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
 end
