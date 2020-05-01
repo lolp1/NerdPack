@@ -67,6 +67,8 @@ local function refs(ev, SpecID)
 	ev.blacklist.debuff = ev.blacklist.debuff or {}
 end
 
+local recompileOn = {"PLAYER_LEVEL_UP", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED"}
+
 function NeP.CR.Add(_, SpecID, ...)
 	local classIndex = select(3, NeP._G.UnitClass('player'))
 	-- This only allows crs we can use to be registered
@@ -84,8 +86,25 @@ function NeP.CR.Add(_, SpecID, ...)
 	local master_cr = { name = ev.name, pooling = ev.pooling }
 	ev.ic.master = master_cr
 	ev.ooc.master = master_cr
+	if ev.ic.master then
+		ev.ic.master_original = {unpack(ev.ic.master)}
+	end
+	if ev.ooc.master then
+		ev.ooc.master_original = {unpack(ev.ooc.master)}
+	end
 	NeP.Compiler:Iterate(ev.ic)
 	NeP.Compiler:Iterate(ev.ooc)
+	-- recompile
+	NeP.Listener:Add("NeP_Core_load_cr_" .. tostring(ev), recompileOn, function()
+		if ev.ic.master_original then
+			ev.ic.master = {unpack(ev.ic.master_original)}
+		end
+		if ev.ooc.master_original then
+			ev.ooc.master = {unpack(ev.ooc.master_original)}
+		end
+		NeP.Compiler:Iterate(ev.ic)
+		NeP.Compiler:Iterate(ev.ooc)
+	end)
 	--Create user GUI
 	if ev.gui then NeP.CR:AddGUI(ev) end
 	-- Class Cr (gets added to all specs whitin that class)

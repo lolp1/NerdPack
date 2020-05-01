@@ -177,19 +177,8 @@ function NeP.Compiler:Compile(eval)
 	end
 end
 
-local recompileOn = {"PLAYER_LEVEL_UP", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED"}
-
 function NeP.Compiler.Iterate(_, eval)
 	if not eval then return end
-	--save original
-	if not eval['compiler_original'] then
-		eval['compiler_original'] = {NeP._G.unpack(eval)}
-		--recompile if needed
-		NeP.Listener:Add("NeP_Core_load", recompileOn, function()
-			eval = eval['compiler_original']
-			NeP.Compiler:Iterate(eval)
-		end)
-	end
 	NeP.Compiler:Compile(eval)
 end
 
