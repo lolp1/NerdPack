@@ -52,11 +52,17 @@ local logDamage = function(...)
 		DestObj.hits_taken = DestObj.hits_taken + 1
 		DestObj.hits_done = DestObj.hits_done + 1
 		DestObj.last_hit_taken_time = ctime
+		if DestObj.combat_time == 0 then
+			DestObj.combat_time = ctime
+		end
 	end
 	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.dmgDone = SourceObj.dmgDone + Amount
 		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
 		SourceObj.last_hit_done_time = ctime
+		if SourceObj.combat_time == 0 then
+			SourceObj.combat_time = ctime
+		end
 	end
 end
 
