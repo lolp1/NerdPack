@@ -234,4 +234,19 @@ end)
 NeP.Listener:Add('NeP_CombatTracker_enter_combat', 'UNIT_COMBAT', function(unitid)
 	local DestObj = NeP.OM:FindObjectByGuid(UnitGUID(unitid))
 	DestObj.combat_time = NeP._G.GetTime()
+	DestObj.combat_time = 0
+	DestObj.dmgTaken = 0
+	DestObj.dmgTaken_P = 0
+	DestObj.dmgTaken_M = 0
+	DestObj.hits_taken = 0
+	DestObj.lastHit_taken = 0
+	DestObj.dmgDone = 0
+	DestObj.dmgDone_P = 0
+	DestObj.dmgDone_M = 0
+	DestObj.hits_done = 0
+	DestObj.lastHit_done = 0
+	DestObj.heal_taken = 0
+	DestObj.heal_hits_taken = 0
+	DestObj.heal_done = 0
+	DestObj.heal_hits_done = 0
 end)
