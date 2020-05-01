@@ -1,6 +1,7 @@
 local _, NeP = ...
 
 NeP.OM = {
+	Memory = {},
 	Enemy = {},
 	Friendly = {},
 	Dead = {},
@@ -124,6 +125,12 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
+		--restore a unit
+		if NeP.OM.Memory[GUID] then
+			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
+			NeP.OM:UpdateObject(ref, GUID)
+			return
+		end
 		local distance = NeP.DSL:Get('distance')(Obj) or 999
 		if distance > NeP.OM.max_distance then
 			NeP.OM[ref][GUID] = nil
@@ -140,6 +147,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			buffs = {},
 			debuffs = {},
 		}
+		NeP.OM.Memory[GUID] = data
 	end
 end
 
@@ -151,6 +159,17 @@ function NeP.OM.Insert(_, ref, Obj)
 	if GUID then
 		if NeP.OM[ref][GUID] then
 			NeP.OM:UpdateUnit(ref, GUID)
+			return
+		end
+		--restore a unit
+		if NeP.OM.Memory[GUID] then
+			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
+			local xobj = NeP.OM[ref][GUID]
+			NeP.OM:UpdateObject(ref, GUID)
+			wipe(xobj.buffs)
+			wipe(xobj.debuffs)
+			preLoadBuffs(xobj)
+			preLoadDebuffs(xobj)
 			return
 		end
 		local range = NeP.DSL:Get('range')(Obj) or 999
@@ -206,6 +225,7 @@ function NeP.OM.Insert(_, ref, Obj)
 		preLoadBuffs(data)
 		preLoadDebuffs(data)
 		NeP.OM[ref][GUID] = data
+		NeP.OM.Memory[GUID] = data
 	end
 end
 
