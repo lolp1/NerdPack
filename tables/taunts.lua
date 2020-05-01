@@ -21,9 +21,9 @@ function NeP.Taunts.ShouldTaunt(_,unit)
   -- Taunts in a raid, where you have 2 tanks
   if NeP._G.IsInRaid() then
     for i=1, #T do
-      local debuff = NeP._G.etSpellInfo(T[i].id)
+      local debuff = NeP._G.GetSpellInfo(T[i].id)
       if not NeP._G.UnitDebuff('player', debuff)
-      and (select(4, NeP._G.UnitDebuff(unit..'target', debuff)) or 0) > T[i].stacks then
+      and (select(3, NeP._G.UnitDebuff(unit..'target', debuff)) or 0) > T[i].stacks then
         return true
       end
     end

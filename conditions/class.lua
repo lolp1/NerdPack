@@ -35,7 +35,7 @@ NeP.DSL:Register("isPet",function(unit)
 end)
 
 NeP.DSL:Register('petrange', function(target)
-  return target and NeP.DSL:Get('distance')('pet', target) or 0
+  return target and NeP.DSL:Get('distance')('pet', nil, target) or 0
 end)
 
 NeP.DSL:Register('focus', function(target)

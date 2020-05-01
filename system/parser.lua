@@ -17,7 +17,7 @@ local c = NeP.CR
 local function IsMountedCheck()
 	local i, mountID = 1, true
 	while mountID do
-		mountID = select(11, NeP._G.UnitBuff('player', i))
+		mountID = select(10, NeP._G.UnitBuff('player', i))
 		if mountID and NeP.ByPassMounts:Eval(mountID) then
 			return true
 		end

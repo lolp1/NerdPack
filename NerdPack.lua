@@ -1,7 +1,7 @@
 local n_name, NeP = ...
 NeP.Version = {
 	major = 1,
-	minor = 0012,
+	minor = 0013,
 	branch = "RELEASE"
 }
 NeP.Media = 'Interface\\AddOns\\' .. n_name .. '\\Media\\'

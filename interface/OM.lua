@@ -68,6 +68,8 @@ local function RefreshGUI()
 			..(Obj.id or '??')
 			..' / |cffff0000Health|r: '
 			..(Obj.health or 0)
+			..' / |cffff0000Range|r: '
+			..(NeP.Core:Round(Obj.range or 0))
 			..' / |cffff0000Dist|r: '
 			..(distance or 0)
 			..' )'
