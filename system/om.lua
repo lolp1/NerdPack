@@ -128,6 +128,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 		--restore a unit
 		if NeP.OM.Memory[GUID] then
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
+			NeP.OM[ref][GUID].key = Obj
 			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
@@ -165,9 +166,10 @@ function NeP.OM.Insert(_, ref, Obj)
 		if NeP.OM.Memory[GUID] then
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
 			local xobj = NeP.OM[ref][GUID]
-			NeP.OM:UpdateObject(ref, GUID)
+			xobj.key = Obj
 			wipe(xobj.buffs)
 			wipe(xobj.debuffs)
+			NeP.OM:UpdateObject(ref, GUID)
 			preLoadBuffs(xobj)
 			preLoadDebuffs(xobj)
 			return
