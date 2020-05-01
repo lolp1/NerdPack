@@ -218,7 +218,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		NeP.OM:InsertObject('Objects', Obj)
 	elseif isAreaTrigger then
 		NeP.OM:InsertObject('AreaTriggers', Obj)
-	
+	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
 	and NeP._G.UnitInPhase(Obj) then
 		-- Critters
@@ -267,8 +267,8 @@ local function cleanOthers(ref)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
 		or not NeP.DSL:Get('los')(Obj.key)
-		or ref ~= 'dead' and NeP._G.UnitIsDeadOrGhost(Obj.key)
-		or ref == 'dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
+		or ref ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key)
+		or ref == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 			NeP.OM[ref][GUID] = nil
 		end
 	end
