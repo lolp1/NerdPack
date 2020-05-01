@@ -128,7 +128,9 @@ function NeP.OM.InsertObject(_, ref, Obj)
 		--restore a unit
 		if NeP.OM.Memory[GUID] then
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
-			NeP.OM[ref][GUID].key = Obj
+			local xobj = NeP.OM[ref][GUID]
+			xobj.key = Obj
+			xobj.tbl = ref
 			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
@@ -144,6 +146,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
+			tbl = ref,
 			--buffs
 			buffs = {},
 			debuffs = {},
@@ -167,6 +170,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
 			local xobj = NeP.OM[ref][GUID]
 			xobj.key = Obj
+			xobj.tbl = ref
 			wipe(xobj.buffs)
 			wipe(xobj.debuffs)
 			NeP.OM:UpdateObject(ref, GUID)
@@ -191,6 +195,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			id = tonumber(ObjID or 0),
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj),
+			tbl = ref,
 			--healing
 			predicted = NeP.Healing.GetPredictedHealth_Percent(Obj),
 			predicted_Raw = NeP.Healing.GetPredictedHealth(Obj),
@@ -324,30 +329,13 @@ local function MakerStart()
 end
 
 function NeP.OM.FindObjectByGuid(_, guid)
-	if NeP.OM['Friendly'][guid] then
-		return NeP.OM['Friendly'][guid], 'Friendly'
-	end
-	if NeP.OM['Enemy'][guid] then
-		return NeP.OM['Enemy'][guid], 'Enemy'
-	end
-	if NeP.OM['Dead'][guid] then
-		return NeP.OM['Dead'][guid], 'Dead'
-	end
-	if NeP.OM['Objects'][guid] then
-		return NeP.OM['Objects'][guid], 'Objects'
-	end
-	if NeP.OM['AreaTriggers'][guid] then
-		return NeP.OM['AreaTriggers'][guid], 'AreaTriggers'
-	end
-	if NeP.OM['Critters'][guid] then
-		return NeP.OM['Critters'][guid], 'Critters'
-	end
+	return NeP.OM.Memory[guid]
 end
 
 function NeP.OM.RemoveObjectByGuid(_, guid)
-	local Obj, tbl = NeP.OM:FindObjectByGuid(guid)
+	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
-	NeP.OM[tbl][Obj.guid] = nil
+	NeP.OM[Obj.tbl][Obj.guid] = nil
 end
 
 NeP.Debug:Add("OM_Clean", CleanStart, true)
