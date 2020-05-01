@@ -230,3 +230,8 @@ end
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function()
 	doStuff(NeP._G.CombatLogGetCurrentEventInfo())
 end)
+
+NeP.Listener:Add('NeP_CombatTracker_enter_combat', 'UNIT_COMBAT', function(unitid)
+	local DestObj = NeP.OM:FindObjectByGuid(UnitGUID(unitid))
+	DestObj.combat_time = NeP._G.GetTime()
+end)
