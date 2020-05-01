@@ -9,9 +9,10 @@ local T = NeP.Debuffs.table
 ---------------------------------------------------]]
 
 function NeP.Debuffs.Eval(_, unit)
-	for i = 1, 40 do
-		local ID = select(11, NeP._G.UnitDebuff(unit, i))
-		if ID and T[ID] then
+	local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	if not obj then return end
+	for _,debuff in obj.debuffs do
+		if ID and T[debuff.spellId] then
 			return true
 		end
 	end
