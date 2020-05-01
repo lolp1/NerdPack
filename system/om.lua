@@ -6,6 +6,7 @@ NeP.OM = {
 	Dead = {},
 	Objects = {},
 	AreaTriggers = {},
+	Critters = {},
 	Roster = {},
 	max_distance = 100
 }
@@ -48,7 +49,6 @@ local forced_role = {
 function NeP.OM.UpdateObject(_, ref, GUID)
 	local Obj = NeP.OM[ref][GUID]
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
-	Obj.range = NeP.DSL:Get('range')(Obj.key)
 end
 
 function NeP.OM.UpdateUnit(_, ref, GUID)
@@ -140,6 +140,9 @@ function NeP.OM.InsertObject(_, ref, Obj)
 	end
 end
 
+-- they are the same for now, but i might need to change latter.
+NeP.OM.InsertCritter = NeP.OM.InsertObject
+
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
@@ -202,16 +205,27 @@ function NeP.OM.Insert(_, ref, Obj)
 	end
 end
 
+local critters ={
+	["Non-combat Pet"]=true,
+	["Wild Pet"]=true,
+	["CritPetter"]=true,
+	["Totem"]=true
+  }
+
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	-- Objects
 	if isObject then
 		NeP.OM:InsertObject('Objects', Obj)
 	elseif isAreaTrigger then
 		NeP.OM:InsertObject('AreaTriggers', Obj)
-	-- Units
+	
 	elseif NeP.DSL:Get("exists")(Obj)
 	and NeP._G.UnitInPhase(Obj) then
-		if NeP._G.UnitIsDeadOrGhost(Obj) then
+		-- Critters
+		if critters[NeP._G.UnitCreatureType(Obj)] then
+			NeP.OM:InsertCritter('Critters', Obj)
+		-- Units
+		elseif NeP._G.UnitIsDeadOrGhost(Obj) then
 			NeP.OM:Insert('Dead', Obj)
 		elseif NeP._G.UnitIsFriend('player', Obj) then
 			NeP.OM:Insert('Friendly', Obj)
@@ -233,6 +247,18 @@ local function cleanObjects()
 	end
 end
 
+local function cleanCritters(ref)
+	for GUID, Obj in pairs(NeP.OM[ref]) do
+		-- remove invalid units
+		if Obj.distance > NeP.OM.max_distance
+		or not NeP.DSL:Get('exists')(Obj.key)
+		or not NeP._G.UnitInPhase(Obj.key)
+		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
+			NeP.OM[ref][GUID] = nil
+		end
+	end
+end
+
 local function cleanOthers(ref)
 	for GUID, Obj in pairs(NeP.OM[ref]) do
 		-- remove invalid units
@@ -240,7 +266,6 @@ local function cleanOthers(ref)
 		or not NeP.DSL:Get('exists')(Obj.key)
 		or not NeP._G.UnitInPhase(Obj.key)
 		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or ref ~= "Dead" and NeP._G.UnitIsDeadOrGhost(Obj.key)
 		or not NeP.DSL:Get('los')(Obj.key) then
 			NeP.OM[ref][GUID] = nil
 		end
@@ -253,12 +278,14 @@ local function CleanStart()
 		cleanOthers("Dead")
 		cleanOthers("Friendly")
 		cleanOthers("Enemy")
+		cleanCritters("Critters")
 	else
 		NeP._G.wipe(NeP.OM['Objects'])
 		NeP._G.wipe(NeP.OM['AreaTriggers'])
 		NeP._G.wipe(NeP.OM['Dead'])
 		NeP._G.wipe(NeP.OM['Friendly'])
 		NeP._G.wipe(NeP.OM['Enemy'])
+		NeP._G.wipe(NeP.OM['Critters'])
 	end
 end
 
@@ -269,11 +296,18 @@ local function MakerStart()
 end
 
 function NeP.OM.FindObjectByGuid(_, guid)
-	return NeP.OM['Friendly'][guid]
-	or NeP.OM['Enemy'][guid]
-	or NeP.OM['Dead'][guid]
-	or NeP.OM['Objects'][guid]
-	or NeP.OM['AreaTriggers'][guid]
+	return NeP.OM['Friendly'][guid] and NeP.OM['Friendly'][guid], 'Friendly'
+	or NeP.OM['Enemy'][guid] and NeP.OM['Enemy'][guid], 'Enemy'
+	or NeP.OM['Dead'][guid] and NeP.OM['Dead'][guid], 'Dead'
+	or NeP.OM['Objects'][guid] and NeP.OM['Objects'][guid], 'Objects'
+	or NeP.OM['AreaTriggers'][guid] and NeP.OM['AreaTriggers'][guid], 'AreaTriggers'
+	or NeP.OM['Critters'][guid] and NeP.OM['Critters'][guid], 'Critters'
+end
+
+function NeP.OM.RemoveObjectByGuid(_, guid)
+	local Obj, tbl = NeP.OM:FindObjectByGuid(guid)
+	if not Obj then return end
+	NeP.OM[tbl][Obj.guid] = nil
 end
 
 NeP.Debug:Add("OM_Clean", CleanStart, true)

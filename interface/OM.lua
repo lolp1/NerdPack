@@ -10,6 +10,7 @@ local bt = {
 	{key = 'Enemy', text = 'Enemies'},
 	{key = 'Friendly', text = 'Friendlies'},
 	{key = 'Dead', text = 'Dead Units'},
+	{key = 'Critters', text = 'Critters'},
 	{key = 'Roster', text = 'Roster'},
 	{key = 'Objects', text = 'Objects'},
 	{key = 'AreaTriggers', text = 'AreaTriggers'},
