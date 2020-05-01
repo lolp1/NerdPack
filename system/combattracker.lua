@@ -113,7 +113,7 @@ local addAura = function(...)
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	if not DestObj then return end
 	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
-	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(spellName, DestObj.key)
+	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
 	local data = {
 		isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
 		SourceGUID = SourceGUID,
