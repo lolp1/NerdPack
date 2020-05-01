@@ -208,7 +208,7 @@ end
 local critters ={
 	["Non-combat Pet"]=true,
 	["Wild Pet"]=true,
-	["CritPetter"]=true,
+	["Critter"]=true,
 	["Totem"]=true
   }
 

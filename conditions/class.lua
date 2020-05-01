@@ -25,7 +25,7 @@ end)
 local PetNames ={
   ["Non-combat Pet"]=true,
   ["Wild Pet"]=true,
-  ["CritPetter"]=true,
+  ["Critter"]=true,
   ["Totem"]=true
 }
 
