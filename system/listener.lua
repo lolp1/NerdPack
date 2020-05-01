@@ -12,7 +12,7 @@ frame:SetScript('OnEvent', function(_, event, ...)
 	end
 end)
 
-function NeP.Listener.Add(_, name, event, callback)
+function NeP.Listener.Add(_, name, event, callback, overwrite)
 	if type(event) == "table" then
 		for i=1, #event do
 			 NeP.Listener:Add(name .. i, event[i], callback)
@@ -22,6 +22,10 @@ function NeP.Listener.Add(_, name, event, callback)
 	if not listeners[event] then
 		frame:RegisterEvent(event)
 		listeners[event] = {}
+	end
+	if listeners[event][name] and not overwrite then
+		NeP.Core:Print(name..' for '..event..' already exists')
+		return
 	end
 	listeners[event][name] = callback
 end
