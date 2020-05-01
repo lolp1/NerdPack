@@ -35,6 +35,7 @@ g.Library = {
 g.OM = {
 	Add = NeP.OM.Add,
 	Get = NeP.OM.Get,
+	FindObjectByGuid = NeP.OM.FindObjectByGuid
 }
 g.Interface = {
 	BuildGUI = NeP.Interface.BuildGUI,
