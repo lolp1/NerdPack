@@ -95,7 +95,7 @@ end
 local addAction = function(...)
 	local _,_,_, SourceGUID, _,_,_,_, destName, _,_,_, spellName = ...
 	if not spellName then return end
-	if SourceGUID == NeP._G.UnitGUID('player') then
+	if SourceGUID == NeP._G.UnitGUID('player') and destName then
 		local icon = select(3, NeP._G.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)
 	end
