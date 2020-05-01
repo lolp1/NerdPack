@@ -136,6 +136,9 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			distance = distance,
 			id = tonumber(ObjID or 0),
 			guid = GUID,
+			--buffs
+			buffs = {},
+			debuffs = {},
 		}
 	end
 end
