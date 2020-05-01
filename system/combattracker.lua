@@ -15,7 +15,7 @@ local Doubles = {
 
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount = ...
+	local timestamp,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Mixed
@@ -45,15 +45,18 @@ local logDamage = function(...)
 			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
 		end
 	end
+	local ctime = NeP._G.GetTime()
 	-- Totals
 	if DestObj and DestObj.combat_tack_enable then
 		DestObj.dmgTaken = DestObj.dmgTaken + Amount
 		DestObj.hits_taken = DestObj.hits_taken + 1
 		DestObj.hits_done = DestObj.hits_done + 1
+		DestObj.last_hit_taken_time = ctime
 	end
 	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.dmgDone = SourceObj.dmgDone + Amount
 		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
+		SourceObj.last_hit_done_time = ctime
 	end
 end
 
@@ -230,27 +233,4 @@ end
 
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function()
 	doStuff(NeP._G.CombatLogGetCurrentEventInfo())
-end)
-
-NeP.Listener:Add('NeP_CombatTracker_enter_combat', 'UNIT_COMBAT', function(unitid)
-	local DestObj = NeP.OM:FindObjectByGuid(UnitGUID(unitid))
-	if not (DestObj and DestObj.combat_tack_enable) then return end
-	if (NeP.DSL:Get('combat')(DestObj.key)) then 
-		return
-	end
-	DestObj.combat_time = NeP._G.GetTime()
-	DestObj.dmgTaken = 0
-	DestObj.dmgTaken_P = 0
-	DestObj.dmgTaken_M = 0
-	DestObj.hits_taken = 0
-	DestObj.lastHit_taken = 0
-	DestObj.dmgDone = 0
-	DestObj.dmgDone_P = 0
-	DestObj.dmgDone_M = 0
-	DestObj.hits_done = 0
-	DestObj.lastHit_done = 0
-	DestObj.heal_taken = 0
-	DestObj.heal_hits_taken = 0
-	DestObj.heal_done = 0
-	DestObj.heal_hits_done = 0
 end)

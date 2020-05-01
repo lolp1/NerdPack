@@ -223,7 +223,9 @@ function NeP.OM.Insert(_, ref, Obj)
 			heal_done = 0,
 			heal_hits_done = 0,
 			--shared
-			combat_time = NeP._G.GetTime(),
+			last_hit_taken_time = 0,
+			last_hit_done_time = 0,
+			combat_time = 0,
 			spell_value = {},
 			--buffs
 			buffs = {},
@@ -291,6 +293,7 @@ local function cleanCritters(ref)
 end
 
 local function cleanOthers(ref)
+	local ctime = NeP._G.GetTime()
 	for GUID, Obj in pairs(NeP.OM[ref]) do
 		-- remove invalid units
 		if Obj.range > NeP.OM.max_distance
@@ -301,6 +304,28 @@ local function cleanOthers(ref)
 		or ref ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key)
 		or ref == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 			NeP.OM[ref][GUID] = nil
+		-- check stuff
+		else
+			if (ctime - Obj.last_hit_taken_time) > 15
+			and (ctime - Obj.last_hit_done_time) > 15 then
+				Obj.combat_time = 0
+				Obj.dmgTaken = 0
+				Obj.dmgTaken_P = 0
+				Obj.dmgTaken_M = 0
+				Obj.hits_taken = 0
+				Obj.lastHit_taken = 0
+				Obj.dmgDone = 0
+				Obj.dmgDone_P = 0
+				Obj.dmgDone_M = 0
+				Obj.hits_done = 0
+				Obj.lastHit_done = 0
+				Obj.heal_taken = 0
+				Obj.heal_hits_taken = 0
+				Obj.heal_done = 0
+				Obj.heal_hits_done = 0
+				Obj.last_hit_taken_time = 0
+				Obj.last_hit_done_time = 0
+			end
 		end
 	end
 end
