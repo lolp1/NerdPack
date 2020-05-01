@@ -20,38 +20,38 @@ local logDamage = function(...)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Mixed
 	if Doubles[school] then
-		if DestObj then
+		if DestObj and DestObj.combat_tack_enable then
 			DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
 			DestObj.dmgTaken_M = DestObj.dmgTaken_M + Amount
 		end
-		if SourceObj then
+		if SourceObj and SourceObj.combat_tack_enable then
 			SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
 			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
 		end
 	-- Pysichal
 	elseif school == 1  then
-		if DestObj then
+		if DestObj and DestObj.combat_tack_enable then
 			DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
 		end
-		if SourceObj then
+		if SourceObj and SourceObj.combat_tack_enable then
 			SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
 		end
 	-- Magic
 	else
-		if DestObj then
+		if DestObj and DestObj.combat_tack_enable then
 			DestObj.dmgTaken_M = DestObj.dmgTaken_M + Amount
 		end
-		if SourceObj then
+		if SourceObj and SourceObj.combat_tack_enable then
 			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
 		end
 	end
 	-- Totals
-	if DestObj then
+	if DestObj and DestObj.combat_tack_enable then
 		DestObj.dmgTaken = DestObj.dmgTaken + Amount
 		DestObj.hits_taken = DestObj.hits_taken + 1
 		DestObj.hits_done = DestObj.hits_done + 1
 	end
-	if SourceObj then
+	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.dmgDone = SourceObj.dmgDone + Amount
 		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
 	end
@@ -62,12 +62,12 @@ local logSwing = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, Amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
-	if DestObj then
+	if DestObj and DestObj.combat_tack_enable then
 		DestObj.dmgTaken_P = DestObj.dmgTaken_P + Amount
 		DestObj.dmgTaken = DestObj.dmgTaken + Amount
 		DestObj.hits_taken = DestObj.hits_taken + 1
 	end
-	if SourceObj then
+	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.dmgDone_P = SourceObj.dmgDone_P + Amount
 		SourceObj.dmgDone = SourceObj.dmgDone + Amount
 		SourceObj.hits_done = SourceObj.hits_done + 1
@@ -80,11 +80,11 @@ local logHealing = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _,_, Amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
-	if DestObj then
+	if DestObj and DestObj.combat_tack_enable then
 		DestObj.heal_taken = DestObj.heal_taken + Amount
 		DestObj.heal_hits_taken = DestObj.heal_hits_taken + 1
 	end
-	if SourceObj then
+	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.heal_done = SourceObj.heal_done + Amount
 		SourceObj.heal_hits_done = SourceObj.heal_hits_done + 1
 		SourceObj[spellID] = ((SourceObj[spellID] or Amount) + Amount) / 2
@@ -175,7 +175,7 @@ local EVENTS = {
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, unit)
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
-	if Obj and NeP._G.InCombatLockdown() then
+	if Obj and Obj.combat_tack_enable and NeP._G.InCombatLockdown() then
 		return NeP._G.GetTime() - Obj.combat_time
 	end
 	return 0
@@ -184,7 +184,7 @@ end
 function NeP.CombatTracker:getDMG(unit)
 	local total, Hits, phys, magic = 0, 0, 0, 0
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
-	if Obj then
+	if Obj and Obj.combat_tack_enable and Obj.dmgTaken then
 		local combatTime = self:CombatTime(unit)
 		total = Obj.dmgTaken / combatTime
 		phys = Obj.dmgTaken_P / combatTime
@@ -205,12 +205,12 @@ end
 
 function NeP.CombatTracker.LastCast(_, unit)
 	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
-	return Obj and Obj.lastcast
+	return Obj and Obj.combat_tack_enable and Obj.lastcast
 end
 
 function NeP.CombatTracker.SpellDamage(_, unit, spellID)
   local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
-  return Obj and Obj[spellID] or 0
+  return Obj and Obj.combat_tack_enable and Obj[spellID] or 0
 end
 
 local function doStuff(...)
@@ -218,10 +218,10 @@ local function doStuff(...)
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Update last  hit time
-	if DestObj then
+	if DestObj and DestObj.combat_tack_enable then
 		DestObj.lastHit_taken = NeP._G.GetTime()
 	end
-	if SourceObj then
+	if SourceObj and SourceObj.combat_tack_enable then
 		SourceObj.lastHit_done = NeP._G.GetTime()
 	end
 	-- Add the amount of dmg/heak

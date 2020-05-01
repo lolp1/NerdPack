@@ -174,6 +174,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			healthRaw = NeP.DSL:Get('health.actual')(Obj),
 			healthMax = NeP.DSL:Get('health.max')(Obj),
 			role = forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
+			combat_tack_enable = true,
 			-- Damage Taken
 			dmgTaken = 0,
 			dmgTaken_P = 0,
