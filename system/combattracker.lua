@@ -238,7 +238,6 @@ NeP.Listener:Add('NeP_CombatTracker_enter_combat', 'UNIT_COMBAT', function(uniti
 	if (NeP.DSL:Get('combat')(DestObj.key)) then 
 		return
 	end
-	print(DestObj.guid)
 	DestObj.combat_time = NeP._G.GetTime()
 	DestObj.dmgTaken = 0
 	DestObj.dmgTaken_P = 0
