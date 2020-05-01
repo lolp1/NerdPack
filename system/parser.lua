@@ -16,7 +16,7 @@ local c = NeP.CR
 --Returns true if we're not mounted or in a castable mount
 local function IsMountedCheck()
 	local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID('player'))
-	if not obj then return end
+	if not (obj and obj.combat_tack_enable) then return end
 	for _,buff in pairs(obj.buffs) do
 		if NeP.ByPassMounts:Eval(buff.spellId) then
 			return true
