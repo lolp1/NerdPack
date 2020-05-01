@@ -112,6 +112,8 @@ local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	if not DestObj then return end
+	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
+	if not DestObj[arrType] then return end -- this unit is not tracking buffs/debuffs
 	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
 	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
 	local data = {
@@ -128,11 +130,8 @@ local addAura = function(...)
 		duration = duration,
 		caster = caster,
 	}
-	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
-	if DestObj[arrType] then
-		DestObj[arrType][spellName] = data
-		DestObj[arrType][spellId] = data
-	end
+	DestObj[arrType][spellName] = data
+	DestObj[arrType][spellId] = data
 end
 
 local removeAura = function(...)
