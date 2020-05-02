@@ -86,21 +86,18 @@ function NeP.CR.Add(_, SpecID, ...)
 	local master_cr = { name = ev.name, pooling = ev.pooling }
 	ev.ic.master = master_cr
 	ev.ooc.master = master_cr
-	if ev.ic.master then
-		ev.ic.master_original = {unpack(ev.ic.master)}
-	end
-	if ev.ooc.master then
-		ev.ooc.master_original = {unpack(ev.ooc.master)}
-	end
+	ev.ic.restore = {unpack(ev.ic)}
+	ev.ooc.restore = {unpack(ev.ooc)}
 	NeP.Compiler:Iterate(ev.ic)
 	NeP.Compiler:Iterate(ev.ooc)
 	-- recompile
 	NeP.Listener:Add("NeP_Core_load_cr_" .. tostring(ev), recompileOn, function()
-		if ev.ic.master_original then
-			ev.ic.master = {unpack(ev.ic.master_original)}
+		print('Fired')
+		if ev.ic.restore then
+			ev.ic = {unpack(ev.ic.restore)}
 		end
-		if ev.ooc.master_original then
-			ev.ooc.master = {unpack(ev.ooc.master_original)}
+		if ev.ooc.restore then
+			ev.ooc = {unpack(ev.ooc.restore)}
 		end
 		NeP.Compiler:Iterate(ev.ic)
 		NeP.Compiler:Iterate(ev.ooc)
