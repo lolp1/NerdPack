@@ -180,8 +180,8 @@ function NeP.OM.Insert(_, ref, Obj)
 			local xobj = NeP.OM[ref][GUID]
 			xobj.key = Obj
 			xobj.tbl = ref
-			--wipe(xobj.buffs)
-			--wipe(xobj.debuffs)
+			_G.wipe(xobj.buffs)
+			_G.wipe(xobj.debuffs)
 			NeP.OM:UpdateObject(ref, GUID)
 			preLoadBuffs(xobj)
 			preLoadDebuffs(xobj)
