@@ -140,7 +140,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
-		NeP.OM[ref][GUID] = {
+		local data = {
 			key = Obj,
 			name = NeP.DSL:Get('name')(Obj),
 			distance = distance,
@@ -151,6 +151,7 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			buffs = {},
 			debuffs = {},
 		}
+		NeP.OM[ref][GUID] = data
 		NeP.OM.Memory[GUID] = data
 	end
 end
