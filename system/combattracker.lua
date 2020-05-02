@@ -125,6 +125,7 @@ local addAura = function(...)
 	if not DestObj[arrType] then return end -- this unit is not tracking buffs/debuffs
 	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
 	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
+	if not duration then return end --huh?
 	local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
 	if found then
 		found.C_Timer:Cancel()
