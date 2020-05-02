@@ -92,7 +92,6 @@ function NeP.CR.Add(_, SpecID, ...)
 	NeP.Compiler:Iterate(ev.ooc)
 	-- recompile
 	NeP.Listener:Add("NeP_Core_load_cr_" .. tostring(ev), recompileOn, function()
-		print('Fired')
 		if ev.ic.restore then
 			ev.ic = {unpack(ev.ic.restore)}
 		end
