@@ -130,21 +130,25 @@ local addAura = function(...)
 		found.C_Timer:Cancel()
 	end
 	local data = found or {}
-	data.isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
-	data.SourceGUID = sGUID,
-	data.spellId = spellId,
-	data.spellName = spellName,
-	data.auraType = auraType,
-	data.type = type,
-	data.count = count,
-	data.isStealable = isStealable,
-	data.isBoss = isBoss,
-	data.expiration = expiration,
-	data.duration = duration,
-	data.caster = caster,
+	data.isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player')
+	data.SourceGUID = SourceGUID
+	data.spellId = spellId
+	data.spellName = spellName
+	data.auraType = auraType
+	data.type = type
+	data.count = count
+	data.isStealable = isStealable
+	data.isBoss = isBoss
+	data.expiration = expiration
+	data.duration = duration
+	data.caster = caster
 	data.C_Timer = C_Timer.NewTimer(duration, function(self)
-		DestObj[arrType][spellName] = nil
-		DestObj[arrType][spellId] = nil
+		if DestObj[arrType][spellName] then
+			DestObj[arrType][spellName] = nil
+		end
+		if DestObj[arrType][spellId] then
+			DestObj[arrType][spellId] = nil
+		end
 		self:Cancel()
 	end)
 	DestObj[arrType][spellName] = data

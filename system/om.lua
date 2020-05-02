@@ -75,21 +75,25 @@ local function preLoadBuffs(Obj)
 			end
 			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = found or {}
-			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
-			data.SourceGUID = sGUID,
-			data.spellId = spellId,
-			data.spellName = sName,
-			data.auraType = 'BUFF',
-			data.type = type,
-			data.count = count,
-			data.isStealable = isStealable,
-			data.isBoss = isBoss,
-			data.expiration = expiration,
-			data.duration = duration,
-			data.caster = caster,
+			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
+			data.SourceGUID = sGUID
+			data.spellId = spellId
+			data.spellName = sName
+			data.auraType = 'BUFF'
+			data.type = type
+			data.count = count
+			data.isStealable = isStealable
+			data.isBoss = isBoss
+			data.expiration = expiration
+			data.duration = duration
+			data.caster = caster
 			data.C_Timer = C_Timer.NewTimer(duration, function(self)
-				Obj.debuffs[sName] = nil
-				Obj.debuffs[spellId] = nil
+				if Obj.buffs[sName] then
+					Obj.buffs[sName] = nil
+				end
+				if Obj.buffs[spellId] then
+					Obj.buffs[spellId] = nil
+				end
 				self:Cancel()
 			end)
 			Obj.buffs[sName] = data
@@ -110,18 +114,18 @@ local function preLoadDebuffs(Obj)
 			end
 			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = found or {}
-			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player'),
-			data.SourceGUID = sGUID,
-			data.spellId = spellId,
-			data.spellName = sName,
-			data.auraType = 'DEBUFF',
-			data.type = type,
-			data.count = count,
-			data.isStealable = isStealable,
-			data.isBoss = isBoss,
-			data.expiration = expiration,
-			data.duration = duration,
-			data.caster = caster,
+			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
+			data.SourceGUID = sGUID
+			data.spellId = spellId
+			data.spellName = sName
+			data.auraType = 'DEBUFF'
+			data.type = type
+			data.count = count
+			data.isStealable = isStealable
+			data.isBoss = isBoss
+			data.expiration = expiration
+			data.duration = duration
+			data.caster = caster
 			data.C_Timer = C_Timer.NewTimer(duration, function(self)
 				Obj.debuffs[sName] = nil
 				Obj.debuffs[spellId] = nil
