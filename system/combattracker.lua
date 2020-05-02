@@ -127,9 +127,6 @@ local addAura = function(...)
 	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
 	if not duration then return end --huh?
 	local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
-	if found then
-		found.C_Timer:Cancel()
-	end
 	local data = found or {}
 	data.isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player')
 	data.SourceGUID = SourceGUID
@@ -143,15 +140,6 @@ local addAura = function(...)
 	data.expiration = expiration
 	data.duration = duration
 	data.caster = caster
-	data.C_Timer = C_Timer.NewTimer(duration, function(self)
-		if DestObj[arrType][spellName] then
-			DestObj[arrType][spellName] = nil
-		end
-		if DestObj[arrType][spellId] then
-			DestObj[arrType][spellId] = nil
-		end
-		self:Cancel()
-	end)
 	DestObj[arrType][spellName] = data
 	DestObj[arrType][spellId] = data
 end
@@ -161,10 +149,6 @@ local removeAura = function(...)
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
 	if DestObj and DestObj[arrType] then
-		local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
-		if found then
-			found.C_Timer:Cancel()
-		end
 		DestObj[arrType][spellName] = nil
 		DestObj[arrType][spellId] = nil
 	end

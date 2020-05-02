@@ -70,9 +70,6 @@ local function preLoadBuffs(Obj)
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
 		if sName then
 			local found = Obj.buffs[sName] or Obj.buffs[spellId]
-			if found then
-				found.C_Timer:Cancel()
-			end
 			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = found or {}
 			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
@@ -87,15 +84,6 @@ local function preLoadBuffs(Obj)
 			data.expiration = expiration
 			data.duration = duration
 			data.caster = caster
-			data.C_Timer = C_Timer.NewTimer(duration, function(self)
-				if Obj.buffs[sName] then
-					Obj.buffs[sName] = nil
-				end
-				if Obj.buffs[spellId] then
-					Obj.buffs[spellId] = nil
-				end
-				self:Cancel()
-			end)
 			Obj.buffs[sName] = data
 			Obj.buffs[spellId] = data
 			i=i+1
