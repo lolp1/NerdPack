@@ -125,20 +125,28 @@ local addAura = function(...)
 	if not DestObj[arrType] then return end -- this unit is not tracking buffs/debuffs
 	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
 	local _, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
-	local data = {
-		isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
-		SourceGUID = SourceGUID,
-		spellId = spellId,
-		spellName = spellName,
-		auraType = auraType,
-		type = type,
-		count = count,
-		isStealable = isStealable,
-		isBoss = isBoss,
-		expiration = expiration,
-		duration = duration,
-		caster = caster,
-	}
+	local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
+	if found then
+		found.C_Timer:Cancel()
+	end
+	local data = found or {}
+	data.isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player'),
+	data.SourceGUID = sGUID,
+	data.spellId = spellId,
+	data.spellName = spellName,
+	data.auraType = auraType,
+	data.type = type,
+	data.count = count,
+	data.isStealable = isStealable,
+	data.isBoss = isBoss,
+	data.expiration = expiration,
+	data.duration = duration,
+	data.caster = caster,
+	data.C_Timer = C_Timer.NewTimer(duration, function(self)
+		DestObj[arrType][spellName] = nil
+		DestObj[arrType][spellId] = nil
+		self:Cancel()
+	end)
 	DestObj[arrType][spellName] = data
 	DestObj[arrType][spellId] = data
 end
@@ -148,6 +156,10 @@ local removeAura = function(...)
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
 	if DestObj and DestObj[arrType] then
+		local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
+		if found then
+			found.C_Timer:Cancel()
+		end
 		DestObj[arrType][spellName] = nil
 		DestObj[arrType][spellId] = nil
 	end
