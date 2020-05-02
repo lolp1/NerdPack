@@ -23,6 +23,7 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
+	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
 	{'Ferocious Bite', 'player.combopoints>=5', 'target'},
 	{'Rake', '!debuff', 'target'},
 	{'Shred', nil, 'target'},
