@@ -97,9 +97,6 @@ local function preLoadDebuffs(Obj)
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
 		if sName then
 			local found = Obj.debuffs[sName] or Obj.debuffs[spellId]
-			if found then
-				found.C_Timer:Cancel()
-			end
 			sGUID = caster and NeP._G.UnitGUID(caster) or ''
 			data = found or {}
 			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
@@ -114,11 +111,6 @@ local function preLoadDebuffs(Obj)
 			data.expiration = expiration
 			data.duration = duration
 			data.caster = caster
-			data.C_Timer = C_Timer.NewTimer(duration, function(self)
-				Obj.debuffs[sName] = nil
-				Obj.debuffs[spellId] = nil
-				self:Cancel()
-			end)
 			Obj.debuffs[sName] = data
 			Obj.debuffs[spellId] = data
 			i=i+1
