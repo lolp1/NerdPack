@@ -210,15 +210,16 @@ local function ParseStart()
 	end
 end
 
+
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
-NeP._G.C_Timer.NewTicker(0.1, ParseStart)
-NeP.Debug:Add("Parser0", ParseStart, false)
-NeP.Debug:Add("Parser1", NeP.Parser.Parse, false)
-NeP.Debug:Add("Parser2", NeP.Parser.Reg_P, false)
-NeP.Debug:Add("Parser3", NeP.Parser.Pool_P, false)
-NeP.Debug:Add("Parser4", NeP.Parser.Nest_P, false)
-NeP.Debug:Add("Parser5", NeP.Parser.Target_P, false)
-NeP.Debug:Add("Parser6", NeP.DSL.Parse, true)
-NeP.Debug:Add("Parser7", NeP.FakeUnits.Filter, true)
+	NeP.Timer.Add('nep_parser', ParseStart, 0.1)
+	NeP.Debug:Add("Parser0", ParseStart, false)
+	NeP.Debug:Add("Parser1", NeP.Parser.Parse, false)
+	NeP.Debug:Add("Parser2", NeP.Parser.Reg_P, false)
+	NeP.Debug:Add("Parser3", NeP.Parser.Pool_P, false)
+	NeP.Debug:Add("Parser4", NeP.Parser.Nest_P, false)
+	NeP.Debug:Add("Parser5", NeP.Parser.Target_P, false)
+	NeP.Debug:Add("Parser6", NeP.DSL.Parse, true)
+	NeP.Debug:Add("Parser7", NeP.FakeUnits.Filter, true)
 end, -99)

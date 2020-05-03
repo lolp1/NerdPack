@@ -15,6 +15,11 @@ g.DBM = NeP.DBM
 g.ClassTable = NeP.ClassTable
 g.Spells = NeP.Spells
 
+g.Timer = {
+	Add = NeP.Timer.Add,
+	updatePeriod = NeP.Timer.updatePeriod
+}
+
 g.CR = {
 	Add = NeP.CR.Add,
 	GetList = NeP.CR.GetList
