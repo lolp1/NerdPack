@@ -251,8 +251,7 @@ local function cleanUnit(Obj)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
 		Obj.tbl = 'Dead'
-	end
-	if Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
+	elseif Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 		local where = NeP._G.UnitIsFriend('player', Obj) and 'Friendly' or 'Enemy'
 		NeP.OM[where][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
