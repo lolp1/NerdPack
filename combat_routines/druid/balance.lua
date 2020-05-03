@@ -42,5 +42,5 @@ NeP.CR:Add(102, {
 	gui = GUI,
 	load = exeOnLoad,
 	unload = exeOnUnload,
-	pooling = true,
+	pooling = false,
 })
