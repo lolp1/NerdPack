@@ -24,7 +24,7 @@ local Cooldowns = {
 	{'Berserk','!buff&target.range<10&target.enemy','player'},
 	{'Incarnation: King of the Jungle','!buff&target.range<10target.enemy','player'},
 	{'Berserking','target.enemy&energy<70','player'}, -- Troll Racial
-	{"Tiger's Fury",'{buff(Incarnation: King of the Jungle)||buff(Berserk)||energy<40}&!buff&target.range<10&target.enemy','player'},
+	{"Tiger's Fury",'{buff(Incarnation: King of the Jungle)||buff(Berserk)||energy<40||combopoints==5}&!buff&target.range<10&target.enemy','player'},
 }
 
 
