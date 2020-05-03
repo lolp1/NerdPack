@@ -23,7 +23,13 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
-    
+    {'Fracture', nil, 'target'},
+    {'Immolation Aura', nil, 'target'},
+    {'Fel Devastation', nil, 'target'},
+    {'Soul Cleave', 'pain>60', 'target'},
+    {'Sigil of Flame', nil, 'target'},
+    {'Infernal Strike', 'spell.charges>=2&&range<30', 'target.ground'},
+    {'Shear', nil, 'target'},
 }
 
 local outCombat = {
