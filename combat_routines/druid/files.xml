@@ -2,5 +2,8 @@
 ..\FrameXML\UI.xsd">
 
     <Script file="feral.lua" />
+    <Script file="guardian.lua" />
+    <Script file="balance.lua" />
+    <Script file="restoration.lua" />
 
 </Ui>

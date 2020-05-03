@@ -17,24 +17,21 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Skull Bash', nil, 'target'}
+	
 }
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
-	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
-	{'Ferocious Bite', 'player.combopoints>=5', 'target'},
-	{'Rake', '!debuff', 'target'},
-	{'Shred', nil, 'target'},
+    {Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
 }
+	
 
 local outCombat = {
 	{Keybinds},
 }
 
-NeP.CR:Add(103, {
-	name = '[NeP] Druid | Feral',
+NeP.CR:Add(105, {
+	name = '[NeP] Druid | Rstoration',
 	wow_ver = "8.3",
 	nep_ver = "1.3",
 	ic = inCombat,
