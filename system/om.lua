@@ -45,23 +45,6 @@ local forced_role = {
 	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
 }
 
-function NeP.OM.UpdateObject(_, ref, GUID)
-	local Obj = NeP.OM[ref][GUID]
-	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
-end
-
-function NeP.OM.UpdateUnit(_, ref, GUID)
-	local Obj = NeP.OM[ref][GUID]
-	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
-	Obj.range = NeP.DSL:Get('range')(Obj.key)
-	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
-	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
-	Obj.health = NeP.Healing.healthPercent(Obj.key)
-	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
-	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
-	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
-end
-
 local function preLoadBuffs(Obj)
 	local i, sName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, sGUID, data = 1, true
 	while sName do
@@ -120,7 +103,6 @@ function NeP.OM.InsertObject(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
 		if NeP.OM[ref][GUID] then
-			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
 		local distance = NeP.DSL:Get('distance')(Obj) or 999
@@ -130,11 +112,6 @@ function NeP.OM.InsertObject(_, ref, Obj)
 		end
 		--restore a unit
 		if NeP.OM.Memory[GUID] then
-			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
-			local xobj = NeP.OM[ref][GUID]
-			xobj.key = Obj
-			xobj.tbl = ref
-			NeP.OM:UpdateObject(ref, GUID)
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
@@ -161,7 +138,6 @@ function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.Protected.ObjectGUID(Obj)
 	if GUID then
 		if NeP.OM[ref][GUID] then
-			NeP.OM:UpdateUnit(ref, GUID)
 			return
 		end
 		local range = NeP.DSL:Get('range')(Obj) or 999
@@ -172,17 +148,7 @@ function NeP.OM.Insert(_, ref, Obj)
 		if not NeP.DSL:Get('los')(Obj) then
 			return
 		end
-		--restore a unit
 		if NeP.OM.Memory[GUID] then
-			NeP.OM[ref][GUID] = NeP.OM.Memory[GUID]
-			local xobj = NeP.OM[ref][GUID]
-			xobj.key = Obj
-			xobj.tbl = ref
-			_G.wipe(xobj.buffs)
-			_G.wipe(xobj.debuffs)
-			NeP.OM:UpdateObject(ref, GUID)
-			preLoadBuffs(xobj)
-			preLoadDebuffs(xobj)
 			return
 		end
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
@@ -267,75 +233,106 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	end
 end
 
-local function cleanObjects()
-	for _, ref in pairs({"Objects", "AreaTriggers"}) do
-		for GUID, Obj in pairs(NeP.OM[ref]) do
-			if Obj.distance > NeP.OM.max_distance
-			or not NeP.DSL:Get('exists')(Obj.key)
-			or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
-				NeP.OM.Objects[GUID] = nil
-			end
-		end
+local function cleanObject(Obj)
+	if Obj.distance > NeP.OM.max_distance
+	or Obj.guid ~= NeP.Protected.ObjectGUID(Obj.key) then
+		NeP.OM[Obj.tbl][Obj.guid] = nil
+		return
 	end
+	--update
+	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 end
 
-local function cleanCritters(ref)
-	for GUID, Obj in pairs(NeP.OM[ref]) do
-		-- remove invalid units
-		if Obj.distance > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
-		or not NeP._G.UnitInPhase(Obj.key)
-		or GUID ~= NeP.Protected.ObjectGUID(Obj.key) then
-			NeP.OM[ref][GUID] = nil
-		end
-	end
-end
-
-local function cleanOthers(ref)
+local function cleanUnit(Obj)
 	local ctime = NeP._G.GetTime()
-	for GUID, Obj in pairs(NeP.OM[ref]) do
-		-- remove invalid units
-		if Obj.range > NeP.OM.max_distance
-		or not NeP.DSL:Get('exists')(Obj.key)
-		or not NeP._G.UnitInPhase(Obj.key)
-		or GUID ~= NeP.Protected.ObjectGUID(Obj.key)
-		or not NeP.DSL:Get('los')(Obj.key)
-		or ref ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key)
-		or ref == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
-			NeP.OM[ref][GUID] = nil
-		-- check stuff
-		else
-			if (ctime - Obj.last_hit_taken_time) > 15
-			and (ctime - Obj.last_hit_done_time) > 15 then
-				Obj.combat_time = 0
-				Obj.dmgTaken = 0
-				Obj.dmgTaken_P = 0
-				Obj.dmgTaken_M = 0
-				Obj.hits_taken = 0
-				Obj.lastHit_taken = 0
-				Obj.dmgDone = 0
-				Obj.dmgDone_P = 0
-				Obj.dmgDone_M = 0
-				Obj.hits_done = 0
-				Obj.lastHit_done = 0
-				Obj.heal_taken = 0
-				Obj.heal_hits_taken = 0
-				Obj.heal_done = 0
-				Obj.heal_hits_done = 0
-				Obj.last_hit_taken_time = 0
-				Obj.last_hit_done_time = 0
-			end
+	-- remove invalid units
+	if Obj.range > NeP.OM.max_distance
+	or not NeP._G.UnitInPhase(Obj.key)
+	or Obj.guid ~= NeP.Protected.ObjectGUID(Obj.key)
+	or not NeP.DSL:Get('los')(Obj.key) then
+		NeP.OM[Obj.tbl][Obj.guid] = nil
+		NeP.OM.Roster[Obj.guid] = nil -- fail safe
+		return
+	end
+	-- move Dead
+	if Obj.tbl ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key) then
+		NeP.OM[Obj.tbl][Obj.guid] = nil
+		NeP.OM.Dead[Obj.guid] = Obj
+	end
+	if Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
+		local where = NeP._G.UnitIsFriend('player', Obj) and 'Friendly' or 'Enemy'
+		NeP.OM[where][Obj.guid] = nil
+		NeP.OM.Dead[Obj.guid] = Obj
+	end
+	-- combat reset?
+	if (ctime - Obj.last_hit_taken_time) > 15
+	and (ctime - Obj.last_hit_done_time) > 15 then
+		Obj.combat_time = 0
+		Obj.dmgTaken = 0
+		Obj.dmgTaken_P = 0
+		Obj.dmgTaken_M = 0
+		Obj.hits_taken = 0
+		Obj.lastHit_taken = 0
+		Obj.dmgDone = 0
+		Obj.dmgDone_P = 0
+		Obj.dmgDone_M = 0
+		Obj.hits_done = 0
+		Obj.lastHit_done = 0
+		Obj.heal_taken = 0
+		Obj.heal_hits_taken = 0
+		Obj.heal_done = 0
+		Obj.heal_hits_done = 0
+		Obj.last_hit_taken_time = 0
+		Obj.last_hit_done_time = 0
+	end
+	-- roster?
+	if Obj.tbl == 'Friendly'
+	and Obj.range < 40
+	and (
+		NeP.DSL:Get('ingroup')(Obj.key)
+		or NeP.DSL:Get('is')('player', Obj.key)
+	)
+	and not NeP.DSL:Get('charmed')(Obj.key) then
+		NeP.OM.Roster[Obj.guid] = Obj
+	else
+		NeP.OM.Roster[Obj.guid] = nil
+	end
+	-- update unit
+	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+	Obj.range = NeP.DSL:Get('range')(Obj.key)
+	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
+	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
+	Obj.health = NeP.Healing.healthPercent(Obj.key)
+	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
+	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
+	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
+end
+
+local function cleanUpdate()
+	for GUID, Obj in pairs(NeP.OM.Memory) do
+		-- completly invalid?
+		if not NeP.DSL:Get('exists')(Obj.key) then
+			NeP.OM.Memory[GUID] = nil
+		--clean
+		elseif Obj.tbl == 'Objects' then
+			cleanObject(Obj)
+		elseif Obj.tbl == 'AreaTriggers' then
+			cleanObject(Obj)
+		elseif Obj.tbl == 'Critters' then
+			cleanObject(Obj)
+		elseif Obj.tbl == 'Enemy' then
+			cleanUnit(Obj)
+		elseif Obj.tbl == 'Friendly' then
+			cleanUnit(Obj)
+		elseif Obj.tbl == 'Dead' then
+			cleanUnit(Obj)
 		end
 	end
 end
 
 local function CleanStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
-		cleanObjects()
-		cleanOthers("Dead")
-		cleanOthers("Friendly")
-		cleanOthers("Enemy")
-		cleanCritters("Critters")
+		cleanUpdate()
 	else
 		NeP._G.wipe(NeP.OM['Objects'])
 		NeP._G.wipe(NeP.OM['AreaTriggers'])
