@@ -42,6 +42,7 @@ NeP.Timer.Add = function(name, func, seconds)
 end
 
 NeP.Timer.Handle = function(_, elapsed)
+	NeP:Wipe_Cache()
 	for name, struct in pairs(NeP.Timer.timers) do
 		struct.next = struct.next - elapsed
 		if (struct.next <= 0) then

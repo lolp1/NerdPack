@@ -188,7 +188,6 @@ end
 
 local function ParseStart()
 	NeP.Faceroll:Hide()
-	NeP:Wipe_Cache()
 	NeP._G.wipe(Unit_Blacklist_cache)
 	NeP._G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
