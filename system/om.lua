@@ -102,18 +102,10 @@ end
 function NeP.OM.InsertObject(_, ref, Obj)
 	local GUID = NeP.DSL:Get('guid')(Obj)
 	if GUID then
-		if NeP.OM[ref][GUID] then
-			return
-		end
-		local distance = NeP.DSL:Get('distance')(Obj) or 999
-		if distance > NeP.OM.max_distance then
-			NeP.OM[ref][GUID] = nil
-			return
-		end
-		--restore a unit
 		if NeP.OM.Memory[GUID] then
 			return
 		end
+		local distance = NeP.DSL:Get('distance')(Obj) or 999
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		local data = {
 			key = Obj,
@@ -126,7 +118,8 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			buffs = {},
 			debuffs = {},
 		}
-		if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		if NeP.DSL:Get("toggle")(nil, "mastertoggle")
+		and distance > NeP.OM.max_distance then
 			NeP.OM[ref][GUID] = data
 		end
 		NeP.OM.Memory[GUID] = data
@@ -139,20 +132,10 @@ NeP.OM.InsertCritter = NeP.OM.InsertObject
 function NeP.OM.Insert(_, ref, Obj)
 	local GUID = NeP.DSL:Get('guid')(Obj)
 	if GUID then
-		if NeP.OM[ref][GUID] then
-			return
-		end
-		local range = NeP.DSL:Get('range')(Obj) or 999
-		if range > NeP.OM.max_distance then
-			NeP.OM[ref][GUID] = nil
-			return
-		end
-		if not NeP.DSL:Get('los')(Obj) then
-			return
-		end
 		if NeP.OM.Memory[GUID] then
 			return
 		end
+		local range = NeP.DSL:Get('range')(Obj) or 999
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		local data = {
 			key = Obj,
@@ -200,7 +183,9 @@ function NeP.OM.Insert(_, ref, Obj)
 		}
 		preLoadBuffs(data)
 		preLoadDebuffs(data)
-		if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		if NeP.DSL:Get("toggle")(nil, "mastertoggle") 
+		and range > NeP.OM.max_distance
+		and not NeP.DSL:Get('los')(Obj) then
 			NeP.OM[ref][GUID] = data
 		end
 		NeP.OM.Memory[GUID] = data
