@@ -104,7 +104,7 @@ end
 local addAction = function(...)
 	local _,_,_, SourceGUID, _,_,_,_, destName, _,_,_, spellName = ...
 	if not spellName then return end
-	if SourceGUID == NeP._G.UnitGUID('player') and destName then
+	if SourceGUID == NeP.DSL:Get('guid')('player') and destName then
 		local icon = select(3, NeP._G.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)
 	end
@@ -128,7 +128,7 @@ local addAura = function(...)
 	if not xname then return end --huh?
 	local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
 	local data = found or {}
-	data.isCastByPlayer = SourceGUID == NeP._G.UnitGUID('player')
+	data.isCastByPlayer = SourceGUID == NeP.DSL:Get('guid')('player')
 	data.SourceGUID = SourceGUID
 	data.spellId = spellId
 	data.spellName = spellName
@@ -191,7 +191,7 @@ local EVENTS = {
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, unit)
-	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	local Obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
 	if Obj and Obj.combat_tack_enable then
 		return NeP._G.GetTime() - Obj.combat_time
 	end
@@ -200,7 +200,7 @@ end
 
 function NeP.CombatTracker:getDMG(unit)
 	local total, Hits, phys, magic = 0, 0, 0, 0
-	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	local Obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
 	if Obj and Obj.combat_tack_enable and Obj.dmgTaken then
 		local combatTime = self:CombatTime(unit)
 		total = Obj.dmgTaken / combatTime
@@ -221,12 +221,12 @@ function NeP.CombatTracker:TimeToDie(unit)
 end
 
 function NeP.CombatTracker.LastCast(_, unit)
-	local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+	local Obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
 	return Obj and Obj.combat_tack_enable and Obj.lastcast
 end
 
 function NeP.CombatTracker.SpellDamage(_, unit, spellID)
-  local Obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(unit))
+  local Obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
   return Obj and Obj.combat_tack_enable and Obj[spellID] or 0
 end
 

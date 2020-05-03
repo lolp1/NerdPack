@@ -34,7 +34,7 @@ local function UnitID(unit)
   if tonumber(unit) then
     return nil, tonumber(unit)
   else
-    local unitid = select(6, NeP._G.strsplit("-", NeP._G.UnitGUID(unit)))
+    local unitid = select(6, NeP._G.strsplit("-", NeP.DSL:Get('guid')(unit)))
     return unit, tonumber(unitid)
   end
 end

@@ -33,7 +33,7 @@ NeP.Protected.ObjectExists = NeP._G.UnitExists
 NeP.Protected.ObjectCreator = noop
 NeP.Protected.GameObjectIsAnimating = noop
 NeP.Protected.UnitName = NeP._G.UnitName
-NeP.Protected.ObjectGUID = NeP._G.UnitGUID
+NeP.Protected.ObjectGUID = NeP.DSL:Get('guid')
 
 NeP.Protected.Distance = function(_, b)
   local minRange, maxRange = rangeCheck:GetRange(b)
@@ -107,7 +107,7 @@ NeP.Protected.OM_Maker = function()
 	for i=1, 40 do
 		local Obj = 'nameplate'..i
 		if NeP.DSL:Get('exists')(Obj) then
-			local GUID = NeP._G.UnitGUID(Obj) or '0'
+			local GUID = NeP.DSL:Get('guid')(Obj) or '0'
 			if NeP._G.UnitIsFriend('player',Obj) then
 				NeP.Protected.nPlates:Insert('Friendly', Obj, GUID)
 			else

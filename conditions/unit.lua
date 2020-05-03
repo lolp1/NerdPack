@@ -76,7 +76,7 @@ NeP.DSL:Register('classification', function (target, spell)
 end)
 
 NeP.DSL:Register('target', function(target, spell)
-  return ( NeP._G.UnitGUID(target .. 'target') == NeP._G.UnitGUID(spell) )
+  return ( NeP.DSL:Get('guid')(target .. 'target') == NeP.DSL:Get('guid')(spell) )
 end)
 
 NeP.DSL:Register('player', function(target)
@@ -85,6 +85,10 @@ end)
 
 NeP.DSL:Register('exists', function(target)
   return NeP.Protected.ObjectExists(target)
+end)
+
+NeP.DSL:Register('guid', function(target)
+  return NeP._G.UnitGUID(target)
 end)
 
 NeP.DSL:Register('dead', function (target)
@@ -107,7 +111,7 @@ local movingCache = {}
 
 NeP.DSL:Register('lastmoved', function(target)
   if NeP.DSL:Get('exists')(target) then
-    local guid = NeP._G.UnitGUID(target)
+    local guid = NeP.DSL:Get('guid')(target)
     if movingCache[guid] then
       local moving = (NeP._G.GetUnitSpeed(target) > 0)
       if not movingCache[guid].moving and moving then
@@ -132,7 +136,7 @@ end)
 
 NeP.DSL:Register('movingfor', function(target)
   if NeP.DSL:Get('exists')(target) then
-    local guid = NeP._G.UnitGUID(target)
+    local guid = NeP.DSL:Get('guid')(target)
     if movingCache[guid] then
       local moving = (NeP._G.GetUnitSpeed(target) > 0)
       if not movingCache[guid].moving then

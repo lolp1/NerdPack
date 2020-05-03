@@ -51,9 +51,9 @@ local function preLoadBuffs(Obj)
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
 		if sName then
 			local found = Obj.buffs[sName] or Obj.buffs[spellId]
-			sGUID = caster and NeP._G.UnitGUID(caster) or ''
+			sGUID = caster and NeP.DSL:Get('guid')(caster) or ''
 			data = found or {}
-			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
+			data.isCastByPlayer = sGUID == NeP.DSL:Get('guid')('player')
 			data.SourceGUID = sGUID
 			data.spellId = spellId
 			data.spellName = sName
@@ -78,9 +78,9 @@ local function preLoadDebuffs(Obj)
 		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
 		if sName then
 			local found = Obj.debuffs[sName] or Obj.debuffs[spellId]
-			sGUID = caster and NeP._G.UnitGUID(caster) or ''
+			sGUID = caster and NeP.DSL:Get('guid')(caster) or ''
 			data = found or {}
-			data.isCastByPlayer = sGUID == NeP._G.UnitGUID('player')
+			data.isCastByPlayer = sGUID == NeP.DSL:Get('guid')('player')
 			data.SourceGUID = sGUID
 			data.spellId = spellId
 			data.spellName = sName

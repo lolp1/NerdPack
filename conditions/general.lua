@@ -96,7 +96,7 @@ local TimeOutUnitTable ={}
 
 --USAGE: UNIT.targettimeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('targettimeout', function(target, args)
-  target = NeP._G.UnitGUID(target)
+  target = NeP.DSL:Get('guid')(target)
   local name, time = NeP._G.strsplit(',', args, 2)
    if not TimeOutUnitTable[target..name] then TimeOutUnitTable[target..name] = true;
     NeP._G.C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end);

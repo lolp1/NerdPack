@@ -59,7 +59,7 @@ end
 
 function NeP.Core.UnitID(_, unit)
 	if unit and NeP.DSL:Get('exists')(unit) then
-		local guid = NeP._G.UnitGUID(unit)
+		local guid = NeP.DSL:Get('guid')(unit)
 		if guid then
 			local type, _, server_id,_,_, npc_id = NeP._G.strsplit("-", guid)
 			if type == "Player" then

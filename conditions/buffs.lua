@@ -11,13 +11,13 @@ end)
 ------------------------------------------ BUFFS -----------------------------------------
 ------------------------------------------------------------------------------------------
 NeP.DSL:Register("buff", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.buffs[spell]
   and obj.buffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("buff.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.buffs[spell] ~= nil
 end)
 
@@ -37,7 +37,7 @@ NeP.DSL:Register("buff.duration", function(target, spell)
 end)
 
 NeP.DSL:Register("buff.duration.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.buffs[spell]
   and ( obj.buffs[spell].expires - NeP._G.GetTime()) or 0
 end)
@@ -66,13 +66,13 @@ end)
 ------------------------------------------------------------------------------------------
 
 NeP.DSL:Register("debuff", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.debuffs[spell]
   and obj.debuffs[spell].isCastByPlayer
 end)
 
 NeP.DSL:Register("debuff.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.debuffs[spell] ~= nil
 end)
 
@@ -92,7 +92,7 @@ NeP.DSL:Register("debuff.duration", function(target, spell)
 end)
 
 NeP.DSL:Register("debuff.duration.any", function(target, spell)
-  local obj = NeP.OM:FindObjectByGuid(NeP._G.UnitGUID(target))
+  local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.debuffs[spell]
   and (obj.debuffs[spell].expires - NeP._G.GetTime()) or 0
 end)
