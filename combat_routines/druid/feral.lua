@@ -23,7 +23,7 @@ local Survival = {
 local Cooldowns = {
 	{'Berserk','!buff&target.range<10&target.enemy','player'},
 	{'Incarnation: King of the Jungle','!buff&target.range<10target.enemy','player'},
-	{'Berserking','enemy&player.energy<70','target'}, -- Troll Racial
+	{'Berserking','target.enemy&energy<70','player'}, -- Troll Racial
 }
 
 
