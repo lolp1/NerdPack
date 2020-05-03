@@ -17,13 +17,18 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	
+	{'Skull Bash', nil, 'target'}
 }
 
 local inCombat = {
 	{Keybinds},
 	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
-	
+    {'Moonfire', '!debuff||player.proc(Galactic Guardian)', 'target'},
+    {'Thrash', 'debuff.count<3', 'target'},
+    {'Pulverize', 'debuff(Thrash).count>=3', 'target'},
+    {'Mangle', nil, 'target'},
+    {'Thrash', nil, 'target'},
+    {'Swipe', nil, 'target'},
 }
 
 local outCombat = {
