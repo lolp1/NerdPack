@@ -80,7 +80,7 @@ function NeP.ActionLog:Refresh(event, spell, target)
 end
 
 function NeP.ActionLog.Add(_, event, spell, icon, target)
-	target = NeP._G.UnitExists(target) and NeP._G.UnitName(target) or target
+	target = NeP.DSL:Get('exists')(target) and NeP._G.UnitName(target) or target
 	event = event or 'Unknown'
 	icon = icon or 'Interface\\ICONS\\Inv_gizmo_02.png'
 	if NeP.ActionLog:Refresh(event, spell, target) then return end

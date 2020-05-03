@@ -167,7 +167,7 @@ end)
 NeP.FakeUnits:Add({'lowestenemy', 'loweste', 'le'}, function(num)
 	local tempTable = {}
 	for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-		if NeP._G.UnitExists(Obj.key) then
+		if NeP.DSL:Get('exists')(Obj.key) then
 			tempTable[#tempTable+1] = {
 				key = Obj.key,
 				health = NeP.DSL:Get("health")(Obj.key)
@@ -227,7 +227,7 @@ end)
 NeP.FakeUnits:Add('boss', function(num)
 	local tempTable = {}
     for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-		if NeP._G.UnitExists(Obj.key)
+		if NeP.DSL:Get('exists')(Obj.key)
 		and NeP.BossID:Eval(Obj.key) then
             tempTable[#tempTable+1] = {
                 key = Obj.key,

@@ -46,7 +46,7 @@ NeP.Compiler:RegisterToken("%", function(eval, ref)
 end)
 
 local function FindDispell(eval, unit)
-  if not NeP._G.UnitExists(unit) then return end
+  if not NeP.DSL:Get('exists')(unit) then return end
   for _, spellID, _,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
     local spell = NeP._G.GetSpellInfo(spellID)
     if IsSpellReady(spell) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
@@ -112,7 +112,7 @@ end)
 NeP.Actions:Add('taunt', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
-    if NeP._G.UnitExists(Obj.key)
+    if NeP.DSL:Get('exists')(Obj.key)
     and Obj.distance <= 30
     and NeP.Taunts:ShouldTaunt(Obj.key) then
       eval.spell = eval[1].args
@@ -129,7 +129,7 @@ NeP.Actions:Add('ressdead', function(eval)
   if not IsSpellReady(eval[1].args) then return end
   for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if Obj.distance < 40
-    and NeP._G.UnitExists(Obj.key)
+    and NeP.DSL:Get('exists')(Obj.key)
     and NeP._G.UnitIsPlayer(Obj.key)
     and NeP._G.UnitIsDeadOrGhost(Obj.key)
     and NeP._G.UnitPlayerOrPetInParty(Obj.key) then

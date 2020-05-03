@@ -92,7 +92,7 @@ local function ProcessCondition(strg, spell, target)
 		-- condition target
 		if unitID
 		and rest
-		and NeP._G.UnitExists(unitID) then
+		and NeP.DSL:Get('exists')(unitID) then
 			target = unitID
 			strg = rest
 		else

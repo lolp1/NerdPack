@@ -106,7 +106,7 @@ NeP.Protected.OM_Maker = function()
   --nameplates
 	for i=1, 40 do
 		local Obj = 'nameplate'..i
-		if NeP._G.UnitExists(Obj) then
+		if NeP.DSL:Get('exists')(Obj) then
 			local GUID = NeP._G.UnitGUID(Obj) or '0'
 			if NeP._G.UnitIsFriend('player',Obj) then
 				NeP.Protected.nPlates:Insert('Friendly', Obj, GUID)

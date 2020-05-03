@@ -9,7 +9,7 @@ function NeP.Queuer.Add(_, spell, target)
   if not spell then return end
   Queue[spell] = {
     time = NeP._G.GetTime(),
-    target = target or NeP._G.UnitExists('target') and 'target' or 'player'
+    target = target or NeP.DSL:Get('exists')('target') and 'target' or 'player'
   }
 end
 

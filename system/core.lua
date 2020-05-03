@@ -16,7 +16,7 @@ local d_color = {
 
 function NeP.Core.ClassColor(_, unit, type)
 	type = type and type:lower() or 'hex'
-	if NeP._G.UnitExists(unit) then
+	if NeP.DSL:Get('exists')(unit) then
 		local classid  = select(3, NeP._G.UnitClass(unit))
 		if classid then
 			return NeP.ClassTable:GetClassColor(classid, type)
@@ -58,7 +58,7 @@ function NeP.Core.GetItemID(_, item)
 end
 
 function NeP.Core.UnitID(_, unit)
-	if unit and NeP._G.UnitExists(unit) then
+	if unit and NeP.DSL:Get('exists')(unit) then
 		local guid = NeP._G.UnitGUID(unit)
 		if guid then
 			local type, _, server_id,_,_, npc_id = NeP._G.strsplit("-", guid)
