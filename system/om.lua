@@ -372,7 +372,7 @@ end
 function NeP.OM.RemoveObjectByGuid(_, guid)
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
-	NeP.OM.Memory = nil
+	NeP.OM.Memory[Obj.guid] = nil
 	NeP.OM[Obj.tbl][Obj.guid] = nil
 end
 
