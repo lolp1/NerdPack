@@ -1,3 +1,5 @@
+local _, NeP = ...
+
 --[[
 Name: LibRangeCheck-2.0
 Revision: $Revision: 192 $
@@ -397,7 +399,6 @@ local GetItemInfo = GetItemInfo
 local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitCanAssist = UnitCanAssist
-local UnitExists = UnitExists
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
 local IsSpellInRange = IsSpellInRange
@@ -656,7 +657,7 @@ local function createSmartChecker(friendChecker, harmChecker, miscChecker)
     friendChecker = friendChecker or miscChecker
     harmChecker = harmChecker or miscChecker
     return function(unit)
-        if not UnitExists(unit) then
+        if not NeP.DSL:Get('exists')(unit) then
             return nil
         end
         if UnitIsDeadOrGhost(unit) then
@@ -908,7 +909,7 @@ end
 -- local minRange, maxRange = rc:GetRange('target')
 -- local minRangeIfVisible, maxRangeIfVisible = rc:GetRange('target', true)
 function lib:GetRange(unit, checkVisible)
-    if not UnitExists(unit) then
+    if not NeP.DSL:Get('exists')(unit) then
         return nil
     end
     if checkVisible and not UnitIsVisible(unit) then
