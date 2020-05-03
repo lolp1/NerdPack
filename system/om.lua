@@ -126,7 +126,9 @@ function NeP.OM.InsertObject(_, ref, Obj)
 			buffs = {},
 			debuffs = {},
 		}
-		NeP.OM[ref][GUID] = data
+		if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+			NeP.OM[ref][GUID] = data
+		end
 		NeP.OM.Memory[GUID] = data
 	end
 end
@@ -198,7 +200,9 @@ function NeP.OM.Insert(_, ref, Obj)
 		}
 		preLoadBuffs(data)
 		preLoadDebuffs(data)
-		NeP.OM[ref][GUID] = data
+		if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+			NeP.OM[ref][GUID] = data
+		end
 		NeP.OM.Memory[GUID] = data
 	end
 end
