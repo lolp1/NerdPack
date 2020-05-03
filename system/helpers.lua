@@ -15,6 +15,7 @@ local function addToData(GUID)
 end
 
 local function blackListSpell(GUID, spell)
+	NeP.ActionLog:Add(">>>> Blacklisted ", spell, "", GUID)
 	_Failed[GUID][spell] =  true
 	C_Timer.After(1, (function()
 		_Failed[GUID][spell] =  nil
