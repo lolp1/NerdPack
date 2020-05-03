@@ -241,6 +241,9 @@ local function cleanObject(Obj)
 	end
 	--update
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+	if not NeP.OM[Obj.tbl][Obj.guid] then
+		NeP.OM[Obj.tbl][Obj.guid] = Obj
+	end
 end
 
 local function cleanUnit(Obj)
@@ -306,6 +309,9 @@ local function cleanUnit(Obj)
 	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
 	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
 	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
+	if not NeP.OM[Obj.tbl][Obj.guid] then
+		NeP.OM[Obj.tbl][Obj.guid] = Obj
+	end
 end
 
 local function cleanUpdate()
