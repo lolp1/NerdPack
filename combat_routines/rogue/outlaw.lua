@@ -23,10 +23,17 @@ local Interrupts = {
 local inCombat = {
     {Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
     {Keybinds},
+    {'Roll the Bones', '!player.buff(Ruthless Precision)&&!player.buff(Grand Melee)', 'target'},
+    {'Blade Rush', 'player.energy<30', 'target'},
+    {'Adrenaline Rush', nil, 'target'},
+    {'Between the Eyes', 'player.combotpoints>=4&&{player.buff(Ruthless Precision)||player.buff(Deadshot)||player.buff(Ace Up Your Sleeve)}', 'target'},
+    {'Dispatch', 'player.combopoints>=4', 'target'},
+    {'Pistol Shot', 'player.buff(Opportunity)&&player.combotpoints<=3', 'target'},
+    {'Sinister Strike', nil, 'target'},
 }
 
 local outCombat = {
-	{Keybinds},
+    {Keybinds},
 }
 
 NeP.CR:Add(260, {
