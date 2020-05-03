@@ -188,10 +188,7 @@ end
 
 local function ParseStart()
 	NeP.Faceroll:Hide()
-	NeP._G.wipe(Unit_Blacklist_cache)
-	NeP._G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
-	NeP.OM.CleanStart()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not NeP._G.UnitIsDeadOrGhost('player')
 	and IsMountedCheck()
@@ -212,6 +209,12 @@ end
 
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
+	NeP.Timer.Add('nep_OM_Wipe_Cache', function()
+		NeP.Wipe_Cache()
+		NeP._G.wipe(Unit_Blacklist_cache)
+		NeP._G.wipe(Target_cache)
+	end, 0.2)
+	NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.2)
 	NeP.Timer.Add('nep_parser', ParseStart, 0.1)
 	NeP.Debug:Add("Parser0", ParseStart, false)
 	NeP.Debug:Add("Parser1", NeP.Parser.Parse, false)
