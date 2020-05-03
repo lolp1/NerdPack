@@ -172,7 +172,7 @@ local EVENTS = {
 	['UNIT_DIED'] = function(...) 
 		local _,_,_, _, _,_,_, DestGUID = ...
 		local Obj = NeP.OM:FindObjectByGuid(DestGUID)
-		if not (Obj.tbl == 'Friendly' or Obj.tbl == 'Enemy') then
+		if not Obj or not (Obj.tbl == 'Friendly' or Obj.tbl == 'Enemy') then
 			return
 		end
 		NeP.OM:MoveObjectByGuid(DestGUID, 'Dead')
