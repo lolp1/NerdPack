@@ -139,7 +139,7 @@ function NeP.OM.Insert(_, ref, Obj)
 		local ObjID = select(6, NeP._G.strsplit('-', GUID))
 		local data = {
 			key = Obj,
-			name = NeP.DSL:Get('name')(Obj),
+			name = NeP.DSL:Get('name')(Obj) or NeP.Protected.ObjectName(Obj) or 'ERROR!_NO_NAME?',
 			distance = NeP.DSL:Get('distance')(Obj),
 			range = range,
 			id = tonumber(ObjID or 0),
