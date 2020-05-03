@@ -15,17 +15,9 @@ end
 
 local C = NeP.Cache.Conditions
 
-local dontCache = {
-	'exists'
-}
-
 local function _add(name, condition, overwrite)
 	name = name:lower()
 	if not conditions[name] or overwrite then
-		if dontCache[name] then
-			conditions[name] = condition
-			return;
-		end
 		conditions[name] = function(target, spell, spell2, ...)
 			spell = spell or spell2
 			local key = name .. (target or '') .. (spell or '') .. (spell2 or '')
