@@ -23,6 +23,12 @@ local Interrupts = {
 local inCombat = {
     {Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
     {Keybinds},
+    {'Shadow Blades', nil, 'target'},
+    {'Nightblade', '!debuff', 'target'},
+    {'Symbols of Death', 'player.buff(Shadow Dance)', 'target'},
+    {'Eviscerate', 'player.combopoints>=5', 'target'},
+    {'Shadowstrike', 'player.buff(Shadow Dance)', 'target'},
+    {'Backstab', nil, 'target'},
 }
 
 local outCombat = {
