@@ -318,6 +318,9 @@ local function cleanUpdate()
 			NeP.OM.Enemy[GUID] = nil
 			NeP.OM.Friendly[GUID] = nil
 			NeP.OM.Dead[GUID] = nil
+			if NeP.DSL:Get('exists')(Obj.key) then
+				NeP.OM:Add(Obj.key)
+			end
 		--clean
 		elseif Obj.tbl == 'Objects' then
 			cleanObject(Obj)
