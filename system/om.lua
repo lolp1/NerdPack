@@ -383,5 +383,5 @@ end
 NeP.Debug:Add("OM_Clean", CleanStart, true)
 NeP.Debug:Add("OM_Maker", MakerStart, true)
 
-NeP._G.C_Timer.NewTicker(0.5, CleanStart)
+NeP._G.C_Timer.NewTicker(0.1, CleanStart)
 NeP._G.C_Timer.NewTicker(1, MakerStart)
