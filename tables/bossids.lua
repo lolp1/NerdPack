@@ -34,7 +34,9 @@ local function UnitID(unit)
   if tonumber(unit) then
     return nil, tonumber(unit)
   else
-    local unitid = select(6, NeP._G.strsplit("-", NeP.DSL:Get('guid')(unit)))
+    local guid = NeP.DSL:Get('guid')(unit)
+    if not guid then return end
+    local unitid = select(6, NeP._G.strsplit("-",guid))
     return unit, tonumber(unitid)
   end
 end
@@ -42,7 +44,7 @@ end
 function NeP.BossID.Eval(_, unit)
   if not unit then return false end
   local unit2, unitid = UnitID(unit)
-  return NeP.DSL:Get('exists')(unit2) and WoWBossID(unit2) or T[unitid]
+  return unit2 and NeP.DSL:Get('exists')(unit2) and WoWBossID(unit2) or T[unitid]
 end
 
 function NeP.BossID.Get()

@@ -194,7 +194,7 @@ NeP.DSL:Register('role', function(target)
 end)
 
 NeP.DSL:Register('name', function (target)
-  return target and (NeP._G.UnitName(target) or '')
+  return target and NeP.Protected.UnitName(target)
 end)
 
 NeP.DSL:Register('hasRole', function(target, expectedName)
