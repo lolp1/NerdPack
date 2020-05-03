@@ -88,7 +88,7 @@ NeP.DSL:Register('exists', function(target)
 end)
 
 NeP.DSL:Register('guid', function(target)
-  return  NeP.Protected.ObjectGUID(target)
+  return NeP.Protected.ObjectGUID(target)
 end)
 
 NeP.DSL:Register('dead', function (target)

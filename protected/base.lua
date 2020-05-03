@@ -33,7 +33,7 @@ NeP.Protected.ObjectExists = NeP._G.UnitExists
 NeP.Protected.ObjectCreator = noop
 NeP.Protected.GameObjectIsAnimating = noop
 NeP.Protected.UnitName = NeP._G.UnitName
-NeP.Protected.ObjectGUID = NeP.DSL:Get('guid')
+NeP.Protected.ObjectGUID = NeP._G.UnitGUID
 
 NeP.Protected.Distance = function(_, b)
   local minRange, maxRange = rangeCheck:GetRange(b)
