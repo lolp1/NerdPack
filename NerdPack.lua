@@ -36,13 +36,14 @@ NeP.Timer = {
 	timers = {},
 	frame = _G.CreateFrame("Frame")
 }
+local timers = NeP.Timer.timers
 
 NeP.Timer.Add = function(name, func, seconds)
-    NeP.Timer.timers[name] = {func = func, period = seconds, next = seconds}
+    timers[#timers+1] = {func = func, period = seconds, next = seconds}
 end
 
 NeP.Timer.Handle = function(_, elapsed)
-	for name, struct in pairs(NeP.Timer.timers) do
+	for _, struct in pairs(timers) do
 		struct.next = struct.next - elapsed
 		if (struct.next <= 0) then
 			struct.func()
@@ -52,7 +53,10 @@ NeP.Timer.Handle = function(_, elapsed)
 end
 
 NeP.Timer.UpdatePeriod = function(name, peroid)
-    NeP.Timer.timers[name].period = (peroid / 1000)
+    timers[name].period = (peroid / 1000)
 end
 
 NeP.Timer.frame:SetScript("OnUpdate", NeP.Timer.Handle)
+
+-- this should always be the 1st
+NeP.Timer.Add('nep_OM_Wipe_Cache', NeP.Wipe_Cache, 0) -- every frame
