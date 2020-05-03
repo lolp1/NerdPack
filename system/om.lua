@@ -18,8 +18,6 @@ local function MergeTable_Insert(table, Obj, GUID)
 	and NeP._G.UnitInPhase(Obj.key)
 	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
 		table[GUID] = Obj
-		Obj.range = NeP.DSL:Get('range')(Obj.key)
-		Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 	end
 end
 
