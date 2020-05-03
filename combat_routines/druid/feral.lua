@@ -36,7 +36,7 @@ local inCombat = {
 	{Survival},
 	{Cooldowns,'toggle(Cooldowns)'},
 	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
-	{'Regrowth','talent(7,2)&player.combopoints>4&!buff(Bloodtalons)&buff(Predatory Swiftness)','player'},
+	{'Regrowth','talent(7,2)&combopoints>4&!buff(Bloodtalons)&buff(Predatory Swiftness)','player'},
 	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
 	{'Ferocious Bite', 'player.combopoints>=5&player.energy>=50', 'target'},
 	{'Ferocious Bite', '{player.buff(Incarnation: King of the Jungle)||player.buff(Berserk)}&player.combopoints>=5&player.energy>=24', 'target'},
