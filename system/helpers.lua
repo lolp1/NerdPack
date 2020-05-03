@@ -52,7 +52,7 @@ local UI_Erros = {
 }
 
 function NeP.Helpers.Infront(_, target, GUID)
-	GUID = GUID or NeP.Protected.ObjectGUID(target)
+	GUID = GUID or NeP.DSL:Get('guid')(target)
 	if _Failed[GUID] then
 		 return not _Failed[GUID].infront
 	end
@@ -60,7 +60,7 @@ function NeP.Helpers.Infront(_, target, GUID)
 end
 
 function NeP.Helpers.Spell(_, spell, target, GUID)
-	GUID = GUID or NeP.Protected.ObjectGUID(target)
+	GUID = GUID or NeP.DSL:Get('guid')(target)
 	if _Failed[GUID] then
 		 return not _Failed[GUID][spell]
 	end
@@ -75,7 +75,7 @@ function NeP.Helpers:Check(spell, target)
 		return true
 	end
 
-	local GUID = NeP.Protected.ObjectGUID(target)
+	local GUID = NeP.DSL:Get('guid')(target)
 	if _Failed[GUID] then
 		return self:Spell(spell, target, GUID) and self:Infront(target, GUID)
 	end
@@ -89,7 +89,7 @@ NeP.Listener:Add("NeP_Helpers", "UI_ERROR_MESSAGE", function(_, error)
 	local unit, spell = NeP.Parser.LastTarget, NeP.Parser.LastCast
 	if not unit or not spell then return end
 
-	local GUID = NeP.Protected.ObjectGUID(unit)
+	local GUID = NeP.DSL:Get('guid')(unit)
 	if GUID then
 		addToData(GUID)
 		UI_Erros[error](GUID, spell)

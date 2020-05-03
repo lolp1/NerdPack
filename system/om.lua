@@ -16,7 +16,7 @@ local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and NeP.DSL:Get('exists')(Obj.key)
 	and NeP._G.UnitInPhase(Obj.key)
-	and GUID == NeP.Protected.ObjectGUID(Obj.key) then
+	and GUID == NeP.DSL:Get('guid')(Obj.key) then
 		table[GUID] = Obj
 	end
 end
@@ -100,7 +100,7 @@ local function preLoadDebuffs(Obj)
 end
 
 function NeP.OM.InsertObject(_, ref, Obj)
-	local GUID = NeP.Protected.ObjectGUID(Obj)
+	local GUID = NeP.DSL:Get('guid')(Obj)
 	if GUID then
 		if NeP.OM[ref][GUID] then
 			return
@@ -137,7 +137,7 @@ end
 NeP.OM.InsertCritter = NeP.OM.InsertObject
 
 function NeP.OM.Insert(_, ref, Obj)
-	local GUID = NeP.Protected.ObjectGUID(Obj)
+	local GUID = NeP.DSL:Get('guid')(Obj)
 	if GUID then
 		if NeP.OM[ref][GUID] then
 			return
@@ -239,7 +239,7 @@ end
 
 local function cleanObject(Obj)
 	if Obj.distance > NeP.OM.max_distance
-	or Obj.guid ~= NeP.Protected.ObjectGUID(Obj.key) then
+	or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		return
 	end
@@ -255,7 +255,7 @@ local function cleanUnit(Obj)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
 	or not NeP._G.UnitInPhase(Obj.key)
-	or Obj.guid ~= NeP.Protected.ObjectGUID(Obj.key)
+	or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key)
 	or not NeP.DSL:Get('los')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
