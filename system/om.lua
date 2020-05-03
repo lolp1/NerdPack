@@ -349,10 +349,12 @@ local function MakerStart()
 end
 
 function NeP.OM.FindObjectByGuid(_, guid)
+	if not guid then return end
 	return NeP.OM.Memory[guid]
 end
 
 function NeP.OM.MoveObjectByGuid(_, guid, ref)
+	if not guid then return end
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not (Obj and NeP.OM[ref]) then return end
 	NeP.OM[ref][Obj.guid] = Obj
@@ -361,6 +363,7 @@ function NeP.OM.MoveObjectByGuid(_, guid, ref)
 end
 
 function NeP.OM.RemoveObjectByGuid(_, guid)
+	if not guid then return end
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
 	NeP.OM.Memory[Obj.guid] = nil
