@@ -169,7 +169,14 @@ local EVENTS = {
 	['SWING_DAMAGE'] = logSwing,
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
-	['UNIT_DIED'] = function(...) NeP.OM:RemoveObjectByGuid(select(8, ...)) end,
+	['UNIT_DIED'] = function(...) 
+		local _,_,_, _, _,_,_, DestGUID = ...
+		local Obj = NeP.OM:FindObjectByGuid(DestGUID)
+		if not (Obj.tbl == 'Friendly' or Obj.tbl == 'Enemy') then
+			return
+		end
+		NeP.OM:MoveObjectByGuid(DestGUID, 'Dead')
+	end,
 	['SPELL_CAST_SUCCESS'] = addAction,
 	["SPELL_AURA_REFRESH"] = addAura,
 	["SPELL_AURA_APPLIED"] = addAura,

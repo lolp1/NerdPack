@@ -261,11 +261,13 @@ local function cleanUnit(Obj)
 	if Obj.tbl ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
+		Obj.tbl = 'Dead'
 	end
 	if Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 		local where = NeP._G.UnitIsFriend('player', Obj) and 'Friendly' or 'Enemy'
 		NeP.OM[where][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
+		Obj.tbl = where
 	end
 	-- combat reset?
 	if (ctime - Obj.last_hit_taken_time) > 15
@@ -359,9 +361,18 @@ function NeP.OM.FindObjectByGuid(_, guid)
 	return NeP.OM.Memory[guid]
 end
 
+function NeP.OM.MoveObjectByGuid(_, guid, ref)
+	local Obj = NeP.OM:FindObjectByGuid(guid)
+	if not (Obj and NeP.OM[ref]) then return end
+	NeP.OM[ref][Obj.guid] = Obj
+	NeP.OM[Obj.tbl][Obj.guid] = nil
+	Obj.tbl = ref
+end
+
 function NeP.OM.RemoveObjectByGuid(_, guid)
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
+	NeP.OM.Memory = nil
 	NeP.OM[Obj.tbl][Obj.guid] = nil
 end
 
