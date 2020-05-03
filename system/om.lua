@@ -253,8 +253,8 @@ local function cleanUnit(Obj)
 		Obj.tbl = 'Dead'
 	elseif Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
 		local where = NeP._G.UnitIsFriend('player', Obj.key) and 'Friendly' or 'Enemy'
-		NeP.OM[where][Obj.guid] = nil
-		NeP.OM.Dead[Obj.guid] = Obj
+		NeP.OM[where][Obj.guid] = Obj
+		NeP.OM.Dead[Obj.guid] = nil
 		Obj.tbl = where
 	end
 	-- combat reset?
