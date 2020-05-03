@@ -39,7 +39,7 @@ local inCombat = {
 	{Cooldowns,'toggle(Cooldowns)'},
 	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
 	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
-	{'Ferocious Bite', 'player.combopoints>=5&player.energy>=50', 'target'},
+	{'Ferocious Bite', 'player.combopoints>=5', 'target', custom_pool = function() return NeP.DSL:Get('energy')('player') < 50 end},
 	{'Ferocious Bite', '{player.buff(Incarnation: King of the Jungle)||player.buff(Berserk)}&player.combopoints>=5&player.energy>=24', 'target'},
 	{'Rake', '!debuff&player.combopoints<5', 'target'},
 	{'Rake', 'debuff&debuff.duration<7&player.combopoints<5', 'target'},

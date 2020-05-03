@@ -228,8 +228,14 @@ local C = NeP.Cache.Spells
 -- this forces the parser to stop until this spel is ready
 local function POLLING_PARSER(eval, nomana)
   if not eval.master.pooling then return end
-  eval.master.halt = eval.master.halt or nomana or false
-  if eval.master.halt then eval.master.halt_spell = eval[1].spell end
+  if eval.custom_pool then 
+    eval.master.halt = eval.master.halt or eval.custom_pool() or false
+  else
+    eval.master.halt = eval.master.halt or nomana or false
+  end
+  if eval.master.halt then
+    eval.master.halt_spell = eval[1].spell
+  end
 end
 
 NeP.Actions:Add('spell_cast', function(eval)
