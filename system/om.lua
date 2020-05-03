@@ -183,7 +183,7 @@ function NeP.OM.Insert(_, ref, Obj)
 		}
 		preLoadBuffs(data)
 		preLoadDebuffs(data)
-		if NeP.DSL:Get("toggle")(nil, "mastertoggle") 
+		if NeP.DSL:Get("toggle")(nil, "mastertoggle")
 		and range > NeP.OM.max_distance
 		and not NeP.DSL:Get('los')(Obj) then
 			NeP.OM[ref][GUID] = data
@@ -223,8 +223,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 end
 
 local function cleanObject(Obj)
-	if Obj.distance > NeP.OM.max_distance
-	or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key) then
+	if Obj.distance > NeP.OM.max_distance then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		return
 	end
@@ -240,18 +239,18 @@ local function cleanUnit(Obj)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
 	or not NeP._G.UnitInPhase(Obj.key)
-	or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key)
 	or not NeP.DSL:Get('los')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
 		return
 	end
 	-- move Dead
-	if Obj.tbl ~= 'Dead' and NeP._G.UnitIsDeadOrGhost(Obj.key) then
+	local dead = NeP._G.UnitIsDeadOrGhost(Obj.key)
+	if Obj.tbl ~= 'Dead' and dead then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
 		Obj.tbl = 'Dead'
-	elseif Obj.tbl == 'Dead' and not NeP._G.UnitIsDeadOrGhost(Obj.key) then
+	elseif Obj.tbl == 'Dead' and not dead then
 		local where = NeP._G.UnitIsFriend('player', Obj.key) and 'Friendly' or 'Enemy'
 		NeP.OM[where][Obj.guid] = Obj
 		NeP.OM.Dead[Obj.guid] = nil
@@ -310,8 +309,15 @@ end
 local function cleanUpdate()
 	for GUID, Obj in pairs(NeP.OM.Memory) do
 		-- completly invalid?
-		if not NeP.DSL:Get('exists')(Obj.key) then
+		if not NeP.DSL:Get('exists')(Obj.key)
+		or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
+			NeP.OM.Objects[GUID] = nil
+			NeP.OM.AreaTriggers[GUID] = nil
+			NeP.OM.Critters[GUID] = nil
+			NeP.OM.Enemy[GUID] = nil
+			NeP.OM.Friendly[GUID] = nil
+			NeP.OM.Dead[GUID] = nil
 		--clean
 		elseif Obj.tbl == 'Objects' then
 			cleanObject(Obj)
