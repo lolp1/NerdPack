@@ -39,7 +39,7 @@ NeP.Timer = {
 local timers = NeP.Timer.timers
 
 NeP.Timer.Add = function(name, func, seconds)
-    timers[#timers+1] = {func = func, period = seconds, next = seconds}
+    timers[#timers+1] = {func = func, period = seconds, next = seconds, name=name}
 end
 
 NeP.Timer.Handle = function(_, elapsed)
@@ -52,8 +52,9 @@ NeP.Timer.Handle = function(_, elapsed)
 	end
 end
 
+--FIXME: find by name
 NeP.Timer.UpdatePeriod = function(name, peroid)
-    timers[name].period = (peroid / 1000)
+    --timers[name].period = (peroid / 1000)
 end
 
 NeP.Timer.frame:SetScript("OnUpdate", NeP.Timer.Handle)
