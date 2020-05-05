@@ -22,7 +22,7 @@ end
 
 function NeP.Spells.Convert(_, spell)
 	if not spell then return end
-	if type(spell) == 'number' or spell:find('%d') then
+	if type(spell) == 'number' or tonumber(spell) then
 		spell = NeP._G.GetSpellInfo(spell) or spell
 	else
 		if SpellsTable[spell:lower()] then
