@@ -242,13 +242,14 @@ local function cleanUnit(Obj)
 	or not NeP.DSL:Get('los')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
+		NeP.OM.Dead[Obj.guid] = nil -- fail safe
 		return
 	end
 	-- move Dead
 	local dead = NeP._G.UnitIsDeadOrGhost(Obj.key)
 	if Obj.tbl ~= 'Dead' and dead then
-		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Dead[Obj.guid] = Obj
+		NeP.OM[Obj.tbl][Obj.guid] = nil
 		Obj.tbl = 'Dead'
 	elseif Obj.tbl == 'Dead' and not dead then
 		local where = NeP._G.UnitIsFriend('player', Obj.key) and 'Friendly' or 'Enemy'
@@ -310,14 +311,9 @@ local function cleanUpdate()
 	for GUID, Obj in pairs(NeP.OM.Memory) do
 		-- completly invalid?
 		if not NeP.DSL:Get('exists')(Obj.key)
-		or Obj.guid ~= NeP.DSL:Get('guid')(Obj.key) then
+		or GUID ~= NeP.DSL:Get('guid')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
-			NeP.OM.Objects[GUID] = nil
-			NeP.OM.AreaTriggers[GUID] = nil
-			NeP.OM.Critters[GUID] = nil
-			NeP.OM.Enemy[GUID] = nil
-			NeP.OM.Friendly[GUID] = nil
-			NeP.OM.Dead[GUID] = nil
+			NeP.OM[Obj.tbl][Obj.guid] = nil
 			if NeP.DSL:Get('exists')(Obj.key) then
 				NeP.OM:Add(Obj.key)
 			end
