@@ -223,12 +223,12 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 end
 
 local function cleanObject(Obj)
+	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 	if Obj.distance > NeP.OM.max_distance then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		return
 	end
 	--update
-	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
@@ -236,6 +236,7 @@ end
 
 local function cleanUnit(Obj)
 	local ctime = NeP._G.GetTime()
+	Obj.range = NeP.DSL:Get('range')(Obj.key)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
 	or not NeP._G.UnitInPhase(Obj.key)
@@ -292,7 +293,6 @@ local function cleanUnit(Obj)
 	end
 	-- update unit
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
-	Obj.range = NeP.DSL:Get('range')(Obj.key)
 	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
 	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
 	Obj.health = NeP.Healing.healthPercent(Obj.key)
