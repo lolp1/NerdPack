@@ -168,11 +168,11 @@ NeP.DSL:Register('enemy', function(target)
 end)
 
 NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
-  return NeP.Protected.UnitCombatRange(unit2 or 'player', unit)
+  return NeP.Protected.UnitCombatRange(unit2 or 'player', unit) or 999
 end)
 
 NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
-  return NeP.Protected.Distance(unit2 or 'player', unit)
+  return NeP.Protected.Distance(unit2 or 'player', unit) or 999
 end)
 
 NeP.DSL:Register('level', function(target)
