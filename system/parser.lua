@@ -88,7 +88,10 @@ function NeP.Parser:Target(eval)
 		Target_cache[eval.target] = eval.target
 		and NeP.DSL:Get('exists')(eval.target)
 		and NeP._G.UnitIsVisible(eval.target)
-		and (NeP._G.UnitIsFriend("player", eval.target) or NeP._G.UnitCanAttack(eval.target, "player"))
+		and (
+			NeP._G.UnitIsFriend("player", eval.target)
+			or NeP.DSL:Get('canattack')(eval.target)
+		)
 		and NeP.DSL:Get('los')('player', eval.target)
 		and not self:Unit_Blacklist(eval.target)
 	end

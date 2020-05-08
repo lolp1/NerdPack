@@ -15,7 +15,7 @@ NeP.OM = {
 local function MergeTable_Insert(table, Obj, GUID)
 	if not table[GUID]
 	and NeP.DSL:Get('exists')(Obj.key)
-	and NeP._G.UnitInPhase(Obj.key)
+	and NeP.DSL:Get('inphase')(Obj.key)
 	and GUID == NeP.DSL:Get('guid')(Obj.key) then
 		table[GUID] = Obj
 	end
@@ -207,16 +207,16 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		NeP.OM:InsertObject('AreaTriggers', Obj)
 	-- Units
 	elseif NeP.DSL:Get("exists")(Obj)
-	and NeP._G.UnitInPhase(Obj) then
+	and NeP.DSL:Get('inphase')(Obj) then
 		-- Critters
-		if critters[NeP._G.UnitCreatureType(Obj)] then
+		if critters[NeP.DSL:Get('creatureType')(Obj)] then
 			NeP.OM:InsertCritter('Critters', Obj)
 		-- Units
-		elseif NeP._G.UnitIsDeadOrGhost(Obj) then
+		elseif NeP.DSL:Get('dead')(Obj) then
 			NeP.OM:Insert('Dead', Obj)
-		elseif NeP._G.UnitIsFriend('player', Obj) then
+		elseif NeP.DSL:Get('friend')(Obj) then
 			NeP.OM:Insert('Friendly', Obj)
-		elseif NeP._G.UnitCanAttack('player', Obj) then
+		elseif NeP.DSL:Get('canattack')(Obj) then
 			NeP.OM:Insert('Enemy', Obj)
 		end
 	end
@@ -239,7 +239,7 @@ local function cleanUnit(Obj)
 	Obj.range = NeP.DSL:Get('range')(Obj.key)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
-	or not NeP._G.UnitInPhase(Obj.key)
+	or not NeP.DSL:Get('inphase')(Obj.key)
 	or not NeP.DSL:Get('los')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
@@ -247,13 +247,13 @@ local function cleanUnit(Obj)
 		return
 	end
 	-- move Dead
-	local dead = NeP._G.UnitIsDeadOrGhost(Obj.key)
+	local dead = NeP.DSL:Get('dead')(Obj.key)
 	if Obj.tbl ~= 'Dead' and dead then
 		NeP.OM.Dead[Obj.guid] = Obj
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		Obj.tbl = 'Dead'
 	elseif Obj.tbl == 'Dead' and not dead then
-		local where = NeP._G.UnitIsFriend('player', Obj.key) and 'Friendly' or 'Enemy'
+		local where =NeP.DSL:Get('friend')(Obj.key) and 'Friendly' or 'Enemy'
 		NeP.OM[where][Obj.guid] = Obj
 		NeP.OM.Dead[Obj.guid] = nil
 		Obj.tbl = where
@@ -293,10 +293,10 @@ local function cleanUnit(Obj)
 	end
 	-- update unit
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
-	Obj.predicted = NeP.Healing.GetPredictedHealth_Percent(Obj.key)
-	Obj.predicted_Raw = NeP.Healing.GetPredictedHealth(Obj.key)
-	Obj.health = NeP.Healing.healthPercent(Obj.key)
-	Obj.healthRaw = NeP._G.UnitHealth(Obj.key)
+	Obj.predicted = NeP.DSL:Get('health.predicted')(Obj.key)
+	Obj.predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj.key)
+	Obj.health = NeP.DSL:Get('health')(Obj.key)
+	Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
 	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
 	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 	if not NeP.OM[Obj.tbl][Obj.guid] then
