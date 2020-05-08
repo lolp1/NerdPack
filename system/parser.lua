@@ -87,9 +87,9 @@ function NeP.Parser:Target(eval)
 	if not Target_cache[eval.target] then
 		Target_cache[eval.target] = eval.target
 		and NeP.DSL:Get('exists')(eval.target)
-		and NeP._G.UnitIsVisible(eval.target)
+		and NeP.DSL:Get('visible')(eval.target)
 		and (
-			NeP._G.UnitIsFriend("player", eval.target)
+			NeP.DSL:Get('friend')(eval.target)
 			or NeP.DSL:Get('canattack')(eval.target)
 		)
 		and NeP.DSL:Get('los')('player', eval.target)
@@ -195,7 +195,7 @@ local function ParseStart()
 	NeP._G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
-	and not NeP._G.UnitIsDeadOrGhost('player')
+	and not NeP.DSL:Get('dead')('player')
 	and IsMountedCheck()
 	and not NeP._G.LootFrame:IsShown()
 	and not (NeP._G.GetNumLootItems() > 0) then
