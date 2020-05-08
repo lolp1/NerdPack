@@ -83,6 +83,10 @@ NeP.DSL:Register('player', function(target)
   return NeP._G.UnitIsPlayer(target)
 end)
 
+NeP.DSL:Register('inphase', function(target)
+  return NeP._G.UnitInPhase(target)
+end)
+
 NeP.DSL:Register('exists', function(target)
   return NeP.Protected.ObjectExists(target)
 end)
@@ -159,12 +163,12 @@ NeP.DSL:Register('movingfor', function(target)
   return 0
 end)
 
-NeP.DSL:Register('friend', function(target)
-  return not NeP._G.UnitCanAttack('player', target)
+NeP.DSL:Register('friend', function(unit, _, unit2)
+  return not NeP._G.UnitIsFriend(unit2 or 'player', unit)
 end)
 
-NeP.DSL:Register('enemy', function(target)
-  return NeP._G.UnitCanAttack('player', target)
+NeP.DSL:Register({'enemy', 'canattack'}, function(unit, _, unit2)
+  return NeP._G.UnitCanAttack(unit2 or 'player', unit)
 end)
 
 NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
@@ -205,8 +209,12 @@ NeP.DSL:Register('hasName', function (target, expectedName)
   return target and NeP.DSL:Get('name')(target):lower():find(expectedName:lower()) ~= nil
 end)
 
-NeP.DSL:Register('creatureType', function (target, expectedType)
-  return NeP._G.UnitCreatureType(target) == expectedType
+NeP.DSL:Register('creatureType', function (target)
+  return NeP._G.UnitCreatureType(target)
+end)
+
+NeP.DSL:Register('hascreatureType', function (target, expectedType)
+  return NeP.DSL:Get('creatureType')(target) == expectedType
 end)
 
 NeP.DSL:Register('class', function (target, expectedClass)
