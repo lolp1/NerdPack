@@ -5,7 +5,7 @@ NeP.DSL:Register("area.enemies", function(unit, distance)
   if not NeP.DSL:Get('exists')(unit) then return 0 end
   local total = 0
   for _, Obj in pairs(NeP.OM:Get('Enemy', true)) do
-    if NeP._G.UnitCanAttack(Obj.key, "player")
+    if NeP.DSL:Get('canattack')(Obj.key)
 	  and (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy)
     and Obj.range < tonumber(distance) then
       total = total +1
@@ -19,7 +19,7 @@ NeP.DSL:Register("area.enemies.infront", function(unit, distance)
   if not NeP.DSL:Get('exists')(unit) then return 0 end
   local total = 0
   for _, Obj in pairs(NeP.OM:Get('Enemy', true)) do
-    if NeP._G.UnitCanAttack(Obj.key, "player")
+    if NeP.DSL:Get('canattack')(Obj.key)
 	  and (NeP.DSL:Get('combat')(Obj.key) or Obj.isdummy)
     and Obj.range < tonumber(distance)
     and NeP.DSL:Get("infront")(Obj.key, nil, unit) then
@@ -56,7 +56,7 @@ end)
 
 -- USAGE: UNIT.area(DISTANCE).friendly.infront >= #
 NeP.DSL:Register("area.incdmg", function(target, max_dist)
-  if not NeP.DSL:Get('exists')(unit) then return 0 end
+  if not NeP.DSL:Get('exists')(target) then return 0 end
   local total = 0
   for _, Obj in pairs(NeP.OM:Get("Roster")) do
     if Obj.range < tonumber(max_dist) then
@@ -68,7 +68,7 @@ end)
 
 -- USAGE: UNIT.dead(DISTANCE).friendly.infront >= #
 NeP.DSL:Register("area.dead", function(target, max_dist)
-  if not NeP.DSL:Get('exists')(unit) then return 0 end
+  if not NeP.DSL:Get('exists')(target) then return 0 end
   local total = 0
   for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if Obj.range < tonumber(max_dist) then
