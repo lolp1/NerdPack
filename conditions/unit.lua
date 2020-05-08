@@ -95,6 +95,10 @@ NeP.DSL:Register('guid', function(target)
   return NeP.Protected.ObjectGUID(target)
 end)
 
+NeP.DSL:Register('visible', function(target)
+  return NeP._G.UnitIsVisible(target)
+end)
+
 NeP.DSL:Register('dead', function (target)
   return NeP._G.UnitIsDeadOrGhost(target)
 end)
