@@ -15,7 +15,7 @@ local Doubles = {
 
 --[[ This Logs the damage done for every unit ]]
 local logDamage = function(...)
-	local timestamp,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount = ...
+	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellID, _, school, Amount = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Mixed
@@ -124,24 +124,28 @@ local addAura = function(...)
 	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
 	if not DestObj[arrType] then return end -- this unit is not tracking buffs/debuffs
 	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
-	local xname, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
-	if not xname then return end --huh?
-	local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
-	local data = found or {}
-	data.isCastByPlayer = SourceGUID == NeP.DSL:Get('guid')('player')
-	data.SourceGUID = SourceGUID
-	data.spellId = spellId
-	data.spellName = spellName
-	data.auraType = auraType
-	data.type = type
-	data.count = count
-	data.isStealable = isStealable
-	data.isBoss = isBoss
-	data.expiration = expiration
-	data.duration = duration
-	data.caster = caster
-	DestObj[arrType][spellName] = data
-	DestObj[arrType][spellId] = data
+	-- delay everything one frame / tick?
+	-- some buffs are wierd, they have a one frame / tick delay (maybe...)
+	NeP._G.C_Timer.After(0, function()
+		local xname, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
+		if not xname then return end --huh?
+		local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
+		local data = found or {}
+		data.isCastByPlayer = SourceGUID == NeP.DSL:Get('guid')('player')
+		data.SourceGUID = SourceGUID
+		data.spellId = spellId
+		data.spellName = spellName
+		data.auraType = auraType
+		data.type = type
+		data.count = count
+		data.isStealable = isStealable
+		data.isBoss = isBoss
+		data.expiration = expiration
+		data.duration = duration
+		data.caster = caster
+		DestObj[arrType][spellName] = data
+		DestObj[arrType][spellId] = data
+	end)
 end
 
 local removeAura = function(...)
@@ -169,7 +173,7 @@ local EVENTS = {
 	['SWING_DAMAGE'] = logSwing,
 	['SPELL_HEAL'] = logHealing,
 	['SPELL_PERIODIC_HEAL'] = logHealing,
-	['UNIT_DIED'] = function(...) 
+	['UNIT_DIED'] = function(...)
 		local _,_,_, _, _,_,_, DestGUID = ...
 		local Obj = NeP.OM:FindObjectByGuid(DestGUID)
 		if not Obj or not (Obj.tbl == 'Friendly' or Obj.tbl == 'Enemy') then
