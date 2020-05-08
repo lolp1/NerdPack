@@ -168,7 +168,7 @@ NeP.DSL:Register('movingfor', function(target)
 end)
 
 NeP.DSL:Register('friend', function(unit, _, unit2)
-  return not NeP._G.UnitIsFriend(unit2 or 'player', unit)
+  return NeP._G.UnitIsFriend(unit2 or 'player', unit)
 end)
 
 NeP.DSL:Register({'enemy', 'canattack'}, function(unit, _, unit2)
