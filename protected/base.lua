@@ -57,7 +57,7 @@ function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
         local ObjID = select(6, strsplit('-', GUID))
         self[ref][GUID] = {
             key = Obj,
-            name = NeP.DSl:Get('name')(Obj),
+            name = NeP.DSL:Get('name')(Obj),
             distance = NeP.DSL:Get('distance')(Obj),
             range = range,
             id = tonumber(ObjID or 0),
