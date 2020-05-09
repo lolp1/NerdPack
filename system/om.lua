@@ -41,7 +41,7 @@ function NeP.OM.Get(_, ref, want_plates)
 	return NeP.OM[ref]
 end
 
-local forced_role = {
+NeP.OM.forced_role = {
 	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
 }
 
@@ -152,7 +152,7 @@ function NeP.OM.Insert(_, ref, Obj)
 			health = NeP.Healing.healthPercent(Obj),
 			healthRaw = NeP.DSL:Get('health.actual')(Obj),
 			healthMax = NeP.DSL:Get('health.max')(Obj),
-			role = forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
+			role = NeP.OM.forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
 			combat_tack_enable = true,
 			-- Damage Taken
 			dmgTaken = 0,
@@ -253,7 +253,7 @@ local function cleanUnit(Obj)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		Obj.tbl = 'Dead'
 	elseif Obj.tbl == 'Dead' and not dead then
-		local where =NeP.DSL:Get('friend')(Obj.key) and 'Friendly' or 'Enemy'
+		local where = NeP.DSL:Get('friend')(Obj.key) and 'Friendly' or 'Enemy'
 		NeP.OM[where][Obj.guid] = Obj
 		NeP.OM.Dead[Obj.guid] = nil
 		Obj.tbl = where
@@ -298,7 +298,7 @@ local function cleanUnit(Obj)
 	Obj.health = NeP.DSL:Get('health')(Obj.key)
 	Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
 	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
-	Obj.role = forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
+	Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
