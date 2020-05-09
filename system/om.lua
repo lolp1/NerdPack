@@ -302,7 +302,8 @@ local function cleanUnit(Obj)
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
-	if Obj.name == 'Unknown' then
+	if Obj.name == 'Unknown'
+	or  Obj.name == '' then
 		Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
 	end
 end
