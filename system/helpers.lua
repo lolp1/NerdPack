@@ -17,14 +17,14 @@ end
 local function blackListSpell(GUID, spell)
 	NeP.ActionLog:Add(">>>> Blacklisted ", spell, "", GUID)
 	_Failed[GUID][spell] =  true
-	C_Timer.After(1, (function()
+	C_Timer.After(0.5, (function()
 		_Failed[GUID][spell] =  nil
 	end), nil)
 end
 
 local function blackListInfront(GUID)
 	_Failed[GUID].infront = true
-	C_Timer.After(1, (function()
+	C_Timer.After(0.5, (function()
 		_Failed[GUID].infront = nil
 	end), nil)
 end
