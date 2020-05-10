@@ -97,16 +97,16 @@ local function preLoadDebuffs(Obj)
 	end
 end
 
-function NeP.OM.InsertObject(_, ref, Obj, GUID)
+function NeP.OM.InsertObject(_, ref, Obj)
 	if Obj.distance <= NeP.OM.max_distance then
-		NeP.OM[ref][GUID] = Obj
+		NeP.OM[ref][Obj.guid] = Obj
 	end
 end
 
 -- they are the same for now, but i might need to change latter.
 NeP.OM.InsertCritter = NeP.OM.InsertObject
 
-function NeP.OM.Insert(_, ref, Obj, GUID)
+function NeP.OM.Insert(_, ref, Obj)
 	Obj.range = NeP.DSL:Get('range')(Obj.key) or 999
 	if Obj.range <= NeP.OM.max_distance
 	and NeP.DSL:Get('los')(Obj.key) then
@@ -119,7 +119,7 @@ function NeP.OM.Insert(_, ref, Obj, GUID)
 		Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 		preLoadBuffs(Obj)
 		preLoadDebuffs(Obj)
-		NeP.OM[ref][GUID] = Obj
+		NeP.OM[ref][Obj.guid] = Obj
 	end
 end
 
@@ -129,6 +129,32 @@ local critters = {
 	["Critter"] = true,
 	["Totem"] = true
   }
+
+function NeP.OM.FitObject(_, Obj)
+	-- stop if off
+	if not NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		return
+	end
+	-- Objects
+	if Obj.isObject then
+		NeP.OM:InsertObject('Objects', Obj)
+	elseif Obj.isAreaTrigger then
+		NeP.OM:InsertObject('AreaTriggers', Obj)
+	-- Units
+	elseif NeP.DSL:Get('inphase')(Obj.key) then
+		-- Critters
+		if critters[NeP.DSL:Get('creatureType')(Obj.key)] then
+			NeP.OM:InsertCritter('Critters', Obj)
+		-- Units
+		elseif NeP.DSL:Get('dead')(Obj.key) then
+			NeP.OM:Insert('Dead', Obj)
+		elseif NeP.DSL:Get('friend')(Obj.key) then
+			NeP.OM:Insert('Friendly', Obj)
+		elseif NeP.DSL:Get('canattack')(Obj.key) then
+			NeP.OM:Insert('Enemy', Obj)
+		end
+	end
+end
 
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	if not Obj then return end
@@ -153,6 +179,8 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		healthMax = 0,
 		role = nil,
 		combat_tack_enable = true,
+		isObject = isObject,
+		isAreaTrigger = isAreaTrigger,
 		-- Damage Taken
 		dmgTaken = 0,
 		dmgTaken_P = 0,
@@ -181,29 +209,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		debuffs = {},
 	}
 	NeP.OM.Memory[GUID] = data
-	-- stop if off
-	if not NeP.DSL:Get("toggle")(nil, "mastertoggle") then
-		return
-	end
-	-- Objects
-	if isObject then
-		NeP.OM:InsertObject('Objects', data, GUID)
-	elseif isAreaTrigger then
-		NeP.OM:InsertObject('AreaTriggers', data, GUID)
-	-- Units
-	elseif NeP.DSL:Get('inphase')(Obj) then
-		-- Critters
-		if critters[NeP.DSL:Get('creatureType')(Obj)] then
-			NeP.OM:InsertCritter('Critters', data, GUID)
-		-- Units
-		elseif NeP.DSL:Get('dead')(Obj) then
-			NeP.OM:Insert('Dead', data, GUID)
-		elseif NeP.DSL:Get('friend')(Obj) then
-			NeP.OM:Insert('Friendly', data, GUID)
-		elseif NeP.DSL:Get('canattack')(Obj) then
-			NeP.OM:Insert('Enemy', data, GUID)
-		end
-	end
+	NeP.OM:FitObject(data)
 end
 
 local function cleanObject(Obj)
@@ -295,8 +301,11 @@ end
 
 local function cleanUpdate()
 	for GUID, Obj in pairs(NeP.OM.Memory) do
+		-- should this be inserted now?
+		if not Obj.tbl then
+			NeP.OM:FitObject(Obj)
 		-- completly invalid?
-		if not NeP.DSL:Get('exists')(Obj.key) then
+		elseif not NeP.DSL:Get('exists')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
 			if Obj.tbl then
 				NeP.OM[Obj.tbl][Obj.guid] = nil
