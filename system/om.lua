@@ -243,7 +243,6 @@ local function cleanUnit(Obj)
 	or not NeP.DSL:Get('los')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
-		NeP.OM.Dead[Obj.guid] = nil -- fail safe
 		return
 	end
 	-- move Dead
@@ -315,13 +314,11 @@ local function cleanUpdate()
 			NeP.OM.Memory[GUID] = nil
 			NeP.OM[Obj.tbl][Obj.guid] = nil
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
-			NeP.OM.Dead[Obj.guid] = nil -- fail safe
 		--guid changed?(how? reset it...)
 		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
 			NeP.OM[Obj.tbl][Obj.guid] = nil
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
-			NeP.OM.Dead[Obj.guid] = nil -- fail safe
 			NeP.OM:Add(Obj.key)
 		--clean
 		elseif Obj.tbl == 'Objects' then
@@ -378,6 +375,7 @@ function NeP.OM.RemoveObjectByGuid(_, guid)
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
 	NeP.OM.Memory[Obj.guid] = nil
+	NeP.OM.Roster[Obj.guid] = nil -- fail safe
 	NeP.OM[Obj.tbl][Obj.guid] = nil
 end
 
