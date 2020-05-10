@@ -100,6 +100,9 @@ end
 function NeP.OM.InsertObject(_, ref, Obj)
 	Obj.tbl = ref
 	if Obj.distance <= NeP.OM.max_distance then
+		_G.C_Timer.After(5, function()
+			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+		end)
 		NeP.OM[ref][Obj.guid] = Obj
 	end
 end
@@ -118,6 +121,9 @@ function NeP.OM.Insert(_, ref, Obj)
 		Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
 		Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
 		Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
+		_G.C_Timer.After(5, function()
+			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+		end)
 		preLoadBuffs(Obj)
 		preLoadDebuffs(Obj)
 		NeP.OM[ref][Obj.guid] = Obj
@@ -223,6 +229,17 @@ local function cleanObject(Obj)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		return
 	end
+	--update
+	if Obj.name == 'Unknown'
+	or Obj.name == '' then
+		Obj.name = 'Loading'
+		_G.C_Timer.After(5, function()
+			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+			if Obj.name == '' then
+				Obj.name = 'ERROR!_NO_NAME!'
+			end
+		end)
+	end
 	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
@@ -295,7 +312,13 @@ local function cleanUnit(Obj)
 	Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 	if Obj.name == 'Unknown'
 	or Obj.name == '' then
-		Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+		Obj.name = 'Loading'
+		_G.C_Timer.After(5, function()
+			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+			if Obj.name == '' then
+				Obj.name = 'ERROR!_NO_NAME!'
+			end
+		end)
 	end
 	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
