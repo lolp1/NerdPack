@@ -93,7 +93,7 @@ local function preLoadDebuffs(Obj)
 end
 
 function NeP.OM.InsertObject(_, ref, Obj, GUID)
-	if Obj.distance > NeP.OM.max_distance then
+	if Obj.distance <= NeP.OM.max_distance then
 		NeP.OM[ref][GUID] = Obj
 	end
 end
@@ -102,15 +102,16 @@ end
 NeP.OM.InsertCritter = NeP.OM.InsertObject
 
 function NeP.OM.Insert(_, ref, Obj, GUID)
-	Obj.range = NeP.DSL:Get('range')(Obj) or 999
-	if Obj.range > NeP.OM.max_distance
-	and not NeP.DSL:Get('los')(Obj.key) then
+	Obj.range = NeP.DSL:Get('range')(Obj.key) or 999
+	if Obj.range <= NeP.OM.max_distance
+	and NeP.DSL:Get('los')(Obj.key) then
 		Obj.tbl = ref
 		Obj.predicted = NeP.DSL:Get('health.predicted')(Obj.key)
 		Obj.predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj.key)
 		Obj.health = NeP.DSL:Get('health')(Obj.key)
 		Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
 		Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
+		Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 		preLoadBuffs(Obj)
 		preLoadDebuffs(Obj)
 		NeP.OM[ref][GUID] = Obj
@@ -125,6 +126,7 @@ local critters = {
   }
 
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
+	if not Obj then return end
 	local GUID = NeP.DSL:Get('guid')(Obj)
 	if not GUID then return end
 	if NeP.OM.Memory[GUID] then
@@ -144,7 +146,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 		health = 0,
 		healthRaw = 0,
 		healthMax = 0,
-		role = NeP.OM.forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
+		role = nil,
 		combat_tack_enable = true,
 		-- Damage Taken
 		dmgTaken = 0,
@@ -219,6 +221,7 @@ local function cleanUnit(Obj)
 	if Obj.range > NeP.OM.max_distance
 	or not NeP.DSL:Get('inphase')(Obj.key)
 	or not NeP.DSL:Get('los')(Obj.key) then
+		print(Obj.tbl)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
 		return
@@ -291,12 +294,16 @@ local function cleanUpdate()
 		-- completly invalid?
 		if not NeP.DSL:Get('exists')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
-			NeP.OM[Obj.tbl][Obj.guid] = nil
+			if Obj.tbl then
+				NeP.OM[Obj.tbl][Obj.guid] = nil
+			end
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
 		--guid changed?(how? reset it...)
 		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
-			NeP.OM[Obj.tbl][Obj.guid] = nil
+			if Obj.tbl then
+				NeP.OM[Obj.tbl][Obj.guid] = nil
+			end
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
 			NeP.OM:Add(Obj.key)
 		--clean
@@ -345,7 +352,9 @@ function NeP.OM.MoveObjectByGuid(_, guid, ref)
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not (Obj and NeP.OM[ref]) then return end
 	NeP.OM[ref][Obj.guid] = Obj
-	NeP.OM[Obj.tbl][Obj.guid] = nil
+	if Obj.tbl then
+		NeP.OM[Obj.tbl][Obj.guid] = nil
+	end
 	NeP.OM.Roster[Obj.guid] = nil -- fail safe
 	Obj.tbl = ref
 end
@@ -356,7 +365,9 @@ function NeP.OM.RemoveObjectByGuid(_, guid)
 	if not Obj then return end
 	NeP.OM.Memory[Obj.guid] = nil
 	NeP.OM.Roster[Obj.guid] = nil -- fail safe
-	NeP.OM[Obj.tbl][Obj.guid] = nil
+	if Obj.tbl then
+		NeP.OM[Obj.tbl][Obj.guid] = nil
+	end
 end
 
 NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
