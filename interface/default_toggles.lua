@@ -1,6 +1,5 @@
 local _, NeP = ...
 local L = NeP.Locale
-local IsControlKeyDown = NeP._G.IsControlKeyDown
 
 -- MasterToggle
 NeP.Interface:AddToggle({
@@ -8,13 +7,9 @@ NeP.Interface:AddToggle({
   name = 'MasterToggle',
   text = L:TA('mainframe', 'MasterToggle'),
   icon = 'Interface\\ICONS\\Ability_repair.png',
-  func = function(self, button)
+  func = function(_, button)
     if button == "RightButton" then
-      if IsControlKeyDown() then
-        self.MainFrame.drag:Show()
-      else
-        NeP.Interface:DropMenu()
-      end
+      NeP.Interface:DropMenu()
       NeP.Interface:UpdateCRs()
     end
   end,
