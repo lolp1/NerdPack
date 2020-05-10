@@ -69,24 +69,25 @@ local function RefreshGUI()
 			txt = txt
 			..'( cffff0000NO_TABLE|r! )'
 		end
-		if Obj.id then
+		txt = txt ..'( '
+		if Obj.id and Obj.id ~= 0 then
 			txt = txt
-			..'( |cffff0000ID|r: '
+			..'|cffff0000ID|r: '
 			..(Obj.id or '??')
 		end
-		if Obj.health then
+		if Obj.health and Obj.health ~= 0 then
 			txt = txt
-			..' / |cffff0000Health|r: '
+			..' |cffff0000Health|r: '
 			..(Obj.health or 0)
 		end
-		if Obj.range then
+		if Obj.range and Obj.range < 999 then
 			txt = txt
-			..' / |cffff0000Range|r: '
+			..' |cffff0000Range|r: '
 			..(NeP.Core:Round(Obj.range or 0))
 		end
-		if Obj.distance then
+		if Obj.distance and Obj.distance < 999 then
 			txt = txt
-			..' / |cffff0000Dist|r: '
+			..' |cffff0000Dist|r: '
 			..(NeP.Core:Round(Obj.distance or 0))
 		end
 		txt = txt .. ' )'
