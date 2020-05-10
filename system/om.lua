@@ -92,135 +92,121 @@ local function preLoadDebuffs(Obj)
 	end
 end
 
-function NeP.OM.InsertObject(_, ref, Obj)
-	local GUID = NeP.DSL:Get('guid')(Obj)
-	if GUID then
-		if NeP.OM.Memory[GUID] then
-			return
-		end
-		local distance = NeP.DSL:Get('distance')(Obj) or 999
-		local ObjID = select(6, NeP._G.strsplit('-', GUID))
-		local data = {
-			key = Obj,
-			name = NeP.DSL:Get('name')(Obj),
-			distance = distance,
-			id = tonumber(ObjID or 0),
-			guid = GUID,
-			tbl = ref,
-			--buffs
-			buffs = {},
-			debuffs = {},
-		}
-		if NeP.DSL:Get("toggle")(nil, "mastertoggle")
-		and distance > NeP.OM.max_distance then
-			NeP.OM[ref][GUID] = data
-		end
-		NeP.OM.Memory[GUID] = data
+function NeP.OM.InsertObject(_, ref, Obj, GUID)
+	if Obj.distance > NeP.OM.max_distance then
+		NeP.OM[ref][GUID] = Obj
 	end
 end
 
 -- they are the same for now, but i might need to change latter.
 NeP.OM.InsertCritter = NeP.OM.InsertObject
 
-function NeP.OM.Insert(_, ref, Obj)
-	local GUID = NeP.DSL:Get('guid')(Obj)
-	if GUID then
-		if NeP.OM.Memory[GUID] then
-			return
-		end
-		local range = NeP.DSL:Get('range')(Obj) or 999
-		local ObjID = select(6, NeP._G.strsplit('-', GUID))
-		local data = {
-			key = Obj,
-			name = NeP.DSL:Get('name')(Obj) or 'ERROR!_NO_NAME?',
-			distance = NeP.DSL:Get('distance')(Obj),
-			range = range,
-			id = tonumber(ObjID or 0),
-			guid = GUID,
-			isdummy = NeP.DSL:Get('isdummy')(Obj),
-			tbl = ref,
-			predicted = NeP.DSL:Get('health.predicted')(Obj),
-			predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj),
-			health = NeP.DSL:Get('health')(Obj),
-			healthRaw = NeP.DSL:Get('health.actual')(Obj),
-			healthMax = NeP.DSL:Get('health.max')(Obj),
-			role = NeP.OM.forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
-			combat_tack_enable = true,
-			-- Damage Taken
-			dmgTaken = 0,
-			dmgTaken_P = 0,
-			dmgTaken_M = 0,
-			hits_taken = 0,
-			lastHit_taken = 0,
-			-- Damage Done
-			dmgDone = 0,
-			dmgDone_P = 0,
-			dmgDone_M = 0,
-			hits_done = 0,
-			lastHit_done = 0,
-			-- Healing taken
-			heal_taken = 0,
-			heal_hits_taken = 0,
-			-- Healing Done
-			heal_done = 0,
-			heal_hits_done = 0,
-			--shared
-			last_hit_taken_time = 0,
-			last_hit_done_time = 0,
-			combat_time = 0,
-			spell_value = {},
-			--buffs
-			buffs = {},
-			debuffs = {},
-		}
-		preLoadBuffs(data)
-		preLoadDebuffs(data)
-		if NeP.DSL:Get("toggle")(nil, "mastertoggle")
-		and range > NeP.OM.max_distance
-		and not NeP.DSL:Get('los')(Obj) then
-			NeP.OM[ref][GUID] = data
-		end
-		NeP.OM.Memory[GUID] = data
+function NeP.OM.Insert(_, ref, Obj, GUID)
+	Obj.range = NeP.DSL:Get('range')(Obj) or 999
+	if Obj.range > NeP.OM.max_distance
+	and not NeP.DSL:Get('los')(Obj.key) then
+		Obj.tbl = ref
+		Obj.predicted = NeP.DSL:Get('health.predicted')(Obj.key)
+		Obj.predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj.key)
+		Obj.health = NeP.DSL:Get('health')(Obj.key)
+		Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
+		Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
+		preLoadBuffs(Obj)
+		preLoadDebuffs(Obj)
+		NeP.OM[ref][GUID] = Obj
 	end
 end
 
-local critters ={
-	["Non-combat Pet"]=true,
-	["Wild Pet"]=true,
-	["Critter"]=true,
-	["Totem"]=true
+local critters = {
+	["Non-combat Pet"] = true,
+	["Wild Pet"] = true,
+	["Critter"] = true,
+	["Totem"] = true
   }
 
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
+	local GUID = NeP.DSL:Get('guid')(Obj)
+	if not GUID then return end
+	if NeP.OM.Memory[GUID] then
+		return
+	end
+	local ObjID = select(6, NeP._G.strsplit('-', GUID))
+	local data = {
+		key = Obj,
+		name = NeP.DSL:Get('name')(Obj) or 'ERROR!_NO_NAME?',
+		distance = NeP.DSL:Get('distance')(Obj),
+		range = 999,
+		id = tonumber(ObjID or 0),
+		guid = GUID,
+		isdummy = false,
+		predicted = 0,
+		predicted_Raw = 0,
+		health = 0,
+		healthRaw = 0,
+		healthMax = 0,
+		role = NeP.OM.forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
+		combat_tack_enable = true,
+		-- Damage Taken
+		dmgTaken = 0,
+		dmgTaken_P = 0,
+		dmgTaken_M = 0,
+		hits_taken = 0,
+		lastHit_taken = 0,
+		-- Damage Done
+		dmgDone = 0,
+		dmgDone_P = 0,
+		dmgDone_M = 0,
+		hits_done = 0,
+		lastHit_done = 0,
+		-- Healing taken
+		heal_taken = 0,
+		heal_hits_taken = 0,
+		-- Healing Done
+		heal_done = 0,
+		heal_hits_done = 0,
+		--shared
+		last_hit_taken_time = 0,
+		last_hit_done_time = 0,
+		combat_time = 0,
+		spell_value = {},
+		--buffs
+		buffs = {},
+		debuffs = {},
+	}
+	NeP.OM.Memory[GUID] = data
+	-- stop if off
+	if not NeP.DSL:Get("toggle")(nil, "mastertoggle") then
+		return
+	end
 	-- Objects
 	if isObject then
-		NeP.OM:InsertObject('Objects', Obj)
+		NeP.OM:InsertObject('Objects', data, GUID)
 	elseif isAreaTrigger then
-		NeP.OM:InsertObject('AreaTriggers', Obj)
+		NeP.OM:InsertObject('AreaTriggers', data, GUID)
 	-- Units
-	elseif NeP.DSL:Get("exists")(Obj)
-	and NeP.DSL:Get('inphase')(Obj) then
+	elseif NeP.DSL:Get('inphase')(Obj) then
 		-- Critters
 		if critters[NeP.DSL:Get('creatureType')(Obj)] then
-			NeP.OM:InsertCritter('Critters', Obj)
+			NeP.OM:InsertCritter('Critters', data, GUID)
 		-- Units
 		elseif NeP.DSL:Get('dead')(Obj) then
-			NeP.OM:Insert('Dead', Obj)
+			NeP.OM:Insert('Dead', data, GUID)
 		elseif NeP.DSL:Get('friend')(Obj) then
-			NeP.OM:Insert('Friendly', Obj)
+			NeP.OM:Insert('Friendly', data, GUID)
 		elseif NeP.DSL:Get('canattack')(Obj) then
-			NeP.OM:Insert('Enemy', Obj)
+			NeP.OM:Insert('Enemy', data, GUID)
 		end
 	end
 end
 
 local function cleanObject(Obj)
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
+	-- remove invalid units
 	if Obj.distance > NeP.OM.max_distance then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		return
 	end
-	--update
+	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
@@ -294,6 +280,7 @@ local function cleanUnit(Obj)
 	or Obj.name == '' then
 		Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
 	end
+	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
 		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
