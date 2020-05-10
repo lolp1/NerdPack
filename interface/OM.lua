@@ -14,6 +14,7 @@ local bt = {
 	{key = 'Roster', text = 'Roster'},
 	{key = 'Objects', text = 'Objects'},
 	{key = 'AreaTriggers', text = 'AreaTriggers'},
+	{key = 'Memory', text = 'Memory (ALL)'},
 }
 local combo_eval = {key = "list", list = bt, default = "Enemy"}
 local gui_eval = {key = 'NePOMgui', width = 500, height = 250, header = true, title = 'ObjectManager GUI'}
