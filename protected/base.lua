@@ -51,11 +51,11 @@ local ValidUnitsN = {'boss', 'arena', 'arenapet'}
 
 NeP.Protected.nPlates = {Friendly = {}, Enemy = {}}
 
-function NeP.Protected.nPlates:Insert(ref, Obj, GUID)
+function NeP.Protected.nPlates.Insert(_, ref, Obj, GUID)
     local range = NeP.DSL:Get('range')(Obj)
     if range <= NeP.OM.max_distance then
         local ObjID = select(6, strsplit('-', GUID))
-        self[ref][GUID] = {
+        NeP.Protected.nPlates[ref][GUID] = {
             key = Obj,
             name = NeP.DSL:Get('name')(Obj),
             distance = NeP.DSL:Get('distance')(Obj),

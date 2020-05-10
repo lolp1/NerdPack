@@ -13,9 +13,14 @@ NeP.OM = {
 }
 
 local function MergeTable(ref)
-	local temp = {unpack(NeP.OM[ref])}
-	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
-		if not table[GUID]
+	local temp = {}
+	for GUID, Obj in pairs(NeP.OM[ref] or {}) do
+		if not temp[GUID] then
+			temp[GUID] = Obj
+		end
+	end
+	for GUID, Obj in pairs(NeP.Protected.nPlates[ref] or {}) do
+		if not temp[GUID]
 		and NeP.DSL:Get('exists')(Obj.key)
 		and NeP.DSL:Get('inphase')(Obj.key)
 		and GUID == NeP.DSL:Get('guid')(Obj.key) then
@@ -221,7 +226,6 @@ local function cleanUnit(Obj)
 	if Obj.range > NeP.OM.max_distance
 	or not NeP.DSL:Get('inphase')(Obj.key)
 	or not NeP.DSL:Get('los')(Obj.key) then
-		print(Obj.tbl)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
 		return
