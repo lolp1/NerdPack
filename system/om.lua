@@ -222,6 +222,19 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	NeP.OM:FitObject(data)
 end
 
+local function loadName(Obj)
+	Obj.name = 'Loading'
+	Obj.name = NeP.DSL:Get('name')(Obj.key)
+	if Obj.name == '' then
+		_G.C_Timer.After(1, function()
+			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+			if Obj.name == '' then
+				Obj.name = 'ERROR!_NO_NAME!'
+			end
+		end)
+	end
+end
+
 local function cleanObject(Obj)
 	Obj.distance = NeP.DSL:Get('distance')(Obj.key)
 	-- remove invalid units
@@ -232,13 +245,7 @@ local function cleanObject(Obj)
 	--update
 	if Obj.name == 'Unknown'
 	or Obj.name == '' then
-		Obj.name = 'Loading'
-		_G.C_Timer.After(5, function()
-			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
-			if Obj.name == '' then
-				Obj.name = 'ERROR!_NO_NAME!'
-			end
-		end)
+		loadName(Obj)
 	end
 	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
@@ -312,13 +319,7 @@ local function cleanUnit(Obj)
 	Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 	if Obj.name == 'Unknown'
 	or Obj.name == '' then
-		Obj.name = 'Loading'
-		_G.C_Timer.After(5, function()
-			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
-			if Obj.name == '' then
-				Obj.name = 'ERROR!_NO_NAME!'
-			end
-		end)
+		loadName(Obj)
 	end
 	-- restore
 	if not NeP.OM[Obj.tbl][Obj.guid] then
