@@ -98,6 +98,7 @@ local function preLoadDebuffs(Obj)
 end
 
 function NeP.OM.InsertObject(_, ref, Obj)
+	Obj.tbl = ref
 	if Obj.distance <= NeP.OM.max_distance then
 		NeP.OM[ref][Obj.guid] = Obj
 	end
@@ -107,10 +108,10 @@ end
 NeP.OM.InsertCritter = NeP.OM.InsertObject
 
 function NeP.OM.Insert(_, ref, Obj)
+	Obj.tbl = ref
 	Obj.range = NeP.DSL:Get('range')(Obj.key) or 999
 	if Obj.range <= NeP.OM.max_distance
 	and NeP.DSL:Get('los')(Obj.key) then
-		Obj.tbl = ref
 		Obj.predicted = NeP.DSL:Get('health.predicted')(Obj.key)
 		Obj.predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj.key)
 		Obj.health = NeP.DSL:Get('health')(Obj.key)
@@ -166,8 +167,8 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	local ObjID = select(6, NeP._G.strsplit('-', GUID))
 	local data = {
 		key = Obj,
-		name = NeP.DSL:Get('name')(Obj) or 'ERROR!_NO_NAME?',
-		distance = NeP.DSL:Get('distance')(Obj),
+		name = '',
+		distance = 999,
 		range = 999,
 		id = tonumber(ObjID or 0),
 		guid = GUID,
