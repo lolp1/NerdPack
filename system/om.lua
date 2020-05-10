@@ -12,22 +12,15 @@ NeP.OM = {
 	max_distance = 100
 }
 
-local function MergeTable_Insert(table, Obj, GUID)
-	if not table[GUID]
-	and NeP.DSL:Get('exists')(Obj.key)
-	and NeP.DSL:Get('inphase')(Obj.key)
-	and GUID == NeP.DSL:Get('guid')(Obj.key) then
-		table[GUID] = Obj
-	end
-end
-
 local function MergeTable(ref)
-	local temp = {}
-	for GUID, Obj in pairs(NeP.OM[ref]) do
-		MergeTable_Insert(temp, Obj, GUID)
-	end
+	local temp = {unpack(NeP.OM[ref])}
 	for GUID, Obj in pairs(NeP.Protected.nPlates[ref]) do
-		MergeTable_Insert(temp, Obj, GUID)
+		if not table[GUID]
+		and NeP.DSL:Get('exists')(Obj.key)
+		and NeP.DSL:Get('inphase')(Obj.key)
+		and GUID == NeP.DSL:Get('guid')(Obj.key) then
+			temp[GUID] = Obj
+		end
 	end
 	return temp
 end
