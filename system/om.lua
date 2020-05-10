@@ -314,10 +314,14 @@ local function cleanUpdate()
 		if not NeP.DSL:Get('exists')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
 			NeP.OM[Obj.tbl][Obj.guid] = nil
+			NeP.OM.Roster[Obj.guid] = nil -- fail safe
+			NeP.OM.Dead[Obj.guid] = nil -- fail safe
 		--guid changed?(how? reset it...)
 		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
 			NeP.OM[Obj.tbl][Obj.guid] = nil
+			NeP.OM.Roster[Obj.guid] = nil -- fail safe
+			NeP.OM.Dead[Obj.guid] = nil -- fail safe
 			NeP.OM:Add(Obj.key)
 		--clean
 		elseif Obj.tbl == 'Objects' then
