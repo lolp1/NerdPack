@@ -172,7 +172,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	end
 	local ObjID = select(6, NeP._G.strsplit('-', GUID))
 	-- filter those with no id
-	if not ObjID and not NeP.DSL:Get('is')(Obj, 'player') then return end
+	if not ObjID and not NeP.DSL:Get('isplayer')(Obj) then return end
 	local id = tonumber(ObjID or 0)
 	local data = {
 		key = Obj,

@@ -79,7 +79,7 @@ NeP.DSL:Register('target', function(target, spell)
   return ( NeP.DSL:Get('guid')(target .. 'target') == NeP.DSL:Get('guid')(spell) )
 end)
 
-NeP.DSL:Register('player', function(target)
+NeP.DSL:Register({'player', 'isplayer'}, function(target)
   return NeP._G.UnitIsPlayer(target)
 end)
 
