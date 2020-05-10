@@ -64,8 +64,8 @@ local function RefreshGUI()
 		local SB = getStatusBar()
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
 		local name = (Obj.name or '???')
-		if name:len() > 15 then
-			name = name:sub(0,15) .. '...'
+		if name:len() > 25 then
+			name = name:sub(0,25) .. '...'
 		end
 		SB.frame.Left:SetText(('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')) .. name)
 		local txt = ''
