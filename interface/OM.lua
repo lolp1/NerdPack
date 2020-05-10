@@ -63,7 +63,11 @@ local function RefreshGUI()
 	for _, Obj in pairs(GetTable()) do
 		local SB = getStatusBar()
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
-		SB.frame.Left:SetText('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')..(Obj.name or '???'))
+		local name = (Obj.name or '???')
+		if name:len() > 15 then
+			name = name:sub(0,15) .. '...'
+		end
+		SB.frame.Left:SetText(('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')) .. name)
 		local txt = ''
 		if not Obj.tbl then
 			txt = txt
