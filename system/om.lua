@@ -139,10 +139,9 @@ function NeP.OM.Insert(_, ref, Obj)
 			guid = GUID,
 			isdummy = NeP.DSL:Get('isdummy')(Obj),
 			tbl = ref,
-			--healing
-			predicted = NeP.Healing.GetPredictedHealth_Percent(Obj),
-			predicted_Raw = NeP.Healing.GetPredictedHealth(Obj),
-			health = NeP.Healing.healthPercent(Obj),
+			predicted = NeP.DSL:Get('health.predicted')(Obj),
+			predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj),
+			health = NeP.DSL:Get('health')(Obj),
 			healthRaw = NeP.DSL:Get('health.actual')(Obj),
 			healthMax = NeP.DSL:Get('health.max')(Obj),
 			role = NeP.OM.forced_role[ObjID] or NeP.DSL:Get('role')(Obj),
@@ -292,7 +291,7 @@ local function cleanUnit(Obj)
 	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
 	Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
 	if Obj.name == 'Unknown'
-	or  Obj.name == '' then
+	or Obj.name == '' then
 		Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
 	end
 	if not NeP.OM[Obj.tbl][Obj.guid] then
