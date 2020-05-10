@@ -299,25 +299,26 @@ local function cleanUnit(Obj)
 	Obj.healthRaw = NeP.DSL:Get('health.actual')(Obj.key)
 	Obj.healthMax = NeP.DSL:Get('health.max')(Obj.key)
 	Obj.role = NeP.OM.forced_role[Obj.id] or NeP.DSL:Get('role')(Obj.key)
-	if not NeP.OM[Obj.tbl][Obj.guid] then
-		NeP.OM[Obj.tbl][Obj.guid] = Obj
-	end
 	if Obj.name == 'Unknown'
 	or  Obj.name == '' then
 		Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
+	end
+	if not NeP.OM[Obj.tbl][Obj.guid] then
+		NeP.OM[Obj.tbl][Obj.guid] = Obj
 	end
 end
 
 local function cleanUpdate()
 	for GUID, Obj in pairs(NeP.OM.Memory) do
 		-- completly invalid?
-		if not NeP.DSL:Get('exists')(Obj.key)
-		or GUID ~= NeP.DSL:Get('guid')(Obj.key) then
+		if not NeP.DSL:Get('exists')(Obj.key) then
 			NeP.OM.Memory[GUID] = nil
 			NeP.OM[Obj.tbl][Obj.guid] = nil
-			if NeP.DSL:Get('exists')(Obj.key) then
-				NeP.OM:Add(Obj.key)
-			end
+		--guid changed?(how? reset it...)
+		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
+			NeP.OM.Memory[GUID] = nil
+			NeP.OM[Obj.tbl][Obj.guid] = nil
+			NeP.OM:Add(Obj.key)
 		--clean
 		elseif Obj.tbl == 'Objects' then
 			cleanObject(Obj)
