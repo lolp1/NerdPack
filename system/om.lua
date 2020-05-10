@@ -367,6 +367,7 @@ function NeP.OM.MoveObjectByGuid(_, guid, ref)
 	if not (Obj and NeP.OM[ref]) then return end
 	NeP.OM[ref][Obj.guid] = Obj
 	NeP.OM[Obj.tbl][Obj.guid] = nil
+	NeP.OM.Roster[Obj.guid] = nil -- fail safe
 	Obj.tbl = ref
 end
 
