@@ -62,20 +62,35 @@ local function RefreshGUI()
 	recycleStatusBars()
 	for _, Obj in pairs(GetTable()) do
 		local SB = getStatusBar()
-		local distance = NeP.Core:Round(Obj.distance or 0)
 		SB.frame:SetPoint('TOP', OM_GUI.window.content, 'TOP', 2, offset )
 		SB.frame.Left:SetText('|cff'..NeP.Core:ClassColor(Obj.key, 'hex')..(Obj.name or '???'))
-		SB.frame.Right:SetText(
-			'( |cffff0000ID|r: '
+		local txt = ''
+		if not Obj.tbl then
+			txt = txt
+			..'( cffff0000NO_TABLE|r! )'
+		end
+		if Obj.id then
+			txt = txt
+			..'( |cffff0000ID|r: '
 			..(Obj.id or '??')
+		end
+		if Obj.health then
+			txt = txt
 			..' / |cffff0000Health|r: '
 			..(Obj.health or 0)
+		end
+		if Obj.range then
+			txt = txt
 			..' / |cffff0000Range|r: '
 			..(NeP.Core:Round(Obj.range or 0))
+		end
+		if Obj.distance then
+			txt = txt
 			..' / |cffff0000Dist|r: '
-			..(distance or 0)
-			..' )'
-		)
+			..(NeP.Core:Round(Obj.distance or 0))
+		end
+		txt = txt .. ' )'
+		SB.frame.Right:SetText(txt)
 		SB.frame:SetScript('OnMouseDown', function() NeP.Protected.TargetUnit(Obj.key) end)
 		SB:SetValue(Obj.health or 0)
 		offset = offset -18
