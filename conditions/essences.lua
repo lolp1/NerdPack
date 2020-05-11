@@ -1,4 +1,4 @@
-local NeP = _G.NeP -- wont need this on nep
+local _, NeP = ...
 
 local Essence = {}
 
