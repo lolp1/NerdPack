@@ -20,6 +20,12 @@ local Survival = {
 	{'Renewal','health<49',"player"},
 }
 
+local aoe = {
+	{'Thrash','!debuff',"target"},
+	{'Brutal Slash', nil, 'target'},
+	{'Rake', '!debuff&&inmelee', 'enemies'},
+}
+
 local Cooldowns = {
 	{'Berserk','!buff&target.range<10&target.enemy','player'},
 	{'Incarnation: King of the Jungle','!buff&target.range<10target.enemy','player'},
@@ -29,7 +35,7 @@ local Cooldowns = {
 
 
 local Interrupts = {
-	{'Skull Bash', nil, 'target'}
+	{'Skull Bash', nil, 'target'},
 }
 
 local inCombat = {
@@ -38,6 +44,7 @@ local inCombat = {
 	{Survival},
 	{Cooldowns,'toggle(Cooldowns)'},
 	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
+	{aoe, 'toggle(aoe)&&player.area(6).enemies >= 3'},
 	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
 	{'Ferocious Bite', 'player.combopoints>=5', 'target', custom_pool = "player.energy<50"},
 	{'Ferocious Bite', '{player.buff(Incarnation: King of the Jungle)||player.buff(Berserk)}&player.combopoints>=5', 'target' , custom_pool = "player.energy<24"},
