@@ -9,6 +9,7 @@ NeP.OM = {
 	AreaTriggers = {},
 	Critters = {},
 	Roster = {},
+	to_be_removed = {},
 	max_distance = 100
 }
 
@@ -328,25 +329,30 @@ local function cleanUnit(Obj)
 end
 
 local function cleanUpdate()
+	for GUID in pairs(NeP.OM.to_be_removed) do
+		NeP.OM.Memory[GUID] = nil
+	end
+	_G.wipe(NeP.OM.to_be_removed)
 	for GUID, Obj in pairs(NeP.OM.Memory) do
-		-- should this be inserted now?
-		if not Obj.tbl then
-			NeP.OM:FitObject(Obj)
 		-- completly invalid?
-		elseif not NeP.DSL:Get('exists')(Obj.key) then
-			NeP.OM.Memory[GUID] = nil
+		if not NeP.DSL:Get('exists')(Obj.key) then
 			if Obj.tbl then
 				NeP.OM[Obj.tbl][Obj.guid] = nil
 			end
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
+			NeP.OM.to_be_removed[GUID] = true
 		--guid changed?(how? reset it...)
 		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
-			NeP.OM.Memory[GUID] = nil
 			if Obj.tbl then
 				NeP.OM[Obj.tbl][Obj.guid] = nil
 			end
 			NeP.OM.Roster[Obj.guid] = nil -- fail safe
-			NeP.OM:Add(Obj.key)
+			local xObj = Obj.key
+			NeP.OM.to_be_removed[Obj.guid] = true
+			NeP.OM:Add(xObj)
+			-- should this be inserted now?
+		elseif not Obj.tbl then
+			NeP.OM:FitObject(Obj)
 		--clean
 		elseif Obj.tbl == 'Objects' then
 			cleanObject(Obj)
@@ -404,11 +410,11 @@ function NeP.OM.RemoveObjectByGuid(_, guid)
 	if not guid then return end
 	local Obj = NeP.OM:FindObjectByGuid(guid)
 	if not Obj then return end
-	NeP.OM.Memory[Obj.guid] = nil
 	NeP.OM.Roster[Obj.guid] = nil -- fail safe
 	if Obj.tbl then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 	end
+	NeP.OM.to_be_removed[Obj.guid] = true
 end
 
 NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
