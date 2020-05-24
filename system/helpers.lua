@@ -1,12 +1,12 @@
 local _, NeP = ...
 NeP.Helpers = {}
-local UIErrorsFrame = NeP._G.UIErrorsFrame
+--local UIErrorsFrame = NeP._G.UIErrorsFrame
 local C_Timer = NeP._G.C_Timer
 
 local _Failed = {}
 
 --this disables the error messages
-UIErrorsFrame:UnregisterEvent("UI_ERROR_MESSAGE")
+--UIErrorsFrame:UnregisterEvent("UI_ERROR_MESSAGE")
 
 local function addToData(GUID)
 	if not _Failed[GUID] then
