@@ -71,7 +71,7 @@ local function RefreshGUI()
 		local txt = ''
 		if not Obj.tbl then
 			txt = txt
-			..'( cffff0000NO_TABLE|r! )'
+			..'( |cffff0000NO_TABLE|r! )'
 		end
 		txt = txt ..'( '
 		if Obj.id and Obj.id ~= 0 then
