@@ -14,14 +14,14 @@ end
 
 local function spell_string(eval)
 	local ref = { spell = eval[1] }
-	--Arguments
-	if tokens[token] then
-		ref.args = ref.spell:match('%((.+)%)')
-		ref.spell = ref.spell:gsub('%((.+)%)','')
-	end
 	NeP.Core:WhenInGame(function()
 		-- RegisterToken
 		local token = ref.spell:sub(1,1)
+		--Arguments
+		if tokens[token] then
+			ref.args = ref.spell:match('%((.+)%)')
+			ref.spell = ref.spell:gsub('%((.+)%)','')
+		end
 		while tokens[token] do
 			ref.spell = ref.spell:sub(2)
 			tokens[token](eval, ref)
