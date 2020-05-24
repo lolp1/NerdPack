@@ -1,5 +1,4 @@
 local _, NeP = ...
-local _G = _G
 
 NeP.Queuer = {}
 local Queue = {}
