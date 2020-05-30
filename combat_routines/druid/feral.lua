@@ -5,7 +5,12 @@ local GUI = {
 }
 
 local exeOnLoad = function()
-
+	NeP.Interface:AddToggle({
+		key = 'tFury',
+		name = 'Use Tiger\'s Fury',
+		text = 'Click this toggle for awesome things!',
+		icon ='Interface\\Icons\\Ability_creature_cursed_05.png'
+	})
 end
 
 local exeOnUnload = function()
@@ -41,6 +46,7 @@ local Interrupts = {
 local inCombat = {
 	{Keybinds},
 	{'Regrowth','talent(7,2)&combopoints>4&!buff(Bloodtalons)&buff(Predatory Swiftness)','player'},
+	{"Tiger's Fury",'toggle(tFury)&energy<40','player'},
 	{Survival},
 	{Cooldowns,'toggle(Cooldowns)'},
 	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
