@@ -32,14 +32,14 @@ NeP.DSL:Register("buff.count.any", function(target, spell)
 end)
 
 NeP.DSL:Register("buff.duration", function(target, spell)
-  local buff,_,expires = NeP.Core.UnitBuffL(target, spell, 'PLAYER')
-  return buff and (expires - NeP._G.GetTime()) or 0
+  local buff,_,expiration = NeP.Core.UnitBuffL(target, spell, 'PLAYER')
+  return buff and (expiration - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("buff.duration.any", function(target, spell)
   local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.buffs[spell]
-  and ( obj.buffs[spell].expires - NeP._G.GetTime()) or 0
+  and ( obj.buffs[spell].expiration - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("buff.many", function(target, spell)
@@ -87,14 +87,14 @@ NeP.DSL:Register("debuff.count.any", function(target, spell)
 end)
 
 NeP.DSL:Register("debuff.duration", function(target, spell)
-  local debuff,_,expires = NeP.Core.UnitDebuffL(target, spell, 'PLAYER')
-  return debuff and (expires - NeP._G.GetTime()) or 0
+  local debuff,_,expiration = NeP.Core.UnitDebuffL(target, spell, 'PLAYER')
+  return debuff and (expiration - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("debuff.duration.any", function(target, spell)
   local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(target))
   return obj and obj.combat_tack_enable and obj.debuffs[spell]
-  and (obj.debuffs[spell].expires - NeP._G.GetTime()) or 0
+  and (obj.debuffs[spell].expiration - NeP._G.GetTime()) or 0
 end)
 
 NeP.DSL:Register("debuff.many", function(target, spell)
