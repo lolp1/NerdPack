@@ -3,7 +3,7 @@ local _, NeP = ...
 local Essence = {}
 
 local function ScanEssenceFunc()
-	local milestones = NeP._G.C_AzeriteEssence.GetMilestones()
+	local milestones = NeP._G.C_AzeriteEssence.GetMilestones() or {}
 	for i = 1, #milestones do
 		if milestones[i].slot ~= nil then
 			local ID = NeP._G.C_AzeriteEssence.GetMilestoneEssence(milestones[i].ID)
