@@ -13,7 +13,8 @@ local exeOnUnload = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(alt)'}
+    {'%pause', 'keybind(alt)'},
+    {'Heroic Leap', 'keybind(control)', 'cursor.ground'}
 }
 
 local Interrupts = {
@@ -21,7 +22,7 @@ local Interrupts = {
 }
 
 local AoE = {
-    {'Thunder Clap', nil, 'target'},
+    {'Thunder Clap', 'inmelee', 'target'},
     {'Revenge', nil, 'target'},
     {'Shield Slam', nil, 'target'},
     {'Devastate', nil, 'target'},
@@ -34,7 +35,7 @@ local inCombat = {
     {'Avatar', nil, 'player'},
     {'Demoralizing Shout', 'talent(6,1)', 'target'},
     {'Shield Slam', nil, 'target'},
-    {'Thunder Clap', nil, 'target'},
+    {'Thunder Clap', 'inmelee', 'target'},
     {'Revenge', 'spell.proc', 'target'},
     {'Devastate', nil, 'target'},
 }
