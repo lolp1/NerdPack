@@ -20,10 +20,23 @@ local Interrupts = {
 
 }
 
+local AoE = {
+    {'Thunder Clap', nil, 'target'},
+    {'Revenge', nil, 'target'},
+    {'Shield Slam', nil, 'target'},
+    {'Devastate', nil, 'target'},
+}
+
 local inCombat = {
 	{Keybinds},
-	{Interrupts},
-
+    {Interrupts},
+    {AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
+    {'Avatar', nil, 'player'},
+    {'Demoralizing Shout', 'talent(6,1)', 'target'},
+    {'Shield Slam', nil, 'target'},
+    {'Thunder Clap', nil, 'target'},
+    {'Revenge', 'spell.proc', 'target'},
+    {'Devastate', nil, 'target'},
 }
 
 local outCombat = {
