@@ -35,7 +35,7 @@ local inCombat = {
 	{Keybinds},
     {Interrupts},
 	{AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
-    {'Rampage', '!buff(Enrage)', 'target'},
+    {'Rampage', '!buff(Enrage) || player.rage >= 90', 'target'},
     {'Recklessness', nil, 'player'},
     {'Execute', '!player.buff(Sudden Death) || health <= 20', 'target'},
     {'Bloodthirst', '!buff(Enrage)', 'target'},
