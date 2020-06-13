@@ -20,14 +20,6 @@ local Interrupts = {
 
 }
 
---[[
-Cast Whirlwind for two stacks of its buff.
-Cast Recklessness if able.
-Cast Siegebreaker to debuff multiple targets.
-Cast Rampage for Enrage.
-Cast Bladestorm or Dragon Roar as appropriate.
-Cast Whirlwind to refresh its buff.
-]]
 local AoE = {
 	{Keybinds},
 	{Interrupts},
