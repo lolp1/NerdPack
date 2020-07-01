@@ -18,7 +18,7 @@ local Keybinds = {
 }
 
 local Interrupts = {
-
+    {'Pummel', 'interruptat(40)', 'target'}
 }
 
 local AoE = {
