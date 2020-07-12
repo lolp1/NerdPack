@@ -22,8 +22,6 @@ local Interrupts = {
 }
 
 local AoE = {
-	{Keybinds},
-	{Interrupts},
     {'Whirlwind', '!player.buff(Whirlwind)', 'target'},
     {'Recklessness', nil, 'target'},
     {'Siegebreaker', '!debuff', 'target'},
@@ -35,6 +33,7 @@ local AoE = {
 local inCombat = {
 	{Keybinds},
     {Interrupts},
+    {'Victory Rush', nil, 'target'},
 	{AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
     {'Rampage', '!buff(Enrage) || player.rage >= 90', 'target'},
     {'Recklessness', nil, 'player'},

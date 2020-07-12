@@ -35,7 +35,7 @@ local inCombat = {
     {'&Shield Wall', '!buff && health < 60', 'player'},
     {'&Ignore Pain', '!buff && health < 90', 'player'},
     {'&Shield Block', '{spell.charges >= 2 || toggle(cooldowns)} && !buff && health < 100', 'player'},
-    {'Avatar', 'toggle(cooldowns)', 'player'},
+    {'Avatar', 'toggle(cooldowns) && combat.time > 5', 'player'},
     {'Victory Rush', nil, 'target'},
     {AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
     {'Demoralizing Shout', 'talent(6,1)', 'target'},
