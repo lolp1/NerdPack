@@ -14,7 +14,8 @@ end
 
 local Keybinds = {
     {'%pause', 'keybind(alt)'},
-    {'Heroic Leap', 'keybind(control)', 'cursor.ground'}
+    {'Heroic Leap', 'keybind(control)', 'cursor.ground'},
+    {'Focused Azerite Beam', 'keybind(shift)', 'target'}
 }
 
 local Interrupts = {
@@ -31,8 +32,10 @@ local AoE = {
 }
 
 local inCombat = {
-	{Keybinds},
+    {Keybinds},
+    {'%pause', 'channeling(Focused Azerite Beam)', 'player'},
     {Interrupts},
+    {'/startattack', '!isattacking', 'target'},
     {'Victory Rush', nil, 'target'},
 	{AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
     {'Rampage', '!buff(Enrage) || player.rage >= 90', 'target'},

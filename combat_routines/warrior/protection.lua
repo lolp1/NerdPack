@@ -31,6 +31,7 @@ local AoE = {
 local inCombat = {
 	{Keybinds},
     {Interrupts},
+    {'/startattack', '!isattacking', 'target'},
     {'&Last Stand', '!buff && health < 20', 'player'},
     {'&Shield Wall', '!buff && health < 60', 'player'},
     {'&Ignore Pain', '!buff && health < 90', 'player'},
