@@ -46,7 +46,7 @@ NeP.Timer.Handle = function(_, elapsed)
 	for _, struct in pairs(timers) do
 		struct.next = struct.next - elapsed
 		if (struct.next <= 0) then
-			struct.func()
+			pcall(struct.func)
 			struct.next = struct.period
         end
 	end
