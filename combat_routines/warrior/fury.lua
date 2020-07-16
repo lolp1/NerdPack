@@ -24,7 +24,7 @@ local Interrupts = {
 
 local AoE = {
     {'Whirlwind', '!player.buff(Whirlwind)', 'target'},
-    {'Recklessness', nil, 'target'},
+    {'Recklessness', 'toggle(cooldowns)', 'target'},
     {'Siegebreaker', '!debuff', 'target'},
     {'Rampage', '!buff(Enrage)', 'target'},
     {'Bladestorm', nil, 'target'},
@@ -32,14 +32,12 @@ local AoE = {
 }
 
 local inCombat = {
-    {Keybinds},
-    {'%pause', 'channeling(Focused Azerite Beam)', 'player'},
     {Interrupts},
     {'/startattack', '!isattacking', 'target'},
     {'Victory Rush', nil, 'target'},
 	{AoE, 'toggle(aoe) && player.area(5).enemies >= 3'},
     {'Rampage', '!buff(Enrage) || player.rage >= 90', 'target'},
-    {'Recklessness', nil, 'player'},
+    {'Recklessness', 'toggle(cooldowns)', 'player'},
     {'Execute', 'player.buff(Sudden Death) || health <= 20', 'target'},
     {'Bloodthirst', '!buff(Enrage)', 'target'},
     {'Raging Blow', 'spell.charges >= 2', 'target'},
@@ -56,7 +54,11 @@ NeP.CR:Add(72, {
 	name = '[NeP] Warrior | Fury',
 	wow_ver = "8.3",
 	nep_ver = "1.3",
-	ic = {{inCombat, 'inmelee', 'target'}},
+	ic = {
+        {'%pause', 'channeling(Focused Azerite Beam)', 'player'},
+        {Keybinds},
+        {inCombat, 'inmelee', 'target'}
+    },
 	ooc = outCombat,
 	gui = GUI,
 	load = exeOnLoad,
