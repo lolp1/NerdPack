@@ -20,10 +20,23 @@ local Interrupts = {
 	{'Pummel', 'interruptat(40)', 'target'}
 }
 
+local Execute = {
+	{'Bladestorm', 'player.rage < 30', 'target'},
+	{'Overpower', 'player.rage <= 10', 'target'},
+	{'Execute', nil, 'target'},
+}
+
 local inCombat = {
 	{Keybinds},
 	{Interrupts},
-
+	{'Avatar', 'spell(Colossus Smash).cooldown == 0', 'target'},
+	{'Colossus Smash', nil, 'target'},
+	{Execute, 'health <= 20', 'target'},
+	{'Execute', 'player.buff(Sudden Death)', 'target'},
+	{'Overpower', '!player.buff && spell(Mortal Strike).cooldown == 0', 'target'},
+	{'Mortal Strike', 'debuff(Deep Wounds).duration <= 2', 'target'},
+	{'Bladestorm', 'debuff(Colossus Smash)', 'target'},
+	{'Slam', nil, 'target'},
 }
 
 local outCombat = {
