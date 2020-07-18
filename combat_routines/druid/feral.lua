@@ -18,7 +18,8 @@ local exeOnUnload = function()
 end
 
 local Keybinds = {
-	{'%pause', 'keybind(alt)'}
+	{'%pause', 'keybind(alt)'},
+	{'Focused Azerite Beam', 'keybind(shift)', 'target'},
 }
 
 local Survival = {
@@ -50,6 +51,7 @@ local inCombat = {
 	{Survival},
 	{Cooldowns,'toggle(Cooldowns)'},
 	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
+	{'/startattack', '!isattacking', 'target'},
 	{aoe, 'toggle(aoe)&&player.area(6).enemies >= 3'},
 	{'Rip', 'player.combopoints>=5&!debuff', 'target'},
 	{'Ferocious Bite', 'player.combopoints>=5', 'target', custom_pool = "player.energy<50"},
