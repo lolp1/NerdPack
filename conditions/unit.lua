@@ -206,7 +206,7 @@ NeP.DSL:Register('name', function (target)
 end)
 
 NeP.DSL:Register('hasRole', function(target, expectedName)
-  return target and NeP.DSL:Get('role')(target):upper():find(expectedName:lower()) ~= nil
+  return target and NeP.DSL:Get('role')(target):lower():find(expectedName:lower()) ~= nil
 end)
 
 NeP.DSL:Register('hasName', function (target, expectedName)
