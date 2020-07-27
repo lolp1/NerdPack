@@ -15,6 +15,8 @@ g.DBM = NeP.DBM
 g.ClassTable = NeP.ClassTable
 g.Spells = NeP.Spells
 
+g.Version = NeP.Version
+
 g.Timer = {
 	Add = NeP.Timer.Add,
 	updatePeriod = NeP.Timer.updatePeriod
