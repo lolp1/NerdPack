@@ -104,8 +104,15 @@ local function ProcessCondition(strg, spell, target)
 	local Args = strg:match("%((.+)%)")
 	strg = strg:gsub("%((.+)%)", "")
 	target = target or 'player'
-
-	return DSL:Get(strg)(target, (Args or spell), Args) or false
+	local func = DSL:Get(strg)
+	if func then
+		return func(target, (Args or spell), Args) or false
+	end
+	-- is it a string ???
+	if str:match("%(.-%)")) then
+		return false
+	end
+	return str
 end
 
 local function Comperatores(strg, spell, target)
