@@ -237,6 +237,14 @@ NeP.FakeUnits:Add('boss', function(num)
 	return tempTable[num] and tempTable[num].key
 end)
 
+NeP.FakeUnits:Add('combatenemies', function()
+    for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+        if NeP.DSL:Get('combat')(Obj.key) then
+            return Obj.key
+        end
+    end
+end)
+
 NeP.FakeUnits:Add('enemies', function()
 	return NeP.OM:Get('Enemy')
 end)
