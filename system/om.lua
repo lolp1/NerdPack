@@ -114,8 +114,7 @@ NeP.OM.InsertCritter = NeP.OM.InsertObject
 function NeP.OM.Insert(_, ref, Obj)
 	Obj.tbl = ref
 	Obj.range = NeP.DSL:Get('range')(Obj.key) or 999
-	if Obj.range <= NeP.OM.max_distance
-	and NeP.DSL:Get('los')(Obj.key) then
+	if Obj.range <= NeP.OM.max_distance then
 		Obj.predicted = NeP.DSL:Get('health.predicted')(Obj.key)
 		Obj.predicted_Raw = NeP.DSL:Get('health.predicted.actual')(Obj.key)
 		Obj.health = NeP.DSL:Get('health')(Obj.key)
@@ -259,8 +258,7 @@ local function cleanUnit(Obj)
 	Obj.range = NeP.DSL:Get('range')(Obj.key)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
-	or not NeP.DSL:Get('inphase')(Obj.key)
-	or not NeP.DSL:Get('los')(Obj.key) then
+	or not NeP.DSL:Get('inphase')(Obj.key) then
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 		NeP.OM.Roster[Obj.guid] = nil -- fail safe
 		return
