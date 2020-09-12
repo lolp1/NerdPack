@@ -44,7 +44,8 @@ NeP.DSL:Register("area.heal.infront", function(unit, args)
 		local unit_dist = NeP.Protected.Distance(unit, Obj.key)
 		if unit_dist < (tonumber(distance) or 20)
 		and Obj.health < (tonumber(health) or 100)
-		and NeP.Protected.Infront(unit, Obj.key) then
+		and NeP.Protected.Infront(unit, Obj.key)
+		and NeP.DSL:Get('los')(Obj.key) then
 			total = total + 1
 		end
 	end
