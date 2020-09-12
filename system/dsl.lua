@@ -5,8 +5,8 @@ DSL.cust_funcs = {}
 
 local function FilterNum(str)
 	local type_X = type(str)
-	if type_X == 'string' then
-		return tonumber(str) or 0
+	if type_X == 'string' and str~="0" then
+		return tonumber(str) or str
 	elseif type_X == 'boolean' then
 		return str and 1 or 0
 	elseif type_X == 'number' then
