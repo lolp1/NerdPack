@@ -109,7 +109,7 @@ local function ProcessCondition(strg, spell, target)
 		return func(target, (Args or spell), Args) or false
 	end
 	-- is it a string ???
-	if str:match("%(.-%)")) then
+	if str:match("%(.-%)") then
 		return false
 	end
 	return str
