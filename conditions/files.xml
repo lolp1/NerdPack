@@ -17,5 +17,6 @@
 	<Script file="class.lua" />
 	<Script file="heal.lua" />
 	<Script file="essences.lua" />
+	<Script file="azerite.lua" />
 
 </Ui>
