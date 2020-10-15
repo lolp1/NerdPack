@@ -3,7 +3,7 @@ local CreateFrame = NeP._G.CreateFrame
 NeP.Faceroll = {}
 
 -- This to put an icon on top of the spell we want
-local activeFrame = CreateFrame('Frame', 'NePFaceroolFrame', NeP._G.UIParent)
+local activeFrame = CreateFrame('Frame', 'NePFaceroolFrame', NeP._G.UIParent, BackdropTemplateMixin and "BackdropTemplate")
 activeFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 	edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
 	tile = true, tileSize = 16, edgeSize = 16,
@@ -17,7 +17,7 @@ activeFrame:SetFrameStrata('HIGH')
 activeFrame:Hide()
 
 -- Work in Progress...
-local display = CreateFrame('Frame', 'Faceroll_Info', activeFrame)
+local display = CreateFrame('Frame', 'Faceroll_Info', activeFrame, BackdropTemplateMixin and "BackdropTemplate")
 display:SetClampedToScreen(true)
 display:SetSize(0, 0)
 display:SetPoint("TOP")

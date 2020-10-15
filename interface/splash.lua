@@ -7,7 +7,7 @@ local GetSpecialization = NeP._G.GetSpecialization
 local GetSpecializationInfo = NeP._G.GetSpecializationInfo
 
 -- Splash stuff
-local frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent)
+local frame = CreateFrame("Frame", "Zylla_SPLASH", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 frame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 	edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
 	tile = true, tileSize = 16, edgeSize = 16,

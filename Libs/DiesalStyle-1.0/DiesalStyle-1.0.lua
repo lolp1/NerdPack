@@ -1,5 +1,5 @@
 -- $Id: DiesalStyle-1.0.lua 61 2017-03-28 23:13:41Z diesal2010 $
-local MAJOR, MINOR = "DiesalStyle-1.0", "$Rev: 61 $"
+local MAJOR, MINOR = "DiesalStyle-1.0", "$Rev: 62 $" -- TEMP FIXED MYSELF AND VERSION BUMPED 
 local DiesalStyle, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not DiesalStyle then return end -- No Upgrade needed.
 -- ~~| Libraries |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -804,7 +804,7 @@ end
 
 
 function DiesalStyle:StyleShadow(object,frame,style)
-  object.shadow = object.shadow or CreateFrame("Frame",nil,frame)
+  object.shadow = object.shadow or CreateFrame("Frame",nil,frame, BackdropTemplateMixin and "BackdropTemplate")
   object.shadow:Show()
   if not object.shadow.style or style.clear then object.shadow.style = {} end
   local shadowStyle = object.shadow.style
