@@ -102,8 +102,8 @@ end
 
 --[[ This Logs the last action done for every unit ]]
 local addAction = function(...)
-	local _,_,_, SourceGUID, _,_,_,_, destName, _,_,_, spellName = ...
-	if not spellName then return end
+	local _,_,_, SourceGUID, _,_,_,_, destName, _,_, spellID, spellName = ...
+	if not spellName or not NeP._G.IsPlayerSpell(spellID) or NeP._G.IsPassiveSpell(spellID) then return end
 	if SourceGUID == NeP.DSL:Get('guid')('player') and destName then
 		local icon = select(3, NeP._G.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)

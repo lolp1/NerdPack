@@ -84,7 +84,7 @@ NeP.DSL:Register({'player', 'isplayer'}, function(target)
 end)
 
 NeP.DSL:Register('inphase', function(target)
-  return NeP._G.UnitInPhase(target)
+  return NeP.DSL:Get("exists")(target) and not NeP._G.UnitPhaseReason(target)
 end)
 
 NeP.DSL:Register('exists', function(target)
