@@ -169,7 +169,7 @@ function NeP.Interface.Input(_, element, parent, table)
 	local tmp = DiesalGUI:Create('Input')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
+	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset + 4)
 	if element.width then tmp:SetWidth(element.width) end
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
