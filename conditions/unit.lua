@@ -83,8 +83,15 @@ NeP.DSL:Register({'player', 'isplayer'}, function(target)
   return NeP._G.UnitIsPlayer(target)
 end)
 
-NeP.DSL:Register('inphase', function(target)
-  return NeP.DSL:Get("exists")(target) and not NeP._G.UnitPhaseReason(target)
+NeP.DSL:Register('inphase', function(unit)
+  if not NeP.DSL:Get("exists")(unit) then
+    return false
+  end
+  local reason = NeP._G.UnitPhaseReason(unit)
+  if UnitIsPlayer(unit) then
+    return reason == nil
+  end
+  return reason == nil or reason == 2 --warmode is 2
 end)
 
 NeP.DSL:Register('exists', function(target)
