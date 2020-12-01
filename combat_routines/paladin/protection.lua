@@ -5,7 +5,12 @@ local GUI = {
 }
 
 local exeOnLoad = function()
-
+	NeP.Interface:AddToggle({
+		key = 'smart_taunt',
+		name = 'Use Crowd Controls',
+		text = 'Click this toggle for awesome things!',
+		icon ='Interface\\Icons\\Ability_creature_cursed_05.png'
+	})
 end
 
 local exeOnUnload = function()
@@ -36,7 +41,7 @@ local inCombat = {
 	{heals},
 	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
 	{cooldowns, 'toggle(cooldowns)'},
-	{'Hand of Reckoning', '!aggro&&!dummy&&combat', 'enemies'},
+	{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
 	{'Consecration', nil, 'target'},
 	{'Judgment', nil, 'target'},
 	{'Divine Toll', 'area(40).enemies>=3', 'target'},
