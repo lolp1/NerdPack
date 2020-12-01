@@ -50,7 +50,7 @@ local inCombat = {
 	{Interrupts, 'interruptAt(43)&&infront&&range<=40', 'target'},
 	{Heals},
 	{Cooldowns, 'toggle(cooldowns)'},
-	{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
+	--{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
 	{inMelee, 'target.inmelee'},
 	{'Judgment', nil, 'target'},
 }
