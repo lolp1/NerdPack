@@ -1,11 +1,11 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
-
+     NeP.Core:Print('Hello User!\nThanks for using [NeP]\nRemember this is just a basic routine.')
 end
 
 local exeOnUnload = function()

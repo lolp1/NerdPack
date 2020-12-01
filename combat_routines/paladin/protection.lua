@@ -1,7 +1,7 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
@@ -22,32 +22,37 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	{'Rebuke', nil , 'target'},
+	{'Rebuke', 'inmelee' , 'target'},
 }
 
-local cooldowns = {
+local Cooldowns = {
 	{'Avenging Wrath', nil , 'player'},
 	{'Ardent Defender', 'health<60' , 'player'},
 	{'Guardian of Ancient Kings', 'health<40' , 'player'},
 }
 
-local heals = {
+local Heals = {
 	{'Lay on Hands', 'health<15', 'player'},
 	{'Word of Glory', 'health<80', 'player'},
 }
 
-local inCombat = {
-	{Keybinds},
-	{heals},
-	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
-	{cooldowns, 'toggle(cooldowns)'},
-	{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
+local inMelee = {
 	{'Consecration', nil, 'target'},
 	{'Judgment', nil, 'target'},
 	{'Divine Toll', 'area(40).enemies>=3', 'target'},
 	{'Hammer of Wrath', nil, 'target'},
 	{'Avenger\'s Shield', nil, 'target'},
 	{'Hammer of the Righteous', nil, 'target'},
+}
+
+local inCombat = {
+	{Keybinds},
+	{Interrupts, 'interruptAt(43)&&infront&&range<=40', 'target'},
+	{Heals},
+	{Cooldowns, 'toggle(cooldowns)'},
+	{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
+	{inMelee, 'target.inmelee'},
+	{'Judgment', nil, 'target'},
 }
 
 local outCombat = {

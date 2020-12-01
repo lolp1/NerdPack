@@ -2,11 +2,11 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
-
+     NeP.Core:Print('Hello User!\nThanks for using [NeP]\nRemember this is just a basic routine.')
 end
 
 local exeOnUnload = function()
@@ -23,7 +23,7 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&&infront&&range<=40', 'target'},
 }
 
 local outCombat = {

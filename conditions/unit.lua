@@ -45,14 +45,15 @@ NeP.DSL:Register('id', function(target, id)
 end)
 
 NeP.DSL:Register('threat', function(target)
-  if NeP._G.UnitThreatSituation('player', target) then
+  if NeP.DSL:Get('aggro')(target) then
     return select(3, NeP._G.UnitDetailedThreatSituation('player', target))
   end
   return 0
 end)
 
 NeP.DSL:Register('aggro', function(target)
-  return (NeP._G.UnitThreatSituation(target) and NeP._G.UnitThreatSituation(target) >= 2)
+  local threat = NeP._G.UnitThreatSituation(target)
+  return (threat and threat >= 2)
 end)
 
 NeP.DSL:Register('moving', function(target)

@@ -1,11 +1,11 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
-
+     NeP.Core:Print('Hello User!\nThanks for using [NeP]\nRemember this is just a basic routine.')
 end
 
 local exeOnUnload = function()
@@ -21,7 +21,7 @@ local Interrupts = {
 }
 
 local inCombat = {
-    {Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
+    {Interrupts, 'interruptAt(43)&&infront&&range<=8', 'target'},
     {Keybinds},
     {'Roll the Bones', '!player.buff(Ruthless Precision)&&!player.buff(Grand Melee)', 'target'},
     {'Blade Rush', 'player.energy<30', 'target'},

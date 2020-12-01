@@ -1,7 +1,7 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
@@ -50,7 +50,7 @@ local inCombat = {
 	{"Tiger's Fury",'toggle(tFury)&energy<40','player'},
 	{Survival},
 	{Cooldowns,'toggle(Cooldowns)'},
-	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
+	{Interrupts, 'interruptAt(43)&&infront&&range<=8', 'target'},
 	{'/startattack', '!isattacking', 'target'},
 	{aoe, 'toggle(aoe)&&player.area(6).enemies >= 3'},
 	{'Rip', 'player.combopoints>=5&!debuff', 'target'},

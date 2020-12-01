@@ -2,11 +2,11 @@
 local _, NeP = ...
 
 local GUI = {
-
+	{type = 'text', text = 'nothing here yet...'},
 }
 
 local exeOnLoad = function()
-
+     NeP.Core:Print('Hello User!\nThanks for using [NeP]\nRemember this is just a basic routine.')
 end
 
 local exeOnUnload = function()
@@ -27,7 +27,7 @@ local Cooldowns = {
 
 local inCombat = {
 	{Keybinds},
-    {Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
+    {Interrupts, 'interruptAt(43)&&infront&&range<=40', 'target'},
     {Cooldowns, 'toggle(cooldowns)'},
     {'Touch of Death', nil, 'target'},
     {'Fist of the White Tiger', 'player.chi<3&&player.energy>70', 'target'},
