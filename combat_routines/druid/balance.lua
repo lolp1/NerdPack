@@ -22,7 +22,7 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
     {'Moonfire', '!debuff', 'target'},
     {'Sunfire', '!debuff', 'target'},
     {'Stellar Flare', '!debuff', 'target'},

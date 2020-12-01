@@ -1,3 +1,4 @@
+
 local _, NeP = ...
 
 local GUI = {
@@ -17,27 +18,26 @@ local Keybinds = {
 }
 
 local Interrupts = {
-	
+
 }
 
 local inCombat = {
 	{Keybinds},
-    {Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
 }
-	
 
 local outCombat = {
 	{Keybinds},
 }
 
-NeP.CR:Add(105, {
-	name = '[NeP] Druid | Rstoration',
-	wow_ver = "8.3",
-	nep_ver = "1.3",
+NeP.CR:Add(270, {
+	name = '[NeP] Monk | Mistweaver',
+	wow_ver = "9.0",
+	nep_ver = "1.4",
 	ic = inCombat,
 	ooc = outCombat,
 	gui = GUI,
 	load = exeOnLoad,
 	unload = exeOnUnload,
-	pooling = true,
+	pooling = false,
 })

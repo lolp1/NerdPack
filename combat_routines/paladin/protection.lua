@@ -39,7 +39,7 @@ local heals = {
 local inCombat = {
 	{Keybinds},
 	{heals},
-	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
 	{cooldowns, 'toggle(cooldowns)'},
 	{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
 	{'Consecration', nil, 'target'},

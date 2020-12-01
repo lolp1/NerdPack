@@ -22,7 +22,7 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
 }
 
 local outCombat = {

@@ -44,7 +44,7 @@ local Burn = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
 	{'Evocation', 'player.mana <= 30'},
 	{Burn, 'player.mana > 30 && player.arcanecharges >= 4 && spell(Rune of Power).charges >= 1'},
 	{Conservation}

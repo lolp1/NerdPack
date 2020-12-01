@@ -21,7 +21,7 @@ local Interrupts = {
 }
 
 local inCombat = {
-    {Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
+    {Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
 	{Keybinds},
 	{'Rupture', '!debuff&&player.combopoints>=5', 'target'},
 	{'Envenom', 'player.combopoints>=5', 'target'},

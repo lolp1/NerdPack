@@ -23,7 +23,7 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=8', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=8', 'target'},
 	{'/startattack', '!isattacking', 'target'},
     {'Moonfire', '!debuff||player.proc(Galactic Guardian)', 'target'},
     {'Thrash', 'debuff.count<3', 'target'},

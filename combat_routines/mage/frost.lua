@@ -22,7 +22,7 @@ local Interrupts = {
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&infront&range<=40', 'target'},
 	{'Icy Veins', nil, 'player'},
 	{'Flurry', 'player.buff(Brain Freeze) && player.buff(Icicles).count < 3', 'target'},
 	{'Ebonbolt', nil, 'target'},
