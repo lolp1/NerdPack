@@ -17,7 +17,7 @@ local Keybinds = {
 }
 
 local Interrupts = {
-
+	{'Rebuke', nil , 'target'},
 }
 
 local cooldowns = {
