@@ -36,7 +36,7 @@ local inCombat = {
 	{heals},
 	{Interrupts, 'interruptAt(43)&.infront&range<=40', 'target'},
 	{cooldowns, 'toggle(cooldowns)'},
-	{'Hand of Reckoning', '!aggro&&!dummy', 'target'},
+	{'Hand of Reckoning', '!aggro&&!dummy&&combat', 'enemies'},
 	{'Consecration', nil, 'target'},
 	{'Judgment', nil, 'target'},
 	{'Divine Toll', 'area(40).enemies>=3', 'target'},
