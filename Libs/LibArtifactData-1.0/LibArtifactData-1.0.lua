@@ -298,7 +298,7 @@ end
 local function ScanContainer(container, numObtained)
 	for slot = 1, GetContainerNumSlots(container) do
 		local _, _, _, quality, _, _, _, _, _, itemID = GetContainerItemInfo(container, slot)
-		if quality == LE_ITEM_QUALITY_ARTIFACT then
+		if itemID and quality == LE_ITEM_QUALITY_ARTIFACT then
 			local classID = select(12, GetItemInfo(itemID))
 			if classID == LE_ITEM_CLASS_WEAPON or classID == LE_ITEM_CLASS_ARMOR then
 				Debug("ARTIFACT_FOUND", "in", container, slot)
