@@ -175,6 +175,12 @@ function NeP.Compiler:Compile(eval)
 			self.Spell(eval[i])
 			self.Target(eval[i])
 			self.Conditions(eval[i])
+
+			if eval[i].custom_pool 
+			and type(eval[i].custom_pool) == 'string' then
+				eval[i].custom_pool = CondSpaces(eval[i].custom_pool)
+			end
+			
 		end
 	end
 end
