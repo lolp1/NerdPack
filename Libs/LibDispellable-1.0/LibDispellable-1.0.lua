@@ -31,7 +31,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local MAJOR, MINOR = "LibDispellable-1.0", 32
+local MAJOR, MINOR = "LibDispellable-1.0", 33
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -73,7 +73,15 @@ lib.specialIDs[144351] = "Magic" -- Mark of Arrogance (Sha of Pride encounter)
 -- ----------------------------------------------------------------------------
 
 local function CheckSpell(spellID, pet)
-	return IsSpellKnown(spellID, pet) and spellID or nil
+	local ID, spellName = nil, GetSpellInfo(spellID)
+	if spellName
+	and GetSpellBookItemName(spellName)
+	and select(3, GetSpellBookItemName(spellName)) == spellID
+	or spellID and pet and IsSpellKnown(spellID, pet) then
+		ID = spellID
+	end
+	return ID
+	--return --IsSpellKnown(spellID, pet) and spellID or nil
 end
 
 function lib:UpdateSpells()

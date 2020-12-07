@@ -18,5 +18,6 @@
 	<Script file="heal.lua" />
 	<Script file="essences.lua" />
 	<Script file="azerite.lua" />
+	<Script file="conduit.lua" />
 
 </Ui>

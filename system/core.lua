@@ -76,7 +76,7 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 	if not spellName then return end
 	spellName = spellName:lower()
 
-	for t = 1, 2 do
+	for t = 1, NeP._G.GetNumSpellTabs() do
 		local _, _, offset, numSpells = NeP._G.GetSpellTabInfo(t)
 		for i = 1, (offset + numSpells) do
 			if NeP._G.GetSpellBookItemName(i, NeP._G.BOOKTYPE_SPELL):lower() == spellName then
