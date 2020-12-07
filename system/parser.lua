@@ -1,4 +1,4 @@
-local _, NeP = ...
+local n_name, NeP = ...
 NeP.Parser   = {}
 local c = NeP.CR
 
@@ -211,9 +211,24 @@ local function ParseStart()
 	end
 end
 
+local function StartAutoAttacks()
+	if NeP._G.InCombatLockdown()
+	and NeP.Interface:Fetch(n_name..'_Settings', 'auto_attacks', false)
+	and NeP.DSL:Get('exists')('target')
+	and NeP.DSL:Get('enemy')('target')
+	and NeP.DSL:Get('alive')('target')
+	and NeP.DSL:Get('canattack')('target')
+	and not NeP.Parser:Unit_Blacklist('target')
+	and not NeP._G.IsCurrentSpell(6603) then
+		print('start forced attacks')
+		NeP.Protected.Macro('/startattack')
+		--NeP.Protected.Macro('/petattack')
+	end
+end
 
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
+	NeP.Timer.Add('nep_start_attacks', StartAutoAttacks, 1)
 	NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.2)
 	NeP.Timer.Add('nep_parser', ParseStart, 0.1)
 	NeP.Debug:Add("Parser0", ParseStart, false)
