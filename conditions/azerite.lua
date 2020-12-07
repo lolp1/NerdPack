@@ -1,4 +1,4 @@
-local _, NeP = ...
+local n_name, NeP = ...
 
 local Azerite = {}
 
@@ -47,14 +47,14 @@ NeP.DSL:Register("azerite.active", function(_, spell)
 	return Azerite[spell] and Azerite[spell] > 0
 end)
 
-NeP.Listener:Add("Kleei_Azerite", "PLAYER_ENTERING_WORLD", function()
+NeP.Listener:Add(n_name .. "_Azerite", "PLAYER_ENTERING_WORLD", function()
 	AzeriteScan()
 end)
 
-NeP.Listener:Add("Kleei_Azerite", "UNIT_INVENTORY_CHANGED", function()
+NeP.Listener:Add(n_name .. "_Azerite", "UNIT_INVENTORY_CHANGED", function()
 	AzeriteScan()
 end)
 
-NeP.Listener:Add("Kleei_Azerite", "AZERITE_EMPOWERED_ITEM_SELECTION_UPDATED", function()
+NeP.Listener:Add(n_name .. "_Azerite", "AZERITE_EMPOWERED_ITEM_SELECTION_UPDATED", function()
 	AzeriteScan()
 end)
