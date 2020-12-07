@@ -20,7 +20,8 @@ NeP.DSL:Register('spell.usable', function(_, spell)
 end)
 
 NeP.DSL:Register('spell.exists', function(_, spell)
-  return NeP.Core:GetSpellBookIndex(spell) ~= nil
+  spell = tonumber(spell) and NeP._G.GetSpellInfo(spell) or spell
+  return spell and NeP._G.GetSpellBookItemInfo(spell) and NeP._G.IsUsableSpell(spell)
 end)
 
 NeP.DSL:Register('spell.charges', function(_, spell)
