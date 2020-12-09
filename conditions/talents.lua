@@ -10,9 +10,11 @@ local function UpdateTalents()
   for i = 1, rows do
     for k = 1, cols do
       local talent_ID, talent_name, _, selected = NeP._G.GetTalentInfo(i, k, 1) -- ActiveSpecGroup is always 1
-      talents[talent_name] = selected
-      talents[tostring(talent_ID)] = selected
-      talents[tostring(i)..','..tostring(k)] = selected
+      if talent_ID then
+        talents[talent_name] = selected
+        talents[tostring(talent_ID)] = selected
+        talents[tostring(i)..','..tostring(k)] = selected
+      end
     end
   end
   for _, v in pairs(NeP._G.C_SpecializationInfo.GetAllSelectedPvpTalentIDs()) do
