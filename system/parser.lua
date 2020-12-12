@@ -220,7 +220,6 @@ local function StartAutoAttacks()
 	and NeP.DSL:Get('canattack')('target')
 	and not NeP.Parser:Unit_Blacklist('target')
 	and not NeP._G.IsCurrentSpell(6603) then
-		print('start forced attacks')
 		NeP.Protected.Macro('/startattack')
 		--NeP.Protected.Macro('/petattack')
 	end

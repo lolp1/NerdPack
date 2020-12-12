@@ -43,16 +43,23 @@ local inMelee = {
 	{'Hammer of Wrath', nil, 'target'},
 	{'Avenger\'s Shield', nil, 'target'},
 	{'Hammer of the Righteous', nil, 'target'},
+	{'Shield of the Righteous', nil, 'target'},
+}
+
+local ranged =  {
+	{'Judgment', nil, 'target'},
+	{'Hammer of Wrath', nil, 'target'},
+	{'Avenger\'s Shield', nil, 'target'},
 }
 
 local inCombat = {
 	{Keybinds},
-	{Interrupts, 'interruptAt(43)&&infront&&range<=40', 'target'},
+	{Interrupts, 'interruptAt(43)&&infront&&inmelee', 'target'},
 	{Heals},
 	{Cooldowns, 'toggle(cooldowns)'},
 	--{'Hand of Reckoning', '!aggro&&combat&&toggle(smart_taunt)', 'enemies'},
-	{inMelee, 'target.inmelee'},
-	{'Judgment', nil, 'target'},
+	{inMelee, 'inmelee&&infront', 'target'},
+	{ranged, 'infront&&range<40', 'target'},
 }
 
 local outCombat = {
