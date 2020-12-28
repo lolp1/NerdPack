@@ -41,6 +41,13 @@ local function getToken(username, password)
 	});
 end
 
+local function login()
+  local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
+  local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
+  print(username, password)
+  getToken(username, password)
+end
+
 local config = {
 	key = n_name .. '_ServerOAuth',
 	title = n_name,
@@ -56,12 +63,6 @@ local config = {
 	}
 }
 
-local function login()
-  local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
-  local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
-  print(username, password)
-  getToken(username, password)
-end
 
 local GUI = NeP.Interface:BuildGUI(config)
 NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
