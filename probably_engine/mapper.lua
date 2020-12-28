@@ -1,11 +1,11 @@
-local _, gbl = ...
+local _, NeP = ...
 
-gbl.PE.toggle = {}
-gbl.PE.rotation = {}
+NeP.PE.toggle = {}
+NeP.PE.rotation = {}
 
 --wrapper for toggles
-gbl.PE.toggle.create = function(key, icon, name, tooltip)
-	gbl.Interface:AddToggle({
+NeP.PE.toggle.create = function(key, icon, name, tooltip)
+	NeP.Interface:AddToggle({
 		key = key,
 		name = name,
 		text = tooltip,
@@ -14,8 +14,8 @@ gbl.PE.toggle.create = function(key, icon, name, tooltip)
 end
 
 --wrapper for CR Add
-gbl.PE.rotation.register_custom = function(id, name, incombat, outcombat, callback)
-	gbl.CR:Add(id, {
+NeP.PE.rotation.register_custom = function(id, name, incombat, outcombat, callback)
+	NeP.CR:Add(id, {
 		name = name,
 		ic = incombat,
 		ooc = outcombat,
