@@ -80,5 +80,4 @@
   "onload/misc.lua",
   "probably_engine/core.lua",
   "probably_engine/mapper.lua",
-  "combat_routines/paladin/protection.lua"
 ]
