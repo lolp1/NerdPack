@@ -157,14 +157,18 @@ function  NeP.Core.UnitDebuffL(target, spell, own)
 	end
 end
 
+function NeP.Core.ForceLoad()
+	if not Run_Cache then return end
+	table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
+	NeP.Color = NeP.Core:ClassColor('player', 'hex')
+	for i=1, #Run_Cache do
+		Run_Cache[i].func()
+	end
+	Run_Cache = nil
+end
+
 NeP.Listener:Add("NeP_Core_load", "PLAYER_ENTERING_WORLD", function()
 	NeP._G.C_Timer.After(1, function()
-		if not Run_Cache then return end
-		table.sort(Run_Cache, function(a,b) return a.prio > b.prio end)
-		NeP.Color = NeP.Core:ClassColor('player', 'hex')
-		for i=1, #Run_Cache do
-			Run_Cache[i].func()
-		end
-		Run_Cache = nil
+		NeP.Core.ForceLoad();
 	end)
 end)
