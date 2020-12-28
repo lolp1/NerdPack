@@ -3,7 +3,7 @@ local CreateFrame = NeP._G.CreateFrame
 NeP.Listener = {}
 local listeners = {}
 
-local onEvent =function(_, event, ...)
+local onEvent = function(_, event, ...)
 	if not listeners[event] then return end
 	for k in pairs(listeners[event]) do
 		listeners[event][k](...)
