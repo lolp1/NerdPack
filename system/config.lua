@@ -3,13 +3,22 @@ local n_name, NeP = ...
 NeP.Config = {}
 local Data = {}
 local version = "0.2"
+local confname = local_stream_name and (local_stream_name .. 'DATA') or 'NePDATA';
+
+local function setData()
+	_G[confname] = _G[confname] or Data
+	Data = _G[confname]
+	if Data["config_ver"] ~= version then NeP._G.wipe(Data) end
+	Data["config_ver"] = version
+end
+
+if local_stream_name then
+	setData()
+end
 
 NeP.Listener:Add("NeP_Config", "ADDON_LOADED", function(addon)
 	if addon:lower() == n_name:lower() then
-		_G.NePDATA = _G.NePDATA or Data
-		Data = _G.NePDATA
-		if Data["config_ver"] ~= version then NeP._G.wipe(Data) end
-		Data["config_ver"] = version
+		setData()
 	end
 end)
 
