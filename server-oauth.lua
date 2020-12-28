@@ -1,7 +1,7 @@
   
 local n_name, NeP = ...
 
-CH.Version = 1.4
+local version = 1.4
 
 local function login()
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
@@ -24,5 +24,5 @@ local config = {
 }
 
 local GUI = _G.NeP.Interface:BuildGUI(config)
-_G.NeP.Interface:Add('OAuth V:'..CH.Version, function() GUI.parent:Show() end)
+_G.NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
 GUI.parent:Hide()
