@@ -44,7 +44,6 @@ end
 local function login()
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
-  print(username, password)
   getToken(username, password)
 end
 
