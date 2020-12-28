@@ -1,16 +1,17 @@
 local _, NeP = ...
-local onEvent = NeP._G.onEvent
 local CreateFrame = NeP._G.CreateFrame
 NeP.Listener = {}
 local listeners = {}
 
-local frame = CreateFrame('Frame', 'NeP_Events')
-frame:SetScript('OnEvent', function(_, event, ...)
+local onEvent =function(_, event, ...)
 	if not listeners[event] then return end
 	for k in pairs(listeners[event]) do
 		listeners[event][k](...)
 	end
-end)
+end
+
+local frame = CreateFrame('Frame', 'NeP_Events')
+frame:SetScript('OnEvent', onEvent)
 
 function NeP.Listener.Add(_, name, event, callback, overwrite)
 	if type(event) == "table" then
