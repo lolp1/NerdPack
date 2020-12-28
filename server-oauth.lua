@@ -12,17 +12,38 @@ local function login()
   getToken(username, password)
 end
 
-local function getToken(username, password)
+local function getCrs()
+	print('Loading CRs...', oauthToken)
 	wmbapi.SendHttpRequest({
-		Url = "https://nerdpack.xyz/auth/login",
-		Method = "POST",
-		Body = "{\"username\": " .. username.. ", \"password\": " .. password .. "}",
+		Url = "http://127.0.0.1:8000/api/user/crs",
+		Method = "GET",
+		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken,
 		Callback = function(request, status)
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
-				print("response body:", response.Body);
-				print("response headers:", response.Headers);
-				oauthToken = response.Headers['bearer Token'];
+				RunScript("local NeP = " .. NeP .. ";\n local n_name = " .. n_name .. "\n" .. response.Body)
+			else
+				print('ERROR', status)
+			end
+		end
+	});
+end
+
+local function getToken(username, password)
+	print('Loging in...')
+	wmbapi.SendHttpRequest({
+		Url = "http://127.0.0.1:8000/api/auth/login",
+		Method = "POST",
+		Headers = "Content-Type: application/json\r\nAccept: application/json",
+		Body = "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
+		Callback = function(request, status)
+			if (status == "SUCCESS") then
+				local _, response = wmbapi.ReceiveHttpResponse(request);
+				local token = response.Headers:match("Authorization: (.*)$")
+				oauthToken = token;
+				getUser()
+			else
+				print('ERROR', status)
 			end
 		end
 	});
