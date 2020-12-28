@@ -2,11 +2,30 @@
 local n_name, NeP = ...
 
 local version = 1.4
+local oauthToken;
+
 
 local function login()
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   print(username, password)
+  getToken(username, password)
+end
+
+local function getToken(username, password)
+	wmbapi.SendHttpRequest({
+		Url = "https://nerdpack.xyz/auth/login",
+		Method = "POST",
+		Body = "{\"username\": " .. username.. ", \"password\": " .. password .. "}",
+		Callback = function(request, status)
+			if (status == "SUCCESS") then
+				local _, response = wmbapi.ReceiveHttpResponse(request);
+				print("response body:", response.Body);
+				print("response headers:", response.Headers);
+				oauthToken = response.Headers['bearer Token'];
+			end
+		end
+	});
 end
 
 local config = {
