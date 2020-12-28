@@ -4,14 +4,6 @@ local n_name, NeP = ...
 local version = 1.4
 local oauthToken;
 
-
-local function login()
-  local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
-  local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
-  print(username, password)
-  getToken(username, password)
-end
-
 local function getCrs()
 	print('Loading CRs...', oauthToken)
 	wmbapi.SendHttpRequest({
@@ -63,6 +55,13 @@ local config = {
     	{ type = 'button', text = 'Login', width = 230, height = 20, callback = function(val) login() end},
 	}
 }
+
+local function login()
+  local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
+  local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
+  print(username, password)
+  getToken(username, password)
+end
 
 local GUI = NeP.Interface:BuildGUI(config)
 NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
