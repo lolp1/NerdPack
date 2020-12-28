@@ -14,15 +14,16 @@ local config = {
 	title = n_name,
 	subtitle = 'OAuth',
 	width = 250,
-	height = 200,
+	height = 100,
 	config = {
-		{ type = 'spacer' },{ type = 'rule' },
-		{ type = 'input', text = 'Username', key = 'username' },
-    { type = 'input', text = 'Password', key = 'password' },
-    { type = 'button', text = 'Login', width = 230, height = 20, callback = function(val) login() end},
+		{ type = 'spacer' },
+		{ type = 'input', text = 'Username', key = 'username', width = 150 },
+		{ type = 'input', text = 'Password', key = 'password', width = 150 },
+		{ type = 'spacer' },
+    	{ type = 'button', text = 'Login', width = 230, height = 20, callback = function(val) login() end},
 	}
 }
 
-local GUI = _G.NeP.Interface:BuildGUI(config)
-_G.NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
+local GUI = NeP.Interface:BuildGUI(config)
+NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
 GUI.parent:Hide()
