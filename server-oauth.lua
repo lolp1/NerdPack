@@ -8,7 +8,7 @@ local server_secret = 'REPLACED_BY_SERVER';
 local function getCrs()
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
-		Url = "http://127.0.0.1:8000/api/user/crs",
+		Url = "http://127.0.0.1:8000/api/user/crs/stream",
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
