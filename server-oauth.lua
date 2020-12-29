@@ -4,12 +4,14 @@ local oauthToken;
 local pointer = tostring(NeP);
 _G[pointer] = NeP;
 
+local server_secret = 'REPLACED_BY_SERVER';
+
 local function getCrs()
 	print('Loading CRs...')
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/user/crs",
 		Method = "GET",
-		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken,
+		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
