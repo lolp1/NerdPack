@@ -3,12 +3,10 @@ local oauthToken;
 -- would like this gone... i need to pass nep tho
 local pointer = tostring(NeP);
 _G[pointer] = NeP;
-
 local server_secret = 'REPLACED_BY_SERVER';
 
-
 local function getCrs()
-	print('Loading CRs...')
+	print('Loading CRs...', oauthToken)
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/user/crs",
 		Method = "GET",
@@ -46,6 +44,7 @@ local function getToken(username, password)
 end
 
 local function login()
+  if oauthToken then error('Already Logged in') end
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   if password and password:len() > 0 and username and username:len() > 0 then
