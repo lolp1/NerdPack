@@ -12,7 +12,6 @@ local function getCrs()
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
-			local status, response = pcall(f, "a")
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
 				local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
