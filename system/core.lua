@@ -168,7 +168,7 @@ function NeP.Core.ForceLoad()
 end
 
 NeP.Listener:Add("NeP_Core_load", "PLAYER_ENTERING_WORLD", function()
-	NeP._G.C_Timer.After(1, function()
+	NeP._G.C_Timer.After(local_stream_name and 0 or 1, function()
 		NeP.Core.ForceLoad();
 	end)
 end)
