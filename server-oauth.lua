@@ -6,7 +6,7 @@ _G[pointer] = NeP;
 local server_secret = 'REPLACED_BY_SERVER';
 
 local function getCrs()
-	print('Loading CRs...', oauthToken)
+	NeP.Core:Print('Loading CRs...', oauthToken)
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/user/crs",
 		Method = "GET",
@@ -16,17 +16,19 @@ local function getCrs()
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
 				local status, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
-				if not status then error(xerror) end
+				if not status then print(xerror) end
 				NeP.Interface.ResetCRs();
 				NeP.CR:Set();
-				print('DONE!');
+				NeP.Core:Print('DONE loading crs!');
+			else
+				print(status);
 			end
 		end
 	});
 end
 
 local function getToken(username, password)
-	print('Loging in...')
+	NeP.Core:Print('Loging in...')
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/auth/login",
 		Method = "POST",
@@ -44,7 +46,7 @@ local function getToken(username, password)
 end
 
 local function login()
-  if oauthToken then error('Already Logged in') end
+  if oauthToken then NeP.Core:Print('Already Logged in'); return: end
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   if password and password:len() > 0 and username and username:len() > 0 then
