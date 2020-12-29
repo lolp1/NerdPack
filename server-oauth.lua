@@ -19,7 +19,7 @@ local function getCrs()
 				NeP.Interface.ResetCRs();
 				NeP.CR:Set();
 				NeP.Core:Print('DONE loading crs!');
-			elseif status ~= "REQUESTING"
+			elseif status ~= "REQUESTING" then
 				print(status);
 			end
 		end
@@ -39,7 +39,7 @@ local function getToken(username, password)
 				local token = response.Headers:match("Authorization:%s*(.-)%s")
 				oauthToken = token;
 				getCrs();
-			elseif status ~= "REQUESTING"
+			elseif status ~= "REQUESTING" then
 				print(status);
 			end
 		end
