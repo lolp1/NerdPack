@@ -6,11 +6,6 @@ _G[pointer] = NeP;
 
 local server_secret = 'REPLACED_BY_SERVER';
 
-local function initCrs(response)
-	RunScript("local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response);
-	NeP.Interface.ResetCRs();
-	NeP.CR:Set();
-end
 
 local function getCrs()
 	print('Loading CRs...')
@@ -22,8 +17,11 @@ local function getCrs()
 			local status, response = pcall(f, "a")
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
-				local status, xerror = pcall(initCrs, response.Body);
+				local status, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
 				if not status then error(xerror) end
+				NeP.Interface.ResetCRs();
+				NeP.CR:Set();
+				print('DONE!');
 			end
 		end
 	});
