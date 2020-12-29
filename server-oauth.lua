@@ -46,7 +46,7 @@ local function getToken(username, password)
 end
 
 local function login()
-  if oauthToken then NeP.Core:Print('Already Logged in'); return: end
+  if oauthToken then NeP.Core:Print('Already Logged in'); return; end
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   if password and password:len() > 0 and username and username:len() > 0 then
