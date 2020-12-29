@@ -18,7 +18,6 @@ local function getCrs()
 				RunScript("local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
 				NeP.Interface.ResetCRs();
 				NeP.CR:Set();
-				print('Done!')
 			end
 		end
 	});
