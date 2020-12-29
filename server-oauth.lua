@@ -7,6 +7,7 @@ local server_secret = 'REPLACED_BY_SERVER';
 
 local function getCrs()
 	local current_class = select(1,UnitClass('player')):lower();
+	print(current_class);
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/user/crs/stream",
