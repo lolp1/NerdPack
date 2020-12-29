@@ -6,7 +6,7 @@ _G[pointer] = NeP;
 local server_secret = 'REPLACED_BY_SERVER';
 
 local function getCrs()
-	NeP.Core:Print('Loading CRs...', oauthToken)
+	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
 		Url = "http://127.0.0.1:8000/api/user/crs",
 		Method = "GET",
@@ -15,8 +15,8 @@ local function getCrs()
 			local status, response = pcall(f, "a")
 			if (status == "SUCCESS") then
 				local _, response = wmbapi.ReceiveHttpResponse(request);
-				local status, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
-				if not status then print(xerror) end
+				local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
+				if not xstatus then print(xerror) end
 				NeP.Interface.ResetCRs();
 				NeP.CR:Set();
 				NeP.Core:Print('DONE loading crs!');
