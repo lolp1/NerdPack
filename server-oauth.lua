@@ -37,7 +37,7 @@ local function getTokenLB(username, password)
 		'nerdpack.xyz',
 		 443, 
 		 true, 
-         '/download-stream/init', 
+         '/api/auth/login', 
          '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		 function(content)
 			print(content)
