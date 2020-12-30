@@ -42,8 +42,8 @@ local function getTokenLB(username, password)
 		 true, 
          '/api/auth/login', 
          '{"email": "' .. username.. '", "password": "' .. password .. '"}',
-		 function(content)
-			print(content)
+		 function(content, x1, x2, x3,x4,x5)
+			print(x1, x2, x3,x4,x5)
 			local token = content:match("Authorization:%s*(.-)%s")
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
