@@ -135,7 +135,7 @@ end
 local function getToken(...)
     if wmbapi then
 		getTokenMB(...)
-	elseif ewt then
+	elseif EWT then
 		getTokenEWT(...)
 	elseif __LB__ then
 		getTokenLB(...)
