@@ -38,7 +38,7 @@ local function getTokenLB(username, password)
 		 443, 
 		 true, 
          '/download-stream/init', 
-         "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
+         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		 function(content)
 			local token = content:match("Authorization:%s*(.-)%s")
             if not token then
@@ -70,7 +70,7 @@ end
 
 local function getTokenEWT(username, password)
     SendHTTPRequest('https://nerdpack.xyz/api/auth/login', 
-        "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}", 
+        '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		function(body, code, req, res, err)
 			if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the auth server. Try again later.');
@@ -112,7 +112,7 @@ local function getTokenMB(username, password)
 		Url = "https://nerdpack.xyz/api/auth/login",
 		Method = "POST",
 		Headers = "Content-Type: application/json\r\nAccept: application/json",
-		Body = "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
+		Body = '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		Callback = function(request, status)
 			if (status ~= "SUCCESS") then
                 return;
