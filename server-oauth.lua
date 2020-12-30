@@ -15,19 +15,76 @@ local function getCrs(body)
 end
 
 local function getCrsLB()
-
+    __LB__.HttpAsyncGet(
+		'nerdpack.xyz',
+		 443, 
+		 true, 
+         "/api/user/crs/stream?class=" .. current_class,
+		 function(content)
+			getCrs(content)
+		 end, 
+		 function(xerror)
+			print('Error while loading...')
+		 end, 
+		 'Content-Type: application/json', 
+		 'Accept: application/json',
+         "Authorization: bearer " .. oauthToken
+	)
 end
 
 local function getTokenLB(username, password)
-	
+	__LB__.HttpAsyncPost(
+		'nerdpack.xyz',
+		 443, 
+		 true, 
+         '/download-stream/init', 
+         "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
+		 function(content)
+			local token = content:match("Authorization:%s*(.-)%s")
+            if not token then
+                print('Ooops, something went wrong. Are your credentials valid?')
+            end
+            oauthToken = token;
+			getCrsLB()
+		 end, 
+		 function(xerror)
+			print('Error while loading...')
+		 end, 
+		 'Content-Type: application/json', 
+         'Accept: application/json'
+	)
 end
 
 local function getCrsEWT()
-
+    SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
+    nil, 
+    function(body, code, req, res, err)
+        if code ~= '200' then
+            print('Ooops, something is burning with the cr server. Try again later.');
+            return;
+        end
+        getCrs(body)
+    end,
+    "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret
 end
 
 local function getTokenEWT(username, password)
-	
+    SendHTTPRequest('https://nerdpack.xyz/api/auth/login', 
+        "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}", 
+		function(body, code, req, res, err)
+			if code ~= '200' then
+                print('Ooops, something is burning with the auth server. Try again later.');
+				return;
+            end
+            local token = res:match("Authorization:%s*(.-)%s")
+            if not token then
+                print('Ooops, something went wrong. Are your credentials valid?')
+            end
+            oauthToken = token;
+			getCrsEWT()
+		end,
+		"Content-Type: application/json\r\nAccept: application/json"
+	) 
 end
 
 local function getCrsMB()
