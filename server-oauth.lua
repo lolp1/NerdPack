@@ -5,7 +5,15 @@ local pointer = tostring(NeP);
 _G[pointer] = NeP;
 local server_secret = 'REPLACED_BY_SERVER';
 
-local function getCrs()
+local function getCrs(body)
+    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. body);
+    if not xstatus then print(xerror) end
+    NeP.Interface.ResetCRs();
+    NeP.CR:Set();
+    NeP.Core:Print('DONE loading crs!');
+end
+
+local function getCrsMB()
 	local current_class = select(1,UnitClass('player')):lower();
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
@@ -13,21 +21,19 @@ local function getCrs()
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
-			if (status == "SUCCESS") then
-				local _, response = wmbapi.ReceiveHttpResponse(request);
-				local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. response.Body);
-				if not xstatus then print(xerror) end
-				NeP.Interface.ResetCRs();
-				NeP.CR:Set();
-				NeP.Core:Print('DONE loading crs!');
-			elseif status ~= "REQUESTING" then
-				print(status);
-			end
+			if (status ~= "SUCCESS") then
+				return;
+            end
+            local _, response = wmbapi.ReceiveHttpResponse(request);
+            if response.Code ~= '200' then
+                print('Ooops, something is burning with the cr server. Try again later.');
+            end
+			getCrs(response.Body)
 		end
 	});
 end
 
-local function getToken(username, password)
+local function getTokenMB(username, password)
 	NeP.Core:Print('Loging in...')
 	wmbapi.SendHttpRequest({
 		Url = "https://nerdpack.xyz/api/auth/login",
@@ -35,17 +41,35 @@ local function getToken(username, password)
 		Headers = "Content-Type: application/json\r\nAccept: application/json",
 		Body = "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
 		Callback = function(request, status)
-			if (status == "SUCCESS") then
-				local _, response = wmbapi.ReceiveHttpResponse(request);
-				local token = response.Headers:match("Authorization:%s*(.-)%s")
-				oauthToken = token;
-				getCrs();
-			elseif status ~= "REQUESTING" then
-				print(status);
-			end
+			if (status ~= "SUCCESS") then
+                return;
+            end
+            local _, response = wmbapi.ReceiveHttpResponse(request);
+            if response.Code ~= '200' then
+                print('Ooops, something is burning with the auth server. Try again later.');
+            end
+            local token = response.Headers:match("Authorization:%s*(.-)%s")
+            if not token then
+                print('Ooops, something went wrong. Are your credentials valid?')
+            end
+            oauthToken = token;
+			getCrsMB();
 		end
 	});
 end
+
+local function getToken(...)
+    if wmbapi then
+		getTokenMB(...)
+	elseif ewt then
+		getTokenEWT(...)
+	elseif __LB__ then
+		getTokenLB(...)
+	else
+		print('No supported unlocker found, try again after launching one.')
+	end
+end
+
 
 local function login()
   if oauthToken then NeP.Core:Print('Already Logged in'); return; end
