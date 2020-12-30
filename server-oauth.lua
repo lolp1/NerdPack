@@ -59,6 +59,7 @@ local function getCrsEWT()
     SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
         nil, 
         function(body, code, req, res, err)
+			print(res)
             if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
                 return;
@@ -78,7 +79,6 @@ local function getTokenEWT(username, password)
 				return;
             end
             local token = res:match("Authorization:%s*(.-)%s")
-	    print(res, token)
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
