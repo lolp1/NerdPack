@@ -50,7 +50,7 @@
   "interface/settings.lua",
   "interface/toggles.lua",
   "interface/default_toggles.lua",
-  "interface/om.lua",
+  "interface/OM.lua",
   "interface/actionlog.lua",
   "interface/alert.lua",
   "interface/splash.lua",
