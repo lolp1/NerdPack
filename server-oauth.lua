@@ -59,7 +59,6 @@ local function getCrsEWT()
     SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
         nil, 
         function(body, code, req, res, err)
-			print(res)
             if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
                 return;
