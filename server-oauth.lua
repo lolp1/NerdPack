@@ -59,7 +59,7 @@ local function getCrsEWT()
     SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
     nil, 
     function(body, code, req, res, err)
-        if code ~= '200' then
+        if tonumber(code) ~= 200 then
             print('Ooops, something is burning with the cr server. Try again later.');
             return;
         end
@@ -72,7 +72,7 @@ local function getTokenEWT(username, password)
     SendHTTPRequest('https://nerdpack.xyz/api/auth/login', 
         "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}", 
 		function(body, code, req, res, err)
-			if code ~= '200' then
+			if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the auth server. Try again later.');
 				return;
             end
@@ -98,7 +98,7 @@ local function getCrsMB()
 				return;
             end
             local _, response = wmbapi.ReceiveHttpResponse(request);
-            if response.Code ~= '200' then
+            if tonumber(response.Code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
             end
 			getCrs(response.Body)
@@ -118,7 +118,7 @@ local function getTokenMB(username, password)
                 return;
             end
             local _, response = wmbapi.ReceiveHttpResponse(request);
-            if response.Code ~= '200' then
+            if tonumber(response.Code) ~= 200 then
                 print('Ooops, something is burning with the auth server. Try again later.');
             end
             local token = response.Headers:match("Authorization:%s*(.-)%s")
