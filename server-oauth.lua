@@ -15,14 +15,12 @@ local function getCrs(body)
 end
 
 local function getCrsLB()
-	print('wtf, did it update?')
     __LB__.HttpAsyncGet(
 		'nerdpack.xyz',
 		 443, 
 		 true, 
          "/api/user/crs/stream?class=" .. current_class,
 		 function(content)
-			print(content)
 			getCrs(content)
 		 end, 
 		 function(xerror)
