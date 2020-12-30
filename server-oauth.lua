@@ -33,7 +33,9 @@ local function getCrsLB()
          'Accept',
          'application/json',
          "Authorization",
-         'bearer ' .. oauthToken
+         'bearer ' .. oauthToken,
+		'CustomSecret',
+		server_secret
 	)
 end
 
