@@ -66,7 +66,7 @@ local function getCrsEWT()
             end
             getCrs(body)
         end,
-        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret
+        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret .. '\r\n'
     )
 end
 
