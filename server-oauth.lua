@@ -4,6 +4,7 @@ local oauthToken;
 local pointer = tostring(NeP);
 _G[pointer] = NeP;
 local server_secret = 'REPLACED_BY_SERVER';
+local current_class = select(1,UnitClass('player')):lower();
 
 local function getCrs(body)
     local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n" .. body);
@@ -13,8 +14,23 @@ local function getCrs(body)
     NeP.Core:Print('DONE loading crs!');
 end
 
+local function getCrsLB()
+
+end
+
+local function getTokenLB(username, password)
+	
+end
+
+local function getCrsEWT()
+
+end
+
+local function getTokenEWT(username, password)
+	
+end
+
 local function getCrsMB()
-	local current_class = select(1,UnitClass('player')):lower();
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
 		Url = "https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class,
