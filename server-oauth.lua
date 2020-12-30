@@ -21,6 +21,7 @@ local function getCrsLB()
 		 true, 
          "/api/user/crs/stream?class=" .. current_class,
 		 function(content)
+			print(content)
 			getCrs(content)
 		 end, 
 		 function(xerror)
