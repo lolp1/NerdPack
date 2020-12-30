@@ -15,6 +15,7 @@ local function getCrs(body)
 end
 
 local function getCrsLB()
+	print('wtf, did it update?')
     __LB__.HttpAsyncGet(
 		'nerdpack.xyz',
 		 443, 
