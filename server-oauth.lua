@@ -43,8 +43,8 @@ local function getTokenLB(username, password)
          '/api/auth/login', 
          '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		 function(content)
-			print(content)
 			local token = content:match('"token":"(.-)"')
+			print(content, token, '1')
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
