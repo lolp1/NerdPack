@@ -78,6 +78,7 @@ local function getTokenEWT(username, password)
 				return;
             end
             local token = res:match("Authorization:%s*(.-)%s")
+	    print(res, token)
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
