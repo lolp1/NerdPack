@@ -9,7 +9,7 @@ local function getCrs()
 	local current_class = select(1,UnitClass('player')):lower();
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
-		Url = "http://127.0.0.1:8000/api/user/crs/stream?class=" .. current_class,
+		Url = "https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class,
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
@@ -30,7 +30,7 @@ end
 local function getToken(username, password)
 	NeP.Core:Print('Loging in...')
 	wmbapi.SendHttpRequest({
-		Url = "http://127.0.0.1:8000/api/auth/login",
+		Url = "https://nerdpack.xyz/api/auth/login",
 		Method = "POST",
 		Headers = "Content-Type: application/json\r\nAccept: application/json",
 		Body = "{\"email\": \"" .. username.. "\", \"password\": \"" .. password .. "\"}",
