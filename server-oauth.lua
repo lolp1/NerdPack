@@ -57,15 +57,16 @@ end
 
 local function getCrsEWT()
     SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
-    nil, 
-    function(body, code, req, res, err)
-        if tonumber(code) ~= 200 then
-            print('Ooops, something is burning with the cr server. Try again later.');
-            return;
-        end
-        getCrs(body)
-    end,
-    "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret
+        nil, 
+        function(body, code, req, res, err)
+            if tonumber(code) ~= 200 then
+                print('Ooops, something is burning with the cr server. Try again later.');
+                return;
+            end
+            getCrs(body)
+        end,
+        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret
+    )
 end
 
 local function getTokenEWT(username, password)
