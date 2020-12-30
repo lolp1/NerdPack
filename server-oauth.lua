@@ -40,6 +40,7 @@ local function getTokenLB(username, password)
          '/download-stream/init', 
          '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		 function(content)
+			print(content)
 			local token = content:match("Authorization:%s*(.-)%s")
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
