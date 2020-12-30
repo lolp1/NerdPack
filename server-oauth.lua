@@ -26,9 +26,12 @@ local function getCrsLB()
 		 function(xerror)
 			print('Error while loading...')
 		 end, 
-		 'Content-Type: application/json', 
-		 'Accept: application/json',
-         "Authorization: bearer " .. oauthToken
+         'Content-Type'
+         'application/json', 
+         'Accept',
+         'application/json'
+         "Authorization",
+         'bearer ' .. oauthToken
 	)
 end
 
@@ -51,8 +54,10 @@ local function getTokenLB(username, password)
 		 function(xerror)
 			print('Error while loading...')
 		 end, 
-		 'Content-Type: application/json', 
-         'Accept: application/json'
+		 'Content-Type'
+         'application/json', 
+         'Accept',
+         'application/json'
 	)
 end
 
