@@ -167,14 +167,17 @@ end
 function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	if not Obj then return end
 	local GUID = NeP.DSL:Get('guid')(Obj)
+	print(GUID)
 	if not GUID then return end
 	if NeP.OM.Memory[GUID] then
 		return
 	end
 	local ObjID = select(6, NeP._G.strsplit('-', GUID))
+	print(ObjID)
 	-- filter those with no id
 	if not ObjID and not NeP.DSL:Get('isplayer')(Obj) then return end
 	local id = tonumber(ObjID or 0)
+	print(id)
 	local data = {
 		key = Obj,
 		name = '',
