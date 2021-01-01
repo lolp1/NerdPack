@@ -24,7 +24,6 @@ local function setPlugins(body)
     if not xstatus then return end
 	NeP.Core:Print('DONE loading plugins!');
 	SetCVar("scriptErrors", oldVar)
-	pcall(getCrs);
 end
 
 --REPLACE_WITH_UNLOCKER_FILE

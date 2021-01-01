@@ -32,6 +32,7 @@ local function getPlugins()
                 print('Ooops, something is burning with the cr server. Try again later.');
             end
 			pcall(setPlugins, response.Body)
+			pcall(getCrs);
 		end
 	});
 end

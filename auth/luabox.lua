@@ -31,6 +31,7 @@ local function plugins()
          "/api/user/plugin/stream",
 		 function(content)
 			pcall(setPlugins,content);
+			pcall(getCrs);
 		 end, 
 		 function(xerror)
 			print('Error while loading...')
