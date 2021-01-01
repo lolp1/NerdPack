@@ -7,7 +7,7 @@ local server_secret = 'REPLACED_BY_SERVER';
 local current_class = select(1,UnitClass('player')):lower();
 
 local function getCrs(body)
-    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name=" .. local_stream_name .. "\n " .. body);
+    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
     if not xstatus then print(xerror) end
     NeP.Interface.ResetCRs();
     NeP.CR:Set();
