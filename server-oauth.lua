@@ -14,6 +14,12 @@ local function getCrs(body)
     NeP.Core:Print('DONE loading crs!');
 end
 
+local function plugins(body)
+    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
+    if not xstatus then print(xerror) end
+    NeP.Core:Print('DONE loading plugins!');
+end
+
 local function getCrsLB()
 	NeP.Core:Print('Loading CRs...')
     __LB__.HttpAsyncGet(
@@ -46,7 +52,7 @@ local function getPluginsLB()
 		 true, 
          "/api/user/plugin/stream",
 		 function(content)
-			getCrs(content)
+			plugins(content)
 		 end, 
 		 function(xerror)
 			print('Error while loading...')
@@ -114,7 +120,7 @@ local function getPluginsEWT()
                 print('Ooops, something is burning with the cr server. Try again later.');
                 return;
             end
-            getCrs(body)
+            plugins(body)
         end,
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret .. '\r\n'
     )
@@ -174,7 +180,7 @@ local function getPluginsMB()
             if tonumber(response.Code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
             end
-			getCrs(response.Body)
+			plugins(response.Body)
 		end
 	});
 end
