@@ -10,7 +10,7 @@ local domain = "nerdpack.xyz"
 local function setCrs(body)
 	local oldVar = GetCVar("scriptErrors")
     local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
-    if not xstatus then print(xerror) end
+    if not xstatus then return end
     NeP.Interface.ResetCRs();
     NeP.CR:Set();
 	NeP.Core:Print('DONE loading crs!');
