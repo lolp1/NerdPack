@@ -163,7 +163,7 @@ end
 local function getPluginsMB()
 	NeP.Core:Print('Loading Plugins...')
 	wmbapi.SendHttpRequest({
-		Url = "https://nerdpack.xyz/api/user/crs/stream",
+		Url = "https://nerdpack.xyz/api/user/plugins/stream",
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
