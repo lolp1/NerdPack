@@ -15,6 +15,7 @@ local function getCrs(body)
 end
 
 local function getCrsLB()
+	NeP.Core:Print('Loading CRs...')
     __LB__.HttpAsyncGet(
 		'nerdpack.xyz',
 		 443, 
@@ -37,7 +38,33 @@ local function getCrsLB()
 	)
 end
 
+local function getPluginsLB()
+	NeP.Core:Print('Loading Plugins...')
+    __LB__.HttpAsyncGet(
+		'nerdpack.xyz',
+		 443, 
+		 true, 
+         "/api/user/plugin/stream",
+		 function(content)
+			getCrs(content)
+		 end, 
+		 function(xerror)
+			print('Error while loading...')
+		 end, 
+         'Content-Type',
+         'application/json', 
+         'Accept',
+         'application/json',
+         "Authorization",
+         'bearer ' .. oauthToken,
+		'CustomSecret',
+		server_secret
+	)
+end
+
+
 local function getTokenLB(username, password)
+	NeP.Core:Print('Loging in...')
 	__LB__.HttpAsyncPost(
 		'nerdpack.xyz',
 		 443, 
@@ -50,6 +77,7 @@ local function getTokenLB(username, password)
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
             oauthToken = token;
+			getPluginsLB()
 			getCrsLB()
 		 end, 
 		 function(xerror)
@@ -63,6 +91,7 @@ local function getTokenLB(username, password)
 end
 
 local function getCrsEWT()
+	NeP.Core:Print('Loading CRs...')
     SendHTTPRequest("https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class, 
         nil, 
         function(body, code, req, res, err)
@@ -76,7 +105,23 @@ local function getCrsEWT()
     )
 end
 
+local function getPluginsEWT()
+	NeP.Core:Print('Loading Plugins...')
+    SendHTTPRequest("https://nerdpack.xyz/api/user/plugins/stream", 
+        nil, 
+        function(body, code, req, res, err)
+            if tonumber(code) ~= 200 then
+                print('Ooops, something is burning with the cr server. Try again later.');
+                return;
+            end
+            getCrs(body)
+        end,
+        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret .. '\r\n'
+    )
+end
+
 local function getTokenEWT(username, password)
+	NeP.Core:Print('Loging in...')
     SendHTTPRequest('https://nerdpack.xyz/api/auth/login', 
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		function(body, code, req, res, err)
@@ -89,6 +134,7 @@ local function getTokenEWT(username, password)
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
             oauthToken = token;
+			getPluginsEWT()
 			getCrsEWT()
 		end,
 		"Content-Type: application/json\r\nAccept: application/json"
@@ -99,6 +145,25 @@ local function getCrsMB()
 	NeP.Core:Print('Loading CRs...')
 	wmbapi.SendHttpRequest({
 		Url = "https://nerdpack.xyz/api/user/crs/stream?class=" .. current_class,
+		Method = "GET",
+		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
+		Callback = function(request, status)
+			if (status ~= "SUCCESS") then
+				return;
+            end
+            local _, response = wmbapi.ReceiveHttpResponse(request);
+            if tonumber(response.Code) ~= 200 then
+                print('Ooops, something is burning with the cr server. Try again later.');
+            end
+			getCrs(response.Body)
+		end
+	});
+end
+
+local function getPluginsMB()
+	NeP.Core:Print('Loading Plugins...')
+	wmbapi.SendHttpRequest({
+		Url = "https://nerdpack.xyz/api/user/crs/stream",
 		Method = "GET",
 		Headers = "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
 		Callback = function(request, status)
@@ -134,6 +199,7 @@ local function getTokenMB(username, password)
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
             oauthToken = token;
+			getPluginsMB()	
 			getCrsMB();
 		end
 	});
