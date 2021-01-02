@@ -10,7 +10,8 @@ local function getCrs()
             end
             local _, response = wmbapi.ReceiveHttpResponse(request);
             if tonumber(response.Code) ~= 200 then
-                print('Ooops, something is burning with the cr server. Try again later.');
+				print('Ooops, something is burning with the cr server. Try again later.');
+				return;
             end
 			pcall(setCrs, response.Body)
 		end
@@ -29,7 +30,8 @@ local function getPlugins()
             end
             local _, response = wmbapi.ReceiveHttpResponse(request);
             if tonumber(response.Code) ~= 200 then
-                print('Ooops, something is burning with the cr server. Try again later.');
+				print('Ooops, something is burning with the cr server. Try again later.');
+				return;
             end
 			pcall(setPlugins, response.Body)
 			pcall(getCrs);
@@ -50,11 +52,13 @@ local function getToken(username, password)
             end
             local _, response = wmbapi.ReceiveHttpResponse(request);
             if tonumber(response.Code) ~= 200 then
-                print('Ooops, something is burning with the auth server. Try again later.');
+				print('Ooops, something is burning with the auth server. Try again later.');
+				return;
             end
             local token = response.Headers:match("Authorization:%s*(.-)%s")
             if not token then
-                print('Ooops, something went wrong. Are your credentials valid?')
+				print('Ooops, something went wrong. Are your credentials valid?');
+				return;
             end
             oauthToken = token;
 			pcall(getPlugins);

@@ -2,17 +2,17 @@ local function getCrs()
 	print('Loading CRs...')
     __LB__.HttpAsyncGet(
 		domain,
-		 443, 
-		 true, 
+		 443,
+		 true,
          "/api/user/crs/stream?class=" .. current_class,
 		 function(content)
 			pcall(setCrs, content)
-		 end, 
+		 end,
 		 function(xerror)
 			print('Error while loading...')
-		 end, 
+		 end,
          'Content-Type',
-         'application/json', 
+         'application/json',
          'Accept',
          'application/json',
          "Authorization",
@@ -26,18 +26,18 @@ local function getPlugins()
 	print('Loading Plugins...')
     __LB__.HttpAsyncGet(
 		domain,
-		 443, 
-		 true, 
+		 443,
+		 true,
          "/api/user/plugin/stream",
 		 function(content)
 			pcall(setPlugins,content);
 			pcall(getCrs);
-		 end, 
+		 end,
 		 function(xerror)
 			print('Error while loading...')
-		 end, 
+		 end,
          'Content-Type',
-         'application/json', 
+         'application/json',
          'Accept',
          'application/json',
          "Authorization",
@@ -51,23 +51,24 @@ local function getToken(username, password)
 	print('Loging in...')
 	__LB__.HttpAsyncPost(
 		domain,
-		 443, 
-		 true, 
-         '/api/auth/login', 
+		 443,
+		 true,
+         '/api/auth/login',
          '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		 function(content)
 			local token = content:match('"token":"(.-)"')
             if not token then
-                print('Ooops, something went wrong. Are your credentials valid?')
+				print('Ooops, something went wrong. Are your credentials valid?')
+				return;
             end
             oauthToken = token;
 			getPlugins();
-		 end, 
+		 end,
 		 function(xerror)
 			print('Error while loading...')
-		 end, 
+		 end,
 		 'Content-Type',
-         'application/json', 
+         'application/json',
          'Accept',
          'application/json'
 	)
