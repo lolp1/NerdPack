@@ -145,6 +145,7 @@ local addAura = function(...)
 		data.caster = caster
 		DestObj[arrType][spellName] = data
 		DestObj[arrType][spellId] = data
+		DestObj[arrType][tostring(spellId)] = data
 	end)
 end
 
