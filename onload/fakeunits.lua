@@ -237,10 +237,50 @@ NeP.FakeUnits:Add('boss', function(num)
 	return tempTable[num] and tempTable[num].key
 end)
 
-NeP.FakeUnits:Add('enemies', function()
-	return NeP.OM:Get('Enemy')
+NeP.FakeUnits:Add('enemies', function(name)
+	if not name then
+		return NeP.OM:Get('Enemy')
+	else
+		local tempTable = {}
+		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+			if Obj.name == name then
+				tempTable[#tempTable+1] = {
+					key = Obj.key,
+				}
+			end
+		end
+		return tempTable
+	end
 end)
 
-NeP.FakeUnits:Add('friendly', function()
-	return NeP.OM:Get('Roster')
+NeP.FakeUnits:Add('friendly', function(name)
+	if not name then
+		return NeP.OM:Get('Roster')
+	else
+		local tempTable = {}
+		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+			if Obj.name == name then
+				tempTable[#tempTable+1] = {
+					key = Obj.key,
+				}
+			end
+		end
+		return tempTable
+	end
+end)
+
+NeP.FakeUnits:Add('critters', function(name)
+	if not name then
+		return NeP.OM:Get('Critters')
+	else
+		local tempTable = {}
+		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+			if Obj.name == name then
+				tempTable[#tempTable+1] = {
+					key = Obj.key,
+				}
+			end
+		end
+		return tempTable
+	end
 end)
