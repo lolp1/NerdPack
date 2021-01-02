@@ -1,4 +1,4 @@
-local function crs()
+local function getCrs()
 	print('Loading CRs...')
     __LB__.HttpAsyncGet(
 		domain,
@@ -22,7 +22,7 @@ local function crs()
 	)
 end
 
-local function plugins()
+local function getPlugins()
 	print('Loading Plugins...')
     __LB__.HttpAsyncGet(
 		domain,
@@ -47,7 +47,7 @@ local function plugins()
 	)
 end
 
-local function token(username, password)
+local function getToken(username, password)
 	print('Loging in...')
 	__LB__.HttpAsyncPost(
 		domain,
