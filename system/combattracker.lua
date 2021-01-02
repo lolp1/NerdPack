@@ -156,6 +156,7 @@ local removeAura = function(...)
 	if DestObj and DestObj[arrType] then
 		DestObj[arrType][spellName] = nil
 		DestObj[arrType][spellId] = nil
+		DestObj[arrType][tostring(spellId)] = nil
 	end
 end
 
