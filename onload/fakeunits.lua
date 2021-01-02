@@ -237,7 +237,7 @@ NeP.FakeUnits:Add('boss', function(num)
 	return tempTable[num] and tempTable[num].key
 end)
 
-NeP.FakeUnits:Add('enemies', function(name)
+NeP.FakeUnits:Add('enemies', function(_, name)
 	if not name then
 		return NeP.OM:Get('Enemy')
 	else
@@ -253,7 +253,7 @@ NeP.FakeUnits:Add('enemies', function(name)
 	end
 end)
 
-NeP.FakeUnits:Add('friendly', function(name)
+NeP.FakeUnits:Add('friendly', function(_, name)
 	if not name then
 		return NeP.OM:Get('Roster')
 	else
@@ -269,7 +269,7 @@ NeP.FakeUnits:Add('friendly', function(name)
 	end
 end)
 
-NeP.FakeUnits:Add('critter', function(name)
+NeP.FakeUnits:Add('critter', function(_, name)
 	if not name then
 		return NeP.OM:Get('Critters')
 	else
