@@ -1,6 +1,6 @@
 local function getCrs()
 	print('Loading CRs...')
-    _G.InternetRequestAsync(
+    _G.InternetRequestAsyncInternal(
         "GET",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '',
@@ -18,7 +18,7 @@ end
 
 local function getPlugins()
 	print('Loading Plugins...')
-    _G.InternetRequestAsync(
+    _G.InternetRequestAsyncInternal(
         "GET",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '',
@@ -36,7 +36,7 @@ end
 
 local function getToken(username, password)
 	print('Loging in...')
-    _G.InternetRequestAsync(
+    _G.InternetRequestAsyncInternal(
         "POST",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
