@@ -270,11 +270,11 @@ NeP.FakeUnits:Add('friendly', function(_, name)
 end)
 
 NeP.FakeUnits:Add('critter', function(_, name)
+	print(name)
 	if not name then
 		return NeP.OM:Get('Critters')
 	else
 		local tempTable = {}
-		print(name)
 		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
 			if Obj.name == name then
 				print('found', Obj.key)
