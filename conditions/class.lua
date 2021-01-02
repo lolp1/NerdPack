@@ -34,6 +34,10 @@ NeP.DSL:Register("isPet",function(unit)
   or PetNames[NeP._G.UnitCreatureType(unit)] ~= nil
 end)
 
+NeP.DSL:Register("stagger",function(unit)
+  return NeP._G.UnitStagger(unit) or 0
+end)
+
 NeP.DSL:Register('petrange', function(target)
   return target and NeP.DSL:Get('distance')('pet', nil, target) or 0
 end)
