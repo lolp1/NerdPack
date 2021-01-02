@@ -269,7 +269,7 @@ NeP.FakeUnits:Add('friendly', function(name)
 	end
 end)
 
-NeP.FakeUnits:Add('critters', function(name)
+NeP.FakeUnits:Add('critter', function(name)
 	if not name then
 		return NeP.OM:Get('Critters')
 	else
