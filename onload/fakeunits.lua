@@ -258,7 +258,7 @@ NeP.FakeUnits:Add('friendly', function(_, name)
 		return NeP.OM:Get('Roster')
 	else
 		local tempTable = {}
-		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+		for _, Obj in pairs(NeP.OM:Get('Roster')) do
 			if Obj.name == name then
 				tempTable[#tempTable+1] = {
 					key = Obj.key,
@@ -270,14 +270,12 @@ NeP.FakeUnits:Add('friendly', function(_, name)
 end)
 
 NeP.FakeUnits:Add('critter', function(_, name)
-	print(name)
 	if not name then
 		return NeP.OM:Get('Critters')
 	else
 		local tempTable = {}
-		for _, Obj in pairs(NeP.OM:Get('Enemy')) do
+		for _, Obj in pairs(NeP.OM:Get('Critters')) do
 			if Obj.name == name then
-				print('found', Obj.key)
 				tempTable[#tempTable+1] = {
 					key = Obj.key,
 				}
