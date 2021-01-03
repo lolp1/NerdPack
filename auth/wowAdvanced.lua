@@ -1,6 +1,21 @@
+local function InternetRequestAsync(verb, url, parameters, extraHeader, callback)
+    local id = InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
+    local update
+    update = function ()
+       local response, status = TryInternetRequestInternal(id)
+       if response then
+          callback(response, status)
+       else
+          C_Timer.After(0, update)
+       end
+    end
+    C_Timer.After(0, update)
+ end
+
+
 local function getCrs()
 	print('Loading CRs...')
-    _G.InternetRequestAsyncInternal(
+    _G.InternetRequestAsync(
         "GET",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '',
@@ -18,7 +33,7 @@ end
 
 local function getPlugins()
 	print('Loading Plugins...')
-    _G.InternetRequestAsyncInternal(
+    _G.InternetRequestAsync(
         "GET",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '',
@@ -36,7 +51,7 @@ end
 
 local function getToken(username, password)
 	print('Loging in...')
-    _G.InternetRequestAsyncInternal(
+    _G.InternetRequestAsync(
         "POST",
         "https://" .. domain .. "/download-stream/init/wowadvanced",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
