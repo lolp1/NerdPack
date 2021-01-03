@@ -43,11 +43,8 @@ local function getPlugins()
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
             end
-            -- it panics if we dont timeout
-            C_Timer.After(1, function()
-                pcall(setPlugins, response)
-                pcall(getCrs);
-            end)
+            pcall(setPlugins, response)
+            pcall(getCrs);
         end
     )
 end
@@ -69,7 +66,10 @@ local function getToken(username, password)
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
             oauthToken = token;
-            pcall(getPlugins)
+            -- it panics if we dont timeout
+            C_Timer.After(1, function()
+                pcall(getPlugins)
+            end)
         end
     )
 end
