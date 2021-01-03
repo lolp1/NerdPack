@@ -188,7 +188,7 @@ NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
 end)
 
 NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
-	if NeP._G.UnitExists('target') then
+	if NeP._G.UnitExists('target') and NeP._G.CallSecureFunction ~= nil then
 		local gt = NeP._G.UnitGUID('target')
 		if (unit == gt) then
 			print('a', unit2 or 'player', unit)
