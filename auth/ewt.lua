@@ -30,11 +30,10 @@ local function getPlugins()
 end
 
 local function getToken(username, password)
-	print('Loging in... V2')
+	print('Loging in...')
     SendHTTPRequest("https://".. domain .."/api/auth/login",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
         function(body, code, req, res, err)
-            print('test', code)
 			if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the auth server. Try again later.');
 				return;
