@@ -189,6 +189,7 @@ end)
 
 NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
 	if NeP._G.UnitExists('target') then
+			print('has target')
 		local gt = NeP._G.UnitGUID('target')
 		if (NeP._G.UnitGUID(unit) == gt) then
 			print('a', unit2)
