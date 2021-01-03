@@ -1,8 +1,8 @@
 local function InternetRequestAsync(verb, url, parameters, extraHeader, callback)
-    local id = InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
+    local id = NeP._G.InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
     local update
     update = function ()
-       local response, status = TryInternetRequestInternal(id)
+       local response, status = NeP._G.TryInternetRequestInternal(id)
        if response then
           callback(response, status)
        else
