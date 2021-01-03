@@ -1,7 +1,7 @@
 local function getCrs()
 	print('Loading CRs...')
     SendHTTPRequest("https:/".. domain .."/api/user/crs/stream?class=" .. current_class, 
-        nil, 
+        nil,
         function(body, code, req, res, err)
             if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
@@ -16,7 +16,7 @@ end
 local function getPlugins()
 	print('Loading Plugins...')
     SendHTTPRequest("https:/".. domain .."/api/user/plugins/stream", 
-        nil, 
+        nil,
         function(body, code, req, res, err)
             if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the cr server. Try again later.');
@@ -46,5 +46,5 @@ local function getToken(username, password)
 			pcall(getPlugins);
 		end,
 		"Content-Type: application/json\r\nAccept: application/json"
-	) 
+	)
 end

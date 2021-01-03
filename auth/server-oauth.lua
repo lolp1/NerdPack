@@ -6,9 +6,10 @@ _G[pointer] = NeP;
 local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(1,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
+local oldVar = GetCVar("scriptErrors")
 
 local function setCrs(body)
-	local oldVar = GetCVar("scriptErrors")
+	SetCVar("scriptErrors", "0")
     local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
     if not xstatus then return end
     NeP.Interface.ResetCRs();
@@ -19,7 +20,7 @@ local function setCrs(body)
 end
 
 local function setPlugins(body)
-	local oldVar = GetCVar("scriptErrors")
+	SetCVar("scriptErrors", "0")
     local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
     if not xstatus then return end
 	NeP.Core:Print('DONE loading plugins!');
@@ -33,7 +34,7 @@ local function login()
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   if password and password:len() > 0 and username and username:len() > 0 then
-  	pcall(getToken, username, password)
+		pcall(getToken, username, password)
   end
 end
 
@@ -48,7 +49,7 @@ local config = {
 		{ type = 'input', text = 'Username', key = 'username', width = 150 },
 		{ type = 'input', text = 'Password', key = 'password', width = 150 },
 		{ type = 'spacer' },
-    	{ type = 'button', text = 'Login', width = 230, height = 20, callback = function(val) login() end},
+		{ type = 'button', text = 'Login', width = 230, height = 20, callback = function(val) login() end},
 	}
 }
 
