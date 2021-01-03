@@ -28,7 +28,7 @@ local function setCrs(body)
 end
 
 local function setPlugins(body)
-	local func, errorMessage = loadstring(
+	--[[local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
 		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
@@ -43,7 +43,7 @@ local function setPlugins(body)
 	if not success then
 		print('Error Loading Plugins')
 		print(errorMessage)
-	end
+	end]]
 	NeP.Core:Print('DONE loading plugins!');
 end
 
