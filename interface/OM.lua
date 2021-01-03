@@ -74,6 +74,11 @@ local function RefreshGUI()
 			..'( |cffff0000NO_TABLE|r! )'
 		end
 		txt = txt ..'( '
+		if Obj.key then
+			txt = txt
+			..'|cffff0000Key|r: '
+			..(Obj.key or '??')
+		end
 		if Obj.id and Obj.id ~= 0 then
 			txt = txt
 			..'|cffff0000ID|r: '
