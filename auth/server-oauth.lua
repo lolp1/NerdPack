@@ -6,26 +6,27 @@ _G[pointer] = NeP;
 local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(1,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
-local oldVar = GetCVar("scriptErrors")
 
 local function setCrs(body)
 	pcall(loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
-		"local local_stream_name = '" .. local_stream_name .. "'\n " .. 
+		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
 		body,
 		'NerdPack-Auth-CRs'
 	));
+	NeP.Core:Print('DONE loading crs!');
 end
 
 local function setPlugins(body)
 	pcall(loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
-		"local local_stream_name = '" .. local_stream_name .. "'\n " .. 
+		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
 		body,
 		'NerdPack-Auth-Plugins'
 	));
+	NeP.Core:Print('DONE loading plugins!');
 end
 
 --REPLACE_WITH_UNLOCKER_FILE
