@@ -67,6 +67,7 @@ local function getToken(username, password)
             end
             oauthToken = token;
             -- it panics if we dont timeout
+            print('Logged in, executing timeout...')
             C_Timer.After(1, function()
                 pcall(getPlugins)
             end)
