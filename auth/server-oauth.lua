@@ -8,24 +8,32 @@ local current_class = select(1,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
 local function setCrs(body)
-	pcall(loadstring(
+	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
 		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
 		body,
 		'NerdPack-Auth-CRs'
-	));
+	);
+	if errorMessage then
+		print('Error Loading CRs', errorMessage)
+	end
+	pcall(func);
 	NeP.Core:Print('DONE loading crs!');
 end
 
 local function setPlugins(body)
-	pcall(loadstring(
+	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
 		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
 		body,
 		'NerdPack-Auth-Plugins'
-	));
+	);
+	if errorMessage then
+		print('Error Loading Plugins', errorMessage)
+	end
+	pcall(func);
 	NeP.Core:Print('DONE loading plugins!');
 end
 
