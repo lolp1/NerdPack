@@ -57,12 +57,13 @@ local function getToken(username, password)
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
         "Content-Type: application/json\r\nAccept: application/json",
         function(response, status)
+			print(response, status)
             if tonumber(status) ~= 200 then
 				print('Ooops, something went wrong. Are your credentials valid?')
 				return;
             end
             local token = response:match('"token":"(.-)"')
-			print(token, response)
+			print(token)
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
