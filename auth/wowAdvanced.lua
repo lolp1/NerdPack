@@ -17,7 +17,7 @@ local function getCrs()
 	print('Loading CRs...')
     InternetRequestAsync(
         "GET",
-        domain .. "/api/user/cr/stream",
+        domain .. "/api/user/crs/stream?class=" .. current_class,
         '',
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
         function(response, status)
@@ -57,13 +57,11 @@ local function getToken(username, password)
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
         "Content-Type: application/json\r\nAccept: application/json",
         function(response, status)
-			print(response, status)
             if tonumber(status) ~= 200 then
 				print('Ooops, something went wrong. Are your credentials valid?')
 				return;
             end
             local token = response:match('"token":"(.-)"')
-			print(token)
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
