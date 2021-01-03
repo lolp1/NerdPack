@@ -31,7 +31,7 @@ end
 
 local function getToken(username, password)
 	print('Loging in...')
-    SendHTTPRequest('https:/".. domain .."/api/auth/login',
+    SendHTTPRequest("https:/".. domain .."/api/auth/login",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
 		function(body, code, req, res, err)
 			if tonumber(code) ~= 200 then
