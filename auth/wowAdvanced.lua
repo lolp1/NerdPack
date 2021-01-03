@@ -42,9 +42,12 @@ local function getPlugins()
             if tonumber(status) ~= 200 then
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
-			end
-            pcall(setPlugins, response)
-            pcall(getCrs);
+            end
+            -- it panics if we dont timeout
+            C_Timer.After(1, function()
+                pcall(setPlugins, response)
+                pcall(getCrs);
+            end)
         end
     )
 end
