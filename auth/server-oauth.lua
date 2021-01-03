@@ -9,22 +9,23 @@ local domain = "nerdpack.xyz"
 local oldVar = GetCVar("scriptErrors")
 
 local function setCrs(body)
-	SetCVar("scriptErrors", "0")
-    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
-    if not xstatus then return end
-    NeP.Interface.ResetCRs();
-    NeP.CR:Set();
-	NeP.Core:Print('DONE loading crs!');
-	_G[pointer] =  nil;
-	SetCVar("scriptErrors", oldVar)
+	pcall(loadstring(
+		"local NeP = _G['" .. pointer .. "'];\n" ..
+		"local n_name = '" .. n_name .. "';\n" ..
+		"local local_stream_name = '" .. local_stream_name .. "'\n " .. 
+		body,
+		'NerdPack-Auth-CRs'
+	));
 end
 
 local function setPlugins(body)
-	SetCVar("scriptErrors", "0")
-    local xstatus, xerror = pcall(RunScript, "local NeP = _G['" .. pointer .. "'];\n local n_name = '" .. n_name .. "';\n local local_stream_name = '" .. local_stream_name .. "'\n " .. body);
-    if not xstatus then return end
-	NeP.Core:Print('DONE loading plugins!');
-	SetCVar("scriptErrors", oldVar)
+	pcall(loadstring(
+		"local NeP = _G['" .. pointer .. "'];\n" ..
+		"local n_name = '" .. n_name .. "';\n" ..
+		"local local_stream_name = '" .. local_stream_name .. "'\n " .. 
+		body,
+		'NerdPack-Auth-Plugins'
+	));
 end
 
 --REPLACE_WITH_UNLOCKER_FILE
