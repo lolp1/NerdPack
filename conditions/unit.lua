@@ -194,12 +194,12 @@ NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
 			print('a', unit2 or 'player', unit)
 			print('NEP',NeP.Protected.Distance(unit2 or 'player', unit))
 			print(NeP._G.UnitGUID(unit))
-			print(NeP._G.UnitGUID(unit2) or 'player')
+			print(NeP._G.UnitGUID(unit2  or 'player'))
 		elseif (unit2 == gt) then
 			print('b', unit, unit2 or 'player')
 			print('NEP', NeP.Protected.Distance(unit2 or 'player', unit), NeP._G.UnitGUID(unit))
 			print(NeP._G.UnitGUID(unit))
-			print(NeP._G.UnitGUID(unit2) or 'player')
+			print(NeP._G.UnitGUID(unit2  or 'player'))
 		end
 	end
   return NeP.Protected.Distance(unit2 or 'player', unit) or 999
