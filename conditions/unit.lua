@@ -188,6 +188,16 @@ NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
 end)
 
 NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
+	if g.UnitExists('target') then
+		local gt = g.UnitGUID('target')
+		if (g.UnitGUID(unit) == gt) then
+			print('a', unit2)
+			print('NEP', math.sqrt(dx*dx + dy*dy + dz*dz), a, b)
+		elseif (g.UnitGUID(unit2) == gt) then
+			print('b', unit)
+			print('NEP', math.sqrt(dx*dx + dy*dy + dz*dz), a, b)
+		end
+	end
   return NeP.Protected.Distance(unit2 or 'player', unit) or 999
 end)
 
