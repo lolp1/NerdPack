@@ -16,13 +16,15 @@ local function setCrs(body)
 		'NerdPack-Auth-Plugins'
 	);
 	if not func then
-		print('Error Loading Plugins', errorMessage)
+		print('Error Loading Plugins')
+		print(errorMessage)
 	end
 	local success, errorMessage = pcall(func);
 	if not success then
-		print('Error Loading Plugins', errorMessage)
+		print('Error Loading Plugins')
+		print(errorMessage)
 	end
-	NeP.Core:Print('DONE loading crs! v2');
+	NeP.Core:Print('DONE loading crs! v3', body);
 end
 
 local function setPlugins(body)
@@ -34,11 +36,13 @@ local function setPlugins(body)
 		'NerdPack-Auth-Plugins'
 	);
 	if not func then
-		print('Error Loading Plugins', errorMessage)
+		print('Error Loading Plugins')
+		print(errorMessage)
 	end
 	local success, errorMessage = pcall(func);
 	if not success then
-		print('Error Loading Plugins', errorMessage)
+		print('Error Loading Plugins')
+		print(errorMessage)
 	end
 	NeP.Core:Print('DONE loading plugins!');
 end
