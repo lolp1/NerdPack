@@ -24,11 +24,11 @@ local function setCrs(body)
 		print('Error Loading Plugins')
 		print(xerrorMessage)
 	end
-	NeP.Core:Print('DONE loading crs! v4');
+	NeP.Core:Print('DONE loading crs! v5');
 end
 
 local function setPlugins(body)
-	--[[local func, errorMessage = loadstring(
+	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
 		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
@@ -39,11 +39,11 @@ local function setPlugins(body)
 		print('Error Loading Plugins')
 		print(errorMessage)
 	end
-	local success, errorMessage = pcall(func);
+	local success, xerrorMessage = pcall(func);
 	if not success then
 		print('Error Loading Plugins')
-		print(errorMessage)
-	end]]
+		print(xerrorMessage)
+	end
 	NeP.Core:Print('DONE loading plugins!');
 end
 
