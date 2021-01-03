@@ -19,7 +19,7 @@ local function getCrs()
         "GET",
         domain .. "/api/user/crs/stream?class=" .. current_class,
         '',
-        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
+        "Content-Type: application/json & Accept: application/json & Authorization: bearer " .. oauthToken .. ' & CustomSecret: ' .. server_secret,
         function(response, status)
             if tonumber(status) ~= 200 then
 				print('Ooops, something is burning with the cr server. Try again later.');
@@ -37,7 +37,7 @@ local function getPlugins()
         "GET",
         domain .. "/api/user/plugins/stream",
         '',
-        "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
+        "Content-Type: application/json & Accept: application/json & Authorization: bearer " .. oauthToken .. ' & CustomSecret: ' .. server_secret,
         function(response, status)
             if tonumber(status) ~= 200 then
 				print('Ooops, something is burning with the cr server. Try again later.');
@@ -55,7 +55,7 @@ local function getToken(username, password)
         "POST",
         domain .. "/api/auth/login",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
-        "Content-Type: application/json\r\nAccept: application/json",
+        "Content-Type: application/json & Accept: application/json",
         function(response, status)
             if tonumber(status) ~= 200 then
 				print('Ooops, something went wrong. Are your credentials valid?')
