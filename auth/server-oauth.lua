@@ -24,7 +24,7 @@ local function setCrs(body)
 		print('Error Loading Plugins')
 		print(errorMessage)
 	end
-	NeP.Core:Print('DONE loading crs! v3', body);
+	NeP.Core:Print('DONE loading crs! v4');
 end
 
 local function setPlugins(body)
