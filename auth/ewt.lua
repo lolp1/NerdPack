@@ -33,7 +33,8 @@ local function getToken(username, password)
 	print('Loging in...')
     SendHTTPRequest("https:/".. domain .."/api/auth/login",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
-		function(body, code, req, res, err)
+        function(body, code, req, res, err)
+            print(code)
 			if tonumber(code) ~= 200 then
                 print('Ooops, something is burning with the auth server. Try again later.');
 				return;
