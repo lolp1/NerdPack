@@ -19,10 +19,10 @@ local function setCrs(body)
 		print('Error Loading Plugins')
 		print(errorMessage)
 	end
-	local success, errorMessage = pcall(func);
+	local success, xerrorMessage = pcall(func);
 	if not success then
 		print('Error Loading Plugins')
-		print(errorMessage)
+		print(xerrorMessage)
 	end
 	NeP.Core:Print('DONE loading crs! v4');
 end
