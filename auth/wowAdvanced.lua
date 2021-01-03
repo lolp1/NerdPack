@@ -62,7 +62,7 @@ local function getToken(username, password)
 				return;
             end
             local token = response:match('"token":"(.-)"')
-			print(token)
+			print(token, response)
             if not token then
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
