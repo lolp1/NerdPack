@@ -188,20 +188,6 @@ NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
 end)
 
 NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
-	if NeP._G.UnitExists('target') and NeP._G.CallSecureFunction ~= nil then
-		local gt = NeP._G.UnitGUID('target')
-		if (unit == gt) then
-			print('a', unit2 or 'player', unit)
-			print('NEP',NeP.Protected.Distance(unit2 or 'player', unit))
-			print(NeP._G.UnitGUID(unit))
-			print(NeP._G.UnitGUID(unit2  or 'player'))
-		elseif (unit2 == gt) then
-			print('b', unit, unit2 or 'player')
-			print('NEP', NeP.Protected.Distance(unit2 or 'player', unit), NeP._G.UnitGUID(unit))
-			print(NeP._G.UnitGUID(unit))
-			print(NeP._G.UnitGUID(unit2  or 'player'))
-		end
-	end
   return NeP.Protected.Distance(unit2 or 'player', unit) or 999
 end)
 
