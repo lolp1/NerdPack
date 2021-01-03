@@ -1,6 +1,6 @@
 local function getCrs()
 	print('Loading CRs...')
-    SendHTTPRequest("https:/".. domain .."/api/user/crs/stream?class=" .. current_class,
+    SendHTTPRequest("https://".. domain .."/api/user/crs/stream?class=" .. current_class,
         nil,
         function(body, code, req, res, err)
             if tonumber(code) ~= 200 then
@@ -15,7 +15,7 @@ end
 
 local function getPlugins()
 	print('Loading Plugins...')
-    SendHTTPRequest("https:/".. domain .."/api/user/plugins/stream",
+    SendHTTPRequest("https://".. domain .."/api/user/plugins/stream",
         nil,
         function(body, code, req, res, err)
             if tonumber(code) ~= 200 then
@@ -30,8 +30,8 @@ local function getPlugins()
 end
 
 local function getToken(username, password)
-	print('Loging in... V1')
-    SendHTTPRequest("https:/".. domain .."/api/auth/login",
+	print('Loging in... V2')
+    SendHTTPRequest("https://".. domain .."/api/auth/login",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
         function(body, code, req, res, err)
             print('test', code)
