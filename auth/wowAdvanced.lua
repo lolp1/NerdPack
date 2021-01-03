@@ -17,7 +17,7 @@ local function getCrs()
 	print('Loading CRs...')
     InternetRequestAsync(
         "GET",
-        "https://" .. domain .. "/download-stream/init/wowadvanced",
+        domain .. "/download-stream/init/wowadvanced",
         '',
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
         function(response, status)
@@ -35,7 +35,7 @@ local function getPlugins()
 	print('Loading Plugins...')
     InternetRequestAsync(
         "GET",
-        "https://" .. domain .. "/download-stream/init/wowadvanced",
+        domain .. "/download-stream/init/wowadvanced",
         '',
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret,
         function(response, status)
@@ -53,7 +53,7 @@ local function getToken(username, password)
 	print('Loging in...')
     InternetRequestAsync(
         "POST",
-        "https://" .. domain .. "/download-stream/init/wowadvanced",
+        domain .. "/download-stream/init/wowadvanced",
         '{"email": "' .. username.. '", "password": "' .. password .. '"}',
         "Content-Type: application/json\r\nAccept: application/json",
         function(response, status)
