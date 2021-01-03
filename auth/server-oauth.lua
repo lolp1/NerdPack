@@ -24,6 +24,7 @@ local function setCrs(body)
 		print('Error Loading Plugins')
 		print(xerrorMessage)
 	end
+	NeP.Interface.ResetCRs();
 	NeP.Core:Print('DONE loading crs! v5');
 end
 
