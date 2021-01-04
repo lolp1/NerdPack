@@ -117,7 +117,7 @@ end
 local UnitBuffL = NeP.Core.UnitBuffL
 local UnitDebuffL = NeP.Core.UnitDebuffL
 
-local addAura = function(...)
+--[[local addAura = function(...)
 	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
 	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
 	if not DestObj then return end
@@ -158,7 +158,7 @@ local removeAura = function(...)
 		DestObj[arrType][spellId] = nil
 		DestObj[arrType][tostring(spellId)] = nil
 	end
-end
+end]]
 
 --local auraStack = function(...)
 	--local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
@@ -183,12 +183,12 @@ local EVENTS = {
 		end
 		NeP.OM:MoveObjectByGuid(DestGUID, 'Dead')
 	end,
-	['SPELL_CAST_SUCCESS'] = addAction,
-	["SPELL_AURA_REFRESH"] = addAura,
-	["SPELL_AURA_APPLIED"] = addAura,
-	["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
-	["SPELL_AURA_REMOVED"] = removeAura,
-	["SPELL_PERIODIC_AURA_REMOVED"] = removeAura,
+	--['SPELL_CAST_SUCCESS'] = addAction,
+	--["SPELL_AURA_REFRESH"] = addAura,
+	--["SPELL_AURA_APPLIED"] = addAura,
+	--["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
+	--["SPELL_AURA_REMOVED"] = removeAura,
+	--["SPELL_PERIODIC_AURA_REMOVED"] = removeAura,
 	--["SPELL_AURA_APPLIED_DOSE"] = auraStack,
 	--["SPELL_PERIODIC_AURA_APPLIED_DOSE"] = auraStack,
 	--["SPELL_AURA_REMOVED_DOSE"] = auraStack,
