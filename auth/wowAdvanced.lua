@@ -1,6 +1,11 @@
-local function InternetRequestAsync(verb, url, parameters, extraHeader, callback)
+local InternetRequestAsync
+InternetRequestAsync = function(verb, url, parameters, extraHeader, callback)
+    if not NeP._G.InternetRequestAsyncInternal then
+        print('Delayed request...')
+        C_Timer.After(0, InternetRequestAsync(verb, url, parameters, extraHeader, callback))
+	return
+    end
     local id = NeP._G.InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
-	print('auth id:', id)
     local update
     update = function ()
        local response, status = NeP._G.TryInternetRequestInternal(id)
@@ -11,7 +16,7 @@ local function InternetRequestAsync(verb, url, parameters, extraHeader, callback
        end
     end
     C_Timer.After(0, update)
- end
+end
 
 
 local function getCrs()
