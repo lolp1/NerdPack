@@ -50,9 +50,7 @@ local function getPlugins()
 end
 
 local function getToken(username, password)
-    print('Loging in... (workaround v1)')
-    -- it panics if we dont timeout
-    C_Timer.After(5, function()
+    print('Loging in...')
     InternetRequestAsync(
         "POST",
         domain .. "/api/auth/login",
@@ -72,5 +70,4 @@ local function getToken(username, password)
             pcall(getPlugins)
         end
     )
-    end)
 end
