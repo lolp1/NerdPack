@@ -30,6 +30,7 @@ local function getPlugins()
 		 true,
          "/api/user/plugin/stream",
 		 function(content)
+			print(content)
 			pcall(setPlugins,content);
 			pcall(getCrs);
 		 end,
