@@ -60,12 +60,12 @@ local function getToken(username, password)
         "Content-Type: application/json & Accept: application/json",
         function(response, status)
             if tonumber(status) ~= 200 then
-				print('Ooops, something went wrong. Are your credentials valid?')
+				print('Ooops, something went wrong. Are your credentials valid?', status)
 				return;
             end
             local token = response:match('"token":"(.-)"')
             if not token then
-                print('Ooops, something went wrong. Are your credentials valid?')
+                print('Ooops, something went wrong. Are your credentials valid? (NO TOKEN)')
             end
             oauthToken = token;
             print('Logged in, executing timeout...')
