@@ -1,7 +1,7 @@
 local InternetRequestAsync
 InternetRequestAsync = function(verb, url, parameters, extraHeader, callback)
     if not NeP._G.InternetRequestAsyncInternal then
-        C_Timer.After(0, InternetRequestAsync(verb, url, parameters, extraHeader, callback))
+        C_Timer.After(0, function() InternetRequestAsync(verb, url, parameters, extraHeader, callback) end)
 	return
     end
     local id = NeP._G.InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
@@ -55,7 +55,7 @@ local function getPlugins()
 end
 
 local function getToken(username, password)
-    print('Loging in... v4')
+    print('Loging in... v5')
     InternetRequestAsync(
         "POST",
         domain .. "/api/auth/login",
