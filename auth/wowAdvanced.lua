@@ -55,7 +55,7 @@ local function getPlugins()
 end
 
 local function getToken(username, password)
-    print('Loging in... v5')
+    print('Loging in...')
     InternetRequestAsync(
         "POST",
         domain .. "/api/auth/login",
