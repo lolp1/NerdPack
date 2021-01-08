@@ -28,9 +28,8 @@ local function getPlugins()
 		domain,
 		 443,
 		 true,
-         "/api/user/plugin/stream",
+         "/api/user/plugins/stream",
 		 function(content)
-			print(content)
 			pcall(setPlugins,content);
 			pcall(getCrs);
 		 end,
