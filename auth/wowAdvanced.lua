@@ -1,5 +1,6 @@
 local function InternetRequestAsync(verb, url, parameters, extraHeader, callback)
     local id = NeP._G.InternetRequestAsyncInternal(verb, url, parameters, extraHeader)
+	print('auth id:', id)
     local update
     update = function ()
        local response, status = NeP._G.TryInternetRequestInternal(id)
