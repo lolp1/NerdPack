@@ -4,7 +4,7 @@ local oauthToken;
 local pointer = tostring(NeP);
 _G[pointer] = NeP;
 local server_secret = 'SECRET_BY_SERVER';
-local current_class = select(1,UnitClass('player')):lower();
+local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
 local function setCrs(body)
