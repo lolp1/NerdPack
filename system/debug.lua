@@ -33,7 +33,8 @@ local function GetAvg(a, b)
 end
 
 local tbl = NeP.Debug.Profiles
-NeP._G.C_Timer.NewTicker(1, function()
+
+NeP.Timer.Add('Debugger', function()
   tbl.total_usage = 0
 	for i=1, #tbl do
 		local usage, calls = NeP._G.GetFunctionCPUUsage(tbl[i].func, true)
@@ -48,6 +49,6 @@ NeP._G.C_Timer.NewTicker(1, function()
 	end
 	NeP._G.ResetCPUUsage()
 	table.sort( tbl, function(a,b) return a.cpu_time > b.cpu_time end )
-end, nil)
+end, 0)
 
 end
