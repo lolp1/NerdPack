@@ -49,6 +49,6 @@ NeP.Timer.Add('Debugger', function()
 	end
 	NeP._G.ResetCPUUsage()
 	table.sort( tbl, function(a,b) return a.cpu_time > b.cpu_time end )
-end, 0)
+end, 1)
 
 end
