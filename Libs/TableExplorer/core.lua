@@ -1,6 +1,10 @@
 -- $Id: TableExplorer.lua 16 2014-02-24 05:55:58Z diesal2010 $
-local xname, Env = ...
-local AddOnName = local_stream_name or xname
+if not local_stream_name then
+	local AddOnName, Env = ...
+else
+	local AddOnName, Env = local_stream_name, {}
+end
+
 local ADDON = {}
 Env[1], _G[AddOnName] = ADDON, ADDON
 
