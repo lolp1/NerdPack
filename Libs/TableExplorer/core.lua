@@ -1,12 +1,8 @@
 -- $Id: TableExplorer.lua 16 2014-02-24 05:55:58Z diesal2010 $
-if not local_stream_name then
-	local AddOnName, Env = ...
-else
-	local AddOnName, Env = local_stream_name, {}
-end
+local AddOnName = local_stream_name or '???'
 
 local ADDON = {}
-Env[1], _G[AddOnName] = ADDON, ADDON
+_G[AddOnName] = ADDON
 
 -- ~~| Lua Upvalues |~~~~~~~~~~~~~~~
 local DiesalGUI 		= LibStub("DiesalGUI-1.0")
