@@ -1,6 +1,8 @@
 local _, NeP = ...
 
-NeP.Buttons = {}
+NeP.Buttons = {
+	buttons = {}
+}
 
 local nBars = {
 	"ActionButton",
@@ -38,8 +40,8 @@ local function ActionButton_CalculateAction (self, button)
 	end
 end
 
-local function UpdateButtons()
-	NeP._G.wipe(NeP.Buttons)
+function NeP.Buttons:UpdateButtons()
+	NeP._G.wipe(self.buttons)
 	for _, group in ipairs(nBars) do
 		for i =1, 12 do
 			local button = _G[group .. i]
@@ -48,18 +50,10 @@ local function UpdateButtons()
 				if actionType == 'spell' then
 					local spell = NeP._G.GetSpellInfo(id)
 					if spell then
-						NeP.Buttons[spell] = button
+						self.buttons[spell] = button
 					end
 				end
 			end
 		end
 	end
 end
-
-NeP.Listener:Add('NeP_Buttons','PLAYER_ENTERING_WORLD', function ()
-	UpdateButtons()
-end)
-
-NeP.Listener:Add('NeP_Buttons','ACTIONBAR_SLOT_CHANGED', function ()
-	UpdateButtons()
-end)
