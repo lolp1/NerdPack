@@ -7,6 +7,10 @@ local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
+if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then
+	domain = 'classic.' .. domain
+end
+
 local function setCrs(body)
 	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
