@@ -145,3 +145,6 @@ NeP.Listener:Add("NeP_CR", "PLAYER_SPECIALIZATION_CHANGED", function(unitID)
 	if unitID ~= 'player' then return end
 	NeP.CR:Set()
 end)
+NeP.Listener:Add("NeP_CR", "PLAYER_ENTERING_WORLD", function()
+	NeP.CR:Set()
+end)
