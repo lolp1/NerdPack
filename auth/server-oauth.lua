@@ -10,6 +10,7 @@ local domain = "nerdpack.xyz"
 local function setCrs(body)
 	if not body then
 		NeP.Core:Print('DONE no crs loaded');
+		return;
 	end
 	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
@@ -35,6 +36,7 @@ end
 local function setPlugins(body)
 	if not body then
 		NeP.Core:Print('DONE no Plugins loaded');
+		return;
 	end
 	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
