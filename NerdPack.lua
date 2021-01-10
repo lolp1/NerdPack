@@ -1,8 +1,8 @@
 
 NeP.Version = {
-	major = 1,
-	minor = 0014,
-	branch = "RELEASE"
+	major = 2,
+	minor = 0,
+	branch = ""
 }
 NeP.Media = 'Interface\\AddOns\\' .. (local_stream_name or n_name) .. '\\Media\\'
 NeP.Color = 'FFFFFF'
