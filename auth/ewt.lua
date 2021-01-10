@@ -7,7 +7,7 @@ local function getCrs()
                 print('Ooops, something is burning with the cr server. Try again later.');
                 return;
             end
-            pcall(setCrs, body)
+            setCrs(body)
         end,
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret .. '\r\n'
     )
@@ -22,8 +22,8 @@ local function getPlugins()
                 print('Ooops, something is burning with the cr server. Try again later.');
                 return;
             end
-            pcall(setPlugins, body);
-			pcall(getCrs);
+            setPlugins(body)
+            getCrs()
         end,
         "Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: bearer " .. oauthToken .. '\r\nCustomSecret: ' .. server_secret .. '\r\n'
     )

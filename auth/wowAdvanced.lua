@@ -30,7 +30,7 @@ local function getCrs()
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
 			end
-            pcall(setCrs, response)
+            setCrs(response)
         end
     )
 
@@ -48,8 +48,8 @@ local function getPlugins()
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
             end
-            pcall(setPlugins, response)
-            pcall(getCrs);
+            setPlugins(response)
+            getCrs()
         end
     )
 end

@@ -6,7 +6,7 @@ local function getCrs()
 		 true,
          "/api/user/crs/stream?class=" .. current_class,
 		 function(content)
-			pcall(setCrs, content)
+			setCrs(content)
 		 end,
 		 function(xerror)
 			print('Error while loading...')
@@ -30,8 +30,8 @@ local function getPlugins()
 		 true,
          "/api/user/plugins/stream",
 		 function(content)
-			pcall(setPlugins,content);
-			pcall(getCrs);
+			setPlugins(content)
+            getCrs()
 		 end,
 		 function(xerror)
 			print('Error while loading...')
