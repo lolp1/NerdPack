@@ -7,25 +7,24 @@ local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
-if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC then
-	domain = 'classic.' .. domain
-end
-
 local function setCrs(body)
+	if not body then
+		NeP.Core:Print('DONE no crs loaded');
+	end
 	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
 		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
 		body,
-		'NerdPack-Auth-Plugins'
+		'NerdPack-Auth-crs'
 	);
 	if not func then
-		print('Error Loading Plugins')
+		print('Error Loading crs')
 		print(errorMessage)
 	end
 	local success, xerrorMessage = pcall(func);
 	if not success then
-		print('Error Loading Plugins')
+		print('Error Loading crs')
 		print(xerrorMessage)
 	end
 	NeP.Interface.ResetCRs();
@@ -34,6 +33,9 @@ local function setCrs(body)
 end
 
 local function setPlugins(body)
+	if not body then
+		NeP.Core:Print('DONE no Plugins loaded');
+	end
 	local func, errorMessage = loadstring(
 		"local NeP = _G['" .. pointer .. "'];\n" ..
 		"local n_name = '" .. n_name .. "';\n" ..
