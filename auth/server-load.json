@@ -111,6 +111,5 @@
   "onload/fakeunits.lua",
   "onload/actions.lua",
   "onload/misc.lua",
-  "probably_engine/core.lua",
-  "probably_engine/mapper.lua"
+  "onload/init.lua"
 ]
