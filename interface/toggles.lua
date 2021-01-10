@@ -1,4 +1,4 @@
-local n_name, NeP = ...
+
 local mainframe = NeP.Interface.MainFrame
 local L = NeP.Locale
 local GameTooltip = NeP._G.GameTooltip

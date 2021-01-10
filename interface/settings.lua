@@ -1,4 +1,4 @@
-local n_name, NeP = ...
+
 local L = function(val) return NeP.Locale:TA('Settings', val) end
 local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..NeP.Version.branch)
 

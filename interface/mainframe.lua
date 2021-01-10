@@ -1,4 +1,4 @@
-local n_name, NeP = ...
+
 local logo = '|T'..NeP.Media..'logo.blp:10:10|t'
 local L = NeP.Locale
 local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..NeP.Version.branch)
@@ -97,12 +97,3 @@ function NeP.Interface.Add(_, name, func)
 		notCheckable = 1
 	})
 end
-
-----------------------------EVENTS
-NeP.Listener:Add("NeP_CR_interface", "PLAYER_LOGIN", function()
-	NeP.Interface.ResetCRs()
-end)
-NeP.Listener:Add("NeP_CR_interface", "PLAYER_SPECIALIZATION_CHANGED", function(unitID)
-	if unitID ~= 'player' then return end
-	NeP.Interface:ResetCRs()
-end)

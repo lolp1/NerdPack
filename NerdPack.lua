@@ -1,4 +1,4 @@
-local n_name, NeP = ...
+
 NeP.Version = {
 	major = 1,
 	minor = 0014,

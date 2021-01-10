@@ -1,4 +1,4 @@
-local n_name, NeP = ...
+
 
 NeP.Config = {}
 local Data = {}
