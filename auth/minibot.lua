@@ -13,7 +13,7 @@ local function getCrs()
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
             end
-			setCrs(response.body)
+			setCrs(response.Body)
 		end
 	});
 end
@@ -33,7 +33,7 @@ local function getPlugins()
 				print('Ooops, something is burning with the cr server. Try again later.');
 				return;
             end
-			setPlugins(response.body)
+			setPlugins(response.Body)
             getCrs()
 		end
 	});
