@@ -1,5 +1,7 @@
 local _, NeP = ...
-NeP.CR = {}
+NeP.CR = {
+	current_spec = nil
+}
 NeP.CR.CR = {}
 local CRs = {}
 local noop = function() end
@@ -139,12 +141,17 @@ end
 
 ----------------------------EVENTS
 NeP.Listener:Add("NeP_CR", "PLAYER_LOGIN", function()
+	NeP.CR.current_spec = NeP._G.GetSpecializationInfo(NeP._G.GetSpecialization());
 	NeP.CR:Set()
 end)
 NeP.Listener:Add("NeP_CR", "PLAYER_SPECIALIZATION_CHANGED", function(unitID)
 	if unitID ~= 'player' then return end
+	NeP.CR.current_spec = NeP._G.GetSpecializationInfo(NeP._G.GetSpecialization());
 	NeP.CR:Set()
 end)
 NeP.Listener:Add("NeP_CR", "PLAYER_ENTERING_WORLD", function()
+	local current_spec = NeP._G.GetSpecializationInfo(NeP._G.GetSpecialization())
+	if current_spec == NeP.CR.current_spec then return end
+	NeP.CR.current_spec = current_spec;
 	NeP.CR:Set()
 end)
