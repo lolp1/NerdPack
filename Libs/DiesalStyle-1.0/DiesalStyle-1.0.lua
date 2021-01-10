@@ -22,7 +22,7 @@ DiesalStyle.TextureFrame = DiesalStyle.TextureFrame or CreateFrame("Frame"); Die
 DiesalStyle.Colors = DiesalStyle.Colors or {}
 DiesalStyle.Formatters = DiesalStyle.Formatters or {}
 -- ~~| DiesalStyle UpValues |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-local AddonName = local_stream_name or ...
+local AddonName = local_stream_name
 local ReleasedTextures = DiesalStyle.ReleasedTextures
 local TextureFrame = DiesalStyle.TextureFrame
 local Media = DiesalStyle.Media
