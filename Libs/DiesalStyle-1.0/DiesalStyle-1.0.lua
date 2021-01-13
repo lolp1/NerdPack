@@ -38,7 +38,6 @@ local DEFAULT_LAYER = 'ARTWORK'
 local function addMedia(mediaType,name,mediaFile)
   Media[mediaType] = Media[mediaType] or {}
   -- update or create new media entry
-	print(MEDIA_PATH..mediaFile)
   Media[mediaType][name] = MEDIA_PATH..mediaFile
 end
 local function getMedia(mediaType,name)
@@ -483,6 +482,7 @@ do -- | Set Media |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   addMedia('border','shadowNoDist','shadowNoDist.tga')
 end
 do -- | Add LibSharedMedia |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	print(getMedia('font','calibrib'))
   LibSharedMedia:Register("font","Calibri Bold",getMedia('font','calibrib'))
   LibSharedMedia:Register("font","Fira Sans",getMedia('font','FiraSans'))
   -- monospaced
