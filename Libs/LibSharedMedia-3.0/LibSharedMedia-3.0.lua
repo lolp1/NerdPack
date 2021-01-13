@@ -223,6 +223,7 @@ function lib:Register(mediatype, key, data, langmask)
 	mediatype = mediatype:lower()
 	if mediatype == lib.MediaType.FONT and ((langmask and band(langmask, LOCALE_MASK) == 0) or not (langmask or locale_is_western)) then
 		-- ignore fonts that aren't flagged as supporting local glyphs on non-western clients
+		print(mediatype, key, data)
 		return false
 	end
 	if type(data) == "string" and (mediatype == lib.MediaType.BACKGROUND or mediatype == lib.MediaType.BORDER or mediatype == lib.MediaType.STATUSBAR or mediatype == lib.MediaType.SOUND) then
