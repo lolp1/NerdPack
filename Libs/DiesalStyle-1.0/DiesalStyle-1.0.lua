@@ -31,7 +31,6 @@ local Formatters = DiesalStyle.Formatters
 -- ~~| Locals |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local OUTLINES = {'_LEFT','_RIGHT','_TOP','_BOTTOM'}
 local MEDIA_PATH = string.format("Interface\\AddOns\\%s\\media\\%s\\",AddonName,MAJOR)
-print(MEDIA_PATH)
 local DEFAULT_COLOR = 'FFFFFF'
 local DEFAULT_GRADIENT_ORIENTATION = 'horizontal'
 local DEFAULT_LAYER = 'ARTWORK'
@@ -39,6 +38,7 @@ local DEFAULT_LAYER = 'ARTWORK'
 local function addMedia(mediaType,name,mediaFile)
   Media[mediaType] = Media[mediaType] or {}
   -- update or create new media entry
+	print(MEDIA_PATH..mediaFile)
   Media[mediaType][name] = MEDIA_PATH..mediaFile
 end
 local function getMedia(mediaType,name)
