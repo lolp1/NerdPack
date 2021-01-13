@@ -245,7 +245,7 @@ function lib:Register(mediatype, key, data, langmask)
 	end
 	if not mediaTable[mediatype] then mediaTable[mediatype] = {} end
 	local mtable = mediaTable[mediatype]
-	if mtable[key] then  print('fail 5'); return false end
+	--if mtable[key] then  print('fail 5'); return false end -- FUCK THIS!
 
 	print('LOADED', mediatype, key, data)
 	mtable[key] = data
