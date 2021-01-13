@@ -214,31 +214,24 @@ local function rebuildMediaList(mediatype)
 end
 
 function lib:Register(mediatype, key, data, langmask)
-	print('testing v2', mediatype, key, data)
 	if type(mediatype) ~= "string" then
-		print('fail 3')
 		error(MAJOR..":Register(mediatype, key, data, langmask) - mediatype must be string, got "..type(mediatype))
 	end
 	if type(key) ~= "string" then
-		print('fail 4')
 		error(MAJOR..":Register(mediatype, key, data, langmask) - key must be string, got "..type(key))
 	end
 	mediatype = mediatype:lower()
 	if mediatype == lib.MediaType.FONT and ((langmask and band(langmask, LOCALE_MASK) == 0) or not (langmask or locale_is_western)) then
-		print('fail 1')
 		-- ignore fonts that aren't flagged as supporting local glyphs on non-western clients
 		return false
 	end
 	if type(data) == "string" and (mediatype == lib.MediaType.BACKGROUND or mediatype == lib.MediaType.BORDER or mediatype == lib.MediaType.STATUSBAR or mediatype == lib.MediaType.SOUND) then
-		print('fail 2')
 		local path = data:lower()
 		if RESTRICTED_FILE_ACCESS and not path:find("^interface") then
-			print('fail 1.1')
 			-- files accessed via path only allowed from interface folder
 			return false
 		end
 		if mediatype == lib.MediaType.SOUND and not (path:find(".ogg", nil, true) or path:find(".mp3", nil, true)) then
-			print('fail 1.2')
 			-- Only ogg and mp3 are valid sounds.
 			return false
 		end
@@ -246,8 +239,6 @@ function lib:Register(mediatype, key, data, langmask)
 	if not mediaTable[mediatype] then mediaTable[mediatype] = {} end
 	local mtable = mediaTable[mediatype]
 	--if mtable[key] then  print('fail 5'); return false end -- FUCK THIS!
-
-	print('LOADED', mediatype, key, data)
 	mtable[key] = data
 	rebuildMediaList(mediatype)
 	self.callbacks:Fire("LibSharedMedia_Registered", mediatype, key)
