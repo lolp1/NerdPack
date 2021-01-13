@@ -214,6 +214,7 @@ local function rebuildMediaList(mediatype)
 end
 
 function lib:Register(mediatype, key, data, langmask)
+	print('testing', mediatype, key, data)
 	if type(mediatype) ~= "string" then
 		error(MAJOR..":Register(mediatype, key, data, langmask) - mediatype must be string, got "..type(mediatype))
 	end
@@ -223,7 +224,6 @@ function lib:Register(mediatype, key, data, langmask)
 	mediatype = mediatype:lower()
 	if mediatype == lib.MediaType.FONT and ((langmask and band(langmask, LOCALE_MASK) == 0) or not (langmask or locale_is_western)) then
 		-- ignore fonts that aren't flagged as supporting local glyphs on non-western clients
-		print(mediatype, key, data)
 		return false
 	end
 	if type(data) == "string" and (mediatype == lib.MediaType.BACKGROUND or mediatype == lib.MediaType.BORDER or mediatype == lib.MediaType.STATUSBAR or mediatype == lib.MediaType.SOUND) then
@@ -241,6 +241,7 @@ function lib:Register(mediatype, key, data, langmask)
 	local mtable = mediaTable[mediatype]
 	if mtable[key] then return false end
 
+	print('LOADED', mediatype, key, data)
 	mtable[key] = data
 	rebuildMediaList(mediatype)
 	self.callbacks:Fire("LibSharedMedia_Registered", mediatype, key)
