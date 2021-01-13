@@ -482,7 +482,6 @@ do -- | Set Media |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   addMedia('border','shadowNoDist','shadowNoDist.tga')
 end
 do -- | Add LibSharedMedia |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	print(getMedia('font','calibrib'))
   LibSharedMedia:Register("font","Calibri Bold",getMedia('font','calibrib'))
   LibSharedMedia:Register("font","Fira Sans",getMedia('font','FiraSans'))
   -- monospaced
