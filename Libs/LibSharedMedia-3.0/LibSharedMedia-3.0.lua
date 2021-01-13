@@ -214,11 +214,13 @@ local function rebuildMediaList(mediatype)
 end
 
 function lib:Register(mediatype, key, data, langmask)
-	print('testing', mediatype, key, data)
+	print('testing v2', mediatype, key, data)
 	if type(mediatype) ~= "string" then
+		print('fail 3')
 		error(MAJOR..":Register(mediatype, key, data, langmask) - mediatype must be string, got "..type(mediatype))
 	end
 	if type(key) ~= "string" then
+		print('fail 4')
 		error(MAJOR..":Register(mediatype, key, data, langmask) - key must be string, got "..type(key))
 	end
 	mediatype = mediatype:lower()
@@ -243,7 +245,7 @@ function lib:Register(mediatype, key, data, langmask)
 	end
 	if not mediaTable[mediatype] then mediaTable[mediatype] = {} end
 	local mtable = mediaTable[mediatype]
-	if mtable[key] then return false end
+	if mtable[key] then  print('fail 5'); return false end
 
 	print('LOADED', mediatype, key, data)
 	mtable[key] = data
