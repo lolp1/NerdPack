@@ -54,13 +54,13 @@ DiesalGUI:RegisterObjectConstructor("StatusBar", function()
   slf:SetStylesheet(NeP.Interface.statusBarStylesheet)
 
   frame.Left = frame:CreateFontString()
-  frame.Left:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), 14)
+  frame.Left:SetFont(SharedMedia:Fetch('font', 'Friz Quadrata TT'), 14)
   frame.Left:SetShadowColor(0,0,0, 0)
   frame.Left:SetShadowOffset(-1,-1)
   frame.Left:SetPoint("LEFT", frame)
 
   frame.Right = frame:CreateFontString()
-  frame.Right:SetFont(SharedMedia:Fetch('font', 'Calibri Bold'), 14)
+  frame.Right:SetFont(SharedMedia:Fetch('font', 'Friz Quadrata TT'), 14)
   frame.Right:SetShadowColor(0,0,0, 0)
   frame.Right:SetShadowOffset(-1,-1)
 
