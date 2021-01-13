@@ -30,7 +30,7 @@ local Colors = DiesalStyle.Colors
 local Formatters = DiesalStyle.Formatters
 -- ~~| Locals |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local OUTLINES = {'_LEFT','_RIGHT','_TOP','_BOTTOM'}
-local MEDIA_PATH = string.format("Interface\\AddOns\\%s\\media\\%s\\",AddonName,MAJOR)
+local MEDIA_PATH = 'Interface\\AddOns\\' .. (local_stream_name or n_name) .. '\\media\\DiesalStyle-1.0\\'
 local DEFAULT_COLOR = 'FFFFFF'
 local DEFAULT_GRADIENT_ORIENTATION = 'horizontal'
 local DEFAULT_LAYER = 'ARTWORK'
