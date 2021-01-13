@@ -4,7 +4,7 @@ NeP.Version = {
 	minor = 0,
 	branch = ""
 }
-NeP.Media = 'Interface\\AddOns\\' .. (local_stream_name or n_name) .. '\\Media\\'
+NeP.Media = 'Interface\\AddOns\\' .. (local_stream_name or n_name) .. '\\media\\'
 NeP.Color = 'FFFFFF'
 NeP.Paypal = 'https://www.paypal.me/JaimeMarques/25'
 NeP.Patreon = 'https://www.patreon.com/mrthesoulz'
