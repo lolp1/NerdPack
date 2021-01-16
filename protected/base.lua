@@ -4,8 +4,11 @@ local IsInGroup = NeP._G.IsInGroup
 local IsInRaid = NeP._G.IsInRaid
 local GetNumGroupMembers = NeP._G.GetNumGroupMembers
 
-NeP.Protected = {}
-NeP.Protected.callbacks = {}
+NeP.Protected = {
+    unlocker = '',
+    callbacks = {}
+}
+
 
 local rangeCheck = NeP._G.LibStub("LibRangeCheck-2.0")
 local noop = function() end

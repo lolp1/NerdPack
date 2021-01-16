@@ -1,7 +1,7 @@
 
 local logo = '|T'..NeP.Media..'logo.blp:10:10|t'
 local L = NeP.Locale
-local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..NeP.Version.branch)
+local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..(NeP.Protected.unlocker or ''))
 
 local EasyMenu = NeP._G.EasyMenu
 local CreateFrame = NeP._G.CreateFrame
@@ -54,6 +54,13 @@ function NeP.Interface.UpdateCRs()
 	for _,v in pairs(DropMenu[2].menuList) do
 		v.checked = last == v.name
 	end
+end
+
+function NeP.Interface.UpdateTitle()
+	NeP.Interface.MainFrame:SetTitle(
+		"|cff"..NeP.Color..logo..n_name.."|r", 
+		tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..(NeP.Protected.unlocker or ''))
+	)
 end
 
 function NeP.Interface:AddCR_ST(Name)
