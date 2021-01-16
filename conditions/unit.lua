@@ -96,7 +96,6 @@ NeP.DSL:Register('inphase', function(unit)
 end)
 
 NeP.DSL:Register('exists', function(target)
-  if target == 'cursor' then return true end
   return NeP.Protected.ObjectExists(target)
 end)
 
