@@ -1,7 +1,7 @@
 
 local logo = '|T'..NeP.Media..'logo.blp:10:10|t'
 local L = NeP.Locale
-local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..'')
+local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor)
 
 local EasyMenu = NeP._G.EasyMenu
 local CreateFrame = NeP._G.CreateFrame
