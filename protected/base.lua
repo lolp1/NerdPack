@@ -25,6 +25,7 @@ NeP.Protected.TargetUnit = noop
 NeP.Protected.SpellStopCasting = noop
 NeP.Protected.ObjectExists = NeP._G.UnitExists
 NeP.Protected.ObjectCreator = noop
+NeP.Protected.ResetAfk = noop
 NeP.Protected.GameObjectIsAnimating = noop
 NeP.Protected.UnitName = NeP._G.UnitName
 NeP.Protected.ObjectGUID = NeP._G.UnitGUID
