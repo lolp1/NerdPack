@@ -13,29 +13,10 @@ NeP.OM = {
 	max_distance = 100
 }
 
-local function MergeTable(ref)
-	local temp = {}
-	for GUID, Obj in pairs(NeP.OM[ref] or {}) do
-		if not temp[GUID] then
-			temp[GUID] = Obj
-		end
-	end
-	for GUID, Obj in pairs(NeP.Protected.nPlates[ref] or {}) do
-		if not temp[GUID]
-		and NeP.DSL:Get('exists')(Obj.key)
-		and NeP.DSL:Get('inphase')(Obj.key)
-		and GUID == NeP.DSL:Get('guid')(Obj.key) then
-			temp[GUID] = Obj
-		end
-	end
-	return temp
-end
-
-function NeP.OM.Get(_, ref, want_plates)
-	if want_plates
-	and NeP.Protected.nPlates
-	and NeP.Protected.nPlates[ref] then
-		return MergeTable(ref)
+-- warning ShouldRefresh will kill your fs
+function NeP.OM.Get(_, ref, _, shouldRefresh)
+	if shouldRefresh then
+		NeP.OM.CleanStar()
 	end
 	return NeP.OM[ref]
 end
@@ -43,60 +24,6 @@ end
 NeP.OM.forced_role = {
 	[72218] = "TANK" -- Oto the Protector (Proving Grounds)
 }
-
-local function preLoadBuffs(Obj)
-	local i, sName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, sGUID, data = 1, true
-	while sName do
-		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitBuff(Obj.key, i)
-		if sName then
-			local found = Obj.buffs[sName] or Obj.buffs[spellId]
-			sGUID = caster and NeP.DSL:Get('guid')(caster) or ''
-			data = found or {}
-			data.isCastByPlayer = sGUID == NeP.DSL:Get('guid')('player')
-			data.SourceGUID = sGUID
-			data.spellId = spellId
-			data.spellName = sName
-			data.auraType = 'BUFF'
-			data.type = type
-			data.count = count
-			data.isStealable = isStealable
-			data.isBoss = isBoss
-			data.expiration = expiration
-			data.duration = duration
-			data.caster = caster
-			Obj.buffs[sName] = data
-			Obj.buffs[spellId] = data
-			i=i+1
-		end
-	end
-end
-
-local function preLoadDebuffs(Obj)
-	local i, sName, count, type, duration, expiration, caster, isStealable, spellId, isBoss, sGUID, data = 1, true
-	while sName do
-		sName, _, count, type, duration, expiration, caster, isStealable,_,spellId,_, isBoss = NeP._G.UnitDebuff(Obj.key, i)
-		if sName then
-			local found = Obj.debuffs[sName] or Obj.debuffs[spellId]
-			sGUID = caster and NeP.DSL:Get('guid')(caster) or ''
-			data = found or {}
-			data.isCastByPlayer = sGUID == NeP.DSL:Get('guid')('player')
-			data.SourceGUID = sGUID
-			data.spellId = spellId
-			data.spellName = sName
-			data.auraType = 'DEBUFF'
-			data.type = type
-			data.count = count
-			data.isStealable = isStealable
-			data.isBoss = isBoss
-			data.expiration = expiration
-			data.duration = duration
-			data.caster = caster
-			Obj.debuffs[sName] = data
-			Obj.debuffs[spellId] = data
-			i=i+1
-		end
-	end
-end
 
 function NeP.OM.InsertObject(_, ref, Obj)
 	Obj.tbl = ref
@@ -125,8 +52,6 @@ function NeP.OM.Insert(_, ref, Obj)
 		_G.C_Timer.After(5, function()
 			Obj.name = NeP.DSL:Get('name')(Obj.key) or 'ERROR!_NO_NAME?'
 		end)
-		preLoadBuffs(Obj)
-		preLoadDebuffs(Obj)
 		NeP.OM[ref][Obj.guid] = Obj
 	end
 end
