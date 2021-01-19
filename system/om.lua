@@ -16,7 +16,7 @@ NeP.OM = {
 -- warning ShouldRefresh will kill your fs
 function NeP.OM.Get(_, ref, _, shouldRefresh)
 	if shouldRefresh then
-		NeP.OM.CleanStar()
+		NeP.OM.CleanStart()
 	end
 	return NeP.OM[ref]
 end
