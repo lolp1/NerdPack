@@ -118,7 +118,7 @@ NeP.DSL:Register('form', function()
   return NeP._G.GetShapeshiftForm()
 end)
 
-NeP.DSL:Register('lunarpower', function(target)
+NeP.DSL:Register({'lunarpower','astralpower'}, function(target)
   return NeP._G.UnitPower(target,pt.LunarPower)
 end)
 

@@ -100,11 +100,11 @@ NeP.DSL:Register("lastgcd", function(Unit, Spell)
 end)
 
 NeP.DSL:Register("enchant.mainhand", function()
-  return (select(1, NeP._G.GetWeaponEnchantInfo()) == 1)
+  return NeP._G.GetWeaponEnchantInfo())
 end)
 
 NeP.DSL:Register("enchant.offhand", function()
-  return (select(4, NeP._G.GetWeaponEnchantInfo()) == 1)
+  return select(5, NeP._G.GetWeaponEnchantInfo())
 end)
 
 NeP.DSL:Register("glyph", function(_,spell)
