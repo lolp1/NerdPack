@@ -41,6 +41,7 @@ NeP.Timer.Add = function(name, func, seconds)
 end
 
 NeP.Timer.Handle = function(_, elapsed)
+	NeP.current_moveover, NeP.current_focus = NeP._G.UnitGUID('mouseover'), NeP._G.UnitGUID('focus')
 	for _, struct in pairs(timers) do
 		struct.next = struct.next - elapsed
 		if (struct.next <= 0) then
