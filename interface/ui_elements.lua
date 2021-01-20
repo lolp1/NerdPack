@@ -129,7 +129,8 @@ function NeP.Interface.Combo(_,element, parent, table)
 	local tmp = DiesalGUI:Create('Dropdown')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset)
+  	tmp:SetPoint(element.align or 'TOPRIGHT', parent.content,
+   	 element.align or 'TOPRIGHT', -5+(element.x or 0), table.offset+(element.y or 0))
 	--tmp:SetStylesheet(self.comboBoxStyleSheet)
 	local orderdKeys = { }
 	local list = { }
@@ -169,7 +170,8 @@ function NeP.Interface.Input(_, element, parent, table)
 	local tmp = DiesalGUI:Create('Input')
 	parent:AddChild(tmp)
 	tmp:SetParent(parent.content)
-	tmp:SetPoint('TOPRIGHT', parent.content, 'TOPRIGHT', -5, table.offset + 4)
+  	tmp:SetPoint(element.align or 'TOPRIGHT', parent.content,
+    	 element.align or 'TOPRIGHT', -5+(element.x or 0), table.offset+4+(element.y or 0))
 	if element.width then tmp:SetWidth(element.width) end
 	-- Only when loaded
 	NeP.Core:WhenInGame(function()
