@@ -1,6 +1,8 @@
 local _, NeP = ...
 NeP.Core = {}
 
+local unpack = unpack
+
 local last_print = ""
 function NeP.Core.Print(_, ...)
 	if last_print ~= ... then
@@ -135,25 +137,71 @@ function NeP.Core.string_split(_, string, delimiter)
 	return result
 end
 
-function  NeP.Core.UnitBuffL(target, spell, own)
-	local i, name, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
-	while name do
-		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, own)
-		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, cnt, expi, caster, tp, canSteal, isBoss, duration
+local unit_buffs = NeP.Cache.Buffs
+function  NeP.Core.UnitBuffL(target, spell, filter)
+	if not spell
+	or not target then
+		return nil
+	end
+	spell = tostring(spell)
+	local key = target .. '-' .. (filter or 'no_filter')
+	-- if cached return
+	if unit_buffs[key] then
+		local found = unit_buffs[key][spell]
+		if found then
+			return unpack(found)
 		end
-		i=i+1
+	end
+	-- build a cache
+	unit_buffs[key] = {}
+	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
+	while name do
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, filter)
+		if name then
+			data = {name, cnt, expi, caster, tp, canSteal, isBoss, duration}
+			unit_buffs[key][name] = data
+			unit_buffs[key][tostring(spellId)] = data
+			i=i+1
+		end
+	end
+	-- return if found
+	local found = unit_buffs[key][spell]
+	if found then
+		return unpack(found)
 	end
 end
 
-function  NeP.Core.UnitDebuffL(target, spell, own)
-	local i, name, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
-	while name do
-		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, own)
-		if name == spell or tonumber(spell) == tonumber(spellId) then
-			return name, cnt, expi, caster, tp, canSteal, isBoss, duration
+local unit_debuffs = NeP.Cache.Debuffs
+function  NeP.Core.UnitDebuffL(target, spell, filter)
+	if not spell
+	or not target then
+		return nil
+	end
+	spell = tostring(spell)
+	local key = target .. '-' .. (filter or 'no_filter')
+	-- if cached return
+	if unit_debuffs[key] then
+		local found = unit_debuffs[key][spell]
+		if found then
+			return unpack(found)
 		end
-		i=i+1
+	end
+	-- build a cache
+	unit_debuffs[key] = {}
+	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
+	while name do
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, filter)
+		if name then
+			data = {name, cnt, expi, caster, tp, canSteal, isBoss, duration}
+			unit_debuffs[key][name] = data
+			unit_debuffs[key][tostring(spellId)] = data
+			i=i+1
+		end
+	end
+	-- return if found
+	local found = unit_debuffs[key][spell]
+	if found then
+		return unpack(found)
 	end
 end
 

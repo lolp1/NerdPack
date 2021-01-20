@@ -19,7 +19,9 @@ NeP._G = setmetatable({},{__index = _G})
 NeP.Cache = {
 	Conditions = {},
 	Spells = {},
-	Targets = {}
+	Targets = {},
+	Buffs = {},
+	Debuffs = {}
 }
 
 function NeP.Wipe_Cache()
