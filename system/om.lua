@@ -305,6 +305,7 @@ function NeP.OM.CleanStart()
 		NeP._G.wipe(NeP.OM['Friendly'])
 		NeP._G.wipe(NeP.OM['Enemy'])
 		NeP._G.wipe(NeP.OM['Critters'])
+		NeP._G.wipe(NeP.OM['Roster'])
 	end
 end
 
