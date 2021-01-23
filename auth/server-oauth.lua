@@ -1,29 +1,25 @@
 local version = 1.5
 local oauthToken;
--- would like this gone... i need to pass nep tho
-local pointer = tostring(NeP);
-_G[pointer] = NeP;
 local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
+
+local function load_code(code, name)
+    local f = assert(loadstring(code, name))
+    setfenv(f, NeP)
+    return f
+end
 
 local function setCrs(body)
 	if not body then
 		NeP.Core:Print('DONE no crs loaded');
 		return;
 	end
-	local func, errorMessage = loadstring(
-		"local NeP = _G['" .. pointer .. "'];\n" ..
-		"local n_name = '" .. n_name .. "';\n" ..
-		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
-		body,
-		'NerdPack-Auth-crs'
-	);
+	local func = load_code(body,'NerdPack-Auth-crs');
 	if not func then
 		print('Error Loading crs')
-		print(errorMessage)
 	end
-	local success, xerrorMessage = pcall(func);
+	local success, xerrorMessage = xpcall(func, error);
 	if not success then
 		print('Error Loading crs')
 		print(xerrorMessage)
@@ -38,18 +34,11 @@ local function setPlugins(body)
 		NeP.Core:Print('DONE no Plugins loaded');
 		return;
 	end
-	local func, errorMessage = loadstring(
-		"local NeP = _G['" .. pointer .. "'];\n" ..
-		"local n_name = '" .. n_name .. "';\n" ..
-		"local local_stream_name = '" .. local_stream_name .. "'\n" ..
-		body,
-		'NerdPack-Auth-Plugins'
-	);
+	local func = load_code(body,'NerdPack-Auth-Plugins');
 	if not func then
 		print('Error Loading Plugins')
-		print(errorMessage)
 	end
-	local success, xerrorMessage = pcall(func);
+	local success, xerrorMessage = xpcall(func, error);
 	if not success then
 		print('Error Loading Plugins')
 		print(xerrorMessage)
