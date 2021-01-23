@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Helpers = {}
 --local UIErrorsFrame = NeP._G.UIErrorsFrame
 local C_Timer = NeP._G.C_Timer

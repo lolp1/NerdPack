@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local LibDisp = NeP._G.LibStub('LibDispellable-1.0')
 
 local funcs = {

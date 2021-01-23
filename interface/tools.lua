@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Interface.usedGUIs = {}
 local LibStub = NeP._G.LibStub
 local unpack = NeP._G.unpack

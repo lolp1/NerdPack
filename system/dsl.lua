@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local DSL = NeP.DSL
 local strsplit = NeP._G.strsplit
 DSL.cust_funcs = {}

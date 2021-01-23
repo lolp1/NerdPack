@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
 NeP.Core = {}
 
 local unpack = unpack
@@ -19,7 +19,7 @@ local d_color = {
 function NeP.Core.ClassColor(_, unit, type)
 	type = type and type:lower() or 'hex'
 	if NeP.DSL:Get('exists')(unit) then
-		local classid  = select(3, NeP._G.UnitClass(unit))
+		local classid  = select(3, g.UnitClass(unit))
 		if classid then
 			return NeP.ClassTable:GetClassColor(classid, type)
 		end
@@ -40,7 +40,7 @@ function NeP.Core.GetSpellID(_, spell)
 		return tonumber(spell)
 	end
 	local index, stype = NeP.Core:GetSpellBookIndex(spell)
-	local spellID = select(7, NeP._G.GetSpellInfo(index, stype))
+	local spellID = select(7, g.GetSpellInfo(index, stype))
 	return spellID
 end
 
@@ -48,14 +48,14 @@ function NeP.Core.GetSpellName(_, spell)
 	if not spell or type(spell) == 'string' then return spell end
 	local spellID = tonumber(spell)
 	if spellID then
-		return NeP._G.GetSpellInfo(spellID)
+		return g.GetSpellInfo(spellID)
 	end
 	return spell
 end
 
 function NeP.Core.GetItemID(_, item)
 	if not item or type(item) == 'number' then return item end
-	local itemID = string.match(select(2, NeP._G.GetItemInfo(item)) or '', 'Hitem:(%d+):')
+	local itemID = string.match(select(2, g.GetItemInfo(item)) or '', 'Hitem:(%d+):')
 	return tonumber(itemID) or item
 end
 
@@ -63,7 +63,7 @@ function NeP.Core.UnitID(_, unit)
 	if unit and NeP.DSL:Get('exists')(unit) then
 		local guid = NeP.DSL:Get('guid')(unit)
 		if guid then
-			local type, _, server_id,_,_, npc_id = NeP._G.strsplit("-", guid)
+			local type, _, server_id,_,_, npc_id = g.strsplit("-", guid)
 			if type == "Player" then
 				return tonumber(server_id)
 			elseif npc_id then
@@ -78,22 +78,22 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 	if not spellName then return end
 	spellName = spellName:lower()
 
-	for t = 1, NeP._G.GetNumSpellTabs() do
-		local _, _, offset, numSpells = NeP._G.GetSpellTabInfo(t)
+	for t = 1, g.GetNumSpellTabs() do
+		local _, _, offset, numSpells = g.GetSpellTabInfo(t)
 		for i = 1, (offset + numSpells) do
-			if NeP._G.GetSpellBookItemName(i, NeP._G.BOOKTYPE_SPELL):lower() == spellName then
-				return i, NeP._G.BOOKTYPE_SPELL
+			if g.GetSpellBookItemName(i, g.BOOKTYPE_SPELL):lower() == spellName then
+				return i, g.BOOKTYPE_SPELL
 			end
 		end
 	end
 
-	local numFlyouts = NeP._G.GetNumFlyouts()
+	local numFlyouts = g.GetNumFlyouts()
 	for f = 1, numFlyouts do
-		local flyoutID = NeP._G.GetFlyoutID(f)
-		local _, _, numSlots, isKnown = NeP._G.GetFlyoutInfo(flyoutID)
+		local flyoutID = g.GetFlyoutID(f)
+		local _, _, numSlots, isKnown = g.GetFlyoutInfo(flyoutID)
 		if isKnown and numSlots > 0 then
-			for g = 1, numSlots do
-				local spellID, _, isKnownSpell = NeP._G.GetFlyoutSlotInfo(flyoutID, g)
+			for x = 1, numSlots do
+				local spellID, _, isKnownSpell = g.GetFlyoutSlotInfo(flyoutID, x)
 				local name = NeP.Core:GetSpellName(spellID)
 				if name and isKnownSpell and name:lower() == spellName then
 					return spellID, nil
@@ -102,11 +102,11 @@ function NeP.Core.GetSpellBookIndex(_, spell)
 		end
 	end
 
-	local numPetSpells = NeP._G.HasPetSpells()
+	local numPetSpells = g.HasPetSpells()
 	if numPetSpells then
 		for i = 1, numPetSpells do
-			if NeP._G.GetSpellBookItemName(i, NeP._G.BOOKTYPE_PET):lower() == spellName then
-				return i, NeP._G.BOOKTYPE_PET
+			if g.GetSpellBookItemName(i, g.BOOKTYPE_PET):lower() == spellName then
+				return i, g.BOOKTYPE_PET
 			end
 		end
 	end
@@ -154,9 +154,9 @@ function  NeP.Core.UnitBuffL(target, spell, filter)
 	end
 	-- build a cache
 	unit_buffs[key] = {}
-	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
+	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss, _ = 1, true
 	while name do
-		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitBuff(target, i, filter)
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = g.UnitBuff(target, i, filter)
 		if name then
 			data = {name, cnt, expi, caster, tp, canSteal, isBoss, duration}
 			unit_buffs[key][name] = data
@@ -188,9 +188,9 @@ function  NeP.Core.UnitDebuffL(target, spell, filter)
 	end
 	-- build a cache
 	unit_debuffs[key] = {}
-	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss = 1, true
+	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss, _ = 1, true
 	while name do
-		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = NeP._G.UnitDebuff(target, i, filter)
+		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = g.UnitDebuff(target, i, filter)
 		if name then
 			data = {name, cnt, expi, caster, tp, canSteal, isBoss, duration}
 			unit_debuffs[key][name] = data
@@ -216,7 +216,7 @@ function NeP.Core.ForceLoad()
 end
 
 NeP.Listener:Add("NeP_Core_load", "PLAYER_ENTERING_WORLD", function()
-	NeP._G.C_Timer.After(local_stream_name and 0 or 1, function()
+	g.C_Timer.After(local_stream_name and 0 or 1, function()
 		NeP.Core.ForceLoad();
 	end)
 end)

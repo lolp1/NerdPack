@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.FakeUnits = {}
 local Units = {}
 

@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Healing = {}
 
 function NeP.Healing.GetPredictedHealth(unit)

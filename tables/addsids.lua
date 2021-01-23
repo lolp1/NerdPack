@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.AddsID = {}
 NeP.AddsID.table = {}
 local T = NeP.AddsID.table

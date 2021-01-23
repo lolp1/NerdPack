@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.ByPassMounts = {}
 NeP.ByPassMounts.table = {}
 local T = NeP.ByPassMounts.table

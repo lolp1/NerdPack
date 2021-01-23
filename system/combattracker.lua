@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
 
 NeP.CombatTracker = {}
 
@@ -45,7 +45,7 @@ local logDamage = function(...)
 			SourceObj.dmgDone_M = SourceObj.dmgDone_M + Amount
 		end
 	end
-	local ctime = NeP._G.GetTime()
+	local ctime = g.GetTime()
 	-- Totals
 	if DestObj then
 		DestObj.dmgTaken = DestObj.dmgTaken + Amount
@@ -103,9 +103,9 @@ end
 --[[ This Logs the last action done for every unit ]]
 local addAction = function(...)
 	local _,_,_, SourceGUID, _,_,_,_, destName, _,_, spellID, spellName = ...
-	if not spellName or not NeP._G.IsPlayerSpell(spellID) or NeP._G.IsPassiveSpell(spellID) then return end
+	if not spellName or not g.IsPlayerSpell(spellID) or g.IsPassiveSpell(spellID) then return end
 	if SourceGUID == NeP.DSL:Get('guid')('player') and destName then
-		local icon = select(3, NeP._G.GetSpellInfo(spellName))
+		local icon = select(3, g.GetSpellInfo(spellName))
 		NeP.ActionLog:Add('Spell Cast Succeed', spellName, icon, destName)
 	end
 	local obj = NeP.OM:FindObjectByGuid(SourceGUID)
@@ -113,57 +113,6 @@ local addAction = function(...)
 		obj.lastcast = spellName
 	end
 end
-
-local UnitBuffL = NeP.Core.UnitBuffL
-local UnitDebuffL = NeP.Core.UnitDebuffL
-
---[[local addAura = function(...)
-	local _,_,_, SourceGUID, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
-	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
-	if not DestObj then return end
-	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
-	if not DestObj[arrType] then return end -- this unit is not tracking buffs/debuffs
-	local func = auraType == 'BUFF' and UnitBuffL or UnitDebuffL
-	-- delay everything one frame / tick?
-	-- some buffs are wierd, they have a one frame / tick delay (maybe...)
-	NeP._G.C_Timer.After(0, function()
-		local xname, count, expiration, caster, type, isStealable, isBoss, duration = func(DestObj.key, spellName)
-		if not xname then return end --huh?
-		local found = DestObj[arrType][spellName] or DestObj[arrType][spellId]
-		local data = found or {}
-		data.isCastByPlayer = SourceGUID == NeP.DSL:Get('guid')('player')
-		data.SourceGUID = SourceGUID
-		data.spellId = spellId
-		data.spellName = spellName
-		data.auraType = auraType
-		data.type = type
-		data.count = count
-		data.isStealable = isStealable
-		data.isBoss = isBoss
-		data.expiration = expiration
-		data.duration = duration
-		data.caster = caster
-		DestObj[arrType][spellName] = data
-		DestObj[arrType][spellId] = data
-		DestObj[arrType][tostring(spellId)] = data
-	end)
-end
-
-local removeAura = function(...)
-	local _,_,_, _, _,_,_, DestGUID, _,_,_, spellId, spellName, _, auraType = ...
-	local DestObj = NeP.OM:FindObjectByGuid(DestGUID)
-	local arrType = auraType == 'BUFF' and 'buffs' or 'debuffs'
-	if DestObj and DestObj[arrType] then
-		DestObj[arrType][spellName] = nil
-		DestObj[arrType][spellId] = nil
-		DestObj[arrType][tostring(spellId)] = nil
-	end
-end]]
-
---local auraStack = function(...)
-	--local _,_,_, SourceGUID, _,_,_, GUID, _,_,_, spellId, spellName, _, auraType, amount = ...
-	--print(amount)
---end
 
 --[[ These are the events we're looking for and its respective action ]]
 local EVENTS = {
@@ -183,23 +132,14 @@ local EVENTS = {
 		end
 		NeP.OM:MoveObjectByGuid(DestGUID, 'Dead')
 	end,
-	--['SPELL_CAST_SUCCESS'] = addAction,
-	--["SPELL_AURA_REFRESH"] = addAura,
-	--["SPELL_AURA_APPLIED"] = addAura,
-	--["SPELL_PERIODIC_AURA_APPLIED"] = addAura,
-	--["SPELL_AURA_REMOVED"] = removeAura,
-	--["SPELL_PERIODIC_AURA_REMOVED"] = removeAura,
-	--["SPELL_AURA_APPLIED_DOSE"] = auraStack,
-	--["SPELL_PERIODIC_AURA_APPLIED_DOSE"] = auraStack,
-	--["SPELL_AURA_REMOVED_DOSE"] = auraStack,
-	--["SPELL_PERIODIC_AURA_REMOVED_DOSE"] = auraStack,
+	['SPELL_CAST_SUCCESS'] = addAction,
 }
 
 --[[ Returns the total ammount of time a unit is in-combat for ]]
 function NeP.CombatTracker.CombatTime(_, unit)
 	local Obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
 	if Obj then
-		return NeP._G.GetTime() - Obj.combat_time
+		return g.GetTime() - Obj.combat_time
 	end
 	return 0
 end
@@ -242,15 +182,15 @@ local function doStuff(...)
 	local SourceObj = NeP.OM:FindObjectByGuid(SourceGUID)
 	-- Update last  hit time
 	if DestObj then
-		DestObj.lastHit_taken = NeP._G.GetTime()
+		DestObj.lastHit_taken = g.GetTime()
 	end
 	if SourceObj then
-		SourceObj.lastHit_done = NeP._G.GetTime()
+		SourceObj.lastHit_done = g.GetTime()
 	end
 	-- Add the amount of dmg/heak
 	if EVENTS[EVENT] then EVENTS[EVENT](...) end
 end
 
 NeP.Listener:Add('NeP_CombatTracker', 'COMBAT_LOG_EVENT_UNFILTERED', function()
-	doStuff(NeP._G.CombatLogGetCurrentEventInfo())
+	doStuff(g.CombatLogGetCurrentEventInfo())
 end)

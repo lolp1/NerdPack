@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local CreateFrame = NeP._G.CreateFrame
 local ChatFrame1 = NeP._G.ChatFrame1
 local C_Timer = NeP._G.C_Timer

@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local g = NeP.Globals
 
 g.Actions = NeP.Actions

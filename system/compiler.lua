@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Compiler = {}
 local tonumber = tonumber
 local noop = function() end

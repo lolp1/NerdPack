@@ -1,4 +1,5 @@
 
+local NeP = NeP
 NeP.Parser   = {}
 local c = NeP.CR
 

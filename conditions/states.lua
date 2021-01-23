@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local LibDispellable = NeP._G.LibStub('LibDispellable-1.0')
 local tlp = NeP.Tooltip
 

@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 
 NeP.DSL:Register("isself", function(target)
   return NeP.DSL:Get("is")(target, 'player')

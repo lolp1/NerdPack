@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local DiesalGUI = NeP._G.LibStub('DiesalGUI-1.0')
 local L = NeP.Locale
 

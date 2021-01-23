@@ -1,11 +1,11 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
 
 NeP.DSL:Register('ingroup', function(target)
-  return NeP._G.UnitInParty(target) or NeP._G.UnitInRaid(target)
+  return g.UnitInParty(target) or g.UnitInRaid(target)
 end)
 
 NeP.DSL:Register('group.members', function()
-  return (NeP._G.GetNumGroupMembers() or 0)
+  return (g.GetNumGroupMembers() or 0)
 end)
 
 -- USAGE: group.type==#
@@ -13,7 +13,7 @@ end)
 -- * 2 = Party
 -- * 1 = SOLO
 NeP.DSL:Register('group.type', function()
-  return NeP._G.IsInRaid() and 3 or NeP._G.IsInGroup() and 2 or 1
+  return g.IsInRaid() and 3 or g.IsInGroup() and 2 or 1
 end)
 
 local UnitClsf = {
@@ -25,14 +25,14 @@ local UnitClsf = {
 
 NeP.DSL:Register("boss", function (target)
   if NeP.DSL:Get("isdummy")(target) then return end
-  local classification = NeP._G.UnitClassification(target)
+  local classification = g.UnitClassification(target)
   if UnitClsf[classification] then
     return UnitClsf[classification] >= 3 or NeP.BossID:Eval(target)
   end
 end)
 
 NeP.DSL:Register('elite', function (target)
-  local classification = NeP._G.UnitClassification(target)
+  local classification = g.UnitClassification(target)
   if UnitClsf[classification] then
     return UnitClsf[classification] >= 2
   end
@@ -46,24 +46,24 @@ end)
 
 NeP.DSL:Register('threat', function(target)
   if NeP.DSL:Get('aggro')(target) then
-    return select(3, NeP._G.UnitDetailedThreatSituation('player', target))
+    return select(3, g.UnitDetailedThreatSituation('player', target))
   end
   return 0
 end)
 
 NeP.DSL:Register('aggro', function(target)
-  local threat = NeP._G.UnitThreatSituation(target)
+  local threat = g.UnitThreatSituation(target)
   return (threat and threat >= 2)
 end)
 
 NeP.DSL:Register('moving', function(target)
-  local speed, _ = NeP._G.GetUnitSpeed(target)
+  local speed, _ = g.GetUnitSpeed(target)
   return speed ~= 0
 end)
 
 NeP.DSL:Register('classification', function (target, spell)
   if not spell then return false end
-  local classification = NeP._G.UnitClassification(target)
+  local classification = g.UnitClassification(target)
   if string.find(spell, '[%s,]+') then
     for classificationExpected in string.gmatch(spell, '%a+') do
       if classification == string.lower(classificationExpected) then
@@ -72,7 +72,7 @@ NeP.DSL:Register('classification', function (target, spell)
     end
     return false
   else
-    return NeP._G.UnitClassification(target) == string.lower(spell)
+    return g.UnitClassification(target) == string.lower(spell)
   end
 end)
 
@@ -81,15 +81,15 @@ NeP.DSL:Register('target', function(target, spell)
 end)
 
 NeP.DSL:Register({'player', 'isplayer'}, function(target)
-  return NeP._G.UnitIsPlayer(target)
+  return g.UnitIsPlayer(target)
 end)
 
 NeP.DSL:Register('inphase', function(unit)
   if not NeP.DSL:Get("exists")(unit) then
     return false
   end
-  local reason = NeP._G.UnitPhaseReason(unit)
-  if UnitIsPlayer(unit) then
+  local reason = g.UnitPhaseReason(unit)
+  if g.UnitIsPlayer(unit) then
     return reason == nil
   end
   return reason == nil or reason == 2 --warmode is 2
@@ -104,15 +104,15 @@ NeP.DSL:Register('guid', function(target)
 end)
 
 NeP.DSL:Register('visible', function(target)
-  return NeP._G.UnitIsVisible(target)
+  return g.UnitIsVisible(target)
 end)
 
 NeP.DSL:Register('dead', function (target)
-  return NeP._G.UnitIsDeadOrGhost(target)
+  return g.UnitIsDeadOrGhost(target)
 end)
 
 NeP.DSL:Register('alive', function(target)
-  return not NeP._G.UnitIsDeadOrGhost(target)
+  return not g.UnitIsDeadOrGhost(target)
 end)
 
 NeP.DSL:Register('behind', function(target, _, target2)
@@ -129,21 +129,21 @@ NeP.DSL:Register('lastmoved', function(target)
   if NeP.DSL:Get('exists')(target) then
     local guid = NeP.DSL:Get('guid')(target)
     if movingCache[guid] then
-      local moving = (NeP._G.GetUnitSpeed(target) > 0)
+      local moving = (g.GetUnitSpeed(target) > 0)
       if not movingCache[guid].moving and moving then
-        movingCache[guid].last = NeP._G.GetTime()
+        movingCache[guid].last = g.GetTime()
         movingCache[guid].moving = true
         return false
       elseif moving then
         return false
       elseif not moving then
         movingCache[guid].moving = false
-        return NeP._G.GetTime() - movingCache[guid].last
+        return g.GetTime() - movingCache[guid].last
       end
     else
       movingCache[guid] = { }
-      movingCache[guid].last = NeP._G.GetTime()
-      movingCache[guid].moving = (NeP._G.GetUnitSpeed(target) > 0)
+      movingCache[guid].last = g.GetTime()
+      movingCache[guid].moving = (g.GetUnitSpeed(target) > 0)
       return false
     end
   end
@@ -154,21 +154,21 @@ NeP.DSL:Register('movingfor', function(target)
   if NeP.DSL:Get('exists')(target) then
     local guid = NeP.DSL:Get('guid')(target)
     if movingCache[guid] then
-      local moving = (NeP._G.GetUnitSpeed(target) > 0)
+      local moving = (g.GetUnitSpeed(target) > 0)
       if not movingCache[guid].moving then
-        movingCache[guid].last = NeP._G.GetTime()
-        movingCache[guid].moving = (NeP._G.GetUnitSpeed(target) > 0)
+        movingCache[guid].last = g.GetTime()
+        movingCache[guid].moving = (g.GetUnitSpeed(target) > 0)
         return 0
       elseif moving then
-        return NeP._G.GetTime() - movingCache[guid].last
+        return g.GetTime() - movingCache[guid].last
       elseif not moving then
         movingCache[guid].moving = false
         return 0
       end
     else
       movingCache[guid] = { }
-      movingCache[guid].last = NeP._G.GetTime()
-      movingCache[guid].moving = (NeP._G.GetUnitSpeed(target) > 0)
+      movingCache[guid].last = g.GetTime()
+      movingCache[guid].moving = (g.GetUnitSpeed(target) > 0)
       return 0
     end
   end
@@ -176,11 +176,11 @@ NeP.DSL:Register('movingfor', function(target)
 end)
 
 NeP.DSL:Register('friend', function(unit, _, unit2)
-  return NeP._G.UnitIsFriend(unit2 or 'player', unit)
+  return g.UnitIsFriend(unit2 or 'player', unit)
 end)
 
 NeP.DSL:Register({'enemy', 'canattack'}, function(unit, _, unit2)
-  return NeP._G.UnitCanAttack(unit2 or 'player', unit)
+  return g.UnitCanAttack(unit2 or 'player', unit)
 end)
 
 NeP.DSL:Register({'range', 'rangefrom'}, function(unit, _, unit2)
@@ -192,21 +192,21 @@ NeP.DSL:Register({'distance', 'distancefrom'}, function(unit, _, unit2)
 end)
 
 NeP.DSL:Register('level', function(target)
-  return NeP._G.UnitLevel(target)
+  return g.UnitLevel(target)
 end)
 
 NeP.DSL:Register('combat', function(target)
-  return NeP._G.UnitAffectingCombat(target)
+  return g.UnitAffectingCombat(target)
 end)
 
 -- Checks if the player has autoattack toggled currently
 -- Use {'/startattack', '!isattacking'}, at the top of a CR to force autoattacks
 NeP.DSL:Register('isattacking', function()
-  return NeP._G.IsCurrentSpell(6603)
+  return g.IsCurrentSpell(6603)
 end)
 
 NeP.DSL:Register('role', function(target)
-  return NeP._G.UnitGroupRolesAssigned(target)
+  return g.UnitGroupRolesAssigned(target)
 end)
 
 NeP.DSL:Register('name', function (target)
@@ -222,7 +222,7 @@ NeP.DSL:Register('hasName', function (target, expectedName)
 end)
 
 NeP.DSL:Register('creatureType', function (target)
-  return NeP._G.UnitCreatureType(target)
+  return g.UnitCreatureType(target)
 end)
 
 NeP.DSL:Register('hascreatureType', function (target, expectedType)
@@ -230,7 +230,7 @@ NeP.DSL:Register('hascreatureType', function (target, expectedType)
 end)
 
 NeP.DSL:Register('class', function (target, expectedClass)
-  local class, _, classID = NeP._G.UnitClass(target)
+  local class, _, classID = g.UnitClass(target)
   if tonumber(expectedClass) then
     return tonumber(expectedClass) == classID
   else
@@ -297,16 +297,16 @@ NeP.DSL:Register('incdmg.magic', function(target, args)
 end)
 
 NeP.DSL:Register('swimming', function ()
-  return NeP._G.IsSwimming()
+  return g.IsSwimming()
 end)
 
 --return if a unit is a unit
 NeP.DSL:Register('is', function(a,b)
-  return NeP._G.UnitIsUnit(a,b)
+  return g.UnitIsUnit(a,b)
 end)
 
 NeP.DSL:Register("falling", function()
-  return NeP._G.IsFalling()
+  return g.IsFalling()
 end)
 
 local last_fall = 0;
@@ -314,13 +314,13 @@ local falling_for = 0;
 
 local function buildFallTime()
 	-- if we´re not falling then reset the counter and return 0
-  if not NeP._G.IsFalling() then
+  if not g.IsFalling() then
     last_fall = 0
 		falling_for = 0
 		return;
   end
   -- if we have a time set then return the difference
-  local time = NeP._G.GetTime()
+  local time = g.GetTime()
   if last_fall > 0 then
     falling_for = time - last_fall
 		return;
@@ -329,7 +329,7 @@ local function buildFallTime()
   last_fall = time
 	falling_for = 0
 end
-NeP._G.C_Timer.NewTicker(0.1, buildFallTime)
+g.C_Timer.NewTicker(0.1, buildFallTime)
 
 NeP.DSL:Register({"falling.duration", "fall.duration"}, function()
   return falling_for
@@ -340,7 +340,7 @@ NeP.DSL:Register({"deathin", "ttd", "timetodie"}, function(target)
 end)
 
 NeP.DSL:Register("charmed", function(target)
-  return NeP._G.UnitIsCharmed(target)
+  return g.UnitIsCharmed(target)
 end)
 
 local communName = NeP.Locale:TA('Dummies', 'Name')
@@ -348,20 +348,20 @@ local matchs = NeP.Locale:TA('Dummies', 'Pattern')
 
 NeP.DSL:Register('isdummy', function(unit)
   if not NeP.DSL:Get('exists')(unit) then return end
-  if NeP._G.UnitName(unit):lower():find(communName) then return true end
+  if g.UnitName(unit):lower():find(communName) then return true end
   return NeP.Tooltip:Unit(unit, matchs)
 end)
 
 NeP.DSL:Register('indoors', function()
-    return NeP._G.IsIndoors()
+    return g.IsIndoors()
 end)
 
 NeP.DSL:Register('haste', function(unit)
-  return NeP._G.UnitSpellHaste(unit)
+  return g.UnitSpellHaste(unit)
 end)
 
 NeP.DSL:Register("mounted", function()
-  return NeP._G.IsMounted()
+  return g.IsMounted()
 end)
 
 NeP.DSL:Register('combat.time', function(target)

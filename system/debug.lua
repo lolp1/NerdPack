@@ -1,4 +1,4 @@
-
+local NeP = NeP
 
 NeP.Debug = {}
 NeP.Debug.Enable = false

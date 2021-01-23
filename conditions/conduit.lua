@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
 
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
@@ -6,15 +6,15 @@ local _, NeP = ...
 local ConduitTable = {}
 
 local function ConduitScan()
-    NeP._G.wipe(ConduitTable)
-    if not NeP._G.C_Soulbinds then return end -- don't error with previous expansion
-    local soulbindID = NeP._G.C_Soulbinds.GetActiveSoulbindID()
-    local nodes = NeP._G.C_Soulbinds.GetSoulbindData(soulbindID).tree.nodes
+    g.wipe(ConduitTable)
+    if not g.C_Soulbinds then return end -- don't error with previous expansion
+    local soulbindID = g.C_Soulbinds.GetActiveSoulbindID()
+    local nodes = g.C_Soulbinds.GetSoulbindData(soulbindID).tree.nodes
     for i = 1, #nodes do
         local node = nodes[i]
         if node.conduitID > 0 and node.state > 2 then
-            local spellID = NeP._G.C_Soulbinds.GetConduitSpellID(node.conduitID, node.conduitRank)
-            local spellName = NeP._G.GetSpellInfo(spellID):lower()
+            local spellID = g.C_Soulbinds.GetConduitSpellID(node.conduitID, node.conduitRank)
+            local spellName = g.GetSpellInfo(spellID):lower()
             ConduitTable[spellID] = node.conduitRank
             ConduitTable[spellName] = node.conduitRank
         end
@@ -46,7 +46,7 @@ local ConduitUpdateEvents = {
 }
 
 NeP.Listener:Add("NeP_ConduitScaner", ConduitUpdateEvents, function()
-    NeP._G.C_Timer.After(1, ConduitScan)
+    g.C_Timer.After(1, ConduitScan)
 end)
 
 -----------------------------------------------------------------------------------------------------

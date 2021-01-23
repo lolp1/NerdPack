@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Tooltip = {}
 local frame = NeP._G.CreateFrame('GameTooltip', 'NeP_ScanningTooltip', NeP._G.UIParent, 'GameTooltipTemplate')
 

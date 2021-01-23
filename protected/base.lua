@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local strsplit = NeP._G.strsplit
 local IsInGroup = NeP._G.IsInGroup
 local IsInRaid = NeP._G.IsInRaid

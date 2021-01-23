@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local UIParent = NeP._G.UIParent
 local CreateFrame = NeP._G.CreateFrame
 local C_Timer = NeP._G.C_Timer

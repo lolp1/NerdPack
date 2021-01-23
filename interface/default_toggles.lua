@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local L = NeP.Locale
 
 -- MasterToggle

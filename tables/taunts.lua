@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Taunts = {}
 NeP.Taunts.table = {}
 local T = NeP.Taunts.table

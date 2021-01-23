@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local LibStub = NeP._G.LibStub
 local DiesalGUI   = LibStub("DiesalGUI-1.0")
 local SharedMedia = LibStub("LibSharedMedia-3.0")

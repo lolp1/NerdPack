@@ -1,4 +1,4 @@
-
+local NeP, local_stream_name = NeP, local_stream_name
 
 NeP.Config = {}
 local Data = {}

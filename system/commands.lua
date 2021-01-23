@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 
 NeP.Commands = {}
 NeP.Commands.cache = {}

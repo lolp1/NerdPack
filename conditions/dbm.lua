@@ -1,17 +1,17 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
 NeP.DBM = {}
 
 --dont load if DBM is not installed
 function NeP.DBM.BuildTimers() end
-if not NeP._G.DBM then return end
+if not g.DBM then return end
 
 local DBM_Timers = {}
 local fake_timer = 999
 
 function NeP.DBM.BuildTimers()
-  _G.wipe(DBM_Timers)
-  for bar in pairs(NeP._G.DBM.Bars.bars) do
-    local id = NeP._G.GetSpellInfo(bar.id:match("%d+")) or bar.id:lower():gsub("%%s%c", "")
+  g.wipe(DBM_Timers)
+  for bar in pairs(g.DBM.Bars.bars) do
+    local id = g.GetSpellInfo(bar.id:match("%d+")) or bar.id:lower():gsub("%%s%c", "")
     DBM_Timers[id] = bar.timer and bar.timer
   end
 end

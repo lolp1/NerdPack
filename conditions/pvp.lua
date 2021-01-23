@@ -1,6 +1,5 @@
-local _, NeP = ...
-local _G = _G
+local NeP, g = NeP, NeP._G
 
 NeP.DSL:Register("pvp", function(target)
-  return NeP._G.UnitIsPVP(target, 'PLAYER')
+  return g.UnitIsPVP(target, 'PLAYER')
 end)

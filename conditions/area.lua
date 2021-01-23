@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 
 -- USAGE: UNIT.area(DISTANCE).enemies >= #
 NeP.DSL:Register("area.enemies", function(unit, distance)

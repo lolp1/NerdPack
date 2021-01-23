@@ -1,4 +1,5 @@
 
+local NeP, g = NeP, NeP._G
 local EquippedItems = {}
 local AverageItemLevel = 0
 
@@ -10,9 +11,9 @@ local EquipmentUpdateEvents = {
 }
 
 NeP.Listener:Add(n_name.."_ResetEquippedItems", EquipmentUpdateEvents, function()
-    NeP._G.C_Timer.After(2, function()
-        NeP._G.wipe(EquippedItems)
-        AverageItemLevel = math.floor(select(2, NeP._G.GetAverageItemLevel()))
+    g.C_Timer.After(2, function()
+        g.wipe(EquippedItems)
+        AverageItemLevel = math.floor(select(2, g.GetAverageItemLevel()))
     end)
 end)
 
@@ -20,33 +21,33 @@ NeP.DSL:Register({"equipped", "item"}, function(_, item)
     if EquippedItems[item] then
         return EquippedItems[item] == 1
     else
-        EquippedItems[item] = NeP._G.IsEquippedItem(item) and 1 or 0
+        EquippedItems[item] = g.IsEquippedItem(item) and 1 or 0
         return EquippedItems[item] == 1
     end
 end)
 
 NeP.DSL:Register('item.cooldown', function(_, item)
-    local start, duration = NeP._G.GetItemCooldown(item)
+    local start, duration = g.GetItemCooldown(item)
     if not start then return 0 end
-    return start ~= 0 and (start + duration - NeP._G.GetTime()) or 0
+    return start ~= 0 and (start + duration - g.GetTime()) or 0
 end)
 
 NeP.DSL:Register('item.usable', function(_, item)
-    local isUsable, notEnoughMana = NeP._G.IsUsableItem(item)
+    local isUsable, notEnoughMana = g.IsUsableItem(item)
     if not isUsable or notEnoughMana or NeP.DSL:Get('item.cooldown')(nil, item) ~= 0 then return false end
     return true
 end)
 
 NeP.DSL:Register('item.count', function(_, item)
-    return NeP._G.GetItemCount(item, false, true)
+    return g.GetItemCount(item, false, true)
 end)
 
 NeP.DSL:Register('twohand', function()
-    return NeP._G.IsEquippedItemType("Two-Hand")
+    return g.IsEquippedItemType("Two-Hand")
 end)
 
 NeP.DSL:Register('onehand', function()
-    return NeP._G.IsEquippedItemType("One-Hand")
+    return g.IsEquippedItemType("One-Hand")
 end)
 
 NeP.DSL:Register("ilevel", function()

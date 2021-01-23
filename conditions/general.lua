@@ -1,13 +1,14 @@
-local _, NeP = ...
+local NeP, g = NeP, NeP._G
+
 local function checkChanneling(target)
-  local name, _, _, startTime, endTime, _, notInterruptible = NeP._G.UnitChannelInfo(target)
+  local name, _, _, startTime, endTime, _, notInterruptible = g.UnitChannelInfo(target)
   if name then return name, startTime, endTime, notInterruptible end
 end
 
 local function checkCasting(target)
   local name, startTime, endTime, notInterruptible = checkChanneling(target)
   if name then return name, startTime, endTime, notInterruptible end
-  name, _, _, startTime, endTime, _, _, notInterruptible = NeP._G.UnitCastingInfo(target)
+  name, _, _, startTime, endTime, _, _, notInterruptible = g.UnitCastingInfo(target)
   if name then return name, startTime, endTime, notInterruptible end
 end
 
@@ -20,9 +21,9 @@ NeP.DSL:Register('false', function()
 end)
 
 NeP.DSL:Register('timetomax', function(target)
-  local max = NeP._G.UnitPowerMax(target)
-  local curr = NeP._G.UnitPower(target)
-  local regen = select(2, NeP._G.GetPowerRegen(target))
+  local max = g.UnitPowerMax(target)
+  local curr = g.UnitPower(target)
+  local regen = select(2, g.GetPowerRegen(target))
   return (max - curr) * (1.0 / regen)
 end)
 
@@ -34,7 +35,7 @@ NeP.DSL:Register('casting.percent', function(target)
   local name, startTime, endTime, notInterruptible = checkCasting(target)
   if name and not notInterruptible then
     local castLength = (endTime - startTime) / 1000 or 0
-    local secondsDone = NeP._G.GetTime() - (startTime / 1000) or 0
+    local secondsDone = g.GetTime() - (startTime / 1000) or 0
     return ((secondsDone/castLength)*100) or 0
   end
   return 0
@@ -44,7 +45,7 @@ NeP.DSL:Register('channeling.percent', function(target)
   local name, startTime, endTime, notInterruptible = checkChanneling(target)
   if name and not notInterruptible then
     local castLength = (endTime - startTime) / 1000 or 0
-    local secondsDone = NeP._G.GetTime() - (startTime / 1000) or 0
+    local secondsDone = g.GetTime() - (startTime / 1000) or 0
     return ((secondsDone/castLength)*100) or 0
   end
   return 0
@@ -54,7 +55,7 @@ NeP.DSL:Register('casting.delta', function(target)
   local name, startTime, endTime, notInterruptible = checkCasting(target)
   if name and not notInterruptible then
     local castLength = (endTime - startTime) / 1000 or 0
-    local secondsLeft = endTime / 1000 - NeP._G.GetTime() or 0
+    local secondsLeft = endTime / 1000 - g.GetTime() or 0
     return secondsLeft or 0, castLength or 0
   end
   return 0
@@ -85,9 +86,9 @@ local TimeOutTable ={}
 
 --USAGE: timeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('timeout', function(_, args)
-  local name, time = NeP._G.strsplit(',', args, 2)
+  local name, time = g.strsplit(',', args, 2)
    if not TimeOutTable[name] then TimeOutTable[name] = true;
-    NeP._G.C_Timer.After(tonumber(time), function() TimeOutTable[name] = nil end);
+    g.C_Timer.After(tonumber(time), function() TimeOutTable[name] = nil end);
     return true; end
    return not TimeOutTable[name]
 end)
@@ -97,15 +98,15 @@ local TimeOutUnitTable ={}
 --USAGE: UNIT.targettimeout(TIMER_NAME, SECONDS)
 NeP.DSL:Register('targettimeout', function(target, args)
   target = NeP.DSL:Get('guid')(target)
-  local name, time = NeP._G.strsplit(',', args, 2)
+  local name, time = g.strsplit(',', args, 2)
    if not TimeOutUnitTable[target..name] then TimeOutUnitTable[target..name] = true;
-    NeP._G.C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end);
+    g.C_Timer.After(tonumber(time), function() TimeOutUnitTable[target..name] = nil end);
     return true; end
    return not TimeOutUnitTable[target..name]
 end)
 
 NeP.DSL:Register('isnear', function(target, args)
-  local targetID, distance = NeP._G.strsplit(',', args, 2)
+  local targetID, distance = g.strsplit(',', args, 2)
   targetID = tonumber(targetID) or 0
   distance = tonumber(distance) or 60
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
@@ -116,18 +117,18 @@ NeP.DSL:Register('isnear', function(target, args)
 end)
 
 NeP.DSL:Register('gcd', function()
-  local class = select(3,NeP._G.UnitClass("player"))
+  local class = select(3,g.UnitClass("player"))
   -- Some class's always have GCD = 1
   if class == 4
-  or (class == 11 and NeP._G.GetShapeshiftForm() == 2)
-  or (class == 10 and NeP._G.GetSpecialization() ~= 2) then
+  or (class == 11 and g.GetShapeshiftForm() == 2)
+  or (class == 10 and g.GetSpecialization() ~= 2) then
     return 1
   end
-  return math.floor((1.5 / ((NeP._G.GetHaste() / 100) + 1)) * 10^3 ) / 10^3
+  return math.floor((1.5 / ((g.GetHaste() / 100) + 1)) * 10^3 ) / 10^3
 end)
 
 NeP.DSL:Register('ui', function(_, args)
-  local key, UI_key = NeP._G.strsplit(",", args, 2)
+  local key, UI_key = g.strsplit(",", args, 2)
   UI_key = UI_key or NeP.CR.CR.name
   return NeP.Interface:Fetch(UI_key, key)
 end)

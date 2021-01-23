@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 local CreateFrame = NeP._G.CreateFrame
 NeP.Listener = {}
 local listeners = {}

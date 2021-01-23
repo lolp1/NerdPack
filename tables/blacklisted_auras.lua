@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Debuffs = {}
 NeP.Debuffs.table = {}
 local T = NeP.Debuffs.table

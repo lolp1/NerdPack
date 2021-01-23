@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Actions = {}
 
 local _actions = {}

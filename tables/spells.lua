@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 NeP.Spells         = {}
 local SpellsTable  = {}
 

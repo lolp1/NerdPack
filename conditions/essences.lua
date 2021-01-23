@@ -1,4 +1,4 @@
-local _, NeP = ...
+local NeP = NeP
 
 local Essence = {}
 
@@ -49,6 +49,4 @@ NeP.Listener:Add("NeP_Essences", "AZERITE_ESSENCE_UPDATE", function()
     ScanEssenceFunc()
 end)
 
-NeP.Listener:Add("NeP_Essences", "PLAYER_ENTERING_WORLD", function()
-    ScanEssenceFunc()
-end)
+ScanEssenceFunc()
