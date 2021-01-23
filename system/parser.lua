@@ -56,27 +56,24 @@ end
 local function tst(_type, unit)
 	local tbl = c.CR.blacklist[_type]
 	if not tbl then
-		print('NO TABLE',_type, unit)
 		return
 	end
 	for i=1, #tbl do
 		local _count = tbl[i].count
 		if _count then
 			if NeP.DSL:Get(_type..'.count.any')(unit, tbl[i].name) >= _count then
-				print('backlist found .count.any', unit, _type)
 				return true
 			end
 		else
 			if NeP.DSL:Get(_type..'.any')(unit, tbl[i]) then
-				print('backlist found .any', unit, _type)
 				return true
 			end
 		end
 	end
-	print('no BL')
+	print('no BL',_type, unit)
 end
 
-print('test v5')
+print('test v6')
 
 NeP.Cache.Unit_Blacklist_cache = {}
 local ubl = NeP.Cache.Unit_Blacklist_cache
