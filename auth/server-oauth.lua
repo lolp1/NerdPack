@@ -74,4 +74,4 @@ NeP.Interface:Add('OAuth V:'..version, function() GUI.parent:Show() end)
 GUI.parent:Hide();
 
 -- try auto login
-login();
+NeP.Core:WhenInGame(login, 9997);
