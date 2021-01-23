@@ -4,8 +4,12 @@ local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 local function load_code(code, name)
-    local f = assert(loadstring(code, name))
+    local f = assert(loadstring(code, name))(next, xpcall, errorhandler)
     setfenv(f, _G)
     return f
 end
@@ -15,15 +19,7 @@ local function setCrs(body)
 		NeP.Core:Print('DONE no crs loaded');
 		return;
 	end
-	local func = load_code(body,'NerdPack-Auth-crs');
-	if not func then
-		print('Error Loading crs')
-	end
-	local success, xerrorMessage = pcall(func);
-	if not success then
-		print('Error Loading crs')
-		print(xerrorMessage)
-	end
+	load_code(body,'NerdPack-Auth-crs');
 	NeP.Interface.ResetCRs();
     NeP.CR:Set();
 	NeP.Core:Print('DONE loading crs!');
@@ -34,15 +30,7 @@ local function setPlugins(body)
 		NeP.Core:Print('DONE no Plugins loaded');
 		return;
 	end
-	local func = load_code(body,'NerdPack-Auth-Plugins');
-	if not func then
-		print('Error Loading Plugins')
-	end
-	local success, xerrorMessage = pcall(func);
-	if not success then
-		print('Error Loading Plugins')
-		print(xerrorMessage)
-	end
+	load_code(body,'NerdPack-Auth-Plugins');
 	NeP.Core:Print('DONE loading plugins!');
 end
 
