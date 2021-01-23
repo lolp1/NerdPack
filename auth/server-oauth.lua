@@ -5,14 +5,20 @@ local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 local print = function(...) NeP.Core:Print(...) end
 
+print('test loaded v4')
+
+local function errorhandler(err)
+	return geterrorhandler()(err)
+end
+
 local function load_code(code, name)
     local func, errorMessage = loadstring(code, name)
-	setfenv(func, _G)
 	if(not func) then
 		print('ERROR loading ', name, '!');
 		print(errorMessage)
 	end
-	local success, xerrorMessage = pcall(func);
+	setfenv(func, _G)
+	local success, xerrorMessage = xpcall(func, errorhandler);
 	if(not success) then
 		print('ERROR loading ', name, '!');
 		print(xerrorMessage)
