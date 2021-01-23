@@ -7,11 +7,7 @@ local confname = 'settings';
 local function print(...) NeP.Core:Print(...) end
 
 local function forceSave()
-	if not NeP._G.json then
-		print('Please enable the json plugin on https://nerdpack.xyz/plugins to be able to save settings.')
-		return
-	end
-	local xData = NeP._G.json.decode(Data)
+	local xData = _G.json.decode(Data)
 	NeP.Protected.writeFile('settings.json', xData)
 end
 
@@ -34,11 +30,7 @@ local function setData()
 	if not setingsFile then
 		return
 	end
-	if not NeP._G.json then
-		print('Please enable the json plugin on https://nerdpack.xyz/plugins to be able to save settings.')
-		return
-	end
-	Data = NeP._G.json.decode(setingsFile)
+	Data = _G.json.decode(setingsFile)
 	-- do we need to wipe it?
 	if Data["config_ver"] ~= version then
 		resetData()
