@@ -5,8 +5,6 @@ local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 local print = function(...) NeP.Core:Print(...) end
 
-print('test loaded v6')
-
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
