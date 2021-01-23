@@ -19,7 +19,7 @@ local function setCrs(body)
 	if not func then
 		print('Error Loading crs')
 	end
-	local success, xerrorMessage = xpcall(func, error);
+	local success, xerrorMessage = pcall(func);
 	if not success then
 		print('Error Loading crs')
 		print(xerrorMessage)
@@ -38,7 +38,7 @@ local function setPlugins(body)
 	if not func then
 		print('Error Loading Plugins')
 	end
-	local success, xerrorMessage = xpcall(func, error);
+	local success, xerrorMessage = pcall(func);
 	if not success then
 		print('Error Loading Plugins')
 		print(xerrorMessage)
