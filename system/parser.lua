@@ -54,7 +54,6 @@ end
 
 -- blacklist
 local function tst(_type, unit)
-	print(1)
 	local tbl = c.CR.blacklist[_type]
 	if not tbl then
 		print('NO TABLE',_type, unit)
@@ -74,6 +73,7 @@ local function tst(_type, unit)
 			end
 		end
 	end
+	print('no BL')
 end
 
 print('test v4')
