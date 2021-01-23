@@ -4,6 +4,8 @@ local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
+print('LOAD TEST V1')
+
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
