@@ -24,7 +24,11 @@ local function setCrs(body)
 		NeP.Core:Print('ERROR loading crs!');
 		error(errorMessage);
 	end
-	xpcall(func, errorhandler);
+	local success, xerrorMessage = xpcall(func, errorhandler);
+	if(not success) then
+		NeP.Core:Print('ERROR loading crs!');
+		error(xerrorMessage);
+	end
 	NeP.Interface.ResetCRs();
     NeP.CR:Set();
 	NeP.Core:Print('DONE loading crs!');
@@ -40,7 +44,11 @@ local function setPlugins(body)
 		NeP.Core:Print('ERROR loading Plugins!');
 		error(errorMessage);
 	end
-	xpcall(func, errorhandler);
+	local success, xerrorMessage = xpcall(func, errorhandler);
+	if(not success) then
+		NeP.Core:Print('ERROR loading crs!');
+		error(xerrorMessage);
+	end
 	NeP.Core:Print('DONE loading plugins!');
 end
 
