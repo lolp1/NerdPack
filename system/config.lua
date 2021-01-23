@@ -24,8 +24,10 @@ local function setData()
 	if old_data and not setingsFile then
 		Data = old_data
 		forceSave()
-		print('Importing old settings...')
 		return
+	end
+	if old_data then
+		_G[local_stream_name .. 'DATA'] = nil
 	end
 	if not setingsFile then
 		return
