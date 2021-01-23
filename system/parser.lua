@@ -55,7 +55,10 @@ end
 -- blacklist
 local function tst(_type, unit)
 	local tbl = c.CR.blacklist[_type]
-	if not tbl then return end
+	if not tbl then
+		print('NO TABLE',_type, unit)
+		return
+	end
 	for i=1, #tbl do
 		local _count = tbl[i].count
 		if _count then
@@ -72,16 +75,16 @@ local function tst(_type, unit)
 	end
 end
 
-print('test v2')
+print('test v3')
 
 NeP.Cache.Unit_Blacklist_cache = {}
 local ubl = NeP.Cache.Unit_Blacklist_cache
 function NeP.Parser.Unit_Blacklist(_, unit)
 	if ubl[unit] == nil then
 		ubl[unit] = NeP.Debuffs:Eval(unit)
-		--or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
-		--or tst("buff", unit)
-		--or tst("debuff", unit)
+		or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
+		or tst("buff", unit)
+		or tst("debuff", unit)
 	end
 	return ubl[unit]
 end
