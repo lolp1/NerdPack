@@ -7,7 +7,7 @@ local confname = 'settings';
 local function print(...) NeP.Core:Print(...) end
 
 local function forceSave()
-	local xData = _G.json.decode(Data)
+	local xData = _G.json.encode(Data)
 	NeP.Protected.writeFile('settings.json', xData)
 end
 
