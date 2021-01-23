@@ -6,7 +6,7 @@ local domain = "nerdpack.xyz"
 
 local function load_code(code, name)
     local f = assert(loadstring(code, name))
-    setfenv(f, NeP)
+    setfenv(f, _G)
     return f
 end
 
