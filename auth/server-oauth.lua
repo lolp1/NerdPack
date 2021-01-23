@@ -3,57 +3,46 @@ local oauthToken;
 local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
-
-print('LOAD TEST V3')
-
-local function errorhandler(err)
-	return geterrorhandler()(err)
-end
+local print = function(...) NeP.Core:Print(...) end
 
 local function load_code(code, name)
-    local f, errorMessage = loadstring(code, name)
-    setfenv(f, _G)
-    return f, errorMessage
+    local func, errorMessage = loadstring(code, name)
+	setfenv(func, _G)
+	if(not func) then
+		print('ERROR loading ', name, '!');
+		print(errorMessage)
+	end
+	local success, xerrorMessage = pcall(func);
+	if(not success) then
+		print('ERROR loading ', name, '!');
+		print(xerrorMessage)
+	end
 end
 
 local function setCrs(body)
 	if not body then
-		NeP.Core:Print('DONE no crs loaded');
+		print('DONE no crs loaded');
 		return;
 	end
-	local func, errorMessage = load_code(body,'NerdPack-Auth-crs');
-	if(not func) then
-		NeP.Core:Print('ERROR loading crs!');
-	end
-	local success, xerrorMessage = xpcall(func, errorhandler);
-	if(not success) then
-		NeP.Core:Print('ERROR loading crs!');
-	end
+	load_code(body,'NerdPack-Auth-crs');
 	NeP.Interface.ResetCRs();
     NeP.CR:Set();
-	NeP.Core:Print('DONE loading crs!');
+	print('DONE loading crs!');
 end
 
 local function setPlugins(body)
 	if not body then
-		NeP.Core:Print('DONE no Plugins loaded');
+		print('DONE no Plugins loaded');
 		return;
 	end
-	local func, errorMessage = load_code(body,'NerdPack-Auth-Plugins');
-	if(not func) then
-		NeP.Core:Print('ERROR loading Plugins!');
-	end
-	local success, xerrorMessage = xpcall(func, errorhandler);
-	if(not success) then
-		NeP.Core:Print('ERROR loading crs!');
-	end
-	NeP.Core:Print('DONE loading plugins!');
+	load_code(body,'NerdPack-Auth-Plugins');
+	print('DONE loading plugins!');
 end
 
 --REPLACE_WITH_UNLOCKER_FILE
 
 local function login()
-  if oauthToken then NeP.Core:Print('Already Logged in'); return; end
+  if oauthToken then print('Already Logged in'); return; end
   local username = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'username');
   local password = NeP.Interface:Fetch(n_name .. '_ServerOAuth', 'password');
   if password and password:len() > 0 and username and username:len() > 0 then
