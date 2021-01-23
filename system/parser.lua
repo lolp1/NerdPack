@@ -76,14 +76,14 @@ local function tst(_type, unit)
 	print('no BL')
 end
 
-print('test v4')
+print('test v5')
 
 NeP.Cache.Unit_Blacklist_cache = {}
 local ubl = NeP.Cache.Unit_Blacklist_cache
 function NeP.Parser.Unit_Blacklist(_, unit)
 	if ubl[unit] == nil then
 		ubl[unit] = NeP.Debuffs:Eval(unit)
-		or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
+		--or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
 		or tst("buff", unit)
 		or tst("debuff", unit)
 	end
