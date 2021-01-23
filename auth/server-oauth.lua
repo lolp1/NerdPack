@@ -22,12 +22,12 @@ local function setCrs(body)
 	local func, errorMessage = load_code(body,'NerdPack-Auth-crs');
 	if(not func) then
 		NeP.Core:Print('ERROR loading crs!');
-		error(errorMessage);
+		print(errorMessage);
 	end
 	local success, xerrorMessage = xpcall(func, errorhandler);
 	if(not success) then
 		NeP.Core:Print('ERROR loading crs!');
-		error(xerrorMessage);
+		print(xerrorMessage);
 	end
 	NeP.Interface.ResetCRs();
     NeP.CR:Set();
@@ -42,12 +42,12 @@ local function setPlugins(body)
 	local func, errorMessage = load_code(body,'NerdPack-Auth-Plugins');
 	if(not func) then
 		NeP.Core:Print('ERROR loading Plugins!');
-		error(errorMessage);
+		print(errorMessage);
 	end
 	local success, xerrorMessage = xpcall(func, errorhandler);
 	if(not success) then
 		NeP.Core:Print('ERROR loading crs!');
-		error(xerrorMessage);
+		print(xerrorMessage);
 	end
 	NeP.Core:Print('DONE loading plugins!');
 end
