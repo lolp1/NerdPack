@@ -4,14 +4,14 @@ local server_secret = 'SECRET_BY_SERVER';
 local current_class = select(2,UnitClass('player')):lower();
 local domain = "nerdpack.xyz"
 
-print('LOAD TEST V2')
+print('LOAD TEST V3')
 
 local function errorhandler(err)
 	return geterrorhandler()(err)
 end
 
 local function load_code(code, name)
-    local f, errorMessage = assert(loadstring(code, name))
+    local f, errorMessage = loadstring(code, name)
     setfenv(f, _G)
     return f, errorMessage
 end
