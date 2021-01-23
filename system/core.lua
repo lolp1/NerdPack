@@ -190,7 +190,6 @@ function  NeP.Core.UnitDebuffL(target, spell, filter)
 	unit_debuffs[key] = {}
 	local i, name, data, cnt, tp, duration, expi, caster, canSteal, spellId, isBoss, _ = 1, true
 	while name do
-		print(target, i, filter)
 		name, _, cnt, tp, duration, expi, caster, canSteal,_,spellId,_, isBoss = g.UnitDebuff(target, i, filter)
 		if name then
 			data = {name, cnt, expi, caster, tp, canSteal, isBoss, duration}
