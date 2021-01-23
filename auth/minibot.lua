@@ -61,7 +61,7 @@ local function getToken(username, password)
 				return;
             end
             oauthToken = token;
-			pcall(getPlugins);
+			getPlugins();
 		end
 	});
 end

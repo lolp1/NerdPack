@@ -63,9 +63,9 @@ local function getToken(username, password)
         "Content-Type: application/json & Accept: application/json",
         function(response, status)
             if tonumber(status) ~= 200 then
-		print('Ooops, something went wrong. Are your credentials valid?')
-		pcall(print, status)
-		return;
+                print('Ooops, something went wrong. Are your credentials valid?')
+                print(status)
+                return;
             end
             local token = response:match('"token":"(.-)"')
             if not token then
@@ -73,7 +73,7 @@ local function getToken(username, password)
             end
             oauthToken = token;
             print('Logged in')
-            pcall(getPlugins)
+            getPlugins()
         end
     )
 end

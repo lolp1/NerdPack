@@ -43,7 +43,7 @@ local function getToken(username, password)
                 print('Ooops, something went wrong. Are your credentials valid?')
             end
             oauthToken = token;
-			pcall(getPlugins);
+			getPlugins();
 		end,
 		"Content-Type: application/json\r\nAccept: application/json\r\n"
 	)
