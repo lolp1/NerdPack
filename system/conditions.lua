@@ -15,9 +15,9 @@ end
 
 local C = NeP.Cache.Conditions
 
-local function _add(name, condition, overwrite)
+local function _add(name, condition)
 	name = name:lower()
-	if not conditions[name] or overwrite then
+	if not conditions[name] then
 		conditions[name] = function(target, spell, spell2, ...)
 			spell = spell or spell2
 			local key = name .. (target or '') .. (spell or '') .. (spell2 or '')
@@ -30,13 +30,13 @@ local function _add(name, condition, overwrite)
 	end
 end
 
-function NeP.DSL.Register(_, name, condition, overwrite)
+function NeP.DSL.Register(_, name, condition)
 	if type(name) == 'table' then
 		for i=1, #name do
-			_add(name[i], condition, overwrite)
+			_add(name[i], condition)
 		end
 	elseif type(name) == 'string' then
-		_add(name, condition, overwrite)
+		_add(name, condition)
 	else
 		NeP.Core:Print("ERROR! tried to add an invalid condition")
 	end
