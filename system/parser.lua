@@ -73,7 +73,7 @@ local function tst(_type, unit)
 	print('no BL',_type, unit)
 end
 
-print('test v6')
+print('test v7')
 
 NeP.Cache.Unit_Blacklist_cache = {}
 local ubl = NeP.Cache.Unit_Blacklist_cache
