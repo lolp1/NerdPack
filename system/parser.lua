@@ -59,9 +59,13 @@ local function tst(_type, unit)
 	for i=1, #tbl do
 		local _count = tbl[i].count
 		if _count then
-			if NeP.DSL:Get(_type..'.count.any')(unit, tbl[i].name) >= _count then return true end
+			if NeP.DSL:Get(_type..'.count.any')(unit, tbl[i].name) >= _count then
+				return true
+			end
 		else
-			if NeP.DSL:Get(_type..'.any')(unit, tbl[i]) then return true end
+			if NeP.DSL:Get(_type..'.any')(unit, tbl[i]) then
+				return true
+			end
 		end
 	end
 end
