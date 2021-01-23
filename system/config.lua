@@ -37,7 +37,7 @@ local function setData()
 	end
 end
 
-C_Timer.After(.1, setData)
+C_Timer.After(0, setData)
 
 function NeP.Config.Read(_, a, b, default, profile)
 	profile = profile or "default"
