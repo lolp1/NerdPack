@@ -3,24 +3,49 @@
 NeP.Config = {}
 local Data = {}
 local version = "0.2"
-local confname = local_stream_name and (local_stream_name .. 'DATA') or 'NePDATA';
+local confname = 'settings';
+local function print(...) NeP.Core:Print(...) end
+
+local function forceSave()
+	if not NeP._G.json then
+		print('Please enable the json plugin on https://nerdpack.xyz/plugins to be able to save settings.')
+		return
+	end
+	local xData = NeP._G.json.decode(Data)
+	NeP.Protected.writeFile('settings.json', xData)
+end
+
+local function resetData()
+	wipe(Data)
+	Data["config_ver"] = version
+	forceSave()
+end
 
 local function setData()
-	_G[confname] = _G[confname] or Data
-	Data = _G[confname]
-	if Data["config_ver"] ~= version then NeP._G.wipe(Data) end
-	Data["config_ver"] = version
-end
-
-if local_stream_name then
-	setData()
-end
-
-NeP.Listener:Add("NeP_Config", "ADDON_LOADED", function(addon)
-	if addon:lower() == n_name:lower() then
-		setData()
+	local setingsFile = NeP.Protected.readFile('settings.json')
+	-- lets try to import old settings
+	local old_data = _G[local_stream_name .. 'DATA']
+	if old_data and not setingsFile then
+		Data = old_data
+		forceSave()
+		print('Importing old settings...')
+		return
 	end
-end)
+	if not setingsFile then
+		return
+	end
+	if not NeP._G.json then
+		print('Please enable the json plugin on https://nerdpack.xyz/plugins to be able to save settings.')
+		return
+	end
+	Data = NeP._G.json.decode(setingsFile)
+	-- do we need to wipe it?
+	if Data["config_ver"] ~= version then
+		resetData()
+	end
+end
+
+C_Timer.After(.1, setData)
 
 function NeP.Config.Read(_, a, b, default, profile)
 	profile = profile or "default"
@@ -45,6 +70,7 @@ function NeP.Config.Write(_, a, b, value, profile)
 	if not Data[a] then Data[a] = {} end
 	if not Data[a][profile] then Data[a][profile] = {} end
 	Data[a][profile][b] = value
+	forceSave()
 end
 
 function NeP.Config.Reset(_, a, b, profile)
@@ -57,8 +83,9 @@ function NeP.Config.Reset(_, a, b, profile)
 	elseif a then
 		Data[a] = nil
 	end
+	forceSave()
 end
 
 function NeP.Config.Rest_all()
-	NeP._G.wipe(Data)
+	resetData()
 end
