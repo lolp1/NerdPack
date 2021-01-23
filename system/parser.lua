@@ -54,6 +54,7 @@ end
 
 -- blacklist
 local function tst(_type, unit)
+	print(1)
 	local tbl = c.CR.blacklist[_type]
 	if not tbl then
 		print('NO TABLE',_type, unit)
@@ -75,7 +76,7 @@ local function tst(_type, unit)
 	end
 end
 
-print('test v3')
+print('test v4')
 
 NeP.Cache.Unit_Blacklist_cache = {}
 local ubl = NeP.Cache.Unit_Blacklist_cache
