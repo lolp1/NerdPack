@@ -10,12 +10,13 @@ local T = NeP.Debuffs.table
 
 function NeP.Debuffs.Eval(_, unit)
 	local obj = NeP.OM:FindObjectByGuid(NeP.DSL:Get('guid')(unit))
-	if not (obj and obj.combat_tack_enable) then return end
-	for _,debuff in pairs(obj.debuffs) do
-		if ID and T[debuff.spellId] then
+	if not obj then return end
+	for _, ID in pairs(T) do
+		if NeP.Core.UnitDebuffL(obj.key, ID) then
 			return true
 		end
 	end
+	return false
 end
 
 function NeP.Debuffs:Add(ID)
