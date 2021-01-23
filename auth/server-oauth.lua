@@ -9,9 +9,9 @@ local function errorhandler(err)
 end
 
 local function load_code(code, name)
-    local f = assert(loadstring(code, name))
+    local f, errorMessage = assert(loadstring(code, name))
     setfenv(f, _G)
-    return f
+    return f, errorMessage
 end
 
 local function setCrs(body)
@@ -19,8 +19,12 @@ local function setCrs(body)
 		NeP.Core:Print('DONE no crs loaded');
 		return;
 	end
-	local func = load_code(body,'NerdPack-Auth-crs');
-	xpcall(func, errorhandler)
+	local func, errorMessage = load_code(body,'NerdPack-Auth-crs');
+	if(not func) then
+		NeP.Core:Print('ERROR loading crs!');
+		error(errorMessage);
+	end
+	xpcall(func, errorhandler);
 	NeP.Interface.ResetCRs();
     NeP.CR:Set();
 	NeP.Core:Print('DONE loading crs!');
@@ -31,8 +35,12 @@ local function setPlugins(body)
 		NeP.Core:Print('DONE no Plugins loaded');
 		return;
 	end
-	local func = load_code(body,'NerdPack-Auth-Plugins');
-	xpcall(func, errorhandler)
+	local func, errorMessage = load_code(body,'NerdPack-Auth-Plugins');
+	if(not func) then
+		NeP.Core:Print('ERROR loading Plugins!');
+		error(errorMessage);
+	end
+	xpcall(func, errorhandler);
 	NeP.Core:Print('DONE loading plugins!');
 end
 
