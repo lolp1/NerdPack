@@ -1,5 +1,5 @@
 
-local NeP = NeP
+local NeP, g = NeP, NeP._G
 NeP.Parser   = {}
 local c = NeP.CR
 
@@ -23,18 +23,18 @@ local function IsMountedCheck()
 			return true
 		end
 	end
-	return (NeP._G.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
+	return (g.SecureCmdOptionParse("[overridebar][vehicleui][possessbar,@vehicle,exists][mounted]true")) ~= "true"
 end
 
 --Returns if we're casting/channeling anything, its remaning time and name
 --Also used by the parser for (!spell) if order to figure out if we should clip
 -- t.master.endtime, t.master.cname, t.master.time, t.master.channeling
 local function castingTime(tbl)
-	tbl.time = NeP._G.GetTime()
+	tbl.time = g.GetTime()
 	tbl.channeling = nil
-	local name, _,_,_, endTime = NeP._G.UnitCastingInfo("player")
+	local name, _,_,_, endTime = g.UnitCastingInfo("player")
 	if not name then
-		name, _,_,_, endTime = NeP._G.UnitChannelInfo("player")
+		name, _,_,_, endTime = g.UnitChannelInfo("player")
 		tbl.channeling = true
 	end
 	tbl.endtime = (name and (endTime/1000)-tbl.time) or 0
@@ -60,37 +60,41 @@ local function tst(_type, unit)
 		local _count = tbl[i].count
 		if _count then
 			if NeP.DSL:Get(_type..'.count.any')(unit, tbl[i].name) >= _count then
+				print('backlist found .count.any', unit, _type)
 				return true
 			end
 		else
 			if NeP.DSL:Get(_type..'.any')(unit, tbl[i]) then
+				print('backlist found .any', unit, _type)
 				return true
 			end
 		end
 	end
 end
 
-local Unit_Blacklist_cache = {}
+NeP.Cache.Unit_Blacklist_cache = {}
+local ubl = NeP.Cache.Unit_Blacklist_cache
 function NeP.Parser.Unit_Blacklist(_, unit)
-	if not Unit_Blacklist_cache[unit] then
-		Unit_Blacklist_cache[unit] = NeP.Debuffs:Eval(unit)
+	if ubl[unit] == nil then
+		ubl[unit] = NeP.Debuffs:Eval(unit)
 		or c.CR.blacklist.units[NeP.Core:UnitID(unit)]
 		or tst("buff", unit)
 		or tst("debuff", unit)
 	end
-	return Unit_Blacklist_cache[unit]
+	return ubl[unit]
 end
 
 --This works on the current parser target.
 --This function takes care of psudo units (fakeunits).
 --Returns boolean (true if the target is valid).
-local Target_cache = {}
+NeP.Cache.Target_cache = {}
+local tc = NeP.Cache.Target_cache
 function NeP.Parser:Target(eval)
 	-- This is to alow casting at the cursor location where no unit exists
 	if eval[3].cursor or eval[1].is_table then return true end
 	-- Eval if the unit is valid
-	if not Target_cache[eval.target] then
-		Target_cache[eval.target] = eval.target
+	if not tc[eval.target] then
+		tc[eval.target] = eval.target
 		and NeP.DSL:Get('exists')(eval.target)
 		and NeP.DSL:Get('visible')(eval.target)
 		and (
@@ -100,7 +104,7 @@ function NeP.Parser:Target(eval)
 		and NeP.DSL:Get('los')('player', eval.target)
 		and not self:Unit_Blacklist(eval.target)
 	end
-	return Target_cache[eval.target]
+	return tc[eval.target]
 end
 
 local function noob_target() return NeP.DSL:Get('exists')('target') and 'target' or 'player' end
@@ -196,16 +200,14 @@ end
 
 local function ParseStart()
 	NeP.Faceroll:Hide()
-	NeP._G.wipe(Unit_Blacklist_cache)
-	NeP._G.wipe(Target_cache)
 	NeP.DBM.BuildTimers()
 	if NeP.DSL:Get('toggle')(nil, 'mastertoggle')
 	and not NeP.DSL:Get('dead')('player')
 	and IsMountedCheck()
-	and not NeP._G.LootFrame:IsShown()
-	and not (NeP._G.GetNumLootItems() > 0) then
+	and not g.LootFrame:IsShown()
+	and not (g.GetNumLootItems() > 0) then
 		if NeP.Queuer:Execute() then return end
-		local t = c.CR and c.CR[NeP._G.InCombatLockdown()]
+		local t = c.CR and c.CR[g.InCombatLockdown()]
 		if not t then return end
 		castingTime(t.master)
 		t.master.halt = false
@@ -217,14 +219,14 @@ local function ParseStart()
 end
 
 local function StartAutoAttacks()
-	if NeP._G.InCombatLockdown()
+	if g.InCombatLockdown()
 	and NeP.Interface:Fetch(n_name..'_Settings', 'auto_attacks', false)
 	and NeP.DSL:Get('exists')('target')
 	and NeP.DSL:Get('enemy')('target')
 	and NeP.DSL:Get('alive')('target')
 	and NeP.DSL:Get('canattack')('target')
 	and not NeP.Parser:Unit_Blacklist('target')
-	and not NeP._G.IsCurrentSpell(6603) then
+	and not g.IsCurrentSpell(6603) then
 		NeP.Protected.Macro('/startattack')
 		--NeP.Protected.Macro('/petattack')
 	end
