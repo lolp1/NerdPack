@@ -37,7 +37,7 @@ local function setData()
 	end
 end
 
-NeP.Core:WhenInGame(setData, -999)
+NeP.Core:WhenInGame(setData, 9998)
 
 function NeP.Config.Read(_, a, b, default, profile)
 	profile = profile or "default"
