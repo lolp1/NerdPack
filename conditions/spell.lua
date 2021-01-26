@@ -16,7 +16,7 @@ NeP.DSL:Register('spell.recharge', function(_, spell)
 end)
 
 NeP.DSL:Register('spell.usable', function(_, spell)
-  return g.IsUsableSpell(spell) ~= nil
+  return not not g.IsUsableSpell(spell)
 end)
 
 NeP.DSL:Register('spell.exists', function(_, spell)
