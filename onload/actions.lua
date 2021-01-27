@@ -1,5 +1,5 @@
-local NeP = NeP
-local LibDisp = NeP._G.LibStub('LibDispellable-1.0')
+local NeP, g = NeP, NeP._G
+local LibDisp = g.LibStub('LibDispellable-1.0')
 
 local funcs = {
   noop = function() end,
@@ -13,13 +13,17 @@ local funcs = {
   UseItem = function(eva) NeP.Protected["UseItem"](eva.spell, eva.target); return true end,
   Macro = function(eva) NeP.Protected["Macro"]("/"..eva.spell, eva.target); return true end,
   Lib = function(eva) return NeP.Library:Parse(eva.spell, eva.target, eva[1].args) end,
-  C_Buff = function(eva) NeP._G.CancelUnitBuff('player', NeP._G.GetSpellInfo(eva[1].args)) end
+  C_Buff = function(eva) g.CancelUnitBuff('player', g.GetSpellInfo(eva[1].args)) end
 }
 
-local function IsSpellReady(spell)
-  if NeP._G.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
-  and (NeP._G.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
-    return NeP._G.IsUsableSpell(spell)
+local function IsSpellReady(eval)
+  if eval.bypass_spell then
+    return true
+  end
+  local spell = eval.spell or eval[1].spell
+  if g.GetSpellBookItemInfo(spell) ~= 'FUTURESPELL'
+  and (g.GetSpellCooldown(spell) or 0) <= NeP.DSL:Get('gcd')() then
+    return g.IsUsableSpell(spell)
   end
 end
 
@@ -48,9 +52,9 @@ end)
 local function FindDispell(eval, unit)
   if not NeP.DSL:Get('exists')(unit) then return end
   for _, spellID, _,_,_,_, duration, expires in LibDisp:IterateDispellableAuras(unit) do
-    local spell = NeP._G.GetSpellInfo(spellID)
-    if IsSpellReady(spell) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
-      eval.spell = spell
+    local spell = g.GetSpellInfo(spellID)
+    eval.spell = spell
+    if IsSpellReady(eval) and (expires - eval.master.time) < (duration - math.random(1, 3)) then
       eval[3].target = unit
       eval.exe = funcs["Cast"]
       return true
@@ -103,19 +107,19 @@ end)
 
 -- Cancel Shapeshift Form
 NeP.Actions:Add('cancelform', function(eval)
-  eval.exe = NeP._G.CancelShapeshiftForm
+  eval.exe = g.CancelShapeshiftForm
   return true
 end)
 
 -- Automated tauting
 -- USAGE %taunt(SPELL)
 NeP.Actions:Add('taunt', function(eval)
-  if not IsSpellReady(eval[1].args) then return end
+  eval.spell = eval[1].args
+  if not IsSpellReady(eval) then return end
   for _, Obj in pairs(NeP.OM:Get('Enemy')) do
     if NeP.DSL:Get('exists')(Obj.key)
     and Obj.distance <= 30
     and NeP.Taunts:ShouldTaunt(Obj.key) then
-      eval.spell = eval[1].args
       eval[3].target = Obj.key
       eval.exe = funcs["Cast"]
       return true
@@ -126,14 +130,14 @@ end)
 -- Ress all dead
 -- USAGE: %ressdead(SPELL)
 NeP.Actions:Add('ressdead', function(eval)
-  if not IsSpellReady(eval[1].args) then return end
+  eval.spell = eval[1].args
+  if not IsSpellReady(eval) then return end
   for _, Obj in pairs(NeP.OM:Get("Dead")) do
     if Obj.distance < 40
     and NeP.DSL:Get('exists')(Obj.key)
-    and NeP._G.UnitIsPlayer(Obj.key)
-    and NeP._G.UnitIsDeadOrGhost(Obj.key)
-    and NeP._G.UnitPlayerOrPetInParty(Obj.key) then
-      eval.spell = eval[1].args
+    and g.UnitIsPlayer(Obj.key)
+    and g.UnitIsDeadOrGhost(Obj.key)
+    and g.UnitPlayerOrPetInParty(Obj.key) then
       eval[3].target = Obj.key
       eval.exe = funcs["Cast"]
       return true
@@ -184,13 +188,13 @@ NeP.Compiler:RegisterToken("#", function(eval, ref)
   ref.token = 'item'
   eval.bypass = true
   if invItems[temp_spell] then
-    local invItem = NeP._G.GetInventorySlotInfo(invItems[temp_spell])
-    temp_spell = NeP._G.GetInventoryItemID("player", invItem) or ref.spell
+    local invItem = g.GetInventorySlotInfo(invItems[temp_spell])
+    temp_spell = g.GetInventoryItemID("player", invItem) or ref.spell
     ref.invitem = true
     ref.invslot = invItem
   end
   ref.id = tonumber(temp_spell) or NeP.Core:GetItemID(temp_spell)
-  local itemName, itemLink, _,_,_,_,_,_,_, texture = NeP._G.GetItemInfo(ref.id)
+  local itemName, itemLink, _,_,_,_,_,_,_, texture = g.GetItemInfo(ref.id)
   ref.spell = itemName or ref.spell
   ref.icon = texture
   ref.link = itemLink
@@ -202,14 +206,14 @@ NeP.Actions:Add('item', function(eval)
   if item.id then
     --Iventory invItems
     if item.invitem then
-      return select(2,NeP._G.GetInventoryItemCooldown('player', item.invslot)) == 0
-      and NeP._G.IsUsableItem(item.link)
+      return select(2,g.GetInventoryItemCooldown('player', item.invslot)) == 0
+      and g.IsUsableItem(item.link)
     --regular
     else
-      return NeP._G.GetItemSpell(item.spell)
-      and NeP._G.IsUsableItem(item.spell)
-      and select(2,NeP._G.GetItemCooldown(item.id)) == 0
-      and NeP._G.GetItemCount(item.spell) > 0
+      return g.GetItemSpell(item.spell)
+      and g.IsUsableItem(item.spell)
+      and select(2,g.GetItemCooldown(item.id)) == 0
+      and g.GetItemCount(item.spell) > 0
     end
   end
 end)
@@ -217,7 +221,7 @@ end)
 -- regular spell
 NeP.Compiler:RegisterToken("spell_cast", function(eval, ref)
   ref.spell = NeP.Spells:Convert(ref.spell, eval.master.name)
-  ref.icon = select(3,NeP._G.GetSpellInfo(ref.spell))
+  ref.icon = select(3,g.GetSpellInfo(ref.spell))
   ref.id = NeP.Core:GetSpellID(ref.spell)
   eval.exe = funcs["Cast"]
   ref.token = 'spell_cast'
@@ -227,7 +231,10 @@ local C = NeP.Cache.Spells
 
 -- this forces the parser to stop until this spel is ready
 local function POLLING_PARSER(eval, nomana)
-  if not eval.master.pooling then return end
+  if not eval.master.pooling
+  and not eval.pooling then
+    return
+  end
   if eval.custom_pool then
     if type(eval.custom_pool) == 'string' then
       eval.master.halt = eval.master.halt or NeP.DSL.Parse(eval.custom_pool, eval[1].spell, eval.target) or false
@@ -244,10 +251,14 @@ end
 
 NeP.Actions:Add('spell_cast', function(eval)
   -- cached
-  if C[eval[1].spell] ~= nil then return C[eval[1].spell]; end
+  if C[eval[1].spell] ~= nil then
+    local ready, nomana = unpack(C[eval[1].spell])
+    POLLING_PARSER(eval, nomana)
+    return ready or false;
+  end
   -- normal stuff
-  local ready, nomana = IsSpellReady(eval[1].spell)
-  C[eval[1].spell] = ready or false
+  local ready, nomana = IsSpellReady(eval)
+  C[eval[1].spell] = {ready or false, nomana}
   POLLING_PARSER(eval, nomana)
   return ready or false
 end)
