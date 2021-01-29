@@ -309,7 +309,7 @@ function NeP.OM.CleanStart()
 	end
 end
 
-local function MakerStart()
+function NeP.OM.MakerStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		NeP.Protected:OM_Maker()
 	end
@@ -344,5 +344,4 @@ function NeP.OM.RemoveObjectByGuid(_, guid)
 end
 
 NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
-NeP.Debug:Add("OM_Maker", MakerStart, true)
-NeP.Timer.Add('OM_Maker', MakerStart, 1)
+NeP.Debug:Add("OM_Maker", NeP.OM.MakerStart, true)
