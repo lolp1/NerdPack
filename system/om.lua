@@ -254,20 +254,9 @@ local function cleanUnit(Obj)
 end
 
 local function cleanUpdate()
-	for GUID in pairs(NeP.OM.to_be_removed) do
-		NeP.OM.Memory[GUID] = nil
-	end
-	_G.wipe(NeP.OM.to_be_removed)
 	for GUID, Obj in pairs(NeP.OM.Memory) do
-		-- completly invalid?
-		if not NeP.DSL:Get('exists')(Obj.key) then
-			if Obj.tbl then
-				NeP.OM[Obj.tbl][Obj.guid] = nil
-			end
-			NeP.OM.Roster[Obj.guid] = nil -- fail safe
-			NeP.OM.to_be_removed[GUID] = true
 		--guid changed?(how? reset it...)
-		elseif GUID ~= NeP.DSL:Get('guid')(Obj.key) then
+		if GUID ~= NeP.DSL:Get('guid')(Obj.key) then
 			if Obj.tbl then
 				NeP.OM[Obj.tbl][Obj.guid] = nil
 			end
@@ -341,6 +330,25 @@ function NeP.OM.RemoveObjectByGuid(_, guid)
 		NeP.OM[Obj.tbl][Obj.guid] = nil
 	end
 	NeP.OM.to_be_removed[Obj.guid] = true
+end
+
+function NeP.OM.WipeInvalid()
+	for GUID, Obj in pairs(NeP.OM.Memory) do
+		-- completly invalid?
+		if not NeP.DSL:Get('exists')(Obj.key) then
+			NeP.OM['Objects'][GUID] = nil
+			NeP.OM['AreaTriggers'][GUID] = nil
+			NeP.OM['Dead'][GUID] = nil
+			NeP.OM['Friendly'][GUID] = nil
+			NeP.OM['Enemy'][GUID] = nil
+			NeP.OM['Critters'][GUID] = nil
+			NeP.OM['Roster'][GUID] = nil
+		end
+	end
+	for GUID in pairs(NeP.OM.to_be_removed) do
+		NeP.OM.Memory[GUID] = nil
+	end
+	_G.wipe(NeP.OM.to_be_removed)
 end
 
 NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
