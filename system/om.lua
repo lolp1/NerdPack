@@ -351,5 +351,7 @@ function NeP.OM.WipeInvalid()
 	_G.wipe(NeP.OM.to_be_removed)
 end
 
+NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid, 0)
+NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.5)
 NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
 NeP.Debug:Add("OM_Maker", NeP.OM.MakerStart, true)

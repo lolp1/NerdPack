@@ -232,9 +232,6 @@ local function StartAutoAttacks()
 	end
 end
 
-NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid)
-NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.5)
-
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
 	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, 1)
