@@ -353,6 +353,7 @@ function NeP.OM.WipeInvalid()
 end
 
 NeP.Core:WhenInGame(function()
+	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, 0)
 	NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid, 0)
 	NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.5)
 end, 9999999)

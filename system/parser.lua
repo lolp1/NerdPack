@@ -234,7 +234,6 @@ end
 
 -- Delay until everything is ready
 NeP.Core:WhenInGame(function()
-	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, 1)
 	NeP.Timer.Add('nep_start_attacks', StartAutoAttacks, 1)
 	NeP.Timer.Add('nep_parser', ParseStart, 0.1)
 	NeP.Debug:Add("nep_cr_parser", ParseStart, true)
