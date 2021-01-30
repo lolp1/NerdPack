@@ -14,7 +14,9 @@ NeP.Author = 'MrTheSoulz'
 -- This exports stuff into global space
 NeP.Globals = {}
 _G.NeP = NeP.Globals
-NeP._G = setmetatable({},{__index = _G})
+NeP._G = setmetatable({},{__index = _G, __newindex = function(t, index, value)
+    rawset(t, index, value)
+end})
 
 NeP.Cache = {
 	Conditions = {},
