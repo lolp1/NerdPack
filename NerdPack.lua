@@ -1,4 +1,4 @@
-
+local NeP = NeP
 NeP.Version = {
 	major = 2,
 	minor = 0,
@@ -14,7 +14,8 @@ NeP.Author = 'MrTheSoulz'
 -- This exports stuff into global space
 NeP.Globals = {}
 _G.NeP = NeP.Globals
-NeP._G = setmetatable({},{__index = _G})
+--NeP._G = setmetatable({},{__index = _G})
+NeP._G = _G -- testing
 
 NeP.Cache = {
 	Conditions = {},
