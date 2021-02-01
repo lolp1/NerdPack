@@ -63,5 +63,5 @@ NeP.BossID:Add({
   [107699] = true, -- Spellblade Aluriel
   [104528] = true, -- High Botanist Tel'arn
   [103685] = true, -- Tichondrius
-  [169769] = true, -- Mueh'zala (SL - De Other Side)
+  [166608] = true, -- Mueh'zala (SL - De Other Side)
 })
