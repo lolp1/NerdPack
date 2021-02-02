@@ -1,4 +1,4 @@
-local NeP = NeP
+local NeP, n_name, local_stream_name = NeP, n_name, local_stream_name
 NeP.Version = {
 	major = 2,
 	minor = 0,
@@ -41,7 +41,7 @@ NeP.Timer.Add = function(name, func, seconds)
 end
 
 local function errorhandler(err)
-	return geterrorhandler()(err)
+	return _G.geterrorhandler()(err)
 end
 
 NeP.Timer.Handle = function(_, elapsed)
@@ -62,5 +62,10 @@ end
 
 NeP.Timer.frame:SetScript("OnUpdate", NeP.Timer.Handle)
 
--- this should always be the 1st
-NeP.Timer.Add('nep_OM_Wipe_Cache', NeP.Wipe_Cache, 0) -- every frame
+-- this should always be loader before OM and parser
+local F = function(...) return NeP.Interface:Fetch(...) end
+NeP.Core:WhenInGame(function()
+	NeP.Timer.Add('nep_OM_Wipe_Cache', NeP.Wipe_Cache, tonumber(F(n_name..'_Settings', 'cache_clear_frequency', 0)))
+end, 9997)
+
+

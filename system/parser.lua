@@ -1,5 +1,5 @@
 
-local NeP, g = NeP, NeP._G
+local NeP, g, n_name = NeP, NeP._G, n_name
 NeP.Parser   = {}
 local c = NeP.CR
 
@@ -233,8 +233,9 @@ local function StartAutoAttacks()
 end
 
 -- Delay until everything is ready
+local F = function(...) return NeP.Interface:Fetch(...) end
 NeP.Core:WhenInGame(function()
 	NeP.Timer.Add('nep_start_attacks', StartAutoAttacks, 1)
-	NeP.Timer.Add('nep_parser', ParseStart, 0.1)
+	NeP.Timer.Add('nep_parser', ParseStart, tonumber(F(n_name..'_Settings', 'parser_frequency', 0.1)))
 	NeP.Debug:Add("nep_cr_parser", ParseStart, true)
 end, -99)

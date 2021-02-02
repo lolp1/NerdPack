@@ -26,6 +26,29 @@ title = n_name,
 		{ type = 'spinner', text = L('bpad'), key = 'bpad', default = 2},
     { type = 'spinner', text = L('brow'), key = 'brow', step = 1, min = 1, max = 20, default = 10},
 
+    {
+      type = 'spinner',
+      text = 'Cache: frequency',
+      key = 'cache_clear_frequency',
+      step = .01,
+      min = 0,
+      max = 1,
+      default = 0,
+      desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
+      .. 'This increases the delay nerdpack clears its internal cache. The higher you set it the longer the delay.'
+    },
+    {
+      type = 'spinner',
+      text = 'Parser: frequency',
+      key = 'parser_frequency',
+      step = .01,
+      min = 0,
+      max = 1,
+      default = 0.1,
+      desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
+      .. 'This increases the delay nerdpack executes the parser. The higher you set it the longer the delay.'
+    },
+
     { type = 'spacer' },
     { type = 'header', text = L('OM_Settings') },
     {
