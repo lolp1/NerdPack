@@ -33,7 +33,7 @@ title = n_name,
       step = .01,
       min = 0,
       max = 1,
-      default = 0,
+      default = 0.1,
       desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
       .. 'This increases the delay nerdpack clears its internal cache. The higher you set it the longer the delay.'
     },
@@ -68,7 +68,7 @@ title = n_name,
       step = .01,
       min = 0,
       max = 1,
-      default = 0,
+      default = 0.1,
       desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
       .. 'This increases the delay nerdpack checks for new units/Objects. The higher you set it the longer the delay.'
     },
@@ -79,7 +79,7 @@ title = n_name,
       step = .01,
       min = 0,
       max = 1,
-      default = 0,
+      default = 0.1,
       desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
       .. 'This increases the delay nerdpack checks for new units/Objects. The higher you set it the longer the delay.'
     },
