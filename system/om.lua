@@ -1,4 +1,5 @@
-local NeP = NeP
+local NeP, n_name, g = NeP, n_name, NeP._G
+local F = function(...) return NeP.Interface:Fetch(...) end
 
 NeP.OM = {
 	Memory = {},
@@ -16,7 +17,7 @@ NeP.OM = {
 -- warning ShouldRefresh will kill your fs
 function NeP.OM.Get(_, ref, _, shouldRefresh)
 	if shouldRefresh then
-		NeP.OM.CleanStart()
+		NeP.OM.UpdateStart()
 	end
 	return NeP.OM[ref]
 end
@@ -96,7 +97,7 @@ function NeP.OM.Add(_, Obj, isObject, isAreaTrigger)
 	if NeP.OM.Memory[GUID] then
 		return
 	end
-	local ObjID = select(6, NeP._G.strsplit('-', GUID))
+	local ObjID = select(6, g.strsplit('-', GUID))
 	-- filter those with no id
 	if not ObjID and not NeP.DSL:Get('isplayer')(Obj) then return end
 	local id = tonumber(ObjID or 0)
@@ -180,7 +181,7 @@ local function cleanObject(Obj)
 end
 
 local function cleanUnit(Obj)
-	local ctime = NeP._G.GetTime()
+	local ctime = g.GetTime()
 	Obj.range = NeP.DSL:Get('range')(Obj.key)
 	-- remove invalid units
 	if Obj.range > NeP.OM.max_distance
@@ -284,17 +285,17 @@ local function cleanUpdate()
 	end
 end
 
-function NeP.OM.CleanStart()
+function NeP.OM.UpdateStart()
 	if NeP.DSL:Get("toggle")(nil, "mastertoggle") then
 		cleanUpdate()
 	else
-		NeP._G.wipe(NeP.OM['Objects'])
-		NeP._G.wipe(NeP.OM['AreaTriggers'])
-		NeP._G.wipe(NeP.OM['Dead'])
-		NeP._G.wipe(NeP.OM['Friendly'])
-		NeP._G.wipe(NeP.OM['Enemy'])
-		NeP._G.wipe(NeP.OM['Critters'])
-		NeP._G.wipe(NeP.OM['Roster'])
+		g.wipe(NeP.OM['Objects'])
+		g.wipe(NeP.OM['AreaTriggers'])
+		g.wipe(NeP.OM['Dead'])
+		g.wipe(NeP.OM['Friendly'])
+		g.wipe(NeP.OM['Enemy'])
+		g.wipe(NeP.OM['Critters'])
+		g.wipe(NeP.OM['Roster'])
 	end
 end
 
@@ -353,10 +354,10 @@ function NeP.OM.WipeInvalid()
 end
 
 NeP.Core:WhenInGame(function()
-	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, 0)
-	NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid, 0)
-	NeP.Timer.Add('nep_OM_cleanStart', NeP.OM.CleanStart, 0.5)
+	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, tonumber(F(n_name..'_Settings', 'om_speed_add', 0)))
+	NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid, tonumber(F(n_name..'_Settings', 'om_speed_sanitize', 0)))
+	NeP.Timer.Add('nep_OM_updateStart', NeP.OM.UpdateStart, tonumber(F(n_name..'_Settings', 'om_speed_update', .5)))
 end, 9999999)
 
-NeP.Debug:Add("OM_Clean", NeP.OM.CleanStart, true)
+NeP.Debug:Add("OM_Clean", NeP.OM.UpdateStart, true)
 NeP.Debug:Add("OM_Maker", NeP.OM.MakerStart, true)

@@ -1,4 +1,5 @@
 
+local NeP, n_name = NeP, n_name
 local L = function(val) return NeP.Locale:TA('Settings', val) end
 local NeP_ver = tostring(NeP.Version.major.."."..NeP.Version.minor.."-"..NeP.Version.branch)
 
@@ -36,6 +37,39 @@ title = n_name,
       max = 300,
       default = 100,
       desc = L("OM_Dis_desc")
+    },
+    {
+      type = 'spinner',
+      text = 'OM: Add frequency',
+      key = 'om_speed_add',
+      step = .01,
+      min = 0,
+      max = 1,
+      default = 0,
+      desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
+      .. 'This increases the delay nerdpack checks for new units/Objects. The higher you set it the longer the delay.'
+    },
+    {
+      type = 'spinner',
+      text = 'OM: Sanitize frequency',
+      key = 'om_speed_sanitize',
+      step = .01,
+      min = 0,
+      max = 1,
+      default = 0,
+      desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
+      .. 'This increases the delay nerdpack checks for new units/Objects. The higher you set it the longer the delay.'
+    },
+    {
+      type = 'spinner',
+      text = 'OM: Update frequency',
+      key = 'om_speed_update',
+      step = .01,
+      min = 0,
+      max = 1,
+      default = .5,
+      desc = 'Increase this number if you\'re having fps issue (NOT RECOMMENDED).'
+      .. 'This increases the delay nerdpack updates units/Objects. The higher you set it the longer the delay.'
     },
 
     { type = 'spacer' },
