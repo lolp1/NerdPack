@@ -354,6 +354,7 @@ function NeP.OM.WipeInvalid()
 end
 
 NeP.Core:WhenInGame(function()
+	print('DEBUG', tonumber(F(n_name..'_Settings', 'om_speed_add', 0)))
 	NeP.Timer.Add('OM_Maker', NeP.OM.MakerStart, tonumber(F(n_name..'_Settings', 'om_speed_add', 0)))
 	NeP.Timer.Add('nep_OM_sanitizer', NeP.OM.WipeInvalid, tonumber(F(n_name..'_Settings', 'om_speed_sanitize', 0)))
 	NeP.Timer.Add('nep_OM_updateStart', NeP.OM.UpdateStart, tonumber(F(n_name..'_Settings', 'om_speed_update', .5)))
