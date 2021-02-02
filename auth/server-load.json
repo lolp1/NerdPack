@@ -56,6 +56,8 @@
   "tables/taunts.lua",
   "system/listener.lua",
   "system/core.lua",
+  "system/cache.lua",
+  "system/timer.lua",
   "system/debug.lua",
   "system/commands.lua",
   "system/tooltip.lua",
