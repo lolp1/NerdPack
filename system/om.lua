@@ -337,7 +337,6 @@ function NeP.OM.WipeInvalid()
 	for GUID, Obj in pairs(NeP.OM.Memory) do
 		-- completly invalid?
 		if not NeP.DSL:Get('exists')(Obj.key) then
-			print("invalid", Obj.key, GUID)
 			NeP.OM['Objects'][GUID] = nil
 			NeP.OM['AreaTriggers'][GUID] = nil
 			NeP.OM['Dead'][GUID] = nil
